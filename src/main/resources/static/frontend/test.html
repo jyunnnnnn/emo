@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Google Maps with Bootstrap</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="test.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- 初始化地图 -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPeh6HKg5TrW1qZeOrc89dJHdESv67EeQ&callback=initMap"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+        }
+        #map {
+            height: 90vh;
+            width: 100%;
+            padding: 10px;
+        }
+        .page-title {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #Button {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Google Map -->
+    <div id="map"></div>
+
+    <!-- "紀錄"按钮 -->
+    <div id="Button">
+        <button id="recordButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#activityModal">紀錄v</button>
+        <button id="recordListButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#activityListModal">紀錄n</button>
+    </div>
+
+</div>
+
+<!-- 記錄框 -->
+<div class="modal fade" id="activityModal" tabindex="-1" role="dialog" aria-labelledby="activityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="activityModalLabel">活動</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="activityInput" class="form-control" placeholder="可自定義行為名稱或使用下方預設選項">
+                <div class="form-group">
+                    <label for="recordType"></label>
+                    <select class="form-control" id="recordType">
+                        <option value="option1">使用環保杯</option>
+                        <option value="option2">使用環保餐具</option>
+                        <option value="option3">使用購物袋</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-primary" id="saveRecord">儲存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="activityListModal" tabindex="-1" role="dialog" aria-labelledby="activityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="activityList">活動紀錄</h5>
+            </div>
+            <div class="modal-body" id="listContent" >
+                //code here
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
