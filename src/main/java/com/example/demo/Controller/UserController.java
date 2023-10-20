@@ -51,7 +51,7 @@ public class UserController {
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "註冊成功!");
-            response.put("location", "test.html");
+            response.put("location", "main.html");
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗，帳號或密碼錯誤"));
