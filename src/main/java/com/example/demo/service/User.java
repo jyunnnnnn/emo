@@ -5,6 +5,7 @@ public class User {
     private String password;
     private String confirmPassword;
 
+
     public String getAccount() {
         return account;
     }
@@ -17,3 +18,4 @@ public class User {
         return confirmPassword;
     }
 }
+//使用者註冊資料

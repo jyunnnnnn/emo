@@ -19,22 +19,22 @@ $(document).ready(function() {
             confirmPassword: confirmPassword
         };
         $.ajax({
-                    type: 'POST',
-                    url: '/api/register',
-                    contentType: 'application/json',
-                    data: JSON.stringify(userData),
-                    success: function(response) {
-
-                        alert(response.message);
-                        $('#login-container').removeClass('d-none');
-                        $('#signup-container').addClass('d-none');
-                    },
-                    error: function(xhr, status, error) {
-                        var errorData = JSON.parse(xhr.responseText);
-                            var errorMessage = errorData.message;
-                            alert(errorMessage);
-                    }
-                });
+            type: 'POST',
+            url: '/api/register',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: function(response) {
+                alert(response.message);
+                $('#login-container').removeClass('d-none');
+                $('#signup-container').addClass('d-none');
+            },
+            error: function(xhr, status, error) {
+                var errorData = JSON.parse(xhr.responseText);
+                var errorMessage = errorData.message;
+                alert(errorMessage);
+            }
+        });
+    });
 
     // 登入
     $('#login-button').click(function(e) {
@@ -52,7 +52,7 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify(loginData),
             success: function(response) {
-                alert(response.message)
+                alert(response.message);
                 window.location.href = response.location;
             },
             error: function(xhr, status, error) {
