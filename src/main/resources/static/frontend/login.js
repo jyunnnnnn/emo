@@ -6,7 +6,7 @@ $(document).ready(function() {
         $('#signup-container').removeClass('d-none');
     });
 
-    // 註冊
+    // 註冊 hi
     $('#return-to-login').click(function(e) {
         e.preventDefault();
 
