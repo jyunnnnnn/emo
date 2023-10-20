@@ -4,6 +4,7 @@ import com.example.demo.service.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
@@ -20,11 +21,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @PostMapping("/c")
-    //測試
-    public String a(){
-        return "ok";
-    }
+
     @PostMapping("/register")
     //code here
 
@@ -43,6 +40,7 @@ public class UserController {
         if (!password.equals(confirmPassword)) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "密碼和確認密碼不匹配"));
         }
+
         userService.createUser(account, password);
 
         return ResponseEntity.ok(Collections.singletonMap("message", "註冊成功!"));

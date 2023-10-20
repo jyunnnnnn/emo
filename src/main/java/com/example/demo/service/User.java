@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "Emo_User")
 public class User {
     private String account;
     private String password;
