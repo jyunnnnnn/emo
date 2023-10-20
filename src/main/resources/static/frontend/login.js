@@ -14,15 +14,15 @@ $(document).ready(function() {
         // 註冊
         $('#return-to-login').click(function(e) {
             e.preventDefault();
-
-            var account = $('#exampleInputAccount2').val();
-            var password = $('#exampleInputPassword2').val();
-            var confirmPassword = $('#exampleInputPasswordcheck').val();
+            var inputAccount = $('#exampleInputAccount2').val();
+            var inputPassword = $('#exampleInputPassword2').val();
+            var inputConfirmPassword = $('#exampleInputPasswordcheck').val();
             var userData = {
-                account: account,
-                password: password,
-                confirmPassword: confirmPassword
+                account: inputAccount,
+                password: inputPassword,
+                confirmPassword: inputConfirmPassword
             };
+
             $.ajax({
                 type: 'POST',
                 url: '/api/register',
