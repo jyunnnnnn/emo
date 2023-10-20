@@ -15,10 +15,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            min-height: 100vh;
+            background-color: lightpink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         #map {
-            height: 90vh;
+            height: 70vh;
             width: 100%;
             padding: 10px;
         }
@@ -30,20 +35,37 @@
             text-align: center;
             margin-top: 10px;
         }
+        .container{
+            width:100%;
+        }
 
     </style>
 </head>
 <body>
 <div class="container">
-
+    <div class="mb-4"></div>
     <!-- Google Map -->
-    <div id="map"></div>
-
+    <div class="container2">
+        <div style="display:black;" id="map"></div>
+    </div>
+    <div class="mb-4"></div>
     <!-- "紀錄"按钮 -->
-    <div id="Button">
+    <!--<div id="Button">
         <button id="recordButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#activityModal">紀錄v</button>
         <button id="recordListButton" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#activityListModal">紀錄n</button>
+    </div>-->
+    <div class="row justify-content-center">
+        <div class="col-4 text-center">
+            <button id="recordButton" type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#activityModal">紀錄v</button>
+        </div>
+        <div class="col-1">
+
+        </div>
+        <div class="col-4 text-center">
+            <button id="recordListButton" type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#activityListModal">紀錄n</button>
+        </div>
     </div>
+
 
 </div>
 
