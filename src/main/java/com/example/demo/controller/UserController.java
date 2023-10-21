@@ -1,10 +1,9 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
 import com.example.demo.service.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
@@ -52,13 +51,17 @@ public class UserController {
         String account = request.getAccount();
         String password = request.getPassword();
 
-        if (userService.isValidUser(account, password)) {
+        try {
+            if (userService.isValidUser(account, password)) {
 
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "登入成功!");
-            response.put("location", "main.html");
-            return ResponseEntity.ok(response);
-        } else {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "登入成功!");
+                response.put("location", "main.html");
+                return ResponseEntity.ok(response);
+            } else {
+                throw new Exception(":(");
+            }
+        }catch (Exception e){
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗，帳號或密碼錯誤"));
         }
     }

@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public boolean isValidUser(String account, String password) {
-        if (account!="" && password !=""){
+        if (account.equals(this.repository.findByAccount(account).getAccount()) && password.equals(this.repository.findByAccount(account).getPassword())){
             return true;
         }
         return false;

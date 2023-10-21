@@ -1,4 +1,4 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
 import com.example.demo.service.EcoRecord;
 import com.example.demo.service.EcoRecordService;
