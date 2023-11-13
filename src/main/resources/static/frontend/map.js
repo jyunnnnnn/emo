@@ -1,4 +1,3 @@
-
 var map;
 var infoWindow;
 var activity;
@@ -50,8 +49,12 @@ function initMap() {
     }
 }
 
-$(document).ready(function() {
 
+$(document).ready(function() {
+    const token = localStorage.getItem('userToken');
+     const decodedToken = jwt_decode(token);
+     const username = decodedToken.username;
+    console.log(username)
     // 記錄按鈕事件處理
     $('#recordButton').click(function() {
         map.setOptions({
@@ -67,6 +70,7 @@ $(document).ready(function() {
         });
     });
     $('#saveRecord').click(function(){
+
         var userEnteredValue = $("#activityInput").val();
         var selectedOption = $("#recordType option:selected").text()
         if (userEnteredValue != "") {
@@ -134,5 +138,3 @@ $(document).ready(function() {
 
 
 });
-
-

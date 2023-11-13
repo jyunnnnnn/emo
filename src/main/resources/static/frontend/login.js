@@ -57,8 +57,10 @@ $(document).ready(function() {
                         contentType: 'application/json',
                         data: JSON.stringify(loginData),
                         success: function(response) {
+                            localStorage.setItem('userToken', response.token);
                             alert(response.message);
                             window.location.href = response.location;
+
                         },
                         error: function(xhr, status, error) {
                             var errorMessage = JSON.parse(xhr.responseText);
