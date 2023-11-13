@@ -4,7 +4,6 @@ var infoWindow;
 var activity;
 // 初始化Google Map
 function initMap() {
-
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -33,6 +32,9 @@ function initMap() {
                     }
                 ]
             });
+
+            infoWindow = new google.maps.InfoWindow();
+
             // 當前位置標記
             var circle = new google.maps.Marker({
                 position: currentLocation,
@@ -43,13 +45,11 @@ function initMap() {
                 map: map
             });
         });
-
-         infoWindow = new google.maps.InfoWindow();
-
     } else {
         alert("不支援定位");
     }
 }
+
 $(document).ready(function() {
 
     // 記錄按鈕事件處理

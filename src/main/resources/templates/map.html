@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Google Maps with Bootstrap</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="main.js"></script>
+    <script src="/frontend/map.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- 初始化地图 -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPeh6HKg5TrW1qZeOrc89dJHdESv67EeQ&callback=initMap"></script>
+    <!-- 初始化地图 -->
+    <script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=initMap'}"></script>
+
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -46,7 +49,7 @@
     <div class="mb-4"></div>
     <!-- Google Map -->
     <div class="container2">
-        <div style="display:black;" id="map"></div>
+        <div style="display:block;" id="map"></div>
     </div>
     <div class="mb-4"></div>
     <!-- "紀錄"按钮 -->

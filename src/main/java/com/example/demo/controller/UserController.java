@@ -56,7 +56,7 @@ public class UserController {
 
                 Map<String, String> response = new HashMap<>();
                 response.put("message", "登入成功!");
-                response.put("location", "main.html");
+                response.put("location", "/map");
                 return ResponseEntity.ok(response);
             } else {
                 throw new Exception(":(");
