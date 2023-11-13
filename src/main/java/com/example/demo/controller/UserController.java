@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.TokenService;
 import com.example.demo.service.User;
 import com.example.demo.service.UserService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 @RequestMapping("/api")
@@ -16,14 +20,16 @@ public class UserController {
 
 
     private final UserService userService;
+    private final TokenService tokenService;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,TokenService tokenService) {
         this.userService = userService;
+        this.tokenService=tokenService;
     }
 
-    @PostMapping("/register")
-    //code here
 
+
+    @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registerUser(@RequestBody User request) {
         System.out.println("test");
         String account = request.getAccount();
@@ -53,16 +59,24 @@ public class UserController {
 
         try {
             if (userService.isValidUser(account, password)) {
-
+                String token = tokenService.generateToken(account);
                 Map<String, String> response = new HashMap<>();
                 response.put("message", "登入成功!");
                 response.put("location", "main.html");
+                response.put("token", token);
+                System.out.println(response);
                 return ResponseEntity.ok(response);
             } else {
                 throw new Exception(":(");
             }
         }catch (Exception e){
+
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗，帳號或密碼錯誤"));
         }
     }
+    private String getUsernameFromToken(String token) {
+        Claims claims = tokenService.decodeToken(token);
+        return claims.getSubject();
+    }
+
 }

@@ -4,12 +4,15 @@
     <meta charset="utf-8">
     <title>Google Maps with Bootstrap</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="main.js"></script>
+
+
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="main.js"></script>
     <!-- 初始化地图 -->
+
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPeh6HKg5TrW1qZeOrc89dJHdESv67EeQ&callback=initMap"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -59,7 +62,7 @@
             <button id="recordButton" type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#activityModal">紀錄v</button>
         </div>
         <div class="col-1">
-
+            <p id="user"></p>
         </div>
         <div class="col-4 text-center">
             <button id="recordListButton" type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#activityListModal">紀錄n</button>
