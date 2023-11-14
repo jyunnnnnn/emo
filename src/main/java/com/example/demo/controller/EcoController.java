@@ -2,36 +2,80 @@ package com.example.demo.controller;
 
 import com.example.demo.service.EcoRecord;
 import com.example.demo.service.EcoRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+@RestController
 @RequestMapping("/api")
 public class EcoController {
+    private final EcoRecordService ecoRecordService;
 
-    @GetMapping("/currentLocation")
-    public ResponseEntity<?> getCurrentLocation() {
-        // 在这里实现获取当前位置的逻辑
-        // 可能需要使用服务层来获取位置信息
-        Object currentLocation = null;
-        return ResponseEntity.ok(currentLocation);
+    //constructor
+    @Autowired
+    public EcoController(EcoRecordService ecoRecordService) {
+        this.ecoRecordService = ecoRecordService;
     }
 
+
+    //新增紀錄
     @PostMapping("/addRecord")
     public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) {
-        // 在这里实现添加记录的逻辑
-        // 使用 @RequestBody 注解来接收来自前端的 JSON 数据
-        // 可能需要使用服务层来处理记录
+        try {
+            this.ecoRecordService.addRecord(ecoRecord);
+        } catch (Exception err) {
+            System.err.println(err + " 使用者新增紀錄過程出現錯誤");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         return ResponseEntity.ok("Record added successfully");
     }
 
-    @GetMapping("/records")
+    //更新紀錄
+    @PostMapping("/updateRecord")
+    public ResponseEntity<?> updateRecord(@RequestBody EcoRecord ecoRecord) {
+        //是否正常更新
+        try {
+            this.ecoRecordService.updateRecord(ecoRecord);
+        } catch (Exception err) {
+            System.err.println(err + " 使用者更新資料過程出現錯誤");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok("Record updated successfully");
+    }
+
+    //抓取特定使用者的所有紀錄
+    @GetMapping("/getSpecificUserRecord")
+    public ResponseEntity<?> getSpecificUserRecord(@RequestBody String userId) {
+
+        try {
+            List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(userId);
+            return ResponseEntity.ok(records);
+        } catch (Exception err) {
+            System.err.println(err + " 抓取特定使用者紀錄過程出現錯誤");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
+    //抓取所有紀錄
+    @GetMapping("/getAllRecords")
     public ResponseEntity<?> getRecords() {
-        // 在这里实现获取记录列表的逻辑
-        // 可能需要使用服务层来获取记录列表
-        EcoRecordService ecoRecordService = null;
-        List<EcoRecord> records = ecoRecordService.getAllRecords();
-        return ResponseEntity.ok(records);
+        try {
+            List<EcoRecord> records = this.ecoRecordService.getAllRecords();
+            return ResponseEntity.ok(records);
+        } catch (Exception err) {
+            System.err.println(err + " 抓取所有紀錄過程出現錯誤");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 }

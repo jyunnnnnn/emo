@@ -1,23 +1,46 @@
 package com.example.demo.service;
 
+import com.example.demo.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EcoRecordService {
+    private final RecordRepository repository;
 
-
-    public void addRecord(EcoRecord ecoRecord) {
-        // 实现添加记录的逻辑
-        // 可能需要使用存储库（repository）来将记录保存到数据库
+    @Autowired
+    public EcoRecordService(RecordRepository repository) {
+        this.repository = repository;
     }
 
+    //增加新紀錄到資料庫中
+    public void addRecord(EcoRecord ecoRecord) {
+        System.out.println(ecoRecord);
+        this.repository.save(ecoRecord);
+    }
+
+    //修改歷史紀錄
+    public void updateRecord(EcoRecord newEcoRecord) {
+        this.repository.save(newEcoRecord);
+    }
+
+    //刪除歷史紀錄
+    public void deleteRecord(EcoRecord target) {
+        this.repository.delete(target);
+    }
+
+    //抓取特定使用者紀錄
+    public List<EcoRecord> getSpecificUserRecords(String userId) {
+
+        return this.repository.findAllByUserId(userId);
+    }
+
+
+    //抓取所有紀錄
     public List<EcoRecord> getAllRecords() {
-        // 实现获取所有记录的逻辑
-        // 可能需要使用存储库来从数据库中检索记录
-        List<EcoRecord> a;
-        return null;
+        return this.repository.findAll();
     }
 }

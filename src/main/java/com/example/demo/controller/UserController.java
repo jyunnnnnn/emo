@@ -31,7 +31,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registerUser(@RequestBody User request) {
-        System.out.println("test");
         String account = request.getAccount();
         String password = request.getPassword();
         String confirmPassword = request.getConfirmPassword();
