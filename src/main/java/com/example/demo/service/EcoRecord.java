@@ -17,18 +17,18 @@ public class EcoRecord {
     private String type;//紀錄項目 (EX:環保杯)
     private double data_value; //紀錄項目數據 (EX:交通=>KM,環保餐具=>1個)
     private double latitude;//紀錄位置經度
-    private double longtitude;//紀錄位置緯度
+    private double longitude;//紀錄位置緯度
     private String time;//紀錄時間
 
     //constructor
-    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longtitude) {
+    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude) {
         this.recordId = new ObjectId().toString();
         this.userId = userId;
         this.classType = classType;
         this.type = type;
         this.data_value = data_value;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
         this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
@@ -72,12 +72,12 @@ public class EcoRecord {
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getTime() {
@@ -104,7 +104,7 @@ public class EcoRecord {
                 "type: "+type+'\n'+
                 "data_value: " +data_value+'\n'+
                 "latitude: "+latitude+'\n'+
-                "longtitude: "+longtitude +'\n'+
+                "longitude: "+longitude +'\n'+
                 "time: "+time+"}";
     }
 }
