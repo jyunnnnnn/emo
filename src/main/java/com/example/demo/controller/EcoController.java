@@ -16,14 +16,15 @@ import java.util.Optional;
 public class EcoController {
     private final EcoRecordService ecoRecordService;
 
+
     //constructor
     @Autowired
     public EcoController(EcoRecordService ecoRecordService) {
         this.ecoRecordService = ecoRecordService;
     }
 
-
     //新增紀錄
+
     @PostMapping("/addRecord")
     public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) {
         try {
