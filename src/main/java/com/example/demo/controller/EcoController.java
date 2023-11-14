@@ -10,14 +10,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class EcoController {
 
-    @GetMapping("/currentLocation")
-    public ResponseEntity<?> getCurrentLocation() {
-        // 在这里实现获取当前位置的逻辑
-        // 可能需要使用服务层来获取位置信息
-        Object currentLocation = null;
-        return ResponseEntity.ok(currentLocation);
-    }
-
     @PostMapping("/addRecord")
     public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) {
         // 在这里实现添加记录的逻辑

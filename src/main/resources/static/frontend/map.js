@@ -51,10 +51,9 @@ function initMap() {
 
 
 $(document).ready(function() {
-    const token = localStorage.getItem('userToken');
-     const decodedToken = jwt_decode(token);
-     const username = decodedToken.username;
+    var username = localStorage.getItem('EmoAppUser');
     console.log(username)
+    $('#user').text(username);
     // 記錄按鈕事件處理
     $('#recordButton').click(function() {
         map.setOptions({

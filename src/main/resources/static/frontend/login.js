@@ -57,7 +57,7 @@ $(document).ready(function() {
                         contentType: 'application/json',
                         data: JSON.stringify(loginData),
                         success: function(response) {
-                            localStorage.setItem('userToken', response.token);
+                            localStorage.setItem('EmoAppUser', response.username.toString());
                             alert(response.message);
                             window.location.href = response.location;
 
