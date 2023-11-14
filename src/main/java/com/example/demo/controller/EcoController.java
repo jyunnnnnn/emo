@@ -29,6 +29,7 @@ public class EcoController {
     public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) {
         try {
             this.ecoRecordService.addRecord(ecoRecord);
+            System.out.println(ecoRecord);
         } catch (Exception err) {
             System.err.println(err + " 使用者新增紀錄過程出現錯誤");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
