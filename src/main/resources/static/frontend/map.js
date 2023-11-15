@@ -3,6 +3,7 @@ var infoWindow;
 var activity;
 // 初始化Google Map
 function initMap() {
+    console.log("initMap");
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -10,7 +11,6 @@ function initMap() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-
             // 創建地圖
             map = new google.maps.Map(document.getElementById('map'), {
                 center: currentLocation,
@@ -31,9 +31,7 @@ function initMap() {
                     }
                 ]
             });
-
             infoWindow = new google.maps.InfoWindow();
-
             // 當前位置標記
             var circle = new google.maps.Marker({
                 position: currentLocation,
@@ -52,6 +50,7 @@ $(document).ready(function() {
     var username = localStorage.getItem('EmoAppUser');
     console.log(username)
     $('#user').text(username);
+    loadEcoRecords();
     // 記錄按鈕事件處理
     $('#recordButton').click(function() {
         map.setOptions({
@@ -79,7 +78,7 @@ $(document).ready(function() {
                 console.log("Latitude: " + latitude);
                 console.log("Longitude: " + longitude);
                 // 假設你有一個保存紀錄的函數
-                var classType = "交通or生活用品 待補"; // 替換為實際的類別
+                var classType = "生活用品"; // 替換為實際的類別
                 var type = $("#recordType option:selected").text();
                 var data_value = 1; // 替換為實際的數值
                 // 保存紀錄到後端
@@ -87,19 +86,6 @@ $(document).ready(function() {
             });
         } else {
             alert("不支援定位");
-        }
-
-
-        var userEnteredValue = $("#activityInput").val();
-        var selectedOption = $("#recordType option:selected").text()
-        if (userEnteredValue != "") {
-            activity = userEnteredValue;
-            addMarker(activity);
-        } else if (selectedOption) {
-            activity = selectedOption;
-            addMarker(activity);
-        } else {
-            alert("請輸入文字或選擇環保事項。");
         }
     })
     // 添加標記
@@ -134,24 +120,29 @@ $(document).ready(function() {
 
 
 });
+
 //一開始把所有資料拉下來做成標籤 每次新增也要做出新標籤
-function addMarker(activity) {
+function addMarker(record) {
+        console.log(record);
         if (map) {
-            var currentCenter = map.getCenter();
+            var currentLocation = {
+                lat: record.latitude,
+                lng: record.longitude
+            }//抓現在位置
             var marker = new google.maps.Marker({
-                position: currentCenter,
+                position: currentLocation,
                 map: map,
-                title: activity
+                title: record.type
             });
            var currentTime = new Date();
            var now=currentTime.toLocaleString();
            let infoWindow = new google.maps.InfoWindow({
                 content: `<div>
-                <h6 style="padding:3px; margin:3px;">${activity}</h6>
+                <h6 style="padding:3px; margin:3px;">${record.type}</h6>
                 <p style="padding:3px; margin:3px;">${now}</p>
                 </div>` // 支援html
            });
-           localStorage.setItem("ecoRecord"+currentTime, JSON.stringify({ time: now, content: activity ,compare:Date.now()}));
+           localStorage.setItem("ecoRecord"+currentTime, JSON.stringify({ time: now, content: record.type ,compare:Date.now()}));
             // 監聽 marker click 事件
            marker.addListener('click', e => {
                 infoWindow.open(this.map, marker);
@@ -190,6 +181,7 @@ function saveRecordToBackend(classType, type, data_value, latitude, longitude) {
     console.log(record);
     // 上傳紀錄到後端
     uploadRecordToBackend(record);
+    addMarker(record);
 }
 
 // 記錄按鈕事件處理
