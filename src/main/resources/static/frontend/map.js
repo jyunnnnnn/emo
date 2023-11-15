@@ -1,6 +1,11 @@
 var map;
 var infoWindow;
 var activity;
+
+var intervalId;
+var recordedPositions = [];
+var isRecording = false;//false=>開始  true=>結束
+
 // 初始化Google Map
 function initMap() {
     console.log("initMap");
@@ -117,6 +122,15 @@ $(document).ready(function() {
         $('#activityModal').modal('hide');
     });
 
+    // 路線紀錄(開始/停止)
+    $('#startRecording').click(function () {
+        if (!isRecording) {
+            startRecording(); //false
+        } else {
+            stopRecording(); //true
+        }
+    });
+
 
 
 });
@@ -184,5 +198,63 @@ function saveRecordToBackend(classType, type, data_value, latitude, longitude) {
     addMarker(record);
 }
 
-// 記錄按鈕事件處理
+
+////////
+function startRecording() {
+    // 按下變成結束
+    $('#startRecording').text('結束');
+    isRecording = true;
+
+    // 每五秒記錄一次
+    intervalId = setInterval(function () {
+        recordLocation();
+    }, 5000);
+}
+
+function stopRecording() {
+    // 修改按鈕文字和標誌位元
+    $('#startRecording').text('開始記錄');
+    isRecording = false;
+
+    // 清除時間間隔
+    clearInterval(intervalId);
+}
+
+function recordLocation() {
+    if ("geolocation" in navigator) {
+        // 獲取目前位置
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var currentLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            // 儲存記錄的位置
+            recordedPositions.push(currentLocation);
+
+            // 在記錄的位置之間繪製線條
+            drawLines();
+        });
+    } else {
+        alert("不支援定位");
+    }
+}
+
+function drawLines() {
+    if (recordedPositions.length >= 2) {
+        var lineCoordinates = recordedPositions.map(function (position) {
+            return new google.maps.LatLng(position.lat, position.lng);
+        });
+
+        var line = new google.maps.Polyline({
+            path: lineCoordinates,
+            geodesic: true,
+            strokeColor: '#0D5025',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        line.setMap(map);
+    }
+}
 
