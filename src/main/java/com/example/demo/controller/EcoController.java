@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.AESEncryption;
 import com.example.demo.service.EcoRecord;
 import com.example.demo.service.EcoRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class EcoController {
     @GetMapping("/getSpecificUserRecord")
     public ResponseEntity<?> getSpecificUserRecord(@RequestParam("username") String username) {// /api/getSpecificUserRecord?userId=test
         try {
+            username = new AESEncryption().encrypt(username);//將帳號加密成user_id
             List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(username);
             return ResponseEntity.ok(records);
         } catch (Exception err) {
