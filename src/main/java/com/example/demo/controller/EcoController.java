@@ -54,10 +54,9 @@ public class EcoController {
 
     //抓取特定使用者的所有紀錄
     @GetMapping("/getSpecificUserRecord")
-    public ResponseEntity<?> getSpecificUserRecord(@RequestBody String userId) {
-
+    public ResponseEntity<?> getSpecificUserRecord(@RequestParam("username") String username) {// /api/getSpecificUserRecord?userId=test
         try {
-            List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(userId);
+            List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(username);
             return ResponseEntity.ok(records);
         } catch (Exception err) {
             System.err.println(err + " 抓取特定使用者紀錄過程出現錯誤");
