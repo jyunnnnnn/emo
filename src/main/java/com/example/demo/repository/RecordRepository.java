@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface RecordRepository extends MongoRepository<EcoRecord,String> {
-    @Query("SELECT * FROM Emo_Record WHERE userId = :userId ")
+    //@Query("SELECT * FROM Emo_Record WHERE userId = :userId ")
+    //List<EcoRecord> findAllByUserId(@Param("userId") String userId);//抓取某使用者的所有紀錄
+    @Query("{ 'userId' : ?0 }")
     List<EcoRecord> findAllByUserId(@Param("userId") String userId);//抓取某使用者的所有紀錄
 }

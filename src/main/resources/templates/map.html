@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/frontend/map.js"></script>
+    <script src="/frontend/mapUI.js"></script>
     <!-- 初始化地圖 -->
     <script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=initMap'}"></script>
 
@@ -82,14 +83,45 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <input type="text" id="activityInput" class="form-control" placeholder="可自定義行為名稱或使用下方預設選項">
+            <!--<div class="modal-body">
                 <div class="form-group">
-                    <label for="recordType"></label>
-                    <select class="form-control" id="recordType">
+                    <label for="classType"></label>
+                    <select class="form-control" id="classType">
+                        <option value="option1">生活用品</option>
+                        <option value="option2">交通</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dailyType"></label>
+                    <select class="form-control" id="dailyType">
                         <option value="option1">使用環保杯</option>
                         <option value="option2">使用環保餐具</option>
                         <option value="option3">使用購物袋</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="translationtype"></label>
+                    <select class="form-control" id="translationtype">
+                        <option value="option1">搭公車</option>
+                        <option value="option2">搭捷運</option>
+                        <option value="option3">搭火車(台鐵)</option>
+                        <option value="option4">搭高鐵</option>
+                    </select>
+                </div>
+            </div>-->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="classType">選擇類別</label>
+                    <select class="form-control" id="classType" onchange="changeSubType()">
+                        <option value="dailyType">生活用品</option>
+                        <option value="translationType">交通</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subType">選擇行為</label>
+                    <select class="form-control" id="subType">
+                        <!-- 子類別選項會在 JavaScript 中動態生成 -->
                     </select>
                 </div>
             </div>

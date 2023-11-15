@@ -1,162 +1,95 @@
 var map;
 var infoWindow;
-var activity;
-
 var intervalId;
 var recordedPositions = [];
+var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
+var username//使用者名稱
 
-// 初始化Google Map
-function initMap() {
-    console.log("initMap");
-    if ("geolocation" in navigator) {
-        // 當前位置
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var currentLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            // 創建地圖
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: currentLocation,
-                zoom: 15,
-                mapTypeControl: false,
-                zoomControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                rotateControl: false,
-                fullscreenControl: false,
-                styles: [
-                    {
-                        featureType: 'poi',
-                        elementType: 'labels',
-                        stylers: [
-                            { visibility: 'off' }
-                        ]
-                    }
-                ]
-            });
-            infoWindow = new google.maps.InfoWindow();
-            // 當前位置標記
-            var circle = new google.maps.Marker({
-                position: currentLocation,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 5
-                },
-                map: map
-            });
-        });
-    } else {
-        alert("不支援定位");
-    }
-}
 $(document).ready(function() {
-    var username = localStorage.getItem('EmoAppUser');
-    console.log(username)
+    username = localStorage.getItem('EmoAppUser');
     $('#user').text(username);
-    loadEcoRecords();
-    // 記錄按鈕事件處理
-    $('#recordButton').click(function() {
-        map.setOptions({
-            styles: [
-                {
-                    featureType: 'poi',
-                    elementType: 'labels',
-                    stylers: [
-                        { visibility: 'off' }
-                    ]
-                }
-            ]
-        });
-    });
-
-    $('#saveRecord').click(function(){
-        var latitude;
-        var longitude;
-        if ("geolocation" in navigator) {
-            // 當前位置
-            navigator.geolocation.getCurrentPosition(function(position) {
-                latitude = position.coords.latitude;
-                longitude = position.coords.longitude;
-                // 在這裡你可以使用獲取到的經緯度進行相應的操作
-                console.log("Latitude: " + latitude);
-                console.log("Longitude: " + longitude);
-                // 假設你有一個保存紀錄的函數
-                var classType = "生活用品"; // 替換為實際的類別
-                var type = $("#recordType option:selected").text();
-                var data_value = 1; // 替換為實際的數值
-                // 保存紀錄到後端
-                saveRecordToBackend(classType, type, data_value, latitude, longitude);
-            });
-        } else {
-            alert("不支援定位");
-        }
-    })
-    // 添加標記
-
-    $('#recordListButton').click(function() {
-       var records = [];
-       for (var i = 0; i < localStorage.length; i++) {
-           var key = localStorage.key(i);
-           if (key.startsWith("ecoRecord")) {
-               var storedData = localStorage.getItem(key);
-               if (storedData) {
-                   var ecoRecord = JSON.parse(storedData);
-                   records.push(ecoRecord);
-
-               }
-           }
-       }
-       records.sort(function(a, b) {
-             return a.compare - b.compare;
-       });
-       console.log(records)
-       var text = "";
-       for (var i = 0; i < records.length; i++) {
-           var time = records[i].time;
-           var content = records[i].content;
-           text += content + " " + time + "<br>";
-       }
-       document.getElementById("listContent").innerHTML = text;
-        $('#activityModal').modal('hide');
-    });
-
-    // 路線紀錄(開始/停止)
+    loadEcoRecords(username);//載入環保紀錄
+    $('#saveRecord').click(saveRecord)// 添加標記
+    $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#startRecording').click(function () {
         if (!isRecording) {
             startRecording(); //false
         } else {
             stopRecording(); //true
         }
+    });// 路線紀錄(開始/停止)
+});
+// 記錄按鈕事件處理
+function saveRecord(){
+    var latitude;
+    var longitude;
+    if ("geolocation" in navigator) {
+        // 當前位置
+        navigator.geolocation.getCurrentPosition(function(position) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            // 在這裡你可以使用獲取到的經緯度進行相應的操作
+            // 假設你有一個保存紀錄的函數
+            var classType = $("#classType option:selected").text();; // 替換為實際的類別
+            var type = $("#subType option:selected").text();
+            var data_value = 1; // 替換為實際的數值
+            // 保存紀錄到後端
+            if(classType!=null &&type!=null &&data_value!=null &&latitude!=null &&longitude!=null){
+                saveRecordToBackend(classType, type, data_value, latitude, longitude);
+            }
+            //這裡邏輯待討論
+        });
+    } else {
+        alert("不支援定位");
+    }
+}
+//一開始把所有資料拉下來做成標籤 每次新增也要做出新標籤
+function loadEcoRecords(username) {
+    $.ajax({
+        url: '/api/getSpecificUserRecord?userId=' + username,
+        method: 'GET',
+        success: function (data) {
+            // 處理成功時的邏輯
+            records = data;
+            var thisRecords = records;
+            console.log(records);
+             for (var i = 0; i < thisRecords.length; i++) {
+                    addMarker(thisRecords[i]);
+             }
+        },
+        error: function(xhr, status, error) {
+           var errorData = JSON.parse(xhr.responseText);
+           var errorMessage = errorData.message;
+           alert(errorMessage);
+       }
     });
 
+}
+function addMarker(recordToAdd) {
+        console.log(recordToAdd);
 
-
-});
-
-//一開始把所有資料拉下來做成標籤 每次新增也要做出新標籤
-function addMarker(record) {
-        console.log(record);
         if (map) {
             var currentLocation = {
-                lat: record.latitude,
-                lng: record.longitude
+                lat: recordToAdd.latitude,
+                lng: recordToAdd.longitude
             }//抓現在位置
             var marker = new google.maps.Marker({
                 position: currentLocation,
                 map: map,
-                title: record.type
+                title: recordToAdd.type
             });
-           var currentTime = new Date();
-           var now=currentTime.toLocaleString();
+           //var currentTime =new Date() ;
+           var now=new Date().toLocaleString();
+           /////////////////////////////這邊誰可以救我///////////////////////////////////////////
            let infoWindow = new google.maps.InfoWindow({
                 content: `<div>
-                <h6 style="padding:3px; margin:3px;">${record.type}</h6>
+                <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
+                <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
                 <p style="padding:3px; margin:3px;">${now}</p>
                 </div>` // 支援html
            });
-           localStorage.setItem("ecoRecord"+currentTime, JSON.stringify({ time: now, content: record.type ,compare:Date.now()}));
+           //localStorage.setItem("ecoRecord"+currentTime, JSON.stringify({ time: now, content: record.type ,compare:Date.now()}));
             // 監聽 marker click 事件
            marker.addListener('click', e => {
                 infoWindow.open(this.map, marker);
@@ -165,6 +98,16 @@ function addMarker(record) {
         $('#activityModal').modal('hide');
 }
 
+//列表顯示環保紀錄
+function showRecord() {
+    var thisRecords = records;
+    var text = "";
+    for (var i = 0; i < thisRecords.length; i++) {
+        text +=thisRecords[i].time + " " + thisRecords[i].type + " 減少的碳排放: " + thisRecords[i].footprint + "gCo2E" + "<br>";
+    }
+    document.getElementById("listContent").innerHTML = text;
+    $('#activityModal').modal('hide');
+}
 
 // 將紀錄上傳到後端
 function uploadRecordToBackend(record) {
@@ -192,10 +135,16 @@ function saveRecordToBackend(classType, type, data_value, latitude, longitude) {
         latitude: latitude,
         longitude: longitude
     };
-    console.log(record);
+    if(record.userId) {
+        uploadRecordToBackend(record);
+        records.push(record);
+        addMarker(record);
+    }
+    else {
+        alert("請重新登入");
+        window.location.href = 'frontend/login.html';
+    }
     // 上傳紀錄到後端
-    uploadRecordToBackend(record);
-    addMarker(record);
 }
 
 
@@ -257,4 +206,47 @@ function drawLines() {
         line.setMap(map);
     }
 }
-
+// 初始化Google Map
+function initMap() {
+    if ("geolocation" in navigator) {
+        // 當前位置
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var currentLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            // 創建地圖
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: currentLocation,
+                zoom: 15,
+                mapTypeControl: false,
+                zoomControl: false,
+                scaleControl: false,
+                streetViewControl: false,
+                rotateControl: false,
+                fullscreenControl: false,
+                styles: [
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels',
+                        stylers: [
+                            { visibility: 'off' }
+                        ]
+                    }
+                ]
+            });
+            infoWindow = new google.maps.InfoWindow();
+            // 當前位置標記
+            var circle = new google.maps.Marker({
+                position: currentLocation,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5
+                },
+                map: map
+            });
+        });
+    } else {
+        alert("不支援定位");
+    }
+}

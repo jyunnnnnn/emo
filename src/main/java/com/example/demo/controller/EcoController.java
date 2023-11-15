@@ -55,9 +55,10 @@ public class EcoController {
 
     //抓取特定使用者的所有紀錄
     @GetMapping("/getSpecificUserRecord")
-    public ResponseEntity<?> getSpecificUserRecord(@RequestParam("username") String username) {// /api/getSpecificUserRecord?userId=test
+    public ResponseEntity<?> getSpecificUserRecord(@RequestParam("userId") String username) {// /api/getSpecificUserRecord?userId=test
+        System.out.println(username);
         try {
-            username = new AESEncryption().encrypt(username);//將帳號加密成user_id
+            //username = new AESEncryption().encrypt(username);//將帳號加密成user_id
             List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(username);
             return ResponseEntity.ok(records);
         } catch (Exception err) {

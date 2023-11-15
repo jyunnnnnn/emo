@@ -33,9 +33,9 @@ public class EcoRecordService {
     }
 
     //抓取特定使用者紀錄
-    public List<EcoRecord> getSpecificUserRecords(String userId) {
+    public List<EcoRecord> getSpecificUserRecords(String username) {
 
-        return this.repository.findAllByUserId(userId);
+        return this.repository.findAllByUserId(username);
     }
 
 
