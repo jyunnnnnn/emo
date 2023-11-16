@@ -40,7 +40,7 @@ public class EcoController {
     }
 
     //更新紀錄
-    @PostMapping("/updateRecord")
+    @PutMapping("/updateRecord")
     public ResponseEntity<?> updateRecord(@RequestBody EcoRecord ecoRecord) {
         //是否正常更新
         try {

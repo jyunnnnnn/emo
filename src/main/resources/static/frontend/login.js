@@ -52,7 +52,7 @@ $(document).ready(function() {
                     password: inputPassword
             };
             $.ajax({
-                        type: 'POST',
+                        type: 'GET',
                         url: '/api/login',
                         contentType: 'application/json',
                         data: JSON.stringify(loginData),
