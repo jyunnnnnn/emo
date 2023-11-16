@@ -7,9 +7,6 @@
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="/frontend/map.js"></script>
-    <!-- 初始化地圖 -->
-    <script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=initMap'}"></script>
 
     <!-- 載入字型 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
@@ -72,7 +69,7 @@
 
 </div>
 
-<!-- 紀錄懸浮窗 -->
+<!-- 懸浮窗：新增紀錄 -->
 <div id="activityModal" class="recordContainer" style="display: none;">
     <!-- 關閉 -->
     <button class="btn"  id="closeRecordModal">
@@ -172,22 +169,42 @@
     </form>
 </div>
 
-<div class="modal fade" id="activityListModal" tabindex="-1" role="dialog" aria-labelledby="activityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="activityList">活動紀錄</h5>
-            </div>
-            <div class="modal-body" id="listContent" >
-                //code here
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-            </div>
-        </div>
+<!-- 懸浮窗：查看紀錄 -->
+<div class="recordContainer" id="activityListModal"  style="display: none;">
+    <!-- 關閉 -->
+    <button class="btn"  id="closeListModal">
+        <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+            <g>
+                <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+            </g>
+        </svg>
+    </button>
+
+    <div class="recordHeading" id="activityListModalLabel">歷史記錄</div>
+    <div id="typeSelect" style="margin-top: 10px; margin-bottom: 10px; ">
+        <select class="recordForm-control" id="category" style="width: 130px; font-size: 11px;">
+            <optgroup label="類別">
+                <option value="all">全部</option>
+                <option value="traffic">交通</option>
+                <option value="daily">生活用品</option>
+            </optgroup>
+        </select>
+        <select class="recordForm-control" id="time" style="width: 130px; font-size: 11px;">
+            <optgroup label="時間">
+                <option value="new">近到遠</option>
+                <option value="old">遠到近</option>
+            </optgroup>
+        </select>
     </div>
+    <div id="listContent" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; max-width: 400px;">沒有紀錄</div>
 </div>
+
 </body>
+
+<script src="/frontend/map.js"></script>
+<!-- 初始化地圖 -->
+<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=initMap'}"></script>
 
 <script src="/frontend/mapUI.js"></script>
 </html>

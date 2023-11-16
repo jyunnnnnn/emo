@@ -105,16 +105,92 @@ function addMarker(recordToAdd) {
         $('#activityModal').modal('hide');
 }
 
-//列表顯示環保紀錄
+// 查看歷史紀錄
 function showRecord() {
+//列表顯示環保紀錄
     var thisRecords = records;
-    var text = "";
+    var container = document.getElementById("listContent");
+    container.innerHTML = ""; // 清空容器內容
+    container.style.overflowY = "scroll";
+    container.style.maxHeight = "300px";
+
     for (var i = 0; i < thisRecords.length; i++) {
-        text +=thisRecords[i].time + " " + thisRecords[i].type + " 減少的碳排放: " + thisRecords[i].footprint + "gCo2E" + "<br>";
+        // 創建新的<div>元素
+        var recordDiv = document.createElement("div");
+        recordDiv.style.display = "inline";
+        recordDiv.style.textAlign = "left";
+        // 創建新的 <p> 元素
+        var recordElement = document.createElement("p");
+        var timeSpan = document.createElement("span");
+        timeSpan.textContent = thisRecords[i].time + " ";
+        var typeSpan = document.createElement("span");
+        typeSpan.textContent = thisRecords[i].type + " ";
+        var footprintSpan = document.createElement("span");
+        footprintSpan.textContent = "減少的碳排放: " + thisRecords[i].footprint + "gCo2E";
+
+        // 將 <span> 元素附加到 <p> 元素
+        recordElement.appendChild(timeSpan);
+        recordElement.appendChild(typeSpan);
+        recordElement.appendChild(footprintSpan);
+
+        recordDiv.appendChild(recordElement);
+        container.appendChild(recordDiv);
     }
-    document.getElementById("listContent").innerHTML = text;
-    $('#activityModal').modal('hide');
 }
+// 排序歷史紀錄
+function sortRecordsBySelectedOption() {
+    var selectedCategory = $("#category option:selected").text();
+    var selectedTime = $("#time option:selected").text();
+
+    var sortedRecords = records;
+
+    if (selectedCategory !== "全部") {
+        sortedRecords = sortedRecords.filter(record => record.classType === selectedCategory);
+    }
+
+    if (selectedTime === "近到遠") {
+        sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
+    } else if (selectedTime === "遠到近") {
+        sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
+    }
+
+    showNewRecord(sortedRecords);
+}
+// 監聽排序選項變化事件
+document.getElementById("category").addEventListener("change", sortRecordsBySelectedOption);
+document.getElementById("time").addEventListener("change", sortRecordsBySelectedOption);
+function showNewRecord(records) {
+    var thisRecords = records;
+    var container = document.getElementById("listContent");
+    container.innerHTML = ""; // 清空容器內容
+    container.style.overflowY = "scroll";
+    container.style.maxHeight = "300px";
+
+    for (var i = 0; i < thisRecords.length; i++) {
+        // 創建新的<div>元素
+        var recordDiv = document.createElement("div");
+        recordDiv.style.display = "inline";
+        recordDiv.style.textAlign = "left";
+        // 創建新的 <p> 元素
+        var recordElement = document.createElement("p");
+        var timeSpan = document.createElement("span");
+        timeSpan.textContent = thisRecords[i].time + " ";
+        var typeSpan = document.createElement("span");
+        typeSpan.textContent = thisRecords[i].type + " ";
+        var footprintSpan = document.createElement("span");
+        footprintSpan.textContent = "減少的碳排放: " + thisRecords[i].footprint + "gCo2E";
+
+        // 將 <span> 元素附加到 <p> 元素
+        recordElement.appendChild(timeSpan);
+        recordElement.appendChild(typeSpan);
+        recordElement.appendChild(footprintSpan);
+
+        recordDiv.appendChild(recordElement);
+        container.appendChild(recordDiv);
+    }
+}
+
+
 
 // 將紀錄上傳到後端
 function uploadRecordToBackend(record) {

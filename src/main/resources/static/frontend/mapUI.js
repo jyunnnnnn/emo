@@ -4,10 +4,20 @@ document.getElementById('openRecordModal').addEventListener('click', function ()
     document.getElementById('activityModal').style.display = 'block';
     document.getElementById('activityModal').style.position = 'fixed';
 });
+// 點擊查看按鈕
+document.getElementById('recordListButton').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('activityListModal').style.display = 'block';
+    document.getElementById('activityListModal').style.position = 'fixed';
+});
 
-//關閉懸浮窗
+// 關閉紀錄懸浮窗
 document.getElementById('closeRecordModal').addEventListener('click', function () {
     document.getElementById('activityModal').style.display = 'none';
+});
+// 關閉查看懸浮窗
+document.getElementById('closeListModal').addEventListener('click', function () {
+    document.getElementById('activityListModal').style.display = 'none';
 });
 
 
