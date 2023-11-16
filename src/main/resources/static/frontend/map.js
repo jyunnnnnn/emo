@@ -31,9 +31,16 @@ function saveRecord(){
             longitude = position.coords.longitude;
             // 在這裡你可以使用獲取到的經緯度進行相應的操作
             // 假設你有一個保存紀錄的函數
-            var classType = $("#classType option:selected").text();; // 替換為實際的類別
-            var type = $("#subType option:selected").text();
-            var data_value = 1; // 替換為實際的數值
+            if ($("#trafficRadio").is(":checked")) {
+                var classType = $("#traffic").text();
+                var type = $("#trafficMenu option:selected").text();
+                var data_value = document.getElementById('kilometer').value;
+            } else if ($("#dailyRadio").is(":checked")) {
+                var classType = $("#daily").text();
+                var type = $("#dailyMenu option:selected").text();
+                var data_value = document.getElementById('count').value;
+            }
+
             // 保存紀錄到後端
             if(classType!=null &&type!=null &&data_value!=null &&latitude!=null &&longitude!=null){
                 saveRecordToBackend(classType, type, data_value, latitude, longitude);
