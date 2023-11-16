@@ -11,6 +11,9 @@ import java.util.Optional;
 public class EcoRecordService {
     private final RecordRepository repository;
 
+    public static int OK = 1;
+    public static int BAD = 0;
+
     @Autowired
     public EcoRecordService(RecordRepository repository) {
         this.repository = repository;
@@ -34,7 +37,6 @@ public class EcoRecordService {
 
     //抓取特定使用者紀錄
     public List<EcoRecord> getSpecificUserRecords(String username) {
-
         return this.repository.findAllByUserId(username);
     }
 
@@ -43,4 +45,16 @@ public class EcoRecordService {
     public List<EcoRecord> getAllRecords() {
         return this.repository.findAll();
     }
+
+    //刪除所有紀錄
+    public int deleteAllRecord() {
+        try {
+            this.repository.deleteAll();
+        } catch (Exception err) {
+            System.err.println(err + " 刪除所有紀錄過程出現問題");
+            return BAD;
+        }
+        return OK;
+    }
+
 }

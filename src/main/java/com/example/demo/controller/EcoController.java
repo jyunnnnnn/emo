@@ -71,7 +71,7 @@ public class EcoController {
 
     //抓取所有紀錄
     @GetMapping("/getAllRecords")
-    public ResponseEntity<?> getRecords() {
+    public ResponseEntity<?> getAllRecords() {
         try {
             List<EcoRecord> records = this.ecoRecordService.getAllRecords();
             return ResponseEntity.ok(records);
@@ -79,7 +79,16 @@ public class EcoController {
             System.err.println(err + " 抓取所有紀錄過程出現錯誤");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
 
-
+    @DeleteMapping("/deleteAllRecords")
+    public ResponseEntity<?> deleteAllRecord() {
+        try {
+            this.ecoRecordService.deleteAllRecord();
+            return ResponseEntity.ok("Ok");
+        } catch (Exception err) {
+            System.err.println(err + "刪除所有紀錄過程出現錯誤");
+            return ResponseEntity.ok("Fail");
+        }
     }
 }
