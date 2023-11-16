@@ -1,56 +1,35 @@
-$(document).ready(function() {
-    changeSubType()
-    $('#recordButton').click(function() {
-        map.setOptions({
-            styles: [
-                {
-                    featureType: 'poi',
-                    elementType: 'labels',
-                    stylers: [
-                        { visibility: 'off' }
-                    ]
-                }
-            ]
-        });
-    });
-    $('#classType').change(function() {
-                var selectedValue = $(this).val();
-                if (selectedValue === 'dailyType') {
-                    $('#dailyTypeDiv').show();
-                    $('#translationTypeDiv').hide();
-                } else if (selectedValue === 'translationType') {
-                    $('#dailyTypeDiv').hide();
-                    $('#translationTypeDiv').show();
-                }
-            });
-
-
-
+// 點擊紀錄按鈕
+document.getElementById('openRecordModal').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('activityModal').style.display = 'block';
+    document.getElementById('activityModal').style.position = 'fixed';
 });
-function changeSubType() {
-        var classType = document.getElementById("classType").value;
-        var subTypeSelect = document.getElementById("subType");
+// 點擊查看按鈕
+document.getElementById('recordListButton').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('activityListModal').style.display = 'block';
+    document.getElementById('activityListModal').style.position = 'fixed';
+});
 
-        // 清除現有選項
-        subTypeSelect.innerHTML = "";
+// 關閉紀錄懸浮窗
+document.getElementById('closeRecordModal').addEventListener('click', function () {
+    document.getElementById('activityModal').style.display = 'none';
+});
+// 關閉查看懸浮窗
+document.getElementById('closeListModal').addEventListener('click', function () {
+    document.getElementById('activityListModal').style.display = 'none';
+});
 
-        if (classType === 'dailyType') {
-            // 如果選擇 "生活用品"
-            var options = ["使用環保杯", "使用環保餐具", "使用購物袋"];
-            generateOptions(options);
-        } else if (classType === 'translationType') {
-            // 如果選擇 "交通"
-            var options = ["搭公車", "搭捷運", "搭火車(台鐵)", "搭高鐵"];
-            generateOptions(options);
-        }
-}
 
- function generateOptions(options) {
-        var subTypeSelect = document.getElementById("subType");
-        for (var i = 0; i < options.length; i++) {
-            var option = document.createElement("option");
-            option.value = options[i];
-            option.text = options[i];
-            subTypeSelect.add(option);
-        }
-}
+// 交通選單
+document.getElementById('trafficRadio').addEventListener('change', function () {
+    document.getElementById('trafficMenu').style.display = 'block';
+    document.getElementById('dailyMenu').style.display = 'none';
+    document.getElementById('SPACE').style.display = 'none';
+})
+// 生活用品選單
+document.getElementById('dailyRadio').addEventListener('change', function () {
+    document.getElementById('trafficMenu').style.display = 'none';
+    document.getElementById('dailyMenu').style.display = 'block';
+    document.getElementById('SPACE').style.display = 'none';
+})
