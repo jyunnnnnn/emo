@@ -64,7 +64,7 @@ $(document).ready(function() {
             e.preventDefault();
 
             var inputAccount = $('#exampleInputAccount1').val();
-            var inputPassword = $('#exampleInputPassword1').val();
+            var inputPassword = $('#password-field').val();
 
             $.ajax({
                         type: 'GET',
@@ -93,5 +93,4 @@ $(document).ready(function() {
     });
 
 
-});
-//
+})});
