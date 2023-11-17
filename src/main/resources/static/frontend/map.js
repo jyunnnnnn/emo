@@ -1,7 +1,7 @@
 var map;
 var infoWindow;
 var intervalId;
-var recordedPositions = [];
+var recordedPositions = [];//路線紀錄
 var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
 var username//使用者名稱
@@ -231,7 +231,7 @@ function saveRecordToBackend(classType, type, data_value, latitude, longitude) {
 }
 
 
-////////
+////路線紀錄，不知道有沒有功能
 function startRecording() {
     // 按下變成結束
     $('#startRecording').text('結束');
@@ -248,8 +248,15 @@ function stopRecording() {
     $('#startRecording').text('開始記錄');
     isRecording = false;
 
+
+    //這裡存一下recordedPositions資料
+
     // 清除時間間隔
     clearInterval(intervalId);
+    // 清空位置紀錄
+    recordedPositions = [];
+    // 移除地圖上的線條
+    clearMapLines();
 }
 
 function recordLocation() {
@@ -274,7 +281,9 @@ function recordLocation() {
 
 function drawLines() {
     if (recordedPositions.length >= 2) {
-        var lineCoordinates = recordedPositions.map(function (position) {
+        //一段一段畫
+        var lastTwoPoints = recordedPositions.slice(-2); // 取得最後兩個點
+        var lineCoordinates = lastTwoPoints.map(function (position) {
             return new google.maps.LatLng(position.lat, position.lng);
         });
 
@@ -287,6 +296,16 @@ function drawLines() {
         });
 
         line.setMap(map);
+    }
+}
+//清線
+function clearMapLines() {
+    // 取得地圖上的所有線條
+    var mapLines = map.getOverlays('polyline');
+
+    // 移除線
+    for (var i = 0; i < mapLines.length; i++) {
+        map.removeOverlay(mapLines[i]);
     }
 }
 // 初始化Google Map
