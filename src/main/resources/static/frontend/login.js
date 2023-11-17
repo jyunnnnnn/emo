@@ -1,16 +1,26 @@
 $(document).ready(function() {
-        // 按下註冊切換表單
-        $('#switch-to-signup').click(function(e) {
-            e.preventDefault();
-            $('#login-container').addClass('d-none');
-            $('#signup-container').removeClass('d-none');
-        });
-        $('#return-to-login-button').click(function(e) {
-            e.preventDefault();
-           $('#login-container').removeClass('d-none');
-           $('#signup-container').addClass('d-none');
-        });
-
+    // 按下註冊切換表單
+    $('#switch-to-signup').click(function(e) {
+        e.preventDefault();
+        $('#login-container').addClass('d-none');
+        $('#signup-container').removeClass('d-none');
+    });
+    $('#return-to-login-button').click(function(e) {
+        e.preventDefault();
+       $('#login-container').removeClass('d-none');
+       $('#signup-container').addClass('d-none');
+    });
+    $('#return-to-login-button2').click(function(e) {
+        e.preventDefault();
+       $('#login-container').removeClass('d-none');
+       $('#forgetPassword-container').addClass('d-none');
+    });
+    //按下忘記密碼切換到忘記密碼的選單
+    $('#no-account').click(function(e) {
+        e.preventDefault();
+       $('#login-container').addClass('d-none');
+       $('#forgetPassword-container').removeClass('d-none');
+    });
         // 註冊
         $('#return-to-login').click(function(e) {
             e.preventDefault();
@@ -74,8 +84,13 @@ $(document).ready(function() {
                         }
 
             });
-
-        });
+    //忘記密碼時驗證完按下確認 下方跑出設定新密碼的表單
+    $('#verified-code').click(function(e) {
+        //要再加一個if(驗證成功才執行下面的切換)
+        e.preventDefault();
+       $('#login-container').addClass('d-none');
+       $('#set-password-container').removeClass('d-none');
+    });
 
 
 });

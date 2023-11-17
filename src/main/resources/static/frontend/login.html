@@ -7,11 +7,26 @@
     <script src="login.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
+<body class="img js-fullheight" style="background-image: url(img/bg1.jpg);">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<!-- 載入字型 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
         body {
-            background-color: lightpink;
+            font-family: 'Crimson Pro', serif;
+            background-image: url(img/bg2.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            /* 背景圖片半透明 */
+            background-color: rgba(0, 0, 0, 0.55);
+            background-blend-mode: multiply;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,66 +35,142 @@
         }
 
         .container {
-            background-color: aliceblue;
-            padding: 20px;
-            border-radius: 5px;
-            max-width: 400px;
-
-            transform-origin: center;
+            padding: 10px;
+            /* border-radius: 5px; */
+            min-width: 400px;
+            /* transform-origin: center; */
 
         }
-
+        .form-control
         .btn.btn-primary {
             width: 100%;
         }
 
         a#switch-to-signup {
             text-decoration: none;
+            color:#05240d;
+            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;
         }
-
+        a#switch-to-signup:hover{
+            text-decoration:underline;
+        }
         a#no-account {
             text-decoration: none;
+            color:#05240d;
+            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;  /* 白色框線 */
+        }
+        a#no-account:hover{
+            text-decoration:underline;
         }
         .custom-link {
             color: white;
             text-decoration: none;
         }
+        .form-control {
+            background: transparent;
+            border: none;
+            height: 50px;
+            color: white !important; /*  !important覆蓋其他具有相同屬性的規則 */
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            /* padding-top: 20px;
+            padding-bottom: 20px; */
+            -webkit-transition: 0.3s;
+            -o-transition: 0.3s;
+            transition: 0.3s;
+        }
+        .form-group {
+             position: relative;
+        }
 
 
+        /* @media only screen and (max-width: 768px){
+            /* for mobile phone
+            .container{
+                transform: scale(1.5);
+            }
 
-    </style>
+        } */
+
+        @media (prefers-reduced-motion: reduce) {
+        .form-control {
+            -webkit-transition: none;
+            -o-transition: none;
+            transition: none; } }
+        .form-control::-webkit-input-placeholder {    /* place holder的顏色*/
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .form-control:hover, .form-control:focus {
+            background: transparent;
+            outline: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        .form-control:focus {
+            border-color: rgba(255, 255, 255, 0.4);
+         }
+
+        .form-control.btn {
+            background-color: #166a29;
+            color: white;
+        }
+
+        .form-control.btn:hover,
+        .form-control.btn:focus {
+            background-color: #0f491b;
+        }
+        .emo{   /*標題的字型顏色*/
+            text-align: center;
+            font-family: 'Black Ops One', serif;
+            font-size:400%;
+            color: white;
+            padding-top: 50px;
+            text-shadow: 1px 1px 0 #000000, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 1px 1px 0 black;
+        }
+</style>
 
 
 </head>
+<body class="img js-fullheight">
+<!--登入區塊-->
+<div class="container text-white" style="width: 500px;" id="login-container">
+    <div class="row">
+        <div class="col-12 a">
+            <form id="login-form">
+                <h1 class="emo">EMO app</h1>
+                <!-- <h1 style="text-align: center">Login</h1> -->
+                <div class="form-group">
+                    <label for="exampleInputAccount1">帳號</label>
+                    <input class="form-control" id="exampleInputAccount1" aria-describedby="emailHelp" placeholder="Enter account">
+                </div>
+                <br>
+                <div class="form-group">
+                    <!-- <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
+                    <label for="exampleInputPassword1">密碼</label>
+                    <input id="password-field" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                </div>
+                <br><br>
+                <button type="submit" class="form-control btn" id="login-button">登入</button>
+                <br><br>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    沒有帳號？ &nbsp;
+                    <a href="#" id="switch-to-signup">註冊</a>
+                    <a href="#" id="no-account" style="margin-left: auto;">忘記密碼？</a>
+                </div>
 
-<body>
-<!--login-->
-<div class="container p-3 my-3 bg-dark text-white" id="login-container">
-    <form id="login-form">
-        <h1 style="text-align: center">Login</h1>
-        <div class="form-group">
-            <label for="exampleInputAccount1">帳號</label>
-            <input class="form-control" id="exampleInputAccount1" aria-describedby="emailHelp" placeholder="Enter account">
+            </form>
         </div>
-        <br>
-        <div class="form-group">
-            <label for="exampleInputPassword1">密碼</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <a href="#" id="no-account">忘記密碼?</a>
-        <br><br>
-
-        <button type="submit" class="btn btn-primary" id="login-button">登入</button>
-        <div>沒有帳號? <a href="#" id="switch-to-signup">註冊</a></div>
-    </form>
+    </div>
 </div>
 
-<!--sign up-->
-<div class="container p-3 my-3 bg-dark text-white d-none" id="signup-container">
-
+<!--註冊區塊-->
+<div class="container p-3 my-3 text-white d-none" id="signup-container">
     <form id="signup-form">
-        <!--<h1 style="text-align: center"><span class="bi bi-arrow-left" id="return-to-login-button"></span>Sign up </h1>-->
-
         <div class="form-group">
             <span class="bi bi-arrow-left" id="return-to-login-button" ></span>
             <h1 style="text-align: center">Sign up</h1>
@@ -103,7 +194,7 @@
             <div class="input-group">
                 <input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email">
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button">發送</button>
+                    <button class="form-control btn btn-primary submit px-3" type="button">發送</button>
                 </span>
             </div><br>
         </div>
@@ -112,11 +203,57 @@
             <input class="form-control" id="exampleInputCheckCode">
         </div><br>
 
-        <button type="submit" class="btn btn-primary" id="return-to-login">註冊</button>
+        <button type="submit" class="form-control btn btn-primary submit px-3" id="return-to-login">註冊</button>
     </form>
 </div>
+<!--忘記密碼區塊-->
+<div class="container p-3 my-3 text-white d-none" id="forgetPassword-container">
+    <form id="verify-form">
+        <div class="form-group">
+            <span class="bi bi-arrow-left" id="return-to-login-button2" ></span>
+            <h2 style="text-align: center">Forgot Password</h2>
+        </div><br>
+        <div class="form-group">
+            <label for="exampleInputAccount2">帳號</label>
+            <div class="input-group">
+                <input type="email" class="form-control" id="exampleInputAccount2" placeholder="Enter account">
+                <!-- <span class="input-group-btn">
+                    <button class="form-control btn btn-primary submit px-3" type="button" id="send-email"> 由註冊時的Email獲取驗證碼</button>
+                </span> -->
+            </div><br>
+            <button class="form-control btn btn-primary submit px-3" type="button" id="send-email"> 由註冊時的Email獲取驗證碼</button>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputCheckCode">驗證碼</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="Input-verify-code" placeholder="輸入驗證碼">
+                <span class="input-group-btn">
+                    <button class="form-control btn btn-primary submit px-3" type="button" id="verified-code">確認</button>
+                </span>
+            </div>
+        </div>
 
-
+        <!-- 按下確認重設新密碼 -->
+        <div class="container p-3 my-3 text-white d-none" id="set-password-container">
+            <form id="new-password-form">
+                <!-- <div class="form-group">
+                    <label for="exampleInputAccount2">帳號</label>
+                    <input class="form-control" id="exampleInputAccount2" aria-describedby="emailHelp" placeholder="Enter account">
+                </div>
+                <br> -->
+                <div class="form-group">
+                    <label for="exampleInputPassword2">新密碼</label>
+                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+                </div><br>
+                <div class="form-group">
+                    <label for="exampleInputPasswordcheck">確認新密碼</label>
+                    <input type="password" class="form-control" id="exampleInputPasswordcheck" placeholder="Password">
+                </div><br>
+                <button type="submit" class="form-control btn btn-primary submit px-3" id="login-button">確認並登入</button>
+            </form>
+        </div>
+    </form>
+</div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
