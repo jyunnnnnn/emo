@@ -21,9 +21,9 @@ public class EcoRecord {
     private String time;//紀錄時間
 
     private double footprint;//碳足跡
-    CarbonFootprintCalculator calculator = new CarbonFootprintCalculator();
+
     //constructor
-    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude) {
+    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint) {
         this.recordId = new ObjectId().toString();
         this.userId = userId;
         this.classType = classType;
@@ -32,7 +32,7 @@ public class EcoRecord {
         this.latitude = latitude;
         this.longitude = longitude;
         this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.footprint =  calculator.calculateFootprint(this.type, this.data_value);
+        this.footprint = footprint;
     }
 
     public String getRecordId() {
