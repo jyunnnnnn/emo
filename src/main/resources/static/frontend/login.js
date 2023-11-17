@@ -58,7 +58,7 @@ $(document).ready(function() {
 
             $.ajax({
                         type: 'GET',
-                        url: '/api/login?username=' + encodeURIComponent(inputAccount) +'&password=' + encodeURIComponent(inputPassword),
+                        url: encodeURI('/api/login?username=' + inputAccount +'&password=' + inputPassword),
                         contentType: 'application/json',
 
                         success: function(response) {

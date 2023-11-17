@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User request) {
 
-//        System.out.println(request);
+
         int result = userService.createUser(request);
 
         if (result == UserService.OK) {
