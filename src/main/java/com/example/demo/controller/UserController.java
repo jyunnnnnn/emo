@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,48 +24,45 @@ public class UserController {
     }
 
 
-
+    //註冊新帳號
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> registerUser(@RequestBody User request) {
-        String account = request.getAccount();
-        String password = request.getPassword();
-        String confirmPassword = request.getConfirmPassword();
-        if (!account.matches("^[A-Za-z0-9]+$")) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號必須由英文字母和數字組成"));
-            //return ResponseEntity.badRequest().body("帳號必須由英文字母和數字組成。");
-        }
-        if (userService.isAccountExists(account) == UserService.USER_FOUND) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號已存在"));
-        }
-        if (!password.equals(confirmPassword)) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "密碼和確認密碼不匹配"));
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User request) {
+
+//        System.out.println(request);
+        int result = userService.createUser(request);
+
+        if (result == UserService.OK) {
+            return ResponseEntity.ok(Collections.singletonMap("message", "帳號註冊成功"));
         }
 
-        userService.createUser(account, password);
 
-        return ResponseEntity.ok(Collections.singletonMap("message", "註冊成功!"));
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號已存在"));
     }
 
+    //登入
+    @GetMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) {
+        int result = this.userService.login(username, password);
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody User request) {
-        String account = request.getAccount();
-        String password = request.getPassword();
-
-        try {
-            if (userService.isValidUser(account, password)) {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "登入成功!");
-                response.put("location", "/map");
-                response.put("username", account);
-                System.out.println(response);
-                return ResponseEntity.ok(response);
-            } else {
-                throw new Exception(":(");
-            }
-        }catch (Exception e){
-
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗，帳號或密碼錯誤"));
+        if (result == UserService.OK) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "登入成功!");
+            response.put("location", "/map");
+            response.put("username", username);
+            return ResponseEntity.ok(response);
         }
+
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗"));
+    }
+
+    //修改密碼
+    @PutMapping("/update")
+    public ResponseEntity<?> updatePassword(@RequestParam("email") String email, @RequestParam("password") String password) {
+        int result = this.userService.updatePassword(email, password);
+
+        if (result == UserService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改密碼成功"));
+
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改密碼失敗"));
     }
 }

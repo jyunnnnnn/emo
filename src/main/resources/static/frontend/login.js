@@ -16,11 +16,19 @@ $(document).ready(function() {
             e.preventDefault();
             var inputAccount = $('#exampleInputAccount2').val();
             var inputPassword = $('#exampleInputPassword2').val();
-            var inputConfirmPassword = $('#exampleInputPasswordcheck').val();
+
+            //userID
+            var inputEmail = $('exampleInputEmail').val();
+            //email
+
+
+            //nickname default:username
             var userData = {
-                account: inputAccount,
+                username: inputAccount,
                 password: inputPassword,
-                confirmPassword: inputConfirmPassword
+                nickname: inputAccount,
+                email:"test001@gmail.com",
+                userID:"demo"
             };
 
             $.ajax({
@@ -47,17 +55,15 @@ $(document).ready(function() {
 
             var inputAccount = $('#exampleInputAccount1').val();
             var inputPassword = $('#exampleInputPassword1').val();
-            var loginData = {
-                    account: inputAccount,
-                    password: inputPassword
-            };
+
             $.ajax({
-                        type: 'POST',
-                        url: '/api/login',
+                        type: 'GET',
+                        url: '/api/login?username=' + inputAccount +'&password=' + inputPassword,
                         contentType: 'application/json',
-                        data: JSON.stringify(loginData),
+
                         success: function(response) {
-                            localStorage.setItem('EmoAppUser', response.username.toString());
+
+                            localStorage.setItem('EmoAppUser', response.username);
                             alert(response.message);
                             window.location.href = response.location;
 
@@ -73,3 +79,4 @@ $(document).ready(function() {
 
 
 });
+//
