@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 //紀錄物件
 @Document(collection = "Emo_Record")
 public class EcoRecord {
-    @Id
     private String recordId;//紀錄id
     private String userId;//使用者id(哪個使用者的紀錄)
     private String classType;//紀錄類別 (EX:生活用品)
@@ -23,16 +22,17 @@ public class EcoRecord {
     private double footprint;//碳足跡
 
     //constructor
-    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint) {
-        this.recordId = new ObjectId().toString();
+    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId) {
+        this.recordId = recordId; ;
         this.userId = userId;
         this.classType = classType;
         this.type = type;
         this.data_value = data_value;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.time = time;
         this.footprint = footprint;
+
     }
 
     public String getRecordId() {
@@ -102,6 +102,7 @@ public class EcoRecord {
     }
 
     public double getFootprint() {return footprint;}
+
     public String toString(){
         return "{" + '\n'+
                 "recordId: " + recordId + '\n'+

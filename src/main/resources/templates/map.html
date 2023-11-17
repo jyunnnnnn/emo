@@ -26,7 +26,7 @@
         #map {
             height: 100vh;
             width: 100%;
-<!--            padding: 10px;-->
+            /*padding: 10px;*/
         }
         .page-title {
             text-align: center;
@@ -139,7 +139,7 @@
         <!-- 行為選項/SPACE -->
         <label id="subType">
             <div id="SPACE">
-                <select class="recordForm-control">
+                <select id="categorySelect" class="recordForm-control" name="category">
                     <option disabled>請先選擇類別</option>
                 </select>
                 <input required="" class="input" type="text" placeholder="請先選擇類別" disabled="disabled">
@@ -147,23 +147,23 @@
 
             <!-- 行為選項/交通 -->
             <div id="trafficMenu" style="display: none;">
-                <select class="recordForm-control" id="trafficType">
+                <select class="recordForm-control" id="trafficType" name="trafficType">
                     <option value="traffic-bus">公車</option>
                     <option value="traffic-MRT">捷運</option>
                     <option value="traffic-train">火車</option>
                     <option value="traffic-HSR">高鐵</option>
                 </select>
-                <input id="kilometer" required="" class="input" type="text" placeholder="請輸入里程數(KM)">
+                <input id="kilometer" required="" name="kilometer" class="input" type="text" placeholder="請輸入里程數(KM)">
             </div>
 
             <!-- 行為選項/生活用品 -->
             <div id="dailyMenu" style="display: none;">
-                <select class="recordForm-control" id="dailyType">
+                <select class="recordForm-control" id="dailyType" name="dailyType">
                     <option value="daily-cup">環保杯</option>
                     <option value="daily-tableware">環保餐具</option>
                     <option value="daily-bag">環保袋</option>
                 </select>
-                <input id="count" required="" class="input" type="text" placeholder="請輸入次數">
+                <input id="count" required="" name="count" class="input" type="text" placeholder="請輸入次數">
             </div>
         </label>
         <!-- 儲存 -->

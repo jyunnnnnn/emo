@@ -2,6 +2,7 @@ var map;
 var infoWindow;
 var intervalId;
 var recordedPositions = [];
+var FootprintData = [];
 var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
 var username//使用者名稱
@@ -10,6 +11,7 @@ $(document).ready(function() {
     username = localStorage.getItem('EmoAppUser');
     $('#user').text(username);
     loadEcoRecords(username);//載入環保紀錄
+    loadFootprintData();//載入碳足跡計算
     $('#saveRecord').click(saveRecord)// 添加標記
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#startRecording').click(function () {
@@ -20,10 +22,49 @@ $(document).ready(function() {
         }
     });// 路線紀錄(開始/停止)
 });
+//載入碳足跡計算係數
+function loadFootprintData() {
+    $.ajax({
+            url: '/api/getFootprint',
+            method: 'GET',
+            success: function (data) {
+                // 處理成功時的邏輯
+                FootprintData = data;
+                console.log(FootprintData);
+
+            },
+            error: function(xhr, status, error) {
+               var errorData = JSON.parse(xhr.responseText);
+               var errorMessage = errorData.message;
+               alert(errorMessage);
+           }
+        });
+}
+//透過type找到coefficient
+function findCoefficientByType(type) {
+    var result = FootprintData.find(function(item) {
+        return item.type === type;
+    });
+
+    // 如果找到對應的 type，返回 coefficient，否則返回 null 或其他預設值
+    return result ? result.coefficient : null;
+}
+//計算footprint
+function calculateFootprint(type,data_value) {
+    var footprint = 0;
+    var coefficient = findCoefficientByType(type);
+    footprint=data_value * coefficient;
+    return footprint;
+}
 // 記錄按鈕事件處理
 function saveRecord(){
     var latitude;
     var longitude;
+    var classType;
+    var type;
+    var data_value;
+    var footprint;
+    var recordId;
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -32,18 +73,30 @@ function saveRecord(){
             // 在這裡你可以使用獲取到的經緯度進行相應的操作
             // 假設你有一個保存紀錄的函數
             if ($("#trafficRadio").is(":checked")) {
-                var classType = $("#traffic").text();
-                var type = $("#trafficMenu option:selected").text();
-                var data_value = document.getElementById('kilometer').value;
+                classType = $("#traffic").text();
+                type = $("#trafficMenu option:selected").text();
+                data_value = document.getElementById('kilometer').value;
             } else if ($("#dailyRadio").is(":checked")) {
-                var classType = $("#daily").text();
-                var type = $("#dailyMenu option:selected").text();
-                var data_value = document.getElementById('count').value;
+                classType = $("#daily").text();
+                type = $("#dailyMenu option:selected").text();
+                data_value = document.getElementById('count').value;
             }
-
+            footprint=calculateFootprint(type,data_value);
             // 保存紀錄到後端
-            if(classType!=null &&type!=null &&data_value!=null &&latitude!=null &&longitude!=null){
-                saveRecordToBackend(classType, type, data_value, latitude, longitude);
+            if(classType &&type &&data_value &&latitude &&longitude&&footprint) {
+                var now = new Date();
+                var formatter = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false  // 使用24小時制
+                });
+                var formattedDate = formatter.format(now);
+                var recordId=now.getTime();
+                saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
             //這裡邏輯待討論
         });
@@ -51,6 +104,49 @@ function saveRecord(){
         alert("不支援定位");
     }
 }
+
+// 保存紀錄的函數
+function saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint,formattedDate,recordId) {
+    var record = {
+        userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
+        classType: classType,
+        type: type,
+        data_value: data_value,
+        latitude: latitude,
+        longitude: longitude,
+        footprint:footprint,
+        time: formattedDate,
+        recordId:recordId
+    };
+    if(record.userId) {
+        uploadRecordToBackend(record);
+        records.push(record);
+        addMarker(record);
+    }
+    else {
+        alert("請重新登入");
+        window.location.href = 'frontend/login.html';
+    }
+    // 上傳紀錄到後端
+}
+
+// 將紀錄上傳到後端
+function uploadRecordToBackend(record) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/addRecord',
+        contentType: 'application/json',
+        data: JSON.stringify(record),
+        success: function(response) {
+            console.log(response); // 成功上傳時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 上傳失敗時的處理邏輯
+        }
+    });
+}
+
+
 //一開始把所有資料拉下來做成標籤 每次新增也要做出新標籤
 function loadEcoRecords(username) {
     $.ajax({
@@ -102,7 +198,6 @@ function addMarker(recordToAdd) {
                 infoWindow.open(this.map, marker);
            });
         }
-        $('#activityModal').modal('hide');
 }
 
 // 查看歷史紀錄
@@ -191,44 +286,6 @@ function showNewRecord(records) {
 }
 
 
-
-// 將紀錄上傳到後端
-function uploadRecordToBackend(record) {
-    $.ajax({
-        type: 'POST',
-        url: '/api/addRecord',
-        contentType: 'application/json',
-        data: JSON.stringify(record),
-        success: function(response) {
-            console.log(response); // 成功上傳時的處理邏輯
-        },
-        error: function(xhr, status, error) {
-            console.error(error); // 上傳失敗時的處理邏輯
-        }
-    });
-}
-
-// 保存紀錄的函數
-function saveRecordToBackend(classType, type, data_value, latitude, longitude) {
-    var record = {
-        userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
-        classType: classType,
-        type: type,
-        data_value: data_value,
-        latitude: latitude,
-        longitude: longitude
-    };
-    if(record.userId) {
-        uploadRecordToBackend(record);
-        records.push(record);
-        addMarker(record);
-    }
-    else {
-        alert("請重新登入");
-        window.location.href = 'frontend/login.html';
-    }
-    // 上傳紀錄到後端
-}
 
 
 ////////
