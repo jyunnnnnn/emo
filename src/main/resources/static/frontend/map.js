@@ -73,9 +73,11 @@ function loadEcoRecords(username) {
     });
 
 }
+//小作弊
+var currentInfoWindowRecord; // 目前 infoWindow 的內容
+
 function addMarker(recordToAdd) {
         console.log(recordToAdd);
-
         if (map) {
             var currentLocation = {
                 lat: recordToAdd.latitude,
@@ -88,22 +90,67 @@ function addMarker(recordToAdd) {
             });
            //var currentTime =new Date() ;
            var now=new Date().toLocaleString();
-           /////////////////////////////這邊誰可以救我///////////////////////////////////////////
+           if(!recordToAdd.time) recordToAdd.time = now;
+           //小改
+           let infoWindowContent = `
+               <div>
+                   <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
+                   <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
+                   <p style="padding:3px; margin:3px;">${recordToAdd.time}</p>
+                   <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
+               </div>`;
            let infoWindow = new google.maps.InfoWindow({
-                content: `<div>
-                <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
-                <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
-                <p style="padding:3px; margin:3px;">${now}</p>
-                </div>` // 支援html
+                content: infoWindowContent
            });
            //localStorage.setItem("ecoRecord"+currentTime, JSON.stringify({ time: now, content: record.type ,compare:Date.now()}));
             // 監聽 marker click 事件
            marker.addListener('click', e => {
                 infoWindow.open(this.map, marker);
+                currentInfoWindowRecord=recordToAdd;
            });
         }
         $('#activityModal').modal('hide');
 }
+
+//讓我寫在這，我懶得往下滑了
+function recordModal(){
+    console.log("編輯按鈕可以按");
+    // 顯示懸浮窗
+        document.getElementById('modifyModal').style.display = 'block';
+        document.getElementById('modifyModal').style.position = 'fixed';
+
+        //這樣改超笨QQ好煩
+        if(currentInfoWindowRecord.classType = "交通"){
+            console.log(currentInfoWindowRecord.classType);
+            document.getElementById('modifyTrafficRadio').checked = true;
+
+            if(currentInfoWindowRecord.type = "公車"){
+                document.getElementById('modifyTrafficType').value = 'traffic-bus';
+            }else if(currentInfoWindowRecord.type = "捷運"){
+                document.getElementById('modifyTrafficType').value = 'traffic-MRT';
+            }else if(currentInfoWindowRecord.type = "火車"){
+                document.getElementById('modifyTrafficType').value = 'traffic-train';
+            }else{
+                document.getElementById('modifyTrafficType').value = 'traffic-HSR';
+            }
+
+            document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
+        }else{
+            console.log(currentInfoWindowRecord.classType);
+            document.getElementById('modifyDailyRadio').checked = true;
+
+            if(currentInfoWindowRecord.type = "環保杯"){
+                document.getElementById('modifyDailyType').value = 'daily-cup';
+            }else if(currentInfoWindowRecord.type = "環保餐具"){
+                document.getElementById('modifyDailyType').value = 'daily-tableware';
+            }else{
+                document.getElementById('modifyDailyType').value = 'daily-bag';
+            }
+
+            document.getElementById('modifyCount').value = currentInfoWindowRecord.data_value;
+        }
+}
+
 
 // 查看歷史紀錄
 function showRecord() {
