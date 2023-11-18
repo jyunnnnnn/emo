@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String username;//使用者帳號
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String password;//使用者密碼
     private String nickname;//使用者暱稱
     private String email;//使用者信箱

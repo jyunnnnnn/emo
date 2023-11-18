@@ -76,6 +76,11 @@ public class UserService {
         return INCORRECT;
     }
 
+    //抓取特定帳號資料
+    public User fetchOneUserByUsername(String username) {
+        return this.repository.findByUsername(username);
+    }
+
     //修改密碼
     public int updatePassword(String email, String newPassword) {
         User result = this.repository.findByEmail(email);
@@ -87,7 +92,17 @@ public class UserService {
         return FAIL;
 
     }
-
+    public int updatePasswordByUsername(String username,String newPassword){
+        try{
+            User user = fetchOneUserByUsername(username);
+            user.setPassword(newPassword);
+            this.repository.save(user);
+            return OK;
+        }catch (Exception err){
+            System.err.println("修改"+username+"密碼過程出現問題");
+            return FAIL;
+        }
+    }
     //獲取使用者暱稱
     public String getNickname(String username) {
         User result = this.repository.findByUsername(username);
