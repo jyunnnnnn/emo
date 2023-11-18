@@ -87,14 +87,15 @@ $(document).ready(function () {
             alert('請確認是否輸入密碼或確認密碼是否正確');
             return;
         }
-
+        var now = new Date();
+        var userId=now.getTime();
         // nickname default:username
         var userData = {
             username: inputAccount,
             password: inputPassword,
             nickname: inputAccount,
             email: inputEmail,
-            userID: "demo"
+            userId: userId
         };
 
         var verifyingCode = $('#exampleInputCheckCode').val();
@@ -171,7 +172,9 @@ $(document).ready(function () {
             contentType: 'application/json',
 
             success: function (response) {
-                localStorage.setItem('EmoAppUser', response.username);
+                var userData = response.user;
+                var userString = JSON.stringify(userData,null,2);
+                localStorage.setItem('EmoAppUser', userString);
                 alert(response.message);
                 window.location.href = response.location;
             },

@@ -2,10 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.service.User;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,14 +43,16 @@ public class UserController {
 
     //登入
     @GetMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws JsonProcessingException {
         int result = this.userService.login(username, password);
-
+        User userData= this.userService.findUserDataFromUsername(username);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userDataJson = objectMapper.writeValueAsString(userData);
         if (result == UserService.OK) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "登入成功!");
             response.put("location", "/map");
-            response.put("username", username);
+            response.put("user", userDataJson);
             return ResponseEntity.ok(response);
         }
 

@@ -39,7 +39,9 @@ public class UserService {
         this.repository.save(newUser);
         return OK;
     }
-
+    public User findUserDataFromUsername(String username) {
+        return this.repository.findByUsername(username);
+    }
     //登入帳號
     public int login(String username, String password) {
         User user = this.repository.findByUsername(username);
@@ -80,7 +82,7 @@ public class UserService {
     public int updatePassword(String email, String newPassword) {
         User result = this.repository.findByEmail(email);
         if (result != null) {
-            User updatedUser = new User(result.getUsername(), newPassword, result.getNickname(), email, result.getUserID());
+            User updatedUser = new User(result.getUsername(), newPassword, result.getNickname(), email, result.getUserId());
             this.repository.save(updatedUser);
             return OK;
         }

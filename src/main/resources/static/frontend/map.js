@@ -5,14 +5,16 @@ var FootprintData = [];
 var recordedPositions = [];//路線紀錄
 var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
-var username//使用者名稱
+var username;//使用者名稱
+var User;
 //小作弊
 var currentInfoWindowRecord; // 目前 infoWindow 的內容
 var currentInfoWindow;//目前infowindow
 $(document).ready(function() {
-    username = localStorage.getItem('EmoAppUser');
+    User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
+    username =User.username;
     $('#user').text(username);
-    loadEcoRecords(username);//載入環保紀錄
+    loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
     $('#saveRecord').click(saveRecord)// 添加標記
     $('#updateRecord').click(updateRecord)//修改紀錄
@@ -33,7 +35,7 @@ function loadFootprintData() {
             success: function (data) {
                 // 處理成功時的邏輯
                 FootprintData = data;
-                console.log(FootprintData);
+                //console.log(FootprintData);
 
             },
             error: function(xhr, status, error) {
@@ -87,9 +89,9 @@ function saveRecord(){
             // 保存紀錄到後端
             if(classType &&type &&data_value &&latitude &&longitude&&footprint) {
                 var now = new Date();
-                var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
                 var recordId=now.getTime();
-                saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
+                var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
+                saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
         });
     } else {
@@ -97,9 +99,9 @@ function saveRecord(){
     }
 }
 // 保存紀錄的函數
-function saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint,formattedDate,recordId) {
+function saveRecordToBackend(userId,classType, type, data_value, latitude, longitude,footprint,formattedDate,recordId) {
     var record = {
-        userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
+        userId: userId, // 使用者 ID，這裡使用本地存儲的使用者名稱
         classType: classType,
         type: type,
         data_value: data_value,
@@ -109,6 +111,7 @@ function saveRecordToBackend(classType, type, data_value, latitude, longitude,fo
         time: formattedDate,
         recordId:recordId
     };
+    //console.log(record);
     if(record.userId) {
         uploadRecordToBackend(record);
         records.push(record);
@@ -136,15 +139,15 @@ function uploadRecordToBackend(record) {
     });
 }
 //一開始把所有資料拉下來做成標籤 每次新增也要做出新標籤
-function loadEcoRecords(username) {
+function loadEcoRecords(userId) {
     $.ajax({
-        url: '/api/getSpecificUserRecord?userId=' + username,
+        url: '/api/getSpecificUserRecord?userId=' + userId,
         method: 'GET',
         success: function (data) {
             // 處理成功時的邏輯
             records = data;
             var thisRecords = records;
-            console.log(records);
+            //console.log(records);
              for (var i = 0; i < thisRecords.length; i++) {
                     addMarker(thisRecords[i]);
              }
@@ -159,7 +162,7 @@ function loadEcoRecords(username) {
 }
 //新增標記
 function addMarker(recordToAdd) {
-        console.log(recordToAdd);
+        //console.log(recordToAdd);
         if (map) {
             var currentLocation = {
                 lat: recordToAdd.latitude,
@@ -255,15 +258,15 @@ function updateRecord(){
 function updateRecordToBackend(newClassType, newType, newDataValue) {
     var footprint=calculateFootprint(newClassType,newDataValue);
     var record = {
-        userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
-                classType: newClassType,
-                type: newType,
-                data_value: newDataValue,
-                latitude: currentInfoWindowRecord.latitude,
-                longitude: currentInfoWindowRecord.longitude,
-                footprint:footprint,
-                time: currentInfoWindowRecord.formattedDate,
-                recordId:currentInfoWindowRecord.recordId
+        userId: currentInfoWindowRecord.userId, // 使用者 ID，����使用本地存���的使用者名使用者 ID，這裡使用本地存儲的使用者名稱
+        classType: newClassType,
+        type: newType,
+        data_value: newDataValue,
+        latitude: currentInfoWindowRecord.latitude,
+        longitude: currentInfoWindowRecord.longitude,
+        footprint:footprint,
+        time: currentInfoWindowRecord.formattedDate,
+        recordId:currentInfoWindowRecord.recordId
     };
     if(record.userId) {
         modifyRecordToBackend(record);
@@ -291,7 +294,7 @@ function modifyRecordToBackend(record) {
         }
     });
 }
-//更新marker infowindow
+//更新marker inFoWindow
 function updateMarkerContent(newContent) {
     let modifyContent=`
          <div>

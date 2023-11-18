@@ -10,27 +10,27 @@ public class User {
     private String password;//使用者密碼
     private String nickname;//使用者暱稱
     private String email;//使用者信箱
-    private String userID;//使用者ID
+    private String userId;//使用者ID
 
     //constructor
     public User() {
 
     }
 
-    public User(String username, String password, String nickname, String email, String userID) {
+    public User(String username, String password, String nickname, String email, String userId) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
-        this.userID = userID;
+        this.userId = userId;
     }
 
     //constructor without nickname,default nickname is username
-    public User(String username, String password, String email, String userID) {
+    public User(String username, String password, String email, String userId) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.userID = userID;
+        this.userId = userId;
         this.nickname = username;
     }
 
@@ -50,12 +50,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 
@@ -69,7 +69,7 @@ public class User {
 
 
     public String toString() {
-        return "Username: " + username + "\n" + "Password: " + password + "\n" + "nickname: " + nickname + "\n" + "email: " + email + "\n" + "userId: " + userID;
+        return "Username: " + username + "\n" + "Password: " + password + "\n" + "nickname: " + nickname + "\n" + "email: " + email + "\n" + "userId: " + userId;
     }
 
 }
