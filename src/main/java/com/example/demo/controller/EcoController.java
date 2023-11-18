@@ -54,11 +54,11 @@ public class EcoController {
 
     //抓取特定使用者的所有紀錄
     @GetMapping("/getSpecificUserRecord")
-    public ResponseEntity<?> getSpecificUserRecord(@RequestParam("userId") String username) {// /api/getSpecificUserRecord?userId=test
-        System.out.println(username);
+    public ResponseEntity<?> getSpecificUserRecord(@RequestParam("userId") String userId) {// /api/getSpecificUserRecord?userId=test
+        System.out.println("userId:"+userId);
         try {
             //username = new AESEncryption().encrypt(username);//將帳號加密成user_id
-            List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(username);
+            List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(userId);
             return ResponseEntity.ok(records);
         } catch (Exception err) {
             System.err.println(err + " 抓取特定使用者紀錄過程出現錯誤");
