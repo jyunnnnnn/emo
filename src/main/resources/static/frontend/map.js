@@ -273,7 +273,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
     };
     if(record.userId) {
         modifyRecordToBackend(record);
-        updateRecordInArray(newClassType, newType, newDataValue);//更新record[]
+        updateRecordInArray(newClassType, newType, newDataValue,footprint);//更新record[]
         updateMarkerContent(record);
     }
     else {
@@ -317,13 +317,14 @@ function updateMarkerContent(newContent) {
     }
 }
 //更新record[]
-function updateRecordInArray(newClassType, newType, newDataValue){
+function updateRecordInArray(newClassType, newType, newDataValue,newFootprint){
     var recordIndex = records.findIndex(record => record.recordId === currentInfoWindowRecord.recordId);
     if (recordIndex !== -1) {
         // 有紀錄，更新
         records[recordIndex].classType = newClassType;
         records[recordIndex].type = newType;
         records[recordIndex].data_value = newDataValue;
+        records[recordIndex].footprint =newFootprint;
         console.log('Updated records:', records);
     } else {
         console.log('Record not found');
