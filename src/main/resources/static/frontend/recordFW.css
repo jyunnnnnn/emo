@@ -18,17 +18,17 @@
 
 #openRecordModal {
     position: fixed;
-    bottom: 110px;
+    bottom: 40px;
     left: 120px;
 }
 #recordListButton {
     position: fixed;
-    bottom: 110px;
+    bottom: 40px;
     right: 120px;
 }
 #startRecording{
     position: fixed;
-    bottom: 110px;
+    bottom: 40px;
 }
 #settingButton{
     position: fixed;
@@ -45,6 +45,8 @@
 .recordButton:active {
     transform: translateY(-1px);
 }
+
+
 
 /* 懸浮窗 */
 .recordContainer {
