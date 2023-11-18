@@ -10,6 +10,12 @@ document.getElementById('recordListButton').addEventListener('click', function (
     document.getElementById('activityListModal').style.display = 'block';
     document.getElementById('activityListModal').style.position = 'fixed';
 });
+//點擊設定按鈕
+document.getElementById('settingButton').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('settingModal').style.display = 'block';
+    document.getElementById('settingModal').style.position = 'fixed';
+});
 
 // 關閉紀錄懸浮窗
 document.getElementById('closeRecordModal').addEventListener('click', function () {
@@ -20,6 +26,10 @@ document.getElementById('closeListModal').addEventListener('click', function () 
     document.getElementById('activityListModal').style.display = 'none';
 });
 
+// 關閉設定懸浮窗
+document.getElementById('closeSettingModal').addEventListener('click', function () {
+    document.getElementById('settingModal').style.display = 'none';
+});
 
 // 交通選單
 document.getElementById('trafficRadio').addEventListener('change', function () {
