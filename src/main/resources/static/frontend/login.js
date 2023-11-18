@@ -188,32 +188,29 @@ $(document).ready(function () {
     //忘記密碼頁面 送出驗證碼按鈕
     $('#send-email').click(function(e){
         //使用者輸入email
-        var inputEmail = $('#exampleInputAccount3').val();
+        var inputAccount = $('#exampleInputAccount3').val();
 
         //檢查是否輸入帳號
-        if(!inputEmail){
-            alert("請輸入電子郵件");
+        if(!inputAccount){
+            alert("請輸入帳號");
             return ;
         }
-        //是否為電子郵件格式
-        if(!IsEmail(inputEmail)){
-            alert("請輸入正確的電子郵件格式");
-            return ;
-        }
-        //檢查電子郵件是否存在
+
+        //檢查帳號是否存在
         $.ajax({
             type: 'GET',
-            url: '/api/checkSpecificAccountByEmail?userMail=' + inputEmail ,
+            url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
             contentType: 'application/json',
             success: function (response) {
                 //檢查是否已經寄送過
+                var email = response.email;
                  $.ajax({
                      type: 'GET',
-                     url: '/api/sendAgain?userMail=' + inputEmail,
+                     url: '/api/sendAgain?userMail=' + email,
                      contentType: 'application/json',
                      success: function (response) {
                          alert("驗證碼寄送成功");
-                         sendEmail(inputEmail);
+                         sendEmail(email);
                      },
                      error: function (xhr, status, error) {
                          alert("先前已寄送驗證碼，5分鐘後再嘗試");
@@ -221,7 +218,7 @@ $(document).ready(function () {
                  });
             },
             error: function (response) {
-               alert("請檢查輸入的電子郵件是否存在");
+               alert("請檢查輸入的帳號是否存在");
             }
         });
 
@@ -233,13 +230,13 @@ $(document).ready(function () {
 
 
         //使用者輸入email
-        var inputEmail = $('#exampleInputAccount3').val();
+        var inputAccount = $('#exampleInputAccount3').val();
         var inputCode =$('#Input-verify-code').val();
 
 
         //檢查是否輸入帳號
-        if(!inputEmail){
-            alert("請輸入電子郵件");
+        if(!inputAccount){
+            alert("請輸入帳號");
             return ;
         }
         //檢查是否輸入驗證碼
@@ -248,21 +245,34 @@ $(document).ready(function () {
             return ;
         }
 
-        //檢查驗證碼是否正確
-        $.ajax({
-            type: 'GET',
-            url: '/api/matchVerifyingCode?userMail=' + inputEmail + "&userInput=" + inputCode,
-            contentType: 'application/json',
-            success: function (response) {
-                //顯示更改密碼文字框
-               e.preventDefault();
-               $('#login-container').addClass('d-none');
-               $('#set-password-container').removeClass('d-none');
-            },
-            error: function (response) {
-                alert("驗證碼輸入錯誤");
-            }
-        });
+
+        //檢查帳號是否存在
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
+                    contentType: 'application/json',
+                    success: function (response) {
+                        //檢查驗證碼是否正確
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/matchVerifyingCode?userMail=' + response.email + "&userInput=" + inputCode,
+                            contentType: 'application/json',
+                            success: function (response) {
+                                //顯示更改密碼文字框
+                               e.preventDefault();
+                               $('#login-container').addClass('d-none');
+                               $('#set-password-container').removeClass('d-none');
+                            },
+                            error: function (response) {
+                                alert("驗證碼輸入錯誤");
+                            }
+                        });
+                    },
+                    error: function (response) {
+                       alert("請檢查輸入的帳號是否存在");
+                    }
+                });
+
 
     });
 
@@ -287,15 +297,15 @@ $(document).ready(function () {
         }
 
         //更新使用者資訊
-        var userMail = $('#exampleInputAccount3').val();
+        var userAccount = $('#exampleInputAccount3').val();
 
-        updatePassword(userMail,newPassword);
+        updatePassword(userAccount,newPassword);
 
     })
-    function updatePassword(email,newPassword){
+    function updatePassword(username,newPassword){
         $.ajax({
             type: 'PUT',
-                url: '/api/update?userMail=' + email +"&password="+newPassword  ,
+                url: '/api/updateByUsername?username=' + username +"&password="+newPassword  ,
             contentType: 'application/json',
             success: function (response) {
                 alert(response.message);
