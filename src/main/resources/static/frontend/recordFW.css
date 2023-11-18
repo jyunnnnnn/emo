@@ -16,6 +16,20 @@
     outline: none;
 }
 
+#openRecordModal {
+    position: fixed;
+    bottom: 110px;
+    left: 120px;
+}
+#recordListButton {
+    position: fixed;
+    bottom: 110px;
+    right: 120px;
+}
+#startRecording{
+    position: fixed;
+    bottom: 110px;
+}
 .recordButton:hover {
     background-color: #4a4c4d;
     box-shadow: 0px 15px 20px rgb(183, 188, 189);
