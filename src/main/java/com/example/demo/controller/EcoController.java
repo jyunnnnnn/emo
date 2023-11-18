@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+
 import com.example.demo.service.EcoRecord;
 import com.example.demo.service.EcoRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,18 @@ public class EcoController {
             System.err.println(err + " 抓取所有紀錄過程出現錯誤");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("/deleteOneRecord")
+    public ResponseEntity<?> deleteOneRecord(@RequestParam("recordId") String recordId) {
+        try {
+            this.ecoRecordService.deleteRecord(recordId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception err) {
+            System.err.println("刪除" + recordId + "紀錄過程出現問題");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/deleteAllRecords")
