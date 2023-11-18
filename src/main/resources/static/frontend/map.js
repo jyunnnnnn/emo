@@ -48,7 +48,6 @@ function findCoefficientByType(type) {
     var result = FootprintData.find(function(item) {
         return item.type === type;
     });
-
     // 如果找到對應的 type，返回 coefficient，否則返回 null 或其他預設值
     return result ? result.coefficient : null;
 }
@@ -88,20 +87,10 @@ function saveRecord(){
             // 保存紀錄到後端
             if(classType &&type &&data_value &&latitude &&longitude&&footprint) {
                 var now = new Date();
-                var formatter = new Intl.DateTimeFormat('en-US', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false  // 使用24小時制
-                });
-                var formattedDate = formatter.format(now);
+                var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
                 var recordId=now.getTime();
                 saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
-            //這裡邏輯待討論
         });
     } else {
         alert("不支援定位");
