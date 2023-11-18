@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.json.JSONObject;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/api")
 public class MailController {
@@ -40,7 +42,7 @@ public class MailController {
         int result = this.mailService.validCodeVerify(userMail, userInput);
 
         if (result == MailService.MAIL_VALIDCODE_CORRECT) return ResponseEntity.ok("Ok");
-        return ResponseEntity.ok("Fail");
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "驗證碼匹配錯誤"));
     }
 
 
@@ -50,6 +52,6 @@ public class MailController {
 
         int result = this.mailService.SendRequest(userMail);
         if (result == MailService.OK) return ResponseEntity.ok("OK");
-        return ResponseEntity.ok("Fail");
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "不可再次發送驗證碼"));
     }
 }
