@@ -4,6 +4,7 @@ import com.example.demo.service.User;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,7 +91,18 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
     }
+    //刪除帳號
+    @DeleteMapping("/deleteUserAccount")
+    public ResponseEntity<?> deleteUserAccount(@RequestParam("userId") String userId) {
+        try {
+            this.userService.deleteAccountByUserId(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception err) {
+            System.err.println("刪除" + userId + "帳號過程出現問題");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
+    }
     @GetMapping("/checkAccountExistByUsername")
     public ResponseEntity<?> chekcAccountExistByUsername(@RequestParam("username") String username) {
         User result = this.userService.fetchOneUserByUsername(username);

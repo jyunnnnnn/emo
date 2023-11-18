@@ -91,7 +91,16 @@ public class EcoController {
         }
 
     }
-
+    @DeleteMapping("/deleteSpecificUserRecord")
+    public ResponseEntity<?> deleteSpecificUserRecord(@RequestParam("userId") String userId) {
+        try {
+            this.ecoRecordService.deleteSpecificUserRecord(userId);
+            return ResponseEntity.ok("Ok");
+        } catch (Exception err) {
+            System.err.println(err + "刪除特定使用者紀錄過程出現錯誤");
+            return ResponseEntity.ok("Fail");
+        }
+    }
     @DeleteMapping("/deleteAllRecords")
     public ResponseEntity<?> deleteAllRecord() {
         try {

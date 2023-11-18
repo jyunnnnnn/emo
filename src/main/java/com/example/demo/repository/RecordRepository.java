@@ -14,4 +14,5 @@ public interface RecordRepository extends MongoRepository<EcoRecord,String> {
     List<EcoRecord> findAllByUserId(@Param("userId") String userId);//抓取某使用者的所有紀錄
 
     void deleteByRecordId(String RecordId);
+    void deleteByUserId(String userId);
 }

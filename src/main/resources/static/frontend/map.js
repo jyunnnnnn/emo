@@ -17,6 +17,8 @@ $(document).ready(function() {
     $('#user').text(username);
     loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
+    $('#logoutAccount').click(logoutAccount);//登出
+    $('#deleteAccount').click(deleteAccount);//刪除帳號
     $('#saveRecord').click(saveRecord)// 添加標記
     $('#updateRecord').click(updateRecord)//修改紀錄
     $('#deleteRecord').click(deleteRecord)//刪除紀錄
@@ -29,6 +31,57 @@ $(document).ready(function() {
         }
     });// 路線紀錄(開始/停止)
 });
+//登出
+function logoutAccount(){
+    alert("登出成功");
+    localStorage.removeItem('EmoAppUser');
+    window.location.href= 'frontend/login.html';
+}
+//刪除帳號確認
+function deleteAccount(){
+    //我先用confirm做:0
+    var result = confirm("確定要刪除帳戶嗎？");
+    if (result) {
+        deleteAccountToBackend(User.userId);
+        deleteRecordByAccount(User.userId);
+        console.log("刪除帳戶資料");
+    } else {
+        console.log("沒刪");
+    }
+}
+//刪除Emo_User
+function deleteAccountToBackend(userId){
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/deleteUserAccount?userId=${userId}`,
+        contentType: 'application/string',
+        success: function(response) {
+            console.log("已刪除該用戶")
+            console.log(response); // 成功刪除時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 刪除失敗時的處理邏輯
+        }
+    });
+    alert("帳號刪除成功");
+    localStorage.removeItem('EmoAppUser');
+    window.location.href= 'frontend/login.html';
+}
+//刪除Emo_Record裡面指定用戶的紀錄
+function deleteRecordByAccount(userId){
+     $.ajax({
+            type: 'DELETE',
+            url: `/api/deleteSpecificUserRecord?userId=${userId}`,
+            contentType: 'application/string',
+            success: function(response) {
+                console.log("已删除該用戶紀錄");
+                console.log(response); // 成功刪除時的處理邏輯
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // 刪除失敗時的處理邏輯
+            }
+        });
+}
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({

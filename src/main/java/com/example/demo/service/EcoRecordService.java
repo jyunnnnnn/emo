@@ -45,6 +45,16 @@ public class EcoRecordService {
     public List<EcoRecord> getAllRecords() {
         return this.repository.findAll();
     }
+    //刪除特定使用者紀錄
+    public int deleteSpecificUserRecord(String userId) {
+        try {
+            this.repository.deleteByUserId(userId);
+        } catch (Exception err) {
+            System.err.println(err + " 刪除特定使用者紀錄過程出現問題");
+            return BAD;
+        }
+        return OK;
+    }
 
     //刪除所有紀錄
     public int deleteAllRecord() {

@@ -2,10 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 public class UserService {
@@ -93,6 +90,9 @@ public class UserService {
         }
         return FAIL;
 
+    }
+    public User deleteAccountByUserId(String UserId){
+        return this.repository.deleteByUserId(UserId);
     }
     public int updatePasswordByUsername(String username,String newPassword){
         try{
