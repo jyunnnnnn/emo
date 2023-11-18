@@ -30,6 +30,11 @@
     position: fixed;
     bottom: 110px;
 }
+#settingButton{
+    position: fixed;
+    top: 30px;
+    right: 120px;
+}
 .recordButton:hover {
     background-color: #4a4c4d;
     box-shadow: 0px 15px 20px rgb(183, 188, 189);
