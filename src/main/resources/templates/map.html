@@ -16,12 +16,12 @@
     <style>
         @import url(/frontend/recordFW.css);
         body {
-            background-color: lightpink;
+            background-color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            margin: -50px;
         }
         #map {
             height: 100vh;
@@ -37,10 +37,14 @@
             margin-top: 10px;
         }
         .container{
-            margin-left: -30px;
+            margin: -100px;
             padding: -20px;
             width:100%;
         }
+
+<!--        div{-->
+<!--            display:flex;-->
+<!--        }-->
 
     </style>
 </head>
@@ -48,25 +52,25 @@
 <div class="container">
     <div class="mb-4"></div>
     <!-- Google Map -->
-    <div class="container-fluid">
+<!--    <div class="container-fluid">-->
         <div style="display:flex;" id="map"></div>
-    </div>
+<!--    </div>-->
     <div class="mb-4"></div>
     <!-- 按鈕區 -->
     <div class="row justify-content-center">
         <!-- 紀錄鈕 -->
         <button class="recordButton" id="openRecordModal"> 新增紀錄 </button>
         <!-- 使用者帳號 -->
-        <div class="col-1">
-            <p id="user"></p>
-        </div>
+<!--        <div class="col-1">-->
+<!--            <p id="user"></p>-->
+<!--        </div>-->
         <!-- 查看紀錄鈕 -->
         <button class="recordButton" id="recordListButton"> 查看紀錄 </button>
 
         <!-- 路線紀錄按鈕，不知道擺哪先放這 -->
-        <div class="col-4 text-center">
-            <button id="startRecording" type="button" class="btn btn-secondary btn-lg">路線記錄</button>
-        </div>
+<!--        <div class="col-4 text-center">-->
+            <button class="recordButton" id="startRecording" type="button" >路線記錄</button>
+<!--        </div>-->
     </div>
 
 </div>
