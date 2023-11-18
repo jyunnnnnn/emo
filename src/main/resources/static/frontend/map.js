@@ -190,9 +190,9 @@ function addMarker(recordToAdd) {
         }
 }
 
-//讓我寫在這，我懶得往下滑了
+//修改懸浮視窗是歷史紀錄
 function recordModal(){
-    console.log("編輯按鈕可以按");
+    //console.log("編輯按鈕可以按");
     // 顯示懸浮窗
         document.getElementById('modifyModal').style.display = 'block';
         document.getElementById('modifyModal').style.position = 'fixed';
@@ -217,7 +217,7 @@ function recordModal(){
 
             document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
         }else{
-            console.log(currentInfoWindowRecord.classType);
+            //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyDailyRadio').checked = true;
             document.getElementById('modifyTrafficMenu').style.display = 'none';
             document.getElementById('modifyDailyMenu').style.display = 'block';
@@ -236,14 +236,14 @@ function recordModal(){
 }
 // 修改記錄按鈕事件處理 //test
 function updateRecord(){
-    if ($("#trafficRadio").is(":checked")) {
-        var classType = $("#traffic").text();
-        var type = $("#trafficMenu option:selected").text();
-        var data_value = document.getElementById('kilometer').value;
-    } else if ($("#dailyRadio").is(":checked")) {
-        var classType = $("#daily").text();
-        var type = $("#dailyMenu option:selected").text();
-        var data_value = document.getElementById('count').value;
+    if ($("#modifyTrafficRadio").is(":checked")) {
+        var classType = $("#modifyTraffic").text();
+        var type = $("#modifyTrafficMenu option:selected").text();
+        var data_value = document.getElementById('modifyKilometer').value;
+    } else if ($("#modifyDailyRadio").is(":checked")) {
+        var classType = $("#modifyDaily").text();
+        var type = $("#modifyDailyMenu option:selected").text();
+        var data_value = document.getElementById('modifyCount').value;
     }
 
     // 更新紀錄到後端
@@ -253,7 +253,7 @@ function updateRecord(){
 }
 // 更新紀錄的函數
 function updateRecordToBackend(newClassType, newType, newDataValue) {
-    var footprint=calculateFootprint(newClassType,newDataValue);
+    var footprint = calculateFootprint(newType,newDataValue);
     var record = {
         userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
                 classType: newClassType,
@@ -262,7 +262,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
                 latitude: currentInfoWindowRecord.latitude,
                 longitude: currentInfoWindowRecord.longitude,
                 footprint:footprint,
-                time: currentInfoWindowRecord.formattedDate,
+                time: currentInfoWindowRecord.time,
                 recordId:currentInfoWindowRecord.recordId
     };
     if(record.userId) {
@@ -278,6 +278,8 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
 }
 // 將紀錄更新到後端
 function modifyRecordToBackend(record) {
+    //console.log("有改到")
+    console.log(record)
     $.ajax({
         type: 'PUT',
         url: '/api/updateRecord',
@@ -300,13 +302,16 @@ function updateMarkerContent(newContent) {
              <p style="padding:3px; margin:3px;">${newContent.time}</p>
              <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
          </div>`;
-    if (currentInfoWindow.marker) {
-        currentInfoWindow.marker.infoWindow.setContent(newContent); // 更新信息窗口内容
+    if (currentInfoWindow) {
+        //console.log("更新infowindow成功");
+        currentInfoWindow.setContent(modifyContent);
+    }else {
+        console.error('InfoWindow not available.');
     }
 }
 //更新record[]
 function updateRecordInArray(newClassType, newType, newDataValue){
-    var recordIndex = records.findIndex(record => record.Id === currentInfoWindowRecord.Id);
+    var recordIndex = records.findIndex(record => record.recordId === currentInfoWindowRecord.recordId);
     if (recordIndex !== -1) {
         // 有紀錄，更新
         records[recordIndex].classType = newClassType;
