@@ -9,6 +9,7 @@ var username//使用者名稱
 //小作弊
 var currentInfoWindowRecord; // 目前 infoWindow 的內容
 var currentInfoWindow;//目前infowindow
+var currentMarker;//目前Marker
 $(document).ready(function() {
     username = localStorage.getItem('EmoAppUser');
     $('#user').text(username);
@@ -187,6 +188,7 @@ function addMarker(recordToAdd) {
                 infoWindow.open(this.map, marker);
                 currentInfoWindowRecord=recordToAdd;
                 currentInfoWindow=infoWindow;
+                currentMarker=marker;
            });
         }
 }
@@ -330,29 +332,42 @@ function deleteRecord(){
     //我先用confirm做:0
     var result = confirm("確定要刪除目前資料嗎？");
     if (result) {
-        deleteRecordToBackend(currentInfoWindowRecord);
+        deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
+        deleteRecordToBackend(currentInfoWindowRecord.recordId);
+        deleteMarker();
         console.log("刪資料");
     } else {
         console.log("沒刪");
     }
 }
 
+//從records刪資料
+function deleteRecordInArray(recordId){
+    records = records.filter(item => item.recordId !== recordId);
+
+}
+
 //從後端刪資料
-function deleteRecordToBackend(record) {
-    console.log("已刪除")
-    console.log(record)
+function deleteRecordToBackend(recordId) {
+    console.log(records);
     $.ajax({
-        type: 'PUT',
-        url: '/api/updateRecord',
-        contentType: 'application/json',
-        data: JSON.stringify(record),
+        type: 'DELETE',
+        url: `/api/deleteOneRecord?recordId=${recordId}`,
+        contentType: 'application/string',
         success: function(response) {
-            console.log(response); // 成功更新時的處理邏輯
+            console.log("已刪除")
+            console.log(response); // 成功刪除時的處理邏輯
         },
         error: function(xhr, status, error) {
-            console.error(error); // 更新失敗時的處理邏輯
+            console.error(error); // 刪除失敗時的處理邏輯
         }
     });
+}
+
+//刪mark
+function deleteMarker(){
+    currentInfoWindow.close();
+    currentMarker.setMap(null);
 }
 
 // 查看歷史紀錄
