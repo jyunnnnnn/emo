@@ -62,6 +62,14 @@ function calculateFootprint(type,data_value) {
     footprint=data_value * coefficient;
     return footprint;
 }
+//判斷輸入的data_value是否合法
+function isDataValueValid(data_value) {
+    if (!isNaN(data_value) && parseInt(data_value, 10) % 1 === 0 && parseInt(data_value, 10) >= 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
 // 記錄按鈕事件處理
 function saveRecord(){
     var latitude;
@@ -82,10 +90,18 @@ function saveRecord(){
                 classType = $("#traffic").text();
                 type = $("#trafficMenu option:selected").text();
                 data_value = document.getElementById('kilometer').value;
+                if(!isDataValueValid(data_value)) {
+                    alert("請輸入正整數");
+                    return;
+                }
             } else if ($("#dailyRadio").is(":checked")) {
                 classType = $("#daily").text();
                 type = $("#dailyMenu option:selected").text();
                 data_value = document.getElementById('count').value;
+                if(!isDataValueValid(data_value)) {
+                    alert("請輸入正整數");
+                    return;
+                }
             }
             footprint=calculateFootprint(type,data_value);
             // 保存紀錄到後端
@@ -246,10 +262,18 @@ function updateRecord(){
         var classType = $("#modifyTraffic").text();
         var type = $("#modifyTrafficMenu option:selected").text();
         var data_value = document.getElementById('modifyKilometer').value;
+        if(!isDataValueValid(data_value)) {
+            alert("請輸入正整數");
+            return;
+        }
     } else if ($("#modifyDailyRadio").is(":checked")) {
         var classType = $("#modifyDaily").text();
         var type = $("#modifyDailyMenu option:selected").text();
         var data_value = document.getElementById('modifyCount').value;
+        if(!isDataValueValid(data_value)) {
+            alert("請輸入正整數");
+            return;
+        }
     }
 
     // 更新紀錄到後端
