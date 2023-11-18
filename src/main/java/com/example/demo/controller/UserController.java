@@ -57,12 +57,35 @@ public class UserController {
 
     //修改密碼
     @PutMapping("/update")
-    public ResponseEntity<?> updatePassword(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<?> updatePassword(@RequestParam("userMail") String email, @RequestParam("password") String password) {
         int result = this.userService.updatePassword(email, password);
 
         if (result == UserService.OK)
             return ResponseEntity.ok(Collections.singletonMap("message", "修改密碼成功"));
 
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改密碼失敗"));
+    }
+
+    //帳號是否存在
+    @GetMapping("/accountExist")
+    public ResponseEntity<?> accountExist(@RequestParam("userMail") String email) {
+        int result = this.userService.isAccountExists(email);
+        //使用者是否存在
+        if (result == UserService.USER_FOUND) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者已存在"));
+        }
+        return ResponseEntity.ok(Collections.singletonMap("message", "使用者不存在"));
+    }
+
+    //用電子郵件檢查是否存在使用者
+    @GetMapping("/checkSpecificAccountByEmail")
+    public ResponseEntity<?> fetchSpecificAccountByEmail(@RequestParam("userMail") String email) {
+
+        User result = this.userService.findSpecificAccountByEmail(email);
+
+        if (result == null) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
+        }
+        return ResponseEntity.ok("使用者存在");
     }
 }

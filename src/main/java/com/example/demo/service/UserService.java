@@ -43,7 +43,7 @@ public class UserService {
     //登入帳號
     public int login(String username, String password) {
         User user = this.repository.findByUsername(username);
-        if(user == null)return FAIL;
+        if (user == null) return FAIL;
         if (user.getPassword().equals(password)) return OK;
         return FAIL;
     }
@@ -53,6 +53,11 @@ public class UserService {
         User result = this.repository.findByUsername(username);
         if (result != null) return USER_FOUND;
         return USER_NOT_FOUND;
+    }
+
+    //返回特定信箱的帳號資訊
+    public User findSpecificAccountByEmail(String email) {
+        return this.repository.findByEmail(email);
     }
 
     //電子郵件是否存在

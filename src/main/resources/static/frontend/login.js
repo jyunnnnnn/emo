@@ -182,13 +182,128 @@ $(document).ready(function () {
         });
     });
 
-    //忘記密碼時驗證完按下確認 下方跑出設定新密碼的表單
-    $('#verified-code').click(function (e) {
-        //要再加一個if(驗證成功才執行下面的切換)
+    //忘記密碼頁面 送出驗證碼按鈕
+    $('#send-email').click(function(e){
+        //使用者輸入email
+        var inputEmail = $('#exampleInputAccount3').val();
 
-        e.preventDefault();
-        $('#login-container').addClass('d-none');
-        $('#set-password-container').removeClass('d-none');
-        
+        //檢查是否輸入帳號
+        if(!inputEmail){
+            alert("請輸入電子郵件");
+            return ;
+        }
+        //是否為電子郵件格式
+        if(!IsEmail(inputEmail)){
+            alert("請輸入正確的電子郵件格式");
+            return ;
+        }
+        //檢查電子郵件是否存在
+        $.ajax({
+            type: 'GET',
+            url: '/api/checkSpecificAccountByEmail?userMail=' + inputEmail ,
+            contentType: 'application/json',
+            success: function (response) {
+                //檢查是否已經寄送過
+                 $.ajax({
+                     type: 'GET',
+                     url: '/api/sendAgain?userMail=' + inputEmail,
+                     contentType: 'application/json',
+                     success: function (response) {
+                         alert("驗證碼寄送成功");
+                         sendEmail(inputEmail);
+                     },
+                     error: function (xhr, status, error) {
+                         alert("先前已寄送驗證碼，5分鐘後再嘗試");
+                     }
+                 });
+            },
+            error: function (response) {
+               alert("請檢查輸入的電子郵件是否存在");
+            }
+        });
+
+
+    })
+
+    //忘記密碼 驗證碼確認按鈕
+    $('#verified-code').click(function (e) {
+
+
+        //使用者輸入email
+        var inputEmail = $('#exampleInputAccount3').val();
+        var inputCode =$('#Input-verify-code').val();
+
+
+        //檢查是否輸入帳號
+        if(!inputEmail){
+            alert("請輸入電子郵件");
+            return ;
+        }
+        //檢查是否輸入驗證碼
+        if(!inputCode){
+            alert("請輸入驗證碼");
+            return ;
+        }
+
+        //檢查驗證碼是否正確
+        $.ajax({
+            type: 'GET',
+            url: '/api/matchVerifyingCode?userMail=' + inputEmail + "&userInput=" + inputCode,
+            contentType: 'application/json',
+            success: function (response) {
+                //顯示更改密碼文字框
+               e.preventDefault();
+               $('#login-container').addClass('d-none');
+               $('#set-password-container').removeClass('d-none');
+            },
+            error: function (response) {
+                alert("驗證碼輸入錯誤");
+            }
+        });
+
     });
+
+    $('#login-button2').click(function(e){
+
+        var newPassword = $('#exampleInputPassword3').val();
+        var newConfirmedPassword = $('#exampleInputPasswordcheck2').val();
+        //密碼欄位是否為空
+        if(!newPassword || !newConfirmedPassword ){
+            alert("請檢查密碼欄位是否輸入完全");
+            return ;
+        }
+        //新密碼長度是否至少為8
+        if(newPassword.length<8){
+            alert("密碼長度至少為8位");
+            return ;
+        }
+        //密碼與確認密碼是否相同
+        if(newPassword!==newConfirmedPassword){
+            alert("請檢查兩個密碼欄位是否相同");
+            return ;
+        }
+
+        //更新使用者資訊
+        var userMail = $('#exampleInputAccount3').val();
+
+        updatePassword(userMail,newPassword);
+
+    })
+    function updatePassword(email,newPassword){
+        $.ajax({
+            type: 'PUT',
+                url: '/api/update?userMail=' + email +"&password="+newPassword  ,
+            contentType: 'application/json',
+            success: function (response) {
+                alert(response.message);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+
+
+
 });
