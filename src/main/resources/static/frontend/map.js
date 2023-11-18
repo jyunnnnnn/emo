@@ -263,17 +263,18 @@ function updateRecord(){
     }
 }
 // 更新紀錄的函數
-function updateRecordToBackend(classType, type, data_value) {
+function updateRecordToBackend(newClassType, newType, newDataValue) {
+    var footprint=calculateFootprint(newClassType,newDataValue);
     var record = {
         userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
-        classType: classType,
-        type: type,
-        data_value: data_value,
-        latitude: currentInfoWindowRecord.latitude,
-        longitude: currentInfoWindowRecord.longitude,
-        footprint: currentInfoWindowRecord.footprint,
-        time: currentInfoWindowRecord.formattedDate,
-        recordId: currentInfoWindowRecord.recordId
+                classType: newClassType,
+                type: newType,
+                data_value: newDataValue,
+                latitude: currentInfoWindowRecord.latitude,
+                longitude: currentInfoWindowRecord.longitude,
+                footprint:footprint,
+                time: currentInfoWindowRecord.formattedDate,
+                recordId:currentInfoWindowRecord.recordId
     };
     if(record.userId) {
         modifyRecordToBackend(record);
