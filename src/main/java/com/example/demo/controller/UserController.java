@@ -66,6 +66,16 @@ public class UserController {
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改密碼失敗"));
     }
 
+    //用帳號修改密碼
+    @PutMapping("/updateByUsername")
+    public ResponseEntity<?> updateByUsername(@RequestParam("username") String username,@RequestParam("password")String newPassword){
+        int result = this.userService.updatePasswordByUsername(username,newPassword);
+        if(result == UserService.OK){
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改密碼成功"));
+        }
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改密碼失敗"));
+
+    }
     //帳號是否存在
     @GetMapping("/accountExist")
     public ResponseEntity<?> accountExist(@RequestParam("userMail") String email) {
@@ -74,8 +84,20 @@ public class UserController {
         if (result == UserService.USER_FOUND) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者已存在"));
         }
-        return ResponseEntity.ok(Collections.singletonMap("message", "使用者不存在"));
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
     }
+
+    @GetMapping("/checkAccountExistByUsername")
+    public ResponseEntity<?> chekcAccountExistByUsername(@RequestParam("username") String username) {
+        User result = this.userService.fetchOneUserByUsername(username);
+
+
+        if (result == null) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
+        }
+        return ResponseEntity.ok(result);
+    }
+
 
     //用電子郵件檢查是否存在使用者
     @GetMapping("/checkSpecificAccountByEmail")
