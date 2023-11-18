@@ -48,7 +48,6 @@ function findCoefficientByType(type) {
     var result = FootprintData.find(function(item) {
         return item.type === type;
     });
-
     // 如果找到對應的 type，返回 coefficient，否則返回 null 或其他預設值
     return result ? result.coefficient : null;
 }
@@ -88,20 +87,10 @@ function saveRecord(){
             // 保存紀錄到後端
             if(classType &&type &&data_value &&latitude &&longitude&&footprint) {
                 var now = new Date();
-                var formatter = new Intl.DateTimeFormat('en-US', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false  // 使用24小時制
-                });
-                var formattedDate = formatter.format(now);
+                var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
                 var recordId=now.getTime();
                 saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
-            //這裡邏輯待討論
         });
     } else {
         alert("不支援定位");
@@ -263,17 +252,18 @@ function updateRecord(){
     }
 }
 // 更新紀錄的函數
-function updateRecordToBackend(classType, type, data_value) {
+function updateRecordToBackend(newClassType, newType, newDataValue) {
+    var footprint=calculateFootprint(newClassType,newDataValue);
     var record = {
         userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
-        classType: classType,
-        type: type,
-        data_value: data_value,
-        latitude: currentInfoWindowRecord.latitude,
-        longitude: currentInfoWindowRecord.longitude,
-        footprint: currentInfoWindowRecord.footprint,
-        time: currentInfoWindowRecord.formattedDate,
-        recordId: currentInfoWindowRecord.recordId
+                classType: newClassType,
+                type: newType,
+                data_value: newDataValue,
+                latitude: currentInfoWindowRecord.latitude,
+                longitude: currentInfoWindowRecord.longitude,
+                footprint:footprint,
+                time: currentInfoWindowRecord.formattedDate,
+                recordId:currentInfoWindowRecord.recordId
     };
     if(record.userId) {
         modifyRecordToBackend(record);

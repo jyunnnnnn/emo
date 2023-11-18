@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 //紀錄物件
 @Document(collection = "Emo_Record")
 public class EcoRecord {
+    @Id
     private String recordId;//紀錄id
     private String userId;//使用者id(哪個使用者的紀錄)
     private String classType;//紀錄類別 (EX:生活用品)
