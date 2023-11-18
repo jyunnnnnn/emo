@@ -12,4 +12,6 @@ import java.util.List;
 public interface RecordRepository extends MongoRepository<EcoRecord,String> {
     @Query("{ 'userId' : ?0 }")
     List<EcoRecord> findAllByUserId(@Param("userId") String userId);//抓取某使用者的所有紀錄
+
+    void deleteByRecordId(String RecordId);
 }

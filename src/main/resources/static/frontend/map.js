@@ -10,6 +10,7 @@ var User;
 //小作弊
 var currentInfoWindowRecord; // 目前 infoWindow 的內容
 var currentInfoWindow;//目前infowindow
+var currentMarker;//目前Marker
 $(document).ready(function() {
     User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
     username =User.username;
@@ -18,6 +19,7 @@ $(document).ready(function() {
     loadFootprintData();//載入碳足跡計算
     $('#saveRecord').click(saveRecord)// 添加標記
     $('#updateRecord').click(updateRecord)//修改紀錄
+    $('#deleteRecord').click(deleteRecord)//刪除紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#startRecording').click(function () {
         if (!isRecording) {
@@ -189,13 +191,14 @@ function addMarker(recordToAdd) {
                 infoWindow.open(this.map, marker);
                 currentInfoWindowRecord=recordToAdd;
                 currentInfoWindow=infoWindow;
+                currentMarker=marker;
            });
         }
 }
 
-//讓我寫在這，我懶得往下滑了
+//修改懸浮視窗是歷史紀錄
 function recordModal(){
-    console.log("編輯按鈕可以按");
+    //console.log("編輯按鈕可以按");
     // 顯示懸浮窗
         document.getElementById('modifyModal').style.display = 'block';
         document.getElementById('modifyModal').style.position = 'fixed';
@@ -220,7 +223,7 @@ function recordModal(){
 
             document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
         }else{
-            console.log(currentInfoWindowRecord.classType);
+            //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyDailyRadio').checked = true;
             document.getElementById('modifyTrafficMenu').style.display = 'none';
             document.getElementById('modifyDailyMenu').style.display = 'block';
@@ -239,14 +242,14 @@ function recordModal(){
 }
 // 修改記錄按鈕事件處理 //test
 function updateRecord(){
-    if ($("#trafficRadio").is(":checked")) {
-        var classType = $("#traffic").text();
-        var type = $("#trafficMenu option:selected").text();
-        var data_value = document.getElementById('kilometer').value;
-    } else if ($("#dailyRadio").is(":checked")) {
-        var classType = $("#daily").text();
-        var type = $("#dailyMenu option:selected").text();
-        var data_value = document.getElementById('count').value;
+    if ($("#modifyTrafficRadio").is(":checked")) {
+        var classType = $("#modifyTraffic").text();
+        var type = $("#modifyTrafficMenu option:selected").text();
+        var data_value = document.getElementById('modifyKilometer').value;
+    } else if ($("#modifyDailyRadio").is(":checked")) {
+        var classType = $("#modifyDaily").text();
+        var type = $("#modifyDailyMenu option:selected").text();
+        var data_value = document.getElementById('modifyCount').value;
     }
 
     // 更新紀錄到後端
@@ -256,7 +259,7 @@ function updateRecord(){
 }
 // 更新紀錄的函數
 function updateRecordToBackend(newClassType, newType, newDataValue) {
-    var footprint=calculateFootprint(newClassType,newDataValue);
+    var footprint = calculateFootprint(newType,newDataValue);
     var record = {
         userId: currentInfoWindowRecord.userId, // 使用者 ID，����使用本地存���的使用者名使用者 ID，這裡使用本地存儲的使用者名稱
         classType: newClassType,
@@ -265,7 +268,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         latitude: currentInfoWindowRecord.latitude,
         longitude: currentInfoWindowRecord.longitude,
         footprint:footprint,
-        time: currentInfoWindowRecord.formattedDate,
+        time: currentInfoWindowRecord.time,
         recordId:currentInfoWindowRecord.recordId
     };
     if(record.userId) {
@@ -281,6 +284,8 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
 }
 // 將紀錄更新到後端
 function modifyRecordToBackend(record) {
+    //console.log("有改到")
+    console.log(record)
     $.ajax({
         type: 'PUT',
         url: '/api/updateRecord',
@@ -295,6 +300,7 @@ function modifyRecordToBackend(record) {
     });
 }
 //更新marker inFoWindow
+
 function updateMarkerContent(newContent) {
     let modifyContent=`
          <div>
@@ -303,13 +309,16 @@ function updateMarkerContent(newContent) {
              <p style="padding:3px; margin:3px;">${newContent.time}</p>
              <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
          </div>`;
-    if (currentInfoWindow.marker) {
-        currentInfoWindow.marker.infoWindow.setContent(newContent); // 更新信息窗口内容
+    if (currentInfoWindow) {
+        //console.log("更新infowindow成功");
+        currentInfoWindow.setContent(modifyContent);
+    }else {
+        console.error('InfoWindow not available.');
     }
 }
 //更新record[]
 function updateRecordInArray(newClassType, newType, newDataValue){
-    var recordIndex = records.findIndex(record => record.Id === currentInfoWindowRecord.Id);
+    var recordIndex = records.findIndex(record => record.recordId === currentInfoWindowRecord.recordId);
     if (recordIndex !== -1) {
         // 有紀錄，更新
         records[recordIndex].classType = newClassType;
@@ -321,6 +330,48 @@ function updateRecordInArray(newClassType, newType, newDataValue){
     }
 }
 
+//刪除資料
+function deleteRecord(){
+    //我先用confirm做:0
+    var result = confirm("確定要刪除目前資料嗎？");
+    if (result) {
+        deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
+        deleteRecordToBackend(currentInfoWindowRecord.recordId);
+        deleteMarker();
+        console.log("刪資料");
+    } else {
+        console.log("沒刪");
+    }
+}
+
+//從records刪資料
+function deleteRecordInArray(recordId){
+    records = records.filter(item => item.recordId !== recordId);
+
+}
+
+//從後端刪資料
+function deleteRecordToBackend(recordId) {
+    console.log(records);
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/deleteOneRecord?recordId=${recordId}`,
+        contentType: 'application/string',
+        success: function(response) {
+            console.log("已刪除")
+            console.log(response); // 成功刪除時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 刪除失敗時的處理邏輯
+        }
+    });
+}
+
+//刪mark
+function deleteMarker(){
+    currentInfoWindow.close();
+    currentMarker.setMap(null);
+}
 
 // 查看歷史紀錄
 function showRecord() {

@@ -31,8 +31,8 @@ public class EcoRecordService {
     }
 
     //刪除歷史紀錄
-    public void deleteRecord(EcoRecord target) {
-        this.repository.delete(target);
+    public void deleteRecord(String recordId) {
+        this.repository.deleteByRecordId(recordId);
     }
 
     //抓取特定使用者紀錄
