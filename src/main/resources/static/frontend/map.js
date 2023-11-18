@@ -16,6 +16,7 @@ $(document).ready(function() {
     loadFootprintData();//載入碳足跡計算
     $('#saveRecord').click(saveRecord)// 添加標記
     $('#updateRecord').click(updateRecord)//修改紀錄
+    $('#deleteRecord').click(deleteRecord)//刪除紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#startRecording').click(function () {
         if (!isRecording) {
@@ -293,6 +294,7 @@ function modifyRecordToBackend(record) {
         }
     });
 }
+
 //更新marker infowindow
 function updateMarkerContent(newContent) {
     let modifyContent=`
@@ -323,6 +325,35 @@ function updateRecordInArray(newClassType, newType, newDataValue){
     }
 }
 
+//刪除資料
+function deleteRecord(){
+    //我先用confirm做:0
+    var result = confirm("確定要刪除目前資料嗎？");
+    if (result) {
+        deleteRecordToBackend(currentInfoWindowRecord);
+        console.log("刪資料");
+    } else {
+        console.log("沒刪");
+    }
+}
+
+//從後端刪資料
+function deleteRecordToBackend(record) {
+    console.log("已刪除")
+    console.log(record)
+    $.ajax({
+        type: 'PUT',
+        url: '/api/updateRecord',
+        contentType: 'application/json',
+        data: JSON.stringify(record),
+        success: function(response) {
+            console.log(response); // 成功更新時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 更新失敗時的處理邏輯
+        }
+    });
+}
 
 // 查看歷史紀錄
 function showRecord() {
