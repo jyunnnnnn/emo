@@ -33,3 +33,22 @@ document.getElementById('dailyRadio').addEventListener('change', function () {
     document.getElementById('dailyMenu').style.display = 'block';
     document.getElementById('SPACE').style.display = 'none';
 })
+
+
+// 關閉修改紀錄懸浮窗
+document.getElementById('closeModifyRecordModal').addEventListener('click', function () {
+    document.getElementById('modifyModal').style.display = 'none';
+});
+
+// 修改交通選單
+document.getElementById('modifyTrafficRadio').addEventListener('change', function () {
+    document.getElementById('modifyTrafficMenu').style.display = 'block';
+    document.getElementById('modifyDailyMenu').style.display = 'none';
+    document.getElementById('modifySPACE').style.display = 'none';
+})
+// 修改生活用品選單
+document.getElementById('modifyDailyRadio').addEventListener('change', function () {
+    document.getElementById('modifyTrafficMenu').style.display = 'none';
+    document.getElementById('modifyDailyMenu').style.display = 'block';
+    document.getElementById('modifySPACE').style.display = 'none';
+})

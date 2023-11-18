@@ -1,8 +1,8 @@
 var map;
 var infoWindow;
 var intervalId;
-var recordedPositions = [];
 var FootprintData = [];
+var recordedPositions = [];//路線紀錄
 var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
 var username//使用者名稱
@@ -13,6 +13,7 @@ $(document).ready(function() {
     loadEcoRecords(username);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
     $('#saveRecord').click(saveRecord)// 添加標記
+    $('#updateRecord').click(updateRecord)//修改紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#startRecording').click(function () {
         if (!isRecording) {
@@ -169,9 +170,12 @@ function loadEcoRecords(username) {
     });
 
 }
+//小作弊
+var currentInfoWindowRecord; // 目前 infoWindow 的內容
+var currentInfoWindow;//目前infowindow
+
 function addMarker(recordToAdd) {
         console.log(recordToAdd);
-
         if (map) {
             var currentLocation = {
                 lat: recordToAdd.latitude,
@@ -184,21 +188,91 @@ function addMarker(recordToAdd) {
             });
            //var currentTime =new Date() ;
            var now=new Date().toLocaleString();
-           /////////////////////////////這邊誰可以救我///////////////////////////////////////////
+           if(!recordToAdd.time) recordToAdd.time = now;
+           //小改
+           let infoWindowContent = `
+               <div>
+                   <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
+                   <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
+                   <p style="padding:3px; margin:3px;">${recordToAdd.time}</p>
+                   <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
+               </div>`;
            let infoWindow = new google.maps.InfoWindow({
-                content: `<div>
-                <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
-                <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
-                <p style="padding:3px; margin:3px;">${now}</p>
-                </div>` // 支援html
+                content: infoWindowContent
            });
            //localStorage.setItem("ecoRecord"+currentTime, JSON.stringify({ time: now, content: record.type ,compare:Date.now()}));
             // 監聽 marker click 事件
            marker.addListener('click', e => {
                 infoWindow.open(this.map, marker);
+                currentInfoWindowRecord=recordToAdd;
+                currentInfoWindow=infoWindow;
            });
         }
 }
+
+//讓我寫在這，我懶得往下滑了
+function recordModal(){
+    console.log("編輯按鈕可以按");
+    // 顯示懸浮窗
+        document.getElementById('modifyModal').style.display = 'block';
+        document.getElementById('modifyModal').style.position = 'fixed';
+
+        //這樣改超笨QQ好煩
+        if(currentInfoWindowRecord.classType == "交通"){
+            console.log(currentInfoWindowRecord.classType);
+            document.getElementById('modifyTrafficRadio').checked = true;
+            document.getElementById('modifyTrafficMenu').style.display = 'block';
+            document.getElementById('modifyDailyMenu').style.display = 'none';
+            document.getElementById('modifySPACE').style.display = 'none';
+
+            if(currentInfoWindowRecord.type == "公車"){
+                document.getElementById('modifyTrafficType').value = 'traffic-bus';
+            }else if(currentInfoWindowRecord.type == "捷運"){
+                document.getElementById('modifyTrafficType').value = 'traffic-MRT';
+            }else if(currentInfoWindowRecord.type == "火車"){
+                document.getElementById('modifyTrafficType').value = 'traffic-train';
+            }else{
+                document.getElementById('modifyTrafficType').value = 'traffic-HSR';
+            }
+
+            document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
+        }else{
+            console.log(currentInfoWindowRecord.classType);
+            document.getElementById('modifyDailyRadio').checked = true;
+            document.getElementById('modifyTrafficMenu').style.display = 'none';
+            document.getElementById('modifyDailyMenu').style.display = 'block';
+            document.getElementById('modifySPACE').style.display = 'none';
+
+            if(currentInfoWindowRecord.type == "環保杯"){
+                document.getElementById('modifyDailyType').value = 'daily-cup';
+            }else if(currentInfoWindowRecord.type == "環保餐具"){
+                document.getElementById('modifyDailyType').value = 'daily-tableware';
+            }else{
+                document.getElementById('modifyDailyType').value = 'daily-bag';
+            }
+
+            document.getElementById('modifyCount').value = currentInfoWindowRecord.data_value;
+        }
+}
+
+// 修改記錄按鈕事件處理 //test
+function updateRecord(){
+    if ($("#trafficRadio").is(":checked")) {
+        var classType = $("#traffic").text();
+        var type = $("#trafficMenu option:selected").text();
+        var data_value = document.getElementById('kilometer').value;
+    } else if ($("#dailyRadio").is(":checked")) {
+        var classType = $("#daily").text();
+        var type = $("#dailyMenu option:selected").text();
+        var data_value = document.getElementById('count').value;
+    }
+
+    // 更新紀錄到後端
+    if(classType!=null &&type!=null &&data_value!=null){
+        updateRecordToBackend(classType, type, data_value);
+    }
+}
+
 
 // 查看歷史紀錄
 function showRecord() {
@@ -287,8 +361,113 @@ function showNewRecord(records) {
 
 
 
+// 將紀錄上傳到後端
+function uploadRecordToBackend(record) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/addRecord',
+        contentType: 'application/json',
+        data: JSON.stringify(record),
+        success: function(response) {
+            console.log(response); // 成功上傳時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 上傳失敗時的處理邏輯
+        }
+    });
+}
 
-////////
+// 保存紀錄的函數
+function saveRecordToBackend(classType, type, data_value, latitude, longitude) {
+    var record = {
+        userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
+        classType: classType,
+        type: type,
+        data_value: data_value,
+        latitude: latitude,
+        longitude: longitude
+    };
+    if(record.userId) {
+        uploadRecordToBackend(record);
+        records.push(record);
+        updateMarkerContent(currentInfoWindow,record);
+    }
+    else {
+        alert("請重新登入");
+        window.location.href = 'frontend/login.html';
+    }
+    // 上傳紀錄到後端
+}
+
+// 更新紀錄的函數
+function updateRecordToBackend(classType, type, data_value) {
+    var record = {
+        userId: localStorage.getItem('EmoAppUser'), // 使用者 ID，這裡使用本地存儲的使用者名稱
+        classType: classType,
+        type: type,
+        data_value: data_value,
+        latitude: currentInfoWindowRecord.latitude,
+        longitude: currentInfoWindowRecord.longitude
+    };
+    if(record.userId) {
+        modifyRecordToBackend(record);
+        updateRecordInArray(newClassType, newType, newDataValue);//更新record[]
+        updateMarkerContent(record);
+    }
+    else {
+        alert("請重新登入");
+        window.location.href = 'frontend/login.html';
+    }
+    // 上傳紀錄到後端
+}
+
+// 將紀錄更新到後端
+function modifyRecordToBackend(record) {
+    $.ajax({
+        type: 'PUT',
+        url: '/api/updateRecord',
+        contentType: 'application/json',
+        data: JSON.stringify(record),
+        success: function(response) {
+            console.log(response); // 成功更新時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 更新失敗時的處理邏輯
+        }
+    });
+}
+
+//更新marker infowindow
+function updateMarkerContent(newContent) {
+    let modifyContent=`
+         <div>
+             <h6 style="padding:3px; margin:3px;">${newContent.type}</h6>
+             <p style="padding:3px; margin:3px;">減少的碳足跡為:${newContent.footprint}gCO2E</p>
+             <p style="padding:3px; margin:3px;">${newContent.time}</p>
+             <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
+         </div>`;
+    if (currentInfoWindow.marker) {
+        currentInfoWindow.marker.infoWindow.setContent(newContent); // 更新信息窗口内容
+    }
+}
+
+//更新record[]
+function updateRecordInArray(newClassType, newType, newDataValue){
+    var recordIndex = records.findIndex(record => record.id === currentInfoWindowRecord.id);
+    if (recordIndex !== -1) {
+        // 有紀錄，更新
+        records[recordIndex].classType = newClassType;
+        records[recordIndex].type = newType;
+        records[recordIndex].data_value = newDataValue;
+
+
+        console.log('Updated records:', records);
+    } else {
+        console.log('Record not found');
+    }
+}
+
+////路線紀錄，不知道有沒有功能
 function startRecording() {
     // 按下變成結束
     $('#startRecording').text('結束');
@@ -305,8 +484,15 @@ function stopRecording() {
     $('#startRecording').text('開始記錄');
     isRecording = false;
 
+
+    //這裡存一下recordedPositions資料
+
     // 清除時間間隔
     clearInterval(intervalId);
+    // 清空位置紀錄
+    recordedPositions = [];
+    // 移除地圖上的線條
+    clearMapLines();
 }
 
 function recordLocation() {
@@ -331,7 +517,9 @@ function recordLocation() {
 
 function drawLines() {
     if (recordedPositions.length >= 2) {
-        var lineCoordinates = recordedPositions.map(function (position) {
+        //一段一段畫
+        var lastTwoPoints = recordedPositions.slice(-2); // 取得最後兩個點
+        var lineCoordinates = lastTwoPoints.map(function (position) {
             return new google.maps.LatLng(position.lat, position.lng);
         });
 
@@ -344,6 +532,16 @@ function drawLines() {
         });
 
         line.setMap(map);
+    }
+}
+//清線
+function clearMapLines() {
+    // 取得地圖上的所有線條
+    var mapLines = map.getOverlays('polyline');
+
+    // 移除線
+    for (var i = 0; i < mapLines.length; i++) {
+        map.removeOverlay(mapLines[i]);
     }
 }
 // 初始化Google Map
