@@ -58,6 +58,21 @@
 }
 
 /* 懸浮窗 */
+#recordFW,
+#recordListFW{
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
+
 .recordContainer {
     max-width: 350px;
     background: #F8F9FD;
@@ -67,6 +82,8 @@
     border: 5px solid rgb(255, 255, 255);
     box-shadow: rgba(202, 207, 210, 0.87) 0px 30px 30px -20px;
     margin: 20px;
+    position: fixed;
+    display: block;
 }
 
 .recordHeading {
@@ -309,4 +326,22 @@
     position: absolute;
     white-space: nowrap;
     width: 1px;
+}
+
+@media only screen and (max-width: 1000px) {
+    #recordFW,
+    #recordListFW{
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        justify-items: center;
+        align-content: center;
+        align-items: center;
+        transform: scale(2);
+    }
 }

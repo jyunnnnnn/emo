@@ -1,14 +1,32 @@
-// 點擊紀錄按鈕
+// 紀錄按鈕
 document.getElementById('openRecordModal').addEventListener('click', function () {
     // 顯示懸浮窗
-    document.getElementById('activityModal').style.display = 'block';
-    document.getElementById('activityModal').style.position = 'fixed';
+    document.getElementById('recordFW').style.display = 'flex';
+    document.getElementById('recordFW').style.position = 'fixed';
 });
-// 點擊查看按鈕
+// 儲存按鈕
+document.getElementById('saveRecord').addEventListener('click', function () {
+    var selected;
+    if ($("#trafficRadio").is(":checked")) {
+        classType = $("#traffic").text();
+        type = $("#trafficMenu option:selected").text();
+        data_value = document.getElementById('kilometer').value;
+    } else if ($("#dailyRadio").is(":checked")) {
+        classType = $("#daily").text();
+        type = $("#dailyMenu option:selected").text();
+        data_value = document.getElementById('count').value;
+    }
+    if(classType && type && data_value){
+        document.getElementById('recordFW').style.display = 'none';
+    } else {
+        alert("請輸入完整資訊");
+    }
+});
+// 查看按鈕
 document.getElementById('recordListButton').addEventListener('click', function () {
     // 顯示懸浮窗
-    document.getElementById('activityListModal').style.display = 'block';
-    document.getElementById('activityListModal').style.position = 'fixed';
+    document.getElementById('recordListFW').style.display = 'flex';
+    document.getElementById('recordListFW').style.position = 'fixed';
 });
 //點擊設定按鈕
 document.getElementById('settingButton').addEventListener('click', function () {
@@ -17,13 +35,20 @@ document.getElementById('settingButton').addEventListener('click', function () {
     document.getElementById('settingModal').style.position = 'fixed';
 });
 
+function closeFW(event){
+    if (event.target.id === 'recordFW') {
+        document.getElementById('recordFW').style.display = 'none';
+    } else if(event.target.id === 'recordListFW') {
+        document.getElementById('recordListFW').style.display = 'none';
+    }
+}
 // 關閉紀錄懸浮窗
 document.getElementById('closeRecordModal').addEventListener('click', function () {
-    document.getElementById('activityModal').style.display = 'none';
+    document.getElementById('recordFW').style.display = 'none';
 });
 // 關閉查看懸浮窗
 document.getElementById('closeListModal').addEventListener('click', function () {
-    document.getElementById('activityListModal').style.display = 'none';
+    document.getElementById('recordListFW').style.display = 'none';
 });
 
 // 關閉設定懸浮窗

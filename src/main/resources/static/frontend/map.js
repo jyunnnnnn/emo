@@ -19,7 +19,9 @@ $(document).ready(function() {
     loadFootprintData();//載入碳足跡計算
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount').click(deleteAccount);//刪除帳號
-    $('#saveRecord').click(saveRecord)// 添加標記
+    $('#saveRecord').click(function(event) {// 添加標記
+        saveRecord(event);
+    });
     $('#updateRecord').click(updateRecord)//修改紀錄
     $('#deleteRecord').click(deleteRecord)//刪除紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
@@ -124,7 +126,8 @@ function isDataValueValid(data_value) {
     }
 }
 // 記錄按鈕事件處理
-function saveRecord(){
+function saveRecord(event){
+    event.preventDefault();
     var latitude;
     var longitude;
     var classType;
@@ -137,8 +140,7 @@ function saveRecord(){
         navigator.geolocation.getCurrentPosition(function(position) {
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
-            // 在這裡你可以使用獲取到的經緯度進行相應的操作
-            // 假設你有一個保存紀錄的函數
+
             if ($("#trafficRadio").is(":checked")) {
                 classType = $("#traffic").text();
                 type = $("#trafficMenu option:selected").text();
@@ -156,9 +158,9 @@ function saveRecord(){
                     return;
                 }
             }
-            footprint=calculateFootprint(type,data_value);
+            footprint = calculateFootprint(type,data_value);
             // 保存紀錄到後端
-            if(classType &&type &&data_value &&latitude &&longitude&&footprint) {
+            if(classType && type && data_value && latitude && longitude && footprint) {
                 var now = new Date();
                 var recordId=now.getTime();
                 var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
@@ -187,12 +189,22 @@ function saveRecordToBackend(userId,classType, type, data_value, latitude, longi
         uploadRecordToBackend(record);
         records.push(record);
         addMarker(record);
+        clearForm();
     }
     else {
         alert("請重新登入");
         window.location.href = 'frontend/login.html';
     }
     // 上傳紀錄到後端
+}
+function clearForm(){
+    $('input[type="radio"]:checked').each(function() {
+        $(this).prop('checked', false);
+    });
+    document.getElementById('kilometer').value = 'none';
+    document.getElementById('trafficMenu').style.display = 'none';
+    document.getElementById('dailyMenu').style.display = 'none';
+    document.getElementById('SPACE').style.display = 'block';
 }
 // 將紀錄上傳到後端
 function uploadRecordToBackend(record) {
