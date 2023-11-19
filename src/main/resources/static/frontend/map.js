@@ -269,7 +269,7 @@ function recordModal(){
         document.getElementById('modifyFW').style.position = 'fixed';
 
         if(currentInfoWindowRecord.classType == "交通"){
-            console.log(currentInfoWindowRecord.classType);
+            //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyTrafficRadio').checked = true;
             document.getElementById('modifyTrafficMenu').style.display = 'block';
             document.getElementById('modifyDailyMenu').style.display = 'none';
@@ -286,7 +286,7 @@ function recordModal(){
             }
 
             document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
-        }else{
+        }else if(currentInfoWindowRecord.classType == "生活用品"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyDailyRadio').checked = true;
             document.getElementById('modifyTrafficMenu').style.display = 'none';
