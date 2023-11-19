@@ -1,12 +1,12 @@
 #openRecordModal {
     position: fixed;
-    bottom: 40px;
-    left: 120px;
+    bottom: 5%;
+    left: 15%;
 }
 #recordListButton {
     position: fixed;
-    bottom: 40px;
-    right: 120px;
+    bottom: 5%;
+    right: 15%;
 }
 #startRecording{
     position: fixed;
@@ -14,8 +14,9 @@
 }
 #settingButton{
     position: fixed;
-    top: 30px;
-    right: 120px;
+    top: 6%;
+    right: 10%;
+    transform:scale(1.5);
 }
 #settingButton:hover{
     /*box-shadow: 0px 15px 20px rgb(183, 188, 189);*/
@@ -32,18 +33,30 @@
     transform: translateY(-1px);
 }
 .showUser{
+    transform:scale(1.5);
+    display:flex;
+    align-items:center;
+    justify-content: center;
     position: fixed;
-    top: 30px;
-    left: 120px;
+    top: 6%;
+    left: 10%;
     font-family: 'Crimson Pro', serif;
-    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white ;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;
+}
+
+#userIcon {
+  margin-right: 8px;
+}
+#user{
+    font-size:18px;
+    margin:0px;
 }
 
 /* 記錄按鈕 */
 .recordButton {
     font-family: 'Crimson Pro', serif;
     padding: 1.3em 3em;
-    font-size: 12px;
+    font-size: 18px;
     text-transform: uppercase;
     letter-spacing: 2.5px;
     font-weight: bold;
@@ -55,6 +68,11 @@
     transition: all 0.3s ease 0s;
     cursor: pointer;
     outline: none;
+    width:200px;
+    height:60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 懸浮窗 */
@@ -330,7 +348,7 @@
 
 @media only screen and (max-width: 1000px) {
     #recordFW,
-    #recordListFW{
+    #recordListFW,{
         display: none;
         position: fixed;
         top: 0;
@@ -343,5 +361,12 @@
         align-content: center;
         align-items: center;
         transform: scale(2);
+    }
+    #openRecordModal,#recordListButton{
+        transform: scale(2.2);
+    }
+    .showUser,#settingButton{
+        top:4%;
+        transform: scale(2.2);
     }
 }
