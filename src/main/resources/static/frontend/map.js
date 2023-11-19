@@ -37,7 +37,7 @@ $(document).ready(function() {
 function logoutAccount(){
     alert("登出成功");
     localStorage.removeItem('EmoAppUser');
-    window.location.href= 'frontend/login.html';
+    window.location.href= '/login';
 }
 //刪除帳號確認
 function deleteAccount(){

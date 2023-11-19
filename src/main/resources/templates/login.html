@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="login.js"></script>
+    <script src="frontend/login.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -19,7 +19,7 @@
 <style>
         body {
             font-family: 'Crimson Pro', serif;
-            background-image: url(img/bg2.jpg);
+            background-image: url(frontend/img/bg2.jpg);
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -136,7 +136,7 @@
 
 
 </head>
-<body class="img js-fullheight" style="background-image: url(img/bg1.jpg);">
+<body class="img js-fullheight" style="background-image: url(frontend/img/bg1.jpg);">
 <!--登入區塊-->
 <div class="container text-white" style="width: 500px;" id="login-container">
     <div class="row">
@@ -150,9 +150,9 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    <!-- <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
-                    <label for="exampleInputPassword1">密碼</label>
-                    <input id="password-field" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                    <label for="password-field">密碼</label>
+                    <!--id="exampleInputPassword1"-->
+                    <input type="password" class="form-control" id="password-field" placeholder="Password" required>
                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <br><br>

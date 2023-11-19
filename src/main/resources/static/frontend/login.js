@@ -347,7 +347,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (response) {
                 alert("密碼修改成功");
-                window.location.href = "login.html";
+                window.location.href = "login";
             },
             error: function (response) {
                 alert("密碼修改失敗");
