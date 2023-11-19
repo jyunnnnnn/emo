@@ -353,7 +353,7 @@ function updateRecord(){
 function updateRecordToBackend(newClassType, newType, newDataValue) {
     var footprint = calculateFootprint(newType,newDataValue);
     var record = {
-        userId: currentInfoWindowRecord.userId, // 使用者 ID，����使用本地存���的使用者名使用者 ID，這裡使用本地存儲的使用者名稱
+        userId: currentInfoWindowRecord.userId, // 使用者 ID
         classType: newClassType,
         type: newType,
         data_value: newDataValue,
