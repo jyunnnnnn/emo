@@ -138,9 +138,11 @@ function saveRecord(event){
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-
+//            latitude = position.coords.latitude;
+//            longitude = position.coords.longitude;     抓取真實位置
+            latitude = map.getCenter().lat();
+            longitude = map.getCenter().lng();
+//            抓取中心位置 這是備案
             if ($("#trafficRadio").is(":checked")) {
                 classType = $("#traffic").text();
                 type = $("#trafficMenu option:selected").text();
@@ -464,6 +466,12 @@ function deleteMarker(){
     currentInfoWindow.close();
     currentMarker.setMap(null);
 }
+//點擊列表中的record
+function recordClick(recordId){
+    var recordIndex = records.findIndex(record => record.recordId === recordId);
+    nowRecord=records[recordIndex];
+    console.log(nowRecord);
+}
 
 // 查看歷史紀錄
 function showRecord() {
@@ -479,6 +487,7 @@ function showRecord() {
         var recordDiv = document.createElement("div");
         recordDiv.style.display = "inline";
         recordDiv.style.textAlign = "left";
+
         // 創建新的 <p> 元素
         var recordElement = document.createElement("p");
         var timeSpan = document.createElement("span");
@@ -495,6 +504,12 @@ function showRecord() {
 
         recordDiv.appendChild(recordElement);
         container.appendChild(recordDiv);
+        recordDiv.id  = 'record_' + thisRecords[i].recordId;
+        (function(recordId) {
+                recordDiv.addEventListener('click', function() {
+                    recordClick(recordId);
+                });
+            })(thisRecords[i].recordId);
     }
 }
 // 排序歷史紀錄
@@ -547,6 +562,12 @@ function showNewRecord(records) {
 
         recordDiv.appendChild(recordElement);
         container.appendChild(recordDiv);
+        recordDiv.id  = 'record_' + thisRecords[i].recordId;
+                (function(recordId) {
+                        recordDiv.addEventListener('click', function() {
+                            recordClick(recordId);
+                        });
+                    })(thisRecords[i].recordId);
     }
 }
 
