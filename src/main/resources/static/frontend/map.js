@@ -589,7 +589,7 @@ function startRecording() {
     // 每五秒記錄一次
     intervalId = setInterval(function () {
         recordLocation();
-    }, 5000);
+    }, 1000);
 }
 
 function stopRecording() {
@@ -612,9 +612,13 @@ function recordLocation() {
     if ("geolocation" in navigator) {
         // 獲取目前位置
         navigator.geolocation.getCurrentPosition(function (position) {
+//            var currentLocation = {
+//                lat: position.coords.latitude,
+//                lng: position.coords.longitude
+//            };
             var currentLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
+                lat: map.getCenter().lat(),
+                lng: map.getCenter().lng()
             };
 
             // 儲存記錄的位置
@@ -651,11 +655,11 @@ function drawLines() {
 function clearMapLines() {
     // 取得地圖上的所有線條
     var mapLines = map.getOverlays('polyline');
-
     // 移除線
     for (var i = 0; i < mapLines.length; i++) {
         map.removeOverlay(mapLines[i]);
     }
+
 }
 // 初始化Google Map
 function initMap() {
