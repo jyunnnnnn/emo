@@ -14,7 +14,9 @@ $(document).ready(function() {
     $('#user').text(username);
     loadEcoRecords(username);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
-    $('#saveRecord').click(saveRecord)// 添加標記
+    $('#saveRecord').click(function(event) {// 添加標記
+        saveRecord(event);
+    });
     $('#updateRecord').click(updateRecord)//修改紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#startRecording').click(function () {
@@ -60,7 +62,8 @@ function calculateFootprint(type,data_value) {
     return footprint;
 }
 // 記錄按鈕事件處理
-function saveRecord(){
+function saveRecord(event){
+    event.preventDefault();
     var latitude;
     var longitude;
     var classType;
@@ -73,8 +76,7 @@ function saveRecord(){
         navigator.geolocation.getCurrentPosition(function(position) {
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
-            // 在這裡你可以使用獲取到的經緯度進行相應的操作
-            // 假設你有一個保存紀錄的函數
+
             if ($("#trafficRadio").is(":checked")) {
                 classType = $("#traffic").text();
                 type = $("#trafficMenu option:selected").text();
@@ -84,9 +86,9 @@ function saveRecord(){
                 type = $("#dailyMenu option:selected").text();
                 data_value = document.getElementById('count').value;
             }
-            footprint=calculateFootprint(type,data_value);
+            footprint = calculateFootprint(type,data_value);
             // 保存紀錄到後端
-            if(classType &&type &&data_value &&latitude &&longitude&&footprint) {
+            if(classType && type && data_value && latitude && longitude && footprint) {
                 var now = new Date();
                 var formatter = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
@@ -98,7 +100,7 @@ function saveRecord(){
                     hour12: false  // 使用24小時制
                 });
                 var formattedDate = formatter.format(now);
-                var recordId=now.getTime();
+                recordId = now.getTime();
                 saveRecordToBackend(classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
             //這裡邏輯待討論
@@ -124,12 +126,22 @@ function saveRecordToBackend(classType, type, data_value, latitude, longitude,fo
         uploadRecordToBackend(record);
         records.push(record);
         addMarker(record);
+        clearForm();
     }
     else {
         alert("請重新登入");
         window.location.href = 'frontend/login.html';
     }
     // 上傳紀錄到後端
+}
+function clearForm(){
+    $('input[type="radio"]:checked').each(function() {
+        $(this).prop('checked', false);
+    });
+    document.getElementById('kilometer').value = 'none';
+    document.getElementById('trafficMenu').style.display = 'none';
+    document.getElementById('dailyMenu').style.display = 'none';
+    document.getElementById('SPACE').style.display = 'block';
 }
 // 將紀錄上傳到後端
 function uploadRecordToBackend(record) {
