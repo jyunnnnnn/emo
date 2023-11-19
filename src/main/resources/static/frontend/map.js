@@ -39,18 +39,7 @@ function logoutAccount(){
     localStorage.removeItem('EmoAppUser');
     window.location.href= '/login';
 }
-//刪除帳號確認
-function deleteAccount(){
-    //我先用confirm做:0
-    var result = confirm("確定要刪除帳戶嗎？");
-    if (result) {
-        deleteAccountToBackend(User.userId);
-        deleteRecordByAccount(User.userId);
-        console.log("刪除帳戶資料");
-    } else {
-        console.log("沒刪");
-    }
-}
+
 //刪除Emo_User
 function deleteAccountToBackend(userId){
     $.ajax({
@@ -147,24 +136,16 @@ function saveRecord(event){
                 classType = $("#traffic").text();
                 type = $("#trafficMenu option:selected").text();
                 data_value = document.getElementById('kilometer').value;
-                if(!isDataValueValid(data_value)) {
-                    alert("請輸入正整數");
-                    return;
-                }
             } else if ($("#dailyRadio").is(":checked")) {
                 classType = $("#daily").text();
                 type = $("#dailyMenu option:selected").text();
                 data_value = document.getElementById('count').value;
-                if(!isDataValueValid(data_value)) {
-                    alert("請輸入正整數");
-                    return;
-                }
             }
             footprint = calculateFootprint(type,data_value);
             // 保存紀錄到後端
-            if(classType && type && data_value && latitude && longitude && footprint) {
+            if(classType && type && data_value && latitude && longitude && footprint && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
                 var now = new Date();
-                var recordId=now.getTime();
+                recordId=now.getTime();
                 var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
                 saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
@@ -282,12 +263,11 @@ function addMarker(recordToAdd) {
 
 //修改懸浮視窗是歷史紀錄
 function recordModal(){
-    //console.log("編輯按鈕可以按");
+    // console.log("編輯按鈕可以按");
     // 顯示懸浮窗
-        document.getElementById('modifyModal').style.display = 'block';
-        document.getElementById('modifyModal').style.position = 'fixed';
+        document.getElementById('modifyFW').style.display = 'flex';
+        document.getElementById('modifyFW').style.position = 'fixed';
 
-        //這樣改超笨QQ好煩
         if(currentInfoWindowRecord.classType == "交通"){
             console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyTrafficRadio').checked = true;
@@ -320,28 +300,20 @@ function recordModal(){
             }else{
                 document.getElementById('modifyDailyType').value = 'daily-bag';
             }
-
             document.getElementById('modifyCount').value = currentInfoWindowRecord.data_value;
         }
 }
 // 修改記錄按鈕事件處理 //test
 function updateRecord(){
+    event.preventDefault();
     if ($("#modifyTrafficRadio").is(":checked")) {
         var classType = $("#modifyTraffic").text();
         var type = $("#modifyTrafficMenu option:selected").text();
         var data_value = document.getElementById('modifyKilometer').value;
-        if(!isDataValueValid(data_value)) {
-            alert("請輸入正整數");
-            return;
-        }
     } else if ($("#modifyDailyRadio").is(":checked")) {
         var classType = $("#modifyDaily").text();
         var type = $("#modifyDailyMenu option:selected").text();
         var data_value = document.getElementById('modifyCount').value;
-        if(!isDataValueValid(data_value)) {
-            alert("請輸入正整數");
-            return;
-        }
     }
 
     // 更新紀錄到後端
@@ -367,6 +339,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         modifyRecordToBackend(record);
         updateRecordInArray(newClassType, newType, newDataValue,footprint);//更新record[]
         updateMarkerContent(record);
+        document.getElementById('modifyFW').style.display = 'none';
     }
     else {
         alert("請重新登入");
@@ -426,6 +399,7 @@ function updateRecordInArray(newClassType, newType, newDataValue,newFootprint){
 
 //刪除資料
 function deleteRecord(){
+    event.preventDefault();
     //我先用confirm做:0
     var result = confirm("確定要刪除目前資料嗎？");
     if (result) {

@@ -58,6 +58,7 @@
 }
 
 /* 懸浮窗 */
+#modifyFW,
 #recordFW,
 #recordListFW{
     display: none;
@@ -329,6 +330,7 @@
 }
 
 @media only screen and (max-width: 1000px) {
+    #modifyFW,
     #recordFW,
     #recordListFW{
         display: none;

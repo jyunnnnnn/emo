@@ -16,8 +16,13 @@ document.getElementById('saveRecord').addEventListener('click', function () {
         type = $("#dailyMenu option:selected").text();
         data_value = document.getElementById('count').value;
     }
+
     if(classType && type && data_value){
-        document.getElementById('recordFW').style.display = 'none';
+        if (Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
+            document.getElementById('recordFW').style.display = 'none';
+        } else {
+            alert("請輸入正整數");
+        }
     } else {
         alert("請輸入完整資訊");
     }
@@ -28,13 +33,19 @@ document.getElementById('recordListButton').addEventListener('click', function (
     document.getElementById('recordListFW').style.display = 'flex';
     document.getElementById('recordListFW').style.position = 'fixed';
 });
-//點擊設定按鈕
+// 點擊編輯按鈕
+document.getElementById('deleteAccount').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('deleteFW').style.display = 'flex';
+    document.getElementById('deleteFW').style.position = 'fixed';
+});
+// 點擊設定按鈕
 document.getElementById('settingButton').addEventListener('click', function () {
     // 顯示懸浮窗
     document.getElementById('settingFW').style.display = 'flex';
     document.getElementById('settingFW').style.position = 'fixed';
 });
-//點擊刪除帳號按鈕
+// 點擊刪除帳號按鈕
 document.getElementById('deleteAccount').addEventListener('click', function () {
     // 顯示懸浮窗
     document.getElementById('deleteFW').style.display = 'flex';
@@ -50,8 +61,11 @@ function closeFW(event){
         document.getElementById('settingFW').style.display = 'none';
     } else if(event.target.id === 'deleteFW') {
         document.getElementById('deleteFW').style.display = 'none';
+    } else if(event.target.id === 'modifyFW') {
+        document.getElementById('modifyFW').style.display = 'none';
     }
 }
+
 // 關閉紀錄懸浮窗
 document.getElementById('closeRecordModal').addEventListener('click', function () {
     document.getElementById('recordFW').style.display = 'none';
@@ -64,10 +78,15 @@ document.getElementById('closeListModal').addEventListener('click', function () 
 document.getElementById('closeSettingModal').addEventListener('click', function () {
     document.getElementById('settingFW').style.display = 'none';
 });
-// 關閉設定懸浮窗
+// 關閉刪除懸浮窗
 document.getElementById('closeDeleteModal').addEventListener('click', function () {
     document.getElementById('deleteFW').style.display = 'none';
 });
+// 關閉修改紀錄懸浮窗
+document.getElementById('closeModifyRecordModal').addEventListener('click', function () {
+    document.getElementById('modifyFW').style.display = 'none';
+});
+
 
 // 交通選單
 document.getElementById('trafficRadio').addEventListener('change', function () {
@@ -81,13 +100,6 @@ document.getElementById('dailyRadio').addEventListener('change', function () {
     document.getElementById('dailyMenu').style.display = 'block';
     document.getElementById('SPACE').style.display = 'none';
 })
-
-
-// 關閉修改紀錄懸浮窗
-document.getElementById('closeModifyRecordModal').addEventListener('click', function () {
-    document.getElementById('modifyModal').style.display = 'none';
-});
-
 // 修改交通選單
 document.getElementById('modifyTrafficRadio').addEventListener('change', function () {
     document.getElementById('modifyTrafficMenu').style.display = 'block';
