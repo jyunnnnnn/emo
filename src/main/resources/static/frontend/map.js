@@ -193,7 +193,7 @@ function saveRecordToBackend(userId,classType, type, data_value, latitude, longi
     }
     else {
         alert("請重新登入");
-        window.location.href = 'frontend/login.html';
+        window.location.href = '/login';
     }
     // 上傳紀錄到後端
 }
