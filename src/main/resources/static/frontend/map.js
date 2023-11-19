@@ -106,14 +106,7 @@ function calculateFootprint(type,data_value) {
     footprint=data_value * coefficient;
     return footprint;
 }
-//判斷輸入的data_value是否合法
-function isDataValueValid(data_value) {
-    if (!isNaN(data_value) && parseInt(data_value, 10) % 1 === 0 && parseInt(data_value, 10) >= 1) {
-        return true;
-    } else {
-        return false;
-    }
-}
+
 // 記錄按鈕事件處理
 function saveRecord(event){
     event.preventDefault();
@@ -145,7 +138,7 @@ function saveRecord(event){
             // 保存紀錄到後端
             if(classType && type && data_value && latitude && longitude && footprint && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
                 var now = new Date();
-                recordId=now.getTime();
+                recordId = now.getTime();
                 var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
                 saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
@@ -322,10 +315,10 @@ function updateRecord(){
         var type = $("#modifyDailyMenu option:selected").text();
         var data_value = document.getElementById('modifyCount').value;
     }
-
-    // 更新紀錄到後端
-    if(classType!=null &&type!=null &&data_value!=null){
+    if(classType && type && data_value && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
         updateRecordToBackend(classType, type, data_value);
+    } else if(!Number.isInteger(parseInt(data_value,10)) || parseInt(data_value,10) < 0) {
+        alert("請輸入正整數")
     }
 }
 // 更新紀錄的函數
@@ -384,6 +377,13 @@ function updateMarkerContent(newContent) {
          //class="btn btn-secondary"
     if (currentInfoWindow) {
         //console.log("更新infowindow成功");
+        var thisIcon;
+        if (currentInfoWindowRecord.classType === "交通") {
+            thisIcon = '/frontend/img/traffic.ico';
+        } else if (currentInfoWindowRecord.classType === "生活用品") {
+            thisIcon = '/frontend/img/daily.ico';
+        } else{ alert(currentInfoWindowRecord.classType) }
+        currentMarker.setIcon(thisIcon);
         currentInfoWindow.setContent(modifyContent);
     }else {
         console.error('InfoWindow not available.');
@@ -414,6 +414,7 @@ function deleteRecord(){
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
         deleteMarker();
         console.log("刪資料");
+        document.getElementById("modifyFW").style.display = "none";
     } else {
         console.log("沒刪");
     }

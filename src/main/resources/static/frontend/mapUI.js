@@ -33,12 +33,6 @@ document.getElementById('recordListButton').addEventListener('click', function (
     document.getElementById('recordListFW').style.display = 'flex';
     document.getElementById('recordListFW').style.position = 'fixed';
 });
-// 點擊編輯按鈕
-document.getElementById('deleteAccount').addEventListener('click', function () {
-    // 顯示懸浮窗
-    document.getElementById('deleteFW').style.display = 'flex';
-    document.getElementById('deleteFW').style.position = 'fixed';
-});
 // 點擊設定按鈕
 document.getElementById('settingButton').addEventListener('click', function () {
     // 顯示懸浮窗
