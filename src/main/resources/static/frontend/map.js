@@ -262,8 +262,9 @@ function addMarker(recordToAdd) {
                    <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
                    <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
                    <p style="padding:3px; margin:3px;">${recordToAdd.time}</p>
-                   <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
+                   <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer;" onclick="recordModal()">編輯</button>
                </div>`;
+               //class="btn btn-secondary"
            let infoWindow = new google.maps.InfoWindow({
                 content: infoWindowContent
            });
@@ -396,8 +397,9 @@ function updateMarkerContent(newContent) {
              <h6 style="padding:3px; margin:3px;">${newContent.type}</h6>
              <p style="padding:3px; margin:3px;">減少的碳足跡為:${newContent.footprint}gCO2E</p>
              <p style="padding:3px; margin:3px;">${newContent.time}</p>
-             <button id="editButton" type="button" class="btn btn-secondary" onclick="recordModal()">編輯</button>
+             <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer;" onclick="recordModal()">編輯</button>
          </div>`;
+         //class="btn btn-secondary"
     if (currentInfoWindow) {
         //console.log("更新infowindow成功");
         currentInfoWindow.setContent(modifyContent);
