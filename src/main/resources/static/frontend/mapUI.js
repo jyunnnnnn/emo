@@ -31,8 +31,14 @@ document.getElementById('recordListButton').addEventListener('click', function (
 //點擊設定按鈕
 document.getElementById('settingButton').addEventListener('click', function () {
     // 顯示懸浮窗
-    document.getElementById('settingModal').style.display = 'block';
-    document.getElementById('settingModal').style.position = 'fixed';
+    document.getElementById('settingFW').style.display = 'flex';
+    document.getElementById('settingFW').style.position = 'fixed';
+});
+//點擊刪除帳號按鈕
+document.getElementById('deleteAccount').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('deleteFW').style.display = 'flex';
+    document.getElementById('deleteFW').style.position = 'fixed';
 });
 
 function closeFW(event){
@@ -40,6 +46,10 @@ function closeFW(event){
         document.getElementById('recordFW').style.display = 'none';
     } else if(event.target.id === 'recordListFW') {
         document.getElementById('recordListFW').style.display = 'none';
+    } else if(event.target.id === 'settingFW') {
+        document.getElementById('settingFW').style.display = 'none';
+    } else if(event.target.id === 'deleteFW') {
+        document.getElementById('deleteFW').style.display = 'none';
     }
 }
 // 關閉紀錄懸浮窗
@@ -50,10 +60,13 @@ document.getElementById('closeRecordModal').addEventListener('click', function (
 document.getElementById('closeListModal').addEventListener('click', function () {
     document.getElementById('recordListFW').style.display = 'none';
 });
-
 // 關閉設定懸浮窗
 document.getElementById('closeSettingModal').addEventListener('click', function () {
-    document.getElementById('settingModal').style.display = 'none';
+    document.getElementById('settingFW').style.display = 'none';
+});
+// 關閉設定懸浮窗
+document.getElementById('closeDeleteModal').addEventListener('click', function () {
+    document.getElementById('deleteFW').style.display = 'none';
 });
 
 // 交通選單

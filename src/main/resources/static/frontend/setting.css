@@ -1,0 +1,124 @@
+#settingFW,
+#deleteFW{
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
+
+#passwordAuth{
+    font-family: 'Crimson Pro', serif;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 20px;
+    margin-top: 15px;
+    box-shadow: #a3a6a8 0px 10px 10px -5px;
+    border-inline: 2px solid transparent;
+}
+
+/* 設定懸浮窗 */
+.settingContainer {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    background: #F8F9FD;
+    background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+    border-radius: 40px;
+    padding: 25px 35px;
+    border: 5px solid rgb(255, 255, 255);
+    box-shadow: rgba(202, 207, 210, 0.87) 0px 30px 30px -20px;
+}
+
+
+.settingHeading {
+    text-align: center;
+    font-weight: 900;
+    font-size: 30px;
+    color: rgb(123, 125, 127);
+}
+
+/* 登出鈕 */
+.setBtn {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    height: 45px;
+    border: none;
+    border-radius: 40px;
+    margin-top: 10px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgb(123, 125, 127);
+}
+
+.setBtn:active {
+    transform: translate(2px ,2px);
+}
+
+.setIcon {
+    width: 30%;
+    transition-duration: .1s;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.setIcon svg {
+    width: 17px;
+}
+
+.setIcon svg path {
+    fill: white;
+}
+
+.setText {
+    position: absolute;
+    right: 0%;
+    width: 70%;
+    opacity: 1;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition-duration: .3s;
+    padding-right: 10px;
+}
+
+@media only screen and (max-width: 1000px) {
+    #settingFW,
+    #deleteFW{
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        justify-items: center;
+        align-content: center;
+        align-items: center;
+        transform: scale(10);
+    }
+}

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.19.0/font/bootstrap-icons.css">-->
     <link rel="stylesheet" href="/frontend/boostrap.min.css">
     <link rel="stylesheet" href="/frontend/recordFW.css">
+    <link rel="stylesheet" href="/frontend/setting.css">
     <style>
 
         body {
@@ -105,23 +106,62 @@
 </div>
 
 <!-- 懸浮窗：設定 -->
-<div id="settingModal" class="recordContainer" style="display: none; position: fixed;">
-    <!-- 關閉 -->
-    <button class="btn" id="closeSettingModal">
-        <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
-            <g>
-                <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-            </g>
-        </svg>
-    </button>
+<div id="settingFW" onclick="closeFW(event)">
+    <div id="settingModal" class="settingContainer">
+        <!-- 關閉 -->
+        <button class="btn" id="closeSettingModal" style="top:10px; right:10px;">
+            <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <g>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                </g>
+            </svg>
+        </button>
 
-    <div class="recordHeading" id="settingModalLabel">設定</div>
-    <!--    設定選項-->
-    <div class="recordForm">
-        <div id="settingMenu" style="display: block;">
-            <button id="logoutAccount" class="save-button">登出帳號</button>
-            <button id="deleteAccount" class="save-button" >刪除帳號</button>
+        <div class="recordHeading" id="settingModalLabel">設定</div>
+        <!-- 設定選項-->
+        <button class="setBtn" id="logoutAccount">
+            <div class="setIcon">
+                <svg viewBox="0 0 512 512">
+                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                </svg>
+            </div>
+            <div class="setText">登出</div>
+        </button>
+        <button class="setBtn" style="background-color: rgb(255, 69, 69);" id="deleteAccount">
+            <div style="padding-left: 14px">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="white">
+                    <path d="M5 6.77273H9.2M19 6.77273H14.8M9.2 6.77273V5.5C9.2 4.94772 9.64772 4.5 10.2 4.5H13.8C14.3523 4.5 14.8 4.94772 14.8 5.5V6.77273M9.2 6.77273H14.8M6.4 8.59091V15.8636C6.4 17.5778 6.4 18.4349 6.94673 18.9675C7.49347 19.5 8.37342 19.5 10.1333 19.5H13.8667C15.6266 19.5 16.5065 19.5 17.0533 18.9675C17.6 18.4349 17.6 17.5778 17.6 15.8636V8.59091M9.2 10.4091V15.8636M12 10.4091V15.8636M14.8 10.4091V15.8636" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="setText">刪除帳號</div>
+        </button>
+    </div>
+</div>
+<!-- 懸浮窗：確認刪除 -->
+<div id="deleteFW" onclick="closeFW(event)">
+    <div id="deleteModal" class="settingContainer" style="width:330px; height: 250px;">
+        <!-- 關閉 -->
+        <button class="btn" id="closeDeleteModal" style="top:10px; right:10px;">
+            <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <g>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                </g>
+            </svg>
+        </button>
+
+        <div class="recordHeading" id="deleteAuthModalLabel">確定要刪除嗎？</div>
+        <!-- 驗證密碼-->
+        <input id="passwordAuth" name="passwordAuth" class="input" type="text" placeholder="請輸入使用者密碼">
+
+        <div style="display: flex; flex-direction: row; align-items: center; margin-top: 10px">
+            <button class="setBtn" id="delete" style="background-color: rgb(255, 69, 69); width: 125px;">
+                <div class="setText" style="right: 12%">狠心離開</div>
+            </button>
+            <button class="setBtn" id="doNOTdelete" style="width: 125px;">
+                <div class="setText"  style="right: 12%">取消</div>
+            </button>
         </div>
     </div>
 </div>
