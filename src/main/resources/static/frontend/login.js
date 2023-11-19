@@ -25,7 +25,7 @@ $(document).ready(function () {
         $('#forgetPassword-container').removeClass('d-none');
     });
 
-    //發送驗證碼
+    //註冊頁面 發送驗證碼按鈕
     $('#sendVerifyingCodeButton').click(function (e) {
         var inputEmail = $('#exampleInputEmail').val();
 
@@ -41,20 +41,24 @@ $(document).ready(function () {
             return;
         }
 
-        //檢查是否已經寄送過
+        //檢查是否已經寄送過 沒有的話就寄送
+        isSend(inputEmail);
+    });
+
+    function isSend(inputEmail){
+        //檢查是否已經寄送過驗證碼，還沒的話就寄送
         $.ajax({
             type: 'GET',
             url: '/api/sendAgain?userMail=' + inputEmail,
             contentType: 'application/json',
             success: function (response) {
-                alert("驗證碼寄送成功");
                 sendEmail(inputEmail);
             },
             error: function (xhr, status, error) {
                 alert("先前已寄送驗證碼，5分鐘後再嘗試");
             }
         });
-    });
+    }
 
     // 註冊
     $('#return-to-login').click(function (e) {
@@ -145,6 +149,7 @@ $(document).ready(function () {
         }
     }
 
+    //寄送驗證碼給特定電子郵件 (現在的寫法寄送很慢)
     function sendEmail(email) {
         $.ajax({
             type: 'POST',
@@ -187,7 +192,7 @@ $(document).ready(function () {
 
     //忘記密碼頁面 送出驗證碼按鈕
     $('#send-email').click(function(e){
-        //使用者輸入email
+        //使用者輸入帳號
         var inputAccount = $('#exampleInputAccount3').val();
 
         //檢查是否輸入帳號
@@ -196,7 +201,7 @@ $(document).ready(function () {
             return ;
         }
 
-        //檢查帳號是否存在
+        //檢查帳號是否存在，並抓取該帳號資訊
         $.ajax({
             type: 'GET',
             url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
@@ -204,21 +209,10 @@ $(document).ready(function () {
             success: function (response) {
                 //檢查是否已經寄送過
                 var email = response.email;
-                 $.ajax({
-                     type: 'GET',
-                     url: '/api/sendAgain?userMail=' + email,
-                     contentType: 'application/json',
-                     success: function (response) {
-                         alert("驗證碼寄送成功");
-                         sendEmail(email);
-                     },
-                     error: function (xhr, status, error) {
-                         alert("先前已寄送驗證碼，5分鐘後再嘗試");
-                     }
-                 });
+                isSend(email);
             },
             error: function (response) {
-               alert("請檢查輸入的帳號是否存在");
+               alert("查無該使用者，請確認輸入的帳號是否存在");
             }
         });
 
@@ -229,8 +223,9 @@ $(document).ready(function () {
     $('#verified-code').click(function (e) {
 
 
-        //使用者輸入email
+        //使用者輸入帳號
         var inputAccount = $('#exampleInputAccount3').val();
+        //使用者輸入驗證碼
         var inputCode =$('#Input-verify-code').val();
 
 
@@ -247,38 +242,60 @@ $(document).ready(function () {
 
 
         //檢查帳號是否存在
+        $.ajax({
+            type: 'GET',
+            url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
+            contentType: 'application/json',
+            success: function (response) {
+                //檢查驗證碼是否正確
                 $.ajax({
                     type: 'GET',
-                    url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
+                    url: '/api/matchVerifyingCode?userMail=' + response.email + "&userInput=" + inputCode,
                     contentType: 'application/json',
                     success: function (response) {
-                        //檢查驗證碼是否正確
-                        $.ajax({
-                            type: 'GET',
-                            url: '/api/matchVerifyingCode?userMail=' + response.email + "&userInput=" + inputCode,
-                            contentType: 'application/json',
-                            success: function (response) {
-                                //顯示更改密碼文字框
-                               e.preventDefault();
-                               $('#login-container').addClass('d-none');
-                               $('#set-password-container').removeClass('d-none');
-                            },
-                            error: function (response) {
-                                alert("驗證碼輸入錯誤");
-                            }
-                        });
+                        allowChangePassword(inputAccount);
+                       //顯示更改密碼文字框
+                       e.preventDefault();
+                       $('#login-container').addClass('d-none');
+                       $('#set-password-container').removeClass('d-none');
                     },
                     error: function (response) {
-                       alert("請檢查輸入的帳號是否存在");
+                        alert("驗證碼輸入錯誤");
                     }
                 });
+            },
+            error: function (response) {
+               alert("請檢查輸入的帳號是否存在");
+            }
+        });
 
 
     });
 
-    $('#login-button2').click(function(e){
+    //允許帳號可以修改密碼
+    function allowChangePassword(username){
+        $.ajax({
+            type: 'POST',
+            url: '/api/allowChangePassword?username=' + username,
+            contentType: 'application/json',
+            success: function (response) {
 
+
+            },
+            error: function (response) {
+
+            }
+        });
+    }
+
+    //確認修改密碼按鈕
+    $('#login-button2').click(function(e){
+        //加這個避免送出按鈕按下去後回到前一頁
+        e.preventDefault();
+
+        //使用者輸入的新密碼
         var newPassword = $('#exampleInputPassword3').val();
+        //確認新密碼
         var newConfirmedPassword = $('#exampleInputPasswordcheck2').val();
         //密碼欄位是否為空
         if(!newPassword || !newConfirmedPassword ){
@@ -298,20 +315,42 @@ $(document).ready(function () {
 
         //更新使用者資訊
         var userAccount = $('#exampleInputAccount3').val();
+        //檢查帳號欄位是否被刪除或修改為不存在的帳號 (漏洞:可能會先輸入自己的電子郵件帳號 在修改密碼欄位出來以後 更改成別人的電子郵件帳號在進行密碼修改)
+        if(!userAccount){
+            alert("請輸入帳號");
+            return ;
+        }
 
-        updatePassword(userAccount,newPassword);
-
-    })
-    function updatePassword(username,newPassword){
+        //檢查該帳號是否可以修改密碼
         $.ajax({
-            type: 'PUT',
-                url: '/api/updateByUsername?username=' + username +"&password="+newPassword  ,
+            type: 'GET',
+            url: '/api/passwordChangable?username=' + userAccount,
             contentType: 'application/json',
             success: function (response) {
-                alert(response.message);
+                //修改密碼
+               updatePassword(userAccount,newPassword);
             },
             error: function (response) {
-                alert(response);
+                alert("該帳號不得修改密碼");
+            }
+        });
+
+
+    })
+
+    //修改特定帳號的密碼
+    function updatePassword(username,newPassword){
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/updateByUsername?username=' + username +"&password="+newPassword  ,
+            contentType: 'application/json',
+            success: function (response) {
+                alert("密碼修改成功");
+                window.location.href = "login.html";
+            },
+            error: function (response) {
+                alert("密碼修改失敗");
             }
         });
     }

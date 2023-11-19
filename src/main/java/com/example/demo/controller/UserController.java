@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws JsonProcessingException {
         int result = this.userService.login(username, password);
-        User userData= this.userService.findUserDataFromUsername(username);
+        User userData = this.userService.findUserDataFromUsername(username);
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(userData);
         if (result == UserService.OK) {
@@ -73,14 +73,15 @@ public class UserController {
 
     //用帳號修改密碼
     @PutMapping("/updateByUsername")
-    public ResponseEntity<?> updateByUsername(@RequestParam("username") String username,@RequestParam("password")String newPassword){
-        int result = this.userService.updatePasswordByUsername(username,newPassword);
-        if(result == UserService.OK){
+    public ResponseEntity<?> updateByUsername(@RequestParam("username") String username, @RequestParam("password") String newPassword) {
+        int result = this.userService.updatePasswordByUsername(username, newPassword);
+        if (result == UserService.OK) {
             return ResponseEntity.ok(Collections.singletonMap("message", "修改密碼成功"));
         }
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改密碼失敗"));
 
     }
+
     //帳號是否存在
     @GetMapping("/accountExist")
     public ResponseEntity<?> accountExist(@RequestParam("userMail") String email) {
@@ -91,6 +92,7 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
     }
+
     //刪除帳號
     @DeleteMapping("/deleteUserAccount")
     public ResponseEntity<?> deleteUserAccount(@RequestParam("userId") String userId) {
@@ -103,6 +105,8 @@ public class UserController {
         }
 
     }
+
+    //使用帳號檢查該使用者是否存在 並回傳該使用者資料
     @GetMapping("/checkAccountExistByUsername")
     public ResponseEntity<?> chekcAccountExistByUsername(@RequestParam("username") String username) {
         User result = this.userService.fetchOneUserByUsername(username);
@@ -125,5 +129,25 @@ public class UserController {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
         }
         return ResponseEntity.ok("使用者存在");
+    }
+
+    //檢查該帳號是否可以修改密碼
+    @GetMapping("/passwordChangable")
+    public ResponseEntity<?> passwordChangable(@RequestParam("username") String username) {
+        int result = this.userService.checkPasswordChangable(username);
+        System.out.println(result);
+        if (result == UserService.OK) {
+            return ResponseEntity.ok(Collections.singletonMap("message", username + "可以修改密碼"));
+        }
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", username + "不可修改密碼"));
+    }
+
+    //使得某帳號可以修改密碼
+    @PostMapping("/allowChangePassword")
+    public ResponseEntity<?> allowChangePassword(@RequestParam("username") String username) {
+        int result = this.userService.allowChangePassword(username);
+        if (result == UserService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", username + "已可以修改密碼"));
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", username + "賦予密碼修改權限失敗"));
     }
 }

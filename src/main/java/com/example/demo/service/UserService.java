@@ -4,6 +4,9 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
     public static final int USER_NOT_FOUND = 0;//使用者不存在
@@ -22,10 +25,14 @@ public class UserService {
     public static final int FAIL = 8;
     private final UserRepository repository;
 
+    private Map<String, Boolean> passwordChangable;//檢查該帳號是否可以更改密碼 (之後可以改成用重設密碼連結)
+
     @Autowired
     public UserService(UserRepository repository) {
         this.repository = repository;
+        passwordChangable = new HashMap<>();
     }
+
 
     //建立新使用者帳號
     public int createUser(User newUser) {
@@ -36,9 +43,11 @@ public class UserService {
         this.repository.save(newUser);
         return OK;
     }
+
     public User findUserDataFromUsername(String username) {
         return this.repository.findByUsername(username);
     }
+
     //登入帳號
     public int login(String username, String password) {
         User user = this.repository.findByUsername(username);
@@ -91,23 +100,50 @@ public class UserService {
         return FAIL;
 
     }
-    public User deleteAccountByUserId(String UserId){
+
+    public User deleteAccountByUserId(String UserId) {
         return this.repository.deleteByUserId(UserId);
     }
-    public int updatePasswordByUsername(String username,String newPassword){
-        try{
+
+    public int updatePasswordByUsername(String username, String newPassword) {
+        try {
             User user = fetchOneUserByUsername(username);
             user.setPassword(newPassword);
             this.repository.save(user);
             return OK;
-        }catch (Exception err){
-            System.err.println("修改"+username+"密碼過程出現問題");
+        } catch (Exception err) {
+            System.err.println("修改" + username + "密碼過程出現問題");
             return FAIL;
         }
     }
+
     //獲取使用者暱稱
     public String getNickname(String username) {
         User result = this.repository.findByUsername(username);
         return result.getNickname();
+    }
+
+    //檢查該帳號是否可以重設密碼
+    public int checkPasswordChangable(String username) {
+
+        //該帳號是否可以修改密碼
+        System.out.println(passwordChangable.get(username));
+        if (passwordChangable.containsKey(username)) {
+            //移除該帳號的修改密碼權限
+            System.out.println(username + "可以修改密碼");
+            passwordChangable.remove(username);
+            return OK;
+        }
+        return FAIL;
+    }
+
+    //切換帳號至可切換密碼模式
+    public int allowChangePassword(String username) {
+        if (isAccountExists(username) == UserService.USER_NOT_FOUND)
+            return FAIL;
+
+        passwordChangable.put(username, Boolean.TRUE);
+
+        return OK;
     }
 }
