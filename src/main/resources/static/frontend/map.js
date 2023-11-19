@@ -248,6 +248,12 @@ function loadEcoRecords(userId) {
 //新增標記
 function addMarker(recordToAdd) {
         //console.log(recordToAdd);
+        var thisIcon;
+        if (recordToAdd.classType === "交通") {
+            thisIcon = '/frontend/img/traffic.ico';
+        } else if (recordToAdd.classType === "生活用品") {
+            thisIcon = '/frontend/img/daily.ico';
+        }
         if (map) {
             var currentLocation = {
                 lat: recordToAdd.latitude,
@@ -256,7 +262,8 @@ function addMarker(recordToAdd) {
             var marker = new google.maps.Marker({
                 position: currentLocation,
                 map: map,
-                title: recordToAdd.type
+                title: recordToAdd.type,
+                icon: thisIcon
             });
            //小改
            let infoWindowContent = `
@@ -470,6 +477,7 @@ function deleteMarker(){
 function recordClick(recordId){
     var recordIndex = records.findIndex(record => record.recordId === recordId);
     nowRecord=records[recordIndex];
+
     console.log(nowRecord);
 }
 
