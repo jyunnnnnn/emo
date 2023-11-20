@@ -467,7 +467,7 @@ function recordClick(recordId){
     $('#recordListFW').css('display', 'none');
     //找位置
     showNowRecordInfowindow(nowRecord);
-    console.log(nowRecord);
+    //console.log(nowRecord);
 }
 
 //讓被點擊的紀錄呈現畫面中間，並打開infowindow
@@ -482,10 +482,10 @@ function showNowRecordInfowindow(nowRecord){
     // 找所有marker
     for (let i = 0; i < markers.length; i++) {
         if (markers[i].getPosition().equals(centerPosition)) {
-            console.log(markers[i].getPosition());
-            console.log(centerPosition);
+            //console.log(markers[i].getPosition());
+            //console.log(centerPosition);
             markers[i].infoWindow.open(map,markers[i]);
-            console.log("infowindow OK")
+            //console.log("infowindow OK")
             break;
         }
     }
