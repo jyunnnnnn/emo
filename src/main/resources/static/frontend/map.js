@@ -361,7 +361,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
 // 將紀錄更新到後端
 function modifyRecordToBackend(record) {
     //console.log("有改到")
-    console.log(record)
+    //console.log(record)
     $.ajax({
         type: 'PUT',
         url: '/api/updateRecord',
@@ -409,7 +409,7 @@ function updateRecordInArray(newClassType, newType, newDataValue,newFootprint){
         records[recordIndex].type = newType;
         records[recordIndex].data_value = newDataValue;
         records[recordIndex].footprint =newFootprint;
-        console.log('Updated records:', records);
+        //console.log('Updated records:', records);
     } else {
         console.log('Record not found');
     }
