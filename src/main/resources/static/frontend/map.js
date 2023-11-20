@@ -34,54 +34,8 @@ $(document).ready(function() {
         }
     });// 路線紀錄(開始/停止)
 });
-//登出
-function logoutAccount(){
-    alert("登出成功");
-    localStorage.removeItem('EmoAppUser');
-    window.location.href= '/login';
-}
-function deleteAccount(){
-    if($('#passwordAuth').val() == User.password){
-        deleteAccountToBackend(User.userId);
-        deleteRecordByAccount(User.userId);
-    }
-    else{
-       alert("密碼錯誤");
-    }
-}
-//刪除Emo_User
-function deleteAccountToBackend(userId){
-    $.ajax({
-        type: 'DELETE',
-        url: `/api/deleteUserAccount?userId=${userId}`,
-        contentType: 'application/string',
-        success: function(response) {
-            console.log("已刪除該用戶")
-            console.log(response); // 成功刪除時的處理邏輯
-        },
-        error: function(xhr, status, error) {
-            console.error(error); // 刪除失敗時的處理邏輯
-        }
-    });
-    alert("帳號刪除成功");
-    localStorage.removeItem('EmoAppUser');
-    window.location.href= '/login';
-}
-//刪除Emo_Record裡面指定用戶的紀錄
-function deleteRecordByAccount(userId){
-     $.ajax({
-            type: 'DELETE',
-            url: `/api/deleteSpecificUserRecord?userId=${userId}`,
-            contentType: 'application/string',
-            success: function(response) {
-                console.log("已删除該用戶紀錄");
-                console.log(response); // 成功刪除時的處理邏輯
-            },
-            error: function(xhr, status, error) {
-                console.error(error); // 刪除失敗時的處理邏輯
-            }
-        });
-}
+
+
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -129,11 +83,11 @@ function saveRecord(event){
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
+//            latitude = position.coords.latitude;
+//            longitude = position.coords.longitude;
 //            抓取真實位置
-//            latitude = map.getCenter().lat();
-//            longitude = map.getCenter().lng();
+            latitude = map.getCenter().lat();
+            longitude = map.getCenter().lng();
 //            抓取中心位置 這是備案
             if ($("#trafficRadio").is(":checked")) {
                 classType = $("#traffic").text();
@@ -148,8 +102,18 @@ function saveRecord(event){
             // 保存紀錄到後端
             if(classType && type && data_value && latitude && longitude && footprint && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
                 var now = new Date();
+                //console.log(now);
+
+                var year = now.getFullYear();
+                var month = (now.getMonth() + 1).toString().padStart(2, '0');
+                var day = now.getDate().toString().padStart(2, '0');
+                var hours = now.getHours().toString().padStart(2, '0');
+                var minutes = now.getMinutes().toString().padStart(2, '0');
+                var seconds = now.getSeconds().toString().padStart(2, '0');
+
+                var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                //console.log(formattedDate);
                 recordId = now.getTime();
-                var formattedDate = now.toISOString().slice(0, 19).replace("T", " ");
                 saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
         });
@@ -170,7 +134,6 @@ function saveRecordToBackend(userId,classType, type, data_value, latitude, longi
         time: formattedDate,
         recordId:recordId
     };
-    //console.log(record);
     if(record.userId) {
         uploadRecordToBackend(record);
         records.push(record);
@@ -200,7 +163,7 @@ function uploadRecordToBackend(record) {
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {
-            console.log(response); // 成功上傳時的處理邏輯
+            //console.log(response); // 成功上傳時的處理邏輯
         },
         error: function(xhr, status, error) {
             console.error(error); // 上傳失敗時的處理邏輯
@@ -276,7 +239,6 @@ function addMarker(recordToAdd) {
 
 //修改懸浮視窗是歷史紀錄
 function recordModal(){
-    // console.log("編輯按鈕可以按");
     // 顯示懸浮窗
         document.getElementById('modifyFW').style.display = 'flex';
         document.getElementById('modifyFW').style.position = 'fixed';
@@ -362,15 +324,13 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
 }
 // 將紀錄更新到後端
 function modifyRecordToBackend(record) {
-    //console.log("有改到")
-    //console.log(record)
     $.ajax({
         type: 'PUT',
         url: '/api/updateRecord',
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {
-            console.log(response); // 成功更新時的處理邏輯
+            //console.log(response); // 成功更新時的處理邏輯
         },
         error: function(xhr, status, error) {
             console.error(error); // 更新失敗時的處理邏輯
@@ -426,7 +386,7 @@ function deleteRecord(){
         deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
         deleteMarker();
-        console.log(records);
+        //console.log(records);
         document.getElementById("modifyFW").style.display = "none";
     } else{
         console.log("取消刪除");
@@ -441,14 +401,13 @@ function deleteRecordInArray(recordId){
 
 //從後端刪資料
 function deleteRecordToBackend(recordId) {
-    console.log(records);
+    //console.log(records);
     $.ajax({
         type: 'DELETE',
         url: `/api/deleteOneRecord?recordId=${recordId}`,
         contentType: 'application/string',
         success: function(response) {
-            console.log("已刪除")
-            console.log(response); // 成功刪除時的處理邏輯
+            //console.log(response); // 成功刪除時的處理邏輯
         },
         error: function(xhr, status, error) {
             console.error(error); // 刪除失敗時的處理邏輯
@@ -628,7 +587,52 @@ function showNewRecord(records) {
     }
 }
 
-
+//刪除Emo_User
+function deleteAccountToBackend(userId){
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/deleteUserAccount?userId=${userId}`,
+        contentType: 'application/string',
+        success: function(response) {
+            //console.log(response); // 成功刪除時的處理邏輯
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // 刪除失敗時的處理邏輯
+        }
+    });
+    alert("帳號刪除成功");
+    localStorage.removeItem('EmoAppUser');
+    window.location.href= '/login';
+}
+//刪除Emo_Record裡面指定用戶的紀錄
+function deleteRecordByAccount(userId){
+     $.ajax({
+            type: 'DELETE',
+            url: `/api/deleteSpecificUserRecord?userId=${userId}`,
+            contentType: 'application/string',
+            success: function(response) {
+                //console.log(response); // 成功刪除時的處理邏輯
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // 刪除失敗時的處理邏輯
+            }
+        });
+}
+//登出
+function logoutAccount(){
+    alert("登出成功");
+    localStorage.removeItem('EmoAppUser');
+    window.location.href= '/login';
+}
+function deleteAccount(){
+    if($('#passwordAuth').val() == User.password){
+        deleteAccountToBackend(User.userId);
+        deleteRecordByAccount(User.userId);
+    }
+    else{
+       alert("密碼錯誤");
+    }
+}
 ////路線紀錄，不知道有沒有功能
 function startRecording() {
     // 按下變成結束
