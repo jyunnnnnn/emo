@@ -29,6 +29,11 @@
     margin:0px;
 }
 
+.gm-ui-hover-effect{
+    position: fixed;
+    transform: scale(2);
+}
+
 /* 按鈕區 */
 #recordBtns{
     display: inline-flex;

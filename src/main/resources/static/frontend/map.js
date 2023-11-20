@@ -252,14 +252,14 @@ function addMarker(recordToAdd) {
            //小改
            let infoWindowContent = `
                <div>
-                   <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
-                   <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
-                   <p style="padding:3px; margin:3px;">${recordToAdd.time}</p>
-                   <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer; border-radius: 5px;" onclick="recordModal()">編輯</button>
+                   <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${recordToAdd.type}</h6>
+                   <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為：${recordToAdd.footprint}gCO2E</p>
+                   <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">${recordToAdd.time}</p>
+                   <button id="editButton" type="button" style="position: absolute; right: 10px; bottom: 10px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px;" onclick="recordModal()">編輯</button>
                </div>`;
                //class="btn btn-secondary"
            let infoWindow = new google.maps.InfoWindow({
-                content: infoWindowContent
+               content: infoWindowContent
            });
            marker.infoWindow = infoWindow;
            markers.push(marker);
@@ -267,8 +267,8 @@ function addMarker(recordToAdd) {
             // 監聽 marker click 事件
            marker.addListener('click', e => {
                 infoWindow.open(this.map, marker);
-                currentInfoWindowRecord=recordToAdd;
-                currentMarker=marker;
+                currentInfoWindowRecord = recordToAdd;
+                currentMarker = marker;
            });
         }
 }
@@ -381,10 +381,10 @@ function modifyRecordToBackend(record) {
 function updateMarkerContent(newContent) {
     let modifyContent=`
          <div>
-             <h6 style="padding:3px; margin:3px;">${newContent.type}</h6>
-             <p style="padding:3px; margin:3px;">減少的碳足跡為:${newContent.footprint}gCO2E</p>
-             <p style="padding:3px; margin:3px;">${newContent.time}</p>
-             <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer; border-radius: 5px;" onclick="recordModal()">編輯</button>
+             <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${newContent.type}</h6>
+             <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為:${newContent.footprint}gCO2E</p>
+             <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">${newContent.time}</p>
+             <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 7px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px" onclick="recordModal()">編輯</button>
          </div>`;
          //class="btn btn-secondary"
     if (currentMarker.infoWindow) {
@@ -508,13 +508,14 @@ function showTotalFootprint(){
     totalFPDiv.style.display = "inline";
     var totalFP = 0;
     if(thisRecords.length == 0){
-        totalFPDiv.textContent = "總減碳量：0g Co2E";
+        totalFPDiv.textContent = "0g Co2E";
         container.appendChild(totalFPDiv);
     } else {
         for (var i = 0; i < thisRecords.length; i++) {
             totalFP += parseInt(thisRecords[i].footprint, 10);
         }
-        totalFPDiv.textContent = "總減碳量：" + totalFP + "g Co2E";
+        totalFPDiv.textContent = totalFP + "g Co2E";
+        totalFPDiv.style.maxWidth = "300px";
         container.appendChild(totalFPDiv);
     }
 }
