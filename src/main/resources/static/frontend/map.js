@@ -19,7 +19,7 @@ $(document).ready(function() {
     loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
     $('#logoutAccount').click(logoutAccount);//登出
-    $('#deleteAccount').click(deleteAccount);//刪除帳號
+    $('#delete').click(deleteAccount);//刪除帳號
     $('#saveRecord').click(function(event) {// 添加標記
         saveRecord(event);
     });
@@ -40,7 +40,15 @@ function logoutAccount(){
     localStorage.removeItem('EmoAppUser');
     window.location.href= '/login';
 }
-
+function deleteAccount(){
+    if($('#passwordAuth').val()==User.password){
+        deleteAccountToBackend(User.userId);
+        deleteRecordByAccount(User.userId);
+    }
+    else{
+       alert("密碼錯誤");
+    }
+}
 //刪除Emo_User
 function deleteAccountToBackend(userId){
     $.ajax({
@@ -57,7 +65,7 @@ function deleteAccountToBackend(userId){
     });
     alert("帳號刪除成功");
     localStorage.removeItem('EmoAppUser');
-    window.location.href= 'frontend/login.html';
+    window.location.href= '/login';
 }
 //刪除Emo_Record裡面指定用戶的紀錄
 function deleteRecordByAccount(userId){
