@@ -15,11 +15,12 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--    <link rel="stylesheet" href="/frontend/login.css">-->
 
 <style>
-        body {
+body {
             font-family: 'Crimson Pro', serif;
-            background-image: url(frontend/img/bg2.jpg);
+            background-image: url(frontend/img/bg1.jpg);
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -36,11 +37,8 @@
 
         .container {
             padding: 10px;
-            /* border-radius: 5px; */
-            min-width: 400px;
-            max-width:500px;
-            /* transform-origin: center; */
-
+            min-width: 300px;
+            max-width: 350px;
         }
         .form-control
         .btn.btn-primary {
@@ -87,15 +85,6 @@
              position: relative;
         }
 
-
-        /* @media only screen and (max-width: 768px){
-            /* for mobile phone
-            .container{
-                transform: scale(1.5);
-            }
-
-        } */
-
         @media (prefers-reduced-motion: reduce) {
         .form-control {
             -webkit-transition: none;
@@ -132,13 +121,40 @@
             padding-top: 50px;
             text-shadow: 1px 1px 0 #000000, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 1px 1px 0 black;
         }
+        @media only screen and (max-width: 1000px) {
+            .form-control{
+                height: 110px;
+                font-size: 2rem;
+                padding-left: 30px;
+            }
+            .form-control.btn{
+                font-size: 2rem;
+            }
+            .emo{
+                font-size: 11em;
+            }
+            .container{
+                max-width: 950px;
+            }
+            label{
+                font-size: 2rem;
+                padding: 10px;
+            }
+            h2{
+                font-size:5rem;
+            }
+            svg{
+                width: 120px;
+                height: 50px;
+            }
+        }
 </style>
 
 
 </head>
-<body class="img js-fullheight" style="background-image: url(frontend/img/bg1.jpg);">
+<body class="img js-fullheight" >
 <!--登入區塊-->
-<div class="container text-white" style="width: 500px;" id="login-container">
+<div class="container text-white" id="login-container">
     <div class="row">
         <div class="col-12 a">
             <form id="login-form">
@@ -158,11 +174,11 @@
                 <br><br>
                 <button type="submit" class="form-control btn" id="login-button">登入</button>
                 <br><br>
-                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                     沒有帳號？ &nbsp;
                     <a href="#" id="switch-to-signup">註冊</a>
                     <a href="#" id="no-account" style="margin-left: auto;">忘記密碼？</a>
-                </div>
+                </label>
 
             </form>
         </div>
@@ -173,8 +189,10 @@
 <div class="container p-3 my-3 text-white d-none" id="signup-container">
     <form id="signup-form">
         <div class="form-group">
-            <span class="bi bi-arrow-left" id="return-to-login-button" ></span>
-            <h1 style="text-align: center">Sign up</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" id="return-to-login-button" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            <h2 style="text-align: center">Sign up</h2>
         </div><br>
 
         <div class="form-group">
@@ -212,7 +230,9 @@
 <div class="container p-3 my-3 text-white d-none" id="forgetPassword-container">
     <form id="verify-form">
         <div class="form-group">
-            <span class="bi bi-arrow-left" id="return-to-login-button2" ></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" id="return-to-login-button2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
             <h2 style="text-align: center">Forgot Password</h2>
         </div><br>
         <div class="form-group">
