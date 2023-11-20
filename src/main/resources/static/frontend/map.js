@@ -20,12 +20,11 @@ $(document).ready(function() {
     loadFootprintData();//載入碳足跡計算
     $('#logoutAccount').click(logoutAccount);//登出
     $('#delete').click(deleteAccount);//刪除帳號
-    $('#saveRecord').click(function(event) {// 添加標記
-        saveRecord(event);
-    });
+    $('#saveRecord').click(saveRecord);// 添加標記
     $('#updateRecord').click(updateRecord)//修改紀錄
     $('#deleteRecord').click(deleteRecord)//刪除紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
+    $('#settingButton').click(showTotalFootprint);
     $('#startRecording').click(function () {
         if (!isRecording) {
             startRecording(); //false
@@ -41,7 +40,7 @@ function logoutAccount(){
     window.location.href= '/login';
 }
 function deleteAccount(){
-    if($('#passwordAuth').val()==User.password){
+    if($('#passwordAuth').val() == User.password){
         deleteAccountToBackend(User.userId);
         deleteRecordByAccount(User.userId);
     }
@@ -255,7 +254,7 @@ function addMarker(recordToAdd) {
                    <h6 style="padding:3px; margin:3px;">${recordToAdd.type}</h6>
                    <p style="padding:3px; margin:3px;">減少的碳足跡為:${recordToAdd.footprint}gCO2E</p>
                    <p style="padding:3px; margin:3px;">${recordToAdd.time}</p>
-                   <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer;" onclick="recordModal()">編輯</button>
+                   <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer; border-radius: 5px;" onclick="recordModal()">編輯</button>
                </div>`;
                //class="btn btn-secondary"
            let infoWindow = new google.maps.InfoWindow({
@@ -384,7 +383,7 @@ function updateMarkerContent(newContent) {
              <h6 style="padding:3px; margin:3px;">${newContent.type}</h6>
              <p style="padding:3px; margin:3px;">減少的碳足跡為:${newContent.footprint}gCO2E</p>
              <p style="padding:3px; margin:3px;">${newContent.time}</p>
-             <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer;" onclick="recordModal()">編輯</button>
+             <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer; border-radius: 5px;" onclick="recordModal()">編輯</button>
          </div>`;
          //class="btn btn-secondary"
     if (currentMarker.infoWindow) {
@@ -499,6 +498,27 @@ function showNowRecordInfowindow(nowRecord){
     }
 }
 
+// 設定頁面顯示總減碳量
+function showTotalFootprint(){
+    var thisRecords = records;
+    var container = document.getElementById("totalFootprint");
+    container.innerHTML = ""; // 清空容器內容
+
+    var totalFPDiv = document.createElement("div");
+    totalFPDiv.style.display = "inline";
+    var totalFP = 0;
+    if(thisRecords.length == 0){
+        totalFPDiv.textContent = "總減碳量：0g Co2E";
+        container.appendChild(totalFPDiv);
+    } else {
+        for (var i = 0; i < thisRecords.length; i++) {
+            totalFP += parseInt(thisRecords[i].footprint, 10);
+        }
+        totalFPDiv.textContent = "總減碳量：" + totalFP + "g Co2E";
+        container.appendChild(totalFPDiv);
+    }
+}
+
 // 查看歷史紀錄
 function showRecord() {
 //列表顯示環保紀錄
@@ -508,34 +528,43 @@ function showRecord() {
     container.style.overflowY = "scroll";
     container.style.maxHeight = "300px";
 
-    for (var i = 0; i < thisRecords.length; i++) {
-        // 創建新的<div>元素
+    if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
         recordDiv.style.display = "inline";
-        recordDiv.style.textAlign = "left";
+        recordDiv.style.textAlign = "center";
+        recordDiv.textContent = "沒有紀錄";
 
-        // 創建新的 <p> 元素
-        var recordElement = document.createElement("p");
-        var timeSpan = document.createElement("span");
-        timeSpan.textContent = thisRecords[i].time + " ";
-        var typeSpan = document.createElement("span");
-        typeSpan.textContent = thisRecords[i].type + " ";
-        var footprintSpan = document.createElement("span");
-        footprintSpan.textContent = "減少的碳排放: " + thisRecords[i].footprint + "gCo2E";
-
-        // 將 <span> 元素附加到 <p> 元素
-        recordElement.appendChild(timeSpan);
-        recordElement.appendChild(typeSpan);
-        recordElement.appendChild(footprintSpan);
-
-        recordDiv.appendChild(recordElement);
         container.appendChild(recordDiv);
-        recordDiv.id  = 'record_' + thisRecords[i].recordId;
-        (function(recordId) {
+    } else {
+        for (var i = 0; i < thisRecords.length; i++) {
+            // 創建新的<div>元素
+            var recordDiv = document.createElement("div");
+            recordDiv.style.display = "inline";
+            recordDiv.style.textAlign = "left";
+
+            // 創建新的 <p> 元素
+            var recordElement = document.createElement("p");
+            var timeSpan = document.createElement("span");
+            timeSpan.textContent = thisRecords[i].time + " ";
+            var typeSpan = document.createElement("span");
+            typeSpan.textContent = thisRecords[i].type + " ";
+            var footprintSpan = document.createElement("span");
+            footprintSpan.textContent = "減少的碳排放: " + thisRecords[i].footprint + "g Co2E";
+
+            // 將 <span> 元素附加到 <p> 元素
+            recordElement.appendChild(timeSpan);
+            recordElement.appendChild(typeSpan);
+            recordElement.appendChild(footprintSpan);
+
+            recordDiv.appendChild(recordElement);
+            container.appendChild(recordDiv);
+            recordDiv.id  = 'record_' + thisRecords[i].recordId;
+            (function(recordId) {
                 recordDiv.addEventListener('click', function() {
                     recordClick(recordId);
                 });
             })(thisRecords[i].recordId);
+        }
     }
 }
 // 排序歷史紀錄
