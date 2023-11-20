@@ -9,8 +9,9 @@ var username;//使用者名稱
 var User;
 //小作弊
 var currentInfoWindowRecord; // 目前 infoWindow 的內容
-var currentInfoWindow;//目前infowindow
 var currentMarker;//目前Marker
+var markers =[];
+
 $(document).ready(function() {
     User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
     username =User.username;
@@ -239,6 +240,7 @@ function addMarker(recordToAdd) {
                 title: recordToAdd.type,
                 icon: thisIcon
             });
+
            //小改
            let infoWindowContent = `
                <div>
@@ -251,11 +253,13 @@ function addMarker(recordToAdd) {
            let infoWindow = new google.maps.InfoWindow({
                 content: infoWindowContent
            });
+           marker.infoWindow = infoWindow;
+           markers.push(marker);
+
             // 監聽 marker click 事件
            marker.addListener('click', e => {
                 infoWindow.open(this.map, marker);
                 currentInfoWindowRecord=recordToAdd;
-                currentInfoWindow=infoWindow;
                 currentMarker=marker;
            });
         }
@@ -375,7 +379,7 @@ function updateMarkerContent(newContent) {
              <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 5px; border: none; cursor: pointer;" onclick="recordModal()">編輯</button>
          </div>`;
          //class="btn btn-secondary"
-    if (currentInfoWindow) {
+    if (currentMarker.infoWindow) {
         //console.log("更新infowindow成功");
         var thisIcon;
         if (currentInfoWindowRecord.classType === "交通") {
@@ -384,7 +388,7 @@ function updateMarkerContent(newContent) {
             thisIcon = '/frontend/img/daily.ico';
         } else{ alert(currentInfoWindowRecord.classType) }
         currentMarker.setIcon(thisIcon);
-        currentInfoWindow.setContent(modifyContent);
+        currentMarker.infoWindow.setContent(modifyContent);
     }else {
         console.error('InfoWindow not available.');
     }
@@ -445,15 +449,46 @@ function deleteRecordToBackend(recordId) {
 
 //刪mark
 function deleteMarker(){
-    currentInfoWindow.close();
+    currentMarker.infoWindow.close();
     currentMarker.setMap(null);
+
+    // 找到 currentMarker 在 markers 移除
+    var index = markers.indexOf(currentMarker);
+    if (index > -1) {
+        markers.splice(index, 1);
+    }
 }
 //點擊列表中的record
 function recordClick(recordId){
     var recordIndex = records.findIndex(record => record.recordId === recordId);
     nowRecord=records[recordIndex];
 
+    //關閉視窗
+    $('#recordListFW').css('display', 'none');
+    //找位置
+    showNowRecordInfowindow(nowRecord);
     console.log(nowRecord);
+}
+
+//讓被點擊的紀錄呈現畫面中間，並打開infowindow
+function showNowRecordInfowindow(nowRecord){
+
+    //跑到中心
+    let centerPosition = new google.maps.LatLng(nowRecord.latitude, nowRecord.longitude);
+    map.panTo(centerPosition);
+    map.setZoom(15);
+
+
+    // 找所有marker
+    for (let i = 0; i < markers.length; i++) {
+        if (markers[i].getPosition().equals(centerPosition)) {
+            console.log(markers[i].getPosition());
+            console.log(centerPosition);
+            markers[i].infoWindow.open(map,markers[i]);
+            console.log("infowindow OK")
+            break;
+        }
+    }
 }
 
 // 查看歷史紀錄
