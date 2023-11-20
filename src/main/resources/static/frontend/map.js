@@ -128,10 +128,11 @@ function saveRecord(event){
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
-//            latitude = position.coords.latitude;
-//            longitude = position.coords.longitude;     抓取真實位置
-            latitude = map.getCenter().lat();
-            longitude = map.getCenter().lng();
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+//            抓取真實位置
+//            latitude = map.getCenter().lat();
+//            longitude = map.getCenter().lng();
 //            抓取中心位置 這是備案
             if ($("#trafficRadio").is(":checked")) {
                 classType = $("#traffic").text();
@@ -279,36 +280,36 @@ function recordModal(){
         document.getElementById('modifyFW').style.display = 'flex';
         document.getElementById('modifyFW').style.position = 'fixed';
 
-        if(currentInfoWindowRecord.classType == "交通"){
+        if(currentInfoWindowRecord.classType === "交通"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyTrafficRadio').checked = true;
             document.getElementById('modifyTrafficMenu').style.display = 'block';
             document.getElementById('modifyDailyMenu').style.display = 'none';
             document.getElementById('modifySPACE').style.display = 'none';
 
-            if(currentInfoWindowRecord.type == "公車"){
+            if(currentInfoWindowRecord.type === "公車"){
                 document.getElementById('modifyTrafficType').value = 'traffic-bus';
-            }else if(currentInfoWindowRecord.type == "捷運"){
+            }else if(currentInfoWindowRecord.type === "捷運"){
                 document.getElementById('modifyTrafficType').value = 'traffic-MRT';
-            }else if(currentInfoWindowRecord.type == "火車"){
+            }else if(currentInfoWindowRecord.type === "火車"){
                 document.getElementById('modifyTrafficType').value = 'traffic-train';
-            }else{
+            }else if(currentInfoWindowRecord.type === "高鐵"){
                 document.getElementById('modifyTrafficType').value = 'traffic-HSR';
             }
 
             document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
-        }else if(currentInfoWindowRecord.classType == "生活用品"){
+        }else if(currentInfoWindowRecord.classType === "生活用品"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyDailyRadio').checked = true;
             document.getElementById('modifyTrafficMenu').style.display = 'none';
             document.getElementById('modifyDailyMenu').style.display = 'block';
             document.getElementById('modifySPACE').style.display = 'none';
 
-            if(currentInfoWindowRecord.type == "環保杯"){
+            if(currentInfoWindowRecord.type === "環保杯"){
                 document.getElementById('modifyDailyType').value = 'daily-cup';
-            }else if(currentInfoWindowRecord.type == "環保餐具"){
+            }else if(currentInfoWindowRecord.type === "環保餐具"){
                 document.getElementById('modifyDailyType').value = 'daily-tableware';
-            }else{
+            }else if(currentInfoWindowRecord.type === "環保袋"){
                 document.getElementById('modifyDailyType').value = 'daily-bag';
             }
             document.getElementById('modifyCount').value = currentInfoWindowRecord.data_value;
@@ -424,10 +425,10 @@ function deleteRecord(){
         deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
         deleteMarker();
-        console.log("刪資料");
+        console.log(records);
         document.getElementById("modifyFW").style.display = "none";
-    } else {
-        console.log("沒刪");
+    } else{
+        console.log("取消刪除");
     }
 }
 
@@ -473,26 +474,25 @@ function recordClick(recordId){
     //關閉視窗
     $('#recordListFW').css('display', 'none');
     //找位置
-    showNowRecordInfowindow(nowRecord);
+    showNowRecordInFoWindow(nowRecord);
     //console.log(nowRecord);
 }
 
-//讓被點擊的紀錄呈現畫面中間，並打開infowindow
-function showNowRecordInfowindow(nowRecord){
+//讓被點擊的紀錄呈現畫面中間，並打開inFoWindow
+function showNowRecordInFoWindow(nowRecord){
 
     //跑到中心
     let centerPosition = new google.maps.LatLng(nowRecord.latitude, nowRecord.longitude);
     map.panTo(centerPosition);
     map.setZoom(15);
 
-
     // 找所有marker
     for (let i = 0; i < markers.length; i++) {
         if (markers[i].getPosition().equals(centerPosition)) {
-            //console.log(markers[i].getPosition());
-            //console.log(centerPosition);
+            currentInfoWindowRecord = nowRecord;
+            currentMarker=markers[i];
             markers[i].infoWindow.open(map,markers[i]);
-            //console.log("infowindow OK")
+            //console.log("InFoWindow OK")
             break;
         }
     }
