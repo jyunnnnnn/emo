@@ -1,16 +1,17 @@
 var map;
 var infoWindow;
-var intervalId;
+var intervalId;//時間間隔
 var FootprintData = [];
-var recordedPositions = [];//路線紀錄
 var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
 var username;//使用者名稱
 var User;
-//小作弊
+
 var currentInfoWindowRecord; // 目前 infoWindow 的內容
 var currentMarker;//目前Marker
-var markers =[];
+var markers =[];//所有marker
+var recordedPositions = [];//路線紀錄(點)
+var mapLines = [];//一次紀錄的路線線段
 
 $(document).ready(function() {
     User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
@@ -646,7 +647,10 @@ function stopRecording() {
     isRecording = false;
 
 
-    //這裡存一下recordedPositions資料
+    //這裡存一下recordedPositions 要顯示十一次重畫
+    //或在clearMapLines 存mapLines資料
+
+    console.log(mapLines);
 
     // 清除時間間隔
     clearInterval(intervalId);
@@ -697,17 +701,16 @@ function drawLines() {
         });
 
         line.setMap(map);
+
+        mapLines.push(line);
     }
 }
 //清線
 function clearMapLines() {
-    // 取得地圖上的所有線條
-    var mapLines = map.getOverlays('polyline');
-    // 移除線
     for (var i = 0; i < mapLines.length; i++) {
-        map.removeOverlay(mapLines[i]);
-    }
-
+            mapLines[i].setMap(null);
+        }
+        mapLines = [];
 }
 // 初始化Google Map
 function initMap() {
