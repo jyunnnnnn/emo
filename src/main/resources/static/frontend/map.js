@@ -13,27 +13,71 @@ var markers =[];//所有marker
 var recordedPositions = [];//路線紀錄(點)
 var mapLines = [];//一次紀錄的路線線段
 
-$(document).ready(function() {
-    User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
-    username =User.username;
-    $('#user').text(username);
-    loadEcoRecords(User.userId);//載入環保紀錄
-    loadFootprintData();//載入碳足跡計算
-    $('#logoutAccount').click(logoutAccount);//登出
-    $('#delete').click(deleteAccount);//刪除帳號
-    $('#saveRecord').click(saveRecord);// 添加標記
-    $('#updateRecord').click(updateRecord)//修改紀錄
-    $('#deleteRecord').click(deleteRecord)//刪除紀錄
-    $('#recordListButton').click(showRecord);//查看環保紀錄
-    $('#settingButton').click(showTotalFootprint);
-    $('#startRecording').click(function () {
-        if (!isRecording) {
-            startRecording(); //false
-        } else {
-            stopRecording(); //true
-        }
-    });// 路線紀錄(開始/停止)
-});
+// 初始化Google Map
+function initMap() {
+    if ("geolocation" in navigator) {
+        // 當前位置
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var currentLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            // 創建地圖
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: currentLocation,
+                zoom: 15,
+                mapTypeControl: false,
+                zoomControl: false,
+                scaleControl: false,
+                streetViewControl: false,
+                rotateControl: false,
+                fullscreenControl: false,
+                styles: [
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels',
+                        stylers: [
+                            { visibility: 'off' }
+                        ]
+                    }
+                ]
+            });
+
+            infoWindow = new google.maps.InfoWindow();
+            // 當前位置標記
+            var circle = new google.maps.Marker({
+                position: currentLocation,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5
+                },
+                map: map
+            });
+            console.log("map finish");
+            User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
+            username =User.username;
+            $('#user').text(username);
+            loadEcoRecords(User.userId);//載入環保紀錄
+            loadFootprintData();//載入碳足跡計算
+            $('#logoutAccount').click(logoutAccount);//登出
+            $('#delete').click(deleteAccount);//刪除帳號
+            $('#saveRecord').click(saveRecord);// 添加標記
+            $('#updateRecord').click(updateRecord)//修改紀錄
+            $('#deleteRecord').click(deleteRecord)//刪除紀錄
+            $('#recordListButton').click(showRecord);//查看環保紀錄
+            $('#settingButton').click(showTotalFootprint);
+            $('#startRecording').click(function () {
+                if (!isRecording) {
+                    startRecording(); //false
+                } else {
+                    stopRecording(); //true
+                }
+            });// 路線紀錄(開始/停止)
+        });
+    } else {
+        alert("不支援定位");
+    }
+}
 
 
 //載入碳足跡計算係數
@@ -194,7 +238,8 @@ function loadEcoRecords(userId) {
 }
 //新增標記
 function addMarker(recordToAdd) {
-        //console.log(recordToAdd);
+        recordToAdd.data_value = recordToAdd.data_value.toString();
+        recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
         var thisIcon;
         if (recordToAdd.classType === "交通") {
             thisIcon = '/frontend/img/traffic.ico';
@@ -225,6 +270,7 @@ function addMarker(recordToAdd) {
            let infoWindow = new google.maps.InfoWindow({
                content: infoWindowContent
            });
+
            marker.infoWindow = infoWindow;
            markers.push(marker);
 
@@ -647,9 +693,8 @@ function startRecording() {
 
 function stopRecording() {
     // 修改按鈕文字和標誌位元
-    $('#startRecording').text('開始記錄');
+    $('#startRecording').text('路線記錄');
     isRecording = false;
-
 
     //這裡存一下recordedPositions 要顯示十一次重畫
     //或在clearMapLines 存mapLines資料
@@ -715,48 +760,4 @@ function clearMapLines() {
             mapLines[i].setMap(null);
         }
         mapLines = [];
-}
-// 初始化Google Map
-function initMap() {
-    if ("geolocation" in navigator) {
-        // 當前位置
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var currentLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            // 創建地圖
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: currentLocation,
-                zoom: 15,
-                mapTypeControl: false,
-                zoomControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                rotateControl: false,
-                fullscreenControl: false,
-                styles: [
-                    {
-                        featureType: 'poi',
-                        elementType: 'labels',
-                        stylers: [
-                            { visibility: 'off' }
-                        ]
-                    }
-                ]
-            });
-            infoWindow = new google.maps.InfoWindow();
-            // 當前位置標記
-            var circle = new google.maps.Marker({
-                position: currentLocation,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 5
-                },
-                map: map
-            });
-        });
-    } else {
-        alert("不支援定位");
-    }
 }
