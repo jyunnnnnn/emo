@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Google Maps with Bootstrap</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 圓餅圖 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -245,6 +247,7 @@
         </button>
 
         <div class="recordHeading" id="activityListModalLabel">歷史記錄</div>
+        <div class="chart-box"><canvas id="recordChart" style="display: block; box-sizing: border-box; height: 279px; width: 279px;" width="558" height="558"></canvas></div>
         <div id="typeSelect" style="margin-top: 10px; margin-bottom: 10px; ">
             <select class="recordForm-control" id="category" style="width: 130px; font-size: 11px;">
                 <optgroup label="類別">
@@ -260,7 +263,7 @@
                 </optgroup>
             </select>
         </div>
-        <div id="listContent" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; max-width: 400px;">沒有紀錄</div>
+        <div id="listContent" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; max-width: 600px;">沒有紀錄</div>
     </div>
 </div>
 

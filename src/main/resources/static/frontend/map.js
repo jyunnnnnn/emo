@@ -526,6 +526,30 @@ function showTotalFootprint(){
     }
 }
 
+// 圓餅圖
+let myChart = null;
+function showNewChart() {
+    const chartElement = document.getElementById("recordChart");
+    const data = {
+        labels: ['交通', '生活用品'],
+        datasets: [{
+            label: '減碳量',
+            data: [420, 380],
+        }]
+    };
+
+    // 判斷是否已經存在舊的圖
+    if (myChart !== null) {
+        myChart.destroy();
+    }
+
+    // 創建新的圖
+    myChart = new Chart(chartElement, {
+        type: 'pie',
+        data: data,
+    });
+}
+
 // 查看歷史紀錄
 function showRecord() {
 //列表顯示環保紀錄
@@ -556,7 +580,7 @@ function showRecord() {
             var typeSpan = document.createElement("span");
             typeSpan.textContent = thisRecords[i].type + " ";
             var footprintSpan = document.createElement("span");
-            footprintSpan.textContent = "減少的碳排放: " + thisRecords[i].footprint + "g Co2E";
+            footprintSpan.textContent = " (" + thisRecords[i].footprint + "g Co2E)";
 
             // 將 <span> 元素附加到 <p> 元素
             recordElement.appendChild(timeSpan);
@@ -573,6 +597,8 @@ function showRecord() {
             })(thisRecords[i].recordId);
         }
     }
+    // 圓餅圖
+    showNewChart();
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
@@ -615,7 +641,7 @@ function showNewRecord(records) {
         var typeSpan = document.createElement("span");
         typeSpan.textContent = thisRecords[i].type + " ";
         var footprintSpan = document.createElement("span");
-        footprintSpan.textContent = "減少的碳排放: " + thisRecords[i].footprint + "gCo2E";
+        footprintSpan.textContent = " (" + thisRecords[i].footprint + "g Co2E)";
 
         // 將 <span> 元素附加到 <p> 元素
         recordElement.appendChild(timeSpan);
