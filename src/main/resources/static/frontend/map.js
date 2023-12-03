@@ -529,12 +529,22 @@ function showTotalFootprint(){
 // 圓餅圖
 let myChart = null;
 function showNewChart() {
+    var trafficTotal=0;
+    var dailyTotal=0;
+    for (var i=0; i<records.length; i++) {
+        if (records[i].classType =="交通"){
+            trafficTotal+=records[i].footprint;
+        }
+        else if (records[i].classType =="生活用品"){
+            dailyTotal+=records[i].footprint;
+        }
+    }
     const chartElement = document.getElementById("recordChart");
     const data = {
         labels: ['交通', '生活用品'],
         datasets: [{
             label: '減碳量',
-            data: [420, 380],
+            data: [trafficTotal, dailyTotal],
         }]
     };
 
