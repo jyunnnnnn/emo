@@ -30,10 +30,12 @@ public class EcoRecordService {
         this.repository.save(newEcoRecord);
     }
 
-    //刪除歷史紀錄
-    public void deleteRecord(String recordId) {
+    //刪除特定一個歷史紀錄
+    public void deleteOneRecord(String recordId) {
         this.repository.deleteByRecordId(recordId);
     }
+
+
 
     //抓取特定使用者紀錄
     public List<EcoRecord> getSpecificUserRecords(String username) {

@@ -55,7 +55,7 @@ public class EcoController {
     //抓取特定使用者的所有紀錄
     @GetMapping("/getSpecificUserRecord")
     public ResponseEntity<?> getSpecificUserRecord(@RequestParam("userId") String userId) {// /api/getSpecificUserRecord?userId=test
-        System.out.println("userId:"+userId);
+        System.out.println("userId:" + userId);
         try {
             //username = new AESEncryption().encrypt(username);//將帳號加密成user_id
             List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(userId);
@@ -80,10 +80,11 @@ public class EcoController {
         }
     }
 
+    //刪除特定一個紀錄
     @DeleteMapping("/deleteOneRecord")
     public ResponseEntity<?> deleteOneRecord(@RequestParam("recordId") String recordId) {
         try {
-            this.ecoRecordService.deleteRecord(recordId);
+            this.ecoRecordService.deleteOneRecord(recordId);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception err) {
             System.err.println("刪除" + recordId + "紀錄過程出現問題");
@@ -91,6 +92,33 @@ public class EcoController {
         }
 
     }
+
+    //刪除多筆紀錄
+    @DeleteMapping("/deleteMulRecord")
+    public ResponseEntity<?> deleteMulRecord(@RequestBody List<String> recordIdList) {
+        try {
+
+            for (int i = 0; i < recordIdList.size(); i++) {
+                this.ecoRecordService.deleteOneRecord(recordIdList.get(i));
+            }
+            /*json傳遞格式
+                [
+                    "1701610871653",
+                    "1701610876065"
+                ]
+            */
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception err) {
+            System.err.println("刪除多筆紀錄過程出現問題");
+            err.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
+    //刪除特定使用者紀錄
     @DeleteMapping("/deleteSpecificUserRecord")
     public ResponseEntity<?> deleteSpecificUserRecord(@RequestParam("userId") String userId) {
         try {
@@ -101,6 +129,8 @@ public class EcoController {
             return ResponseEntity.ok("Fail");
         }
     }
+
+    //刪除資料庫內所有紀錄(自己人使用)
     @DeleteMapping("/deleteAllRecords")
     public ResponseEntity<?> deleteAllRecord() {
         try {
