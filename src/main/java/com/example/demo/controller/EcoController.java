@@ -101,7 +101,7 @@ public class EcoController {
             for (int i = 0; i < recordIdList.size(); i++) {
                 this.ecoRecordService.deleteOneRecord(recordIdList.get(i));
             }
-            /*json傳遞格式
+            /*json傳遞格式 recordId陣列
                 [
                     "1701610871653",
                     "1701610876065"
