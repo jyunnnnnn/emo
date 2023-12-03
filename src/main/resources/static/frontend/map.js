@@ -528,26 +528,62 @@ function showTotalFootprint(){
 
 // 圓餅圖
 let myChart = null;
-function showNewChart() {
+function showNewChart(type) {
+    var data;
     var trafficTotal=0;
     var dailyTotal=0;
-    for (var i=0; i<records.length; i++) {
-        if (records[i].classType =="交通"){
-            trafficTotal+=records[i].footprint;
-        }
-        else if (records[i].classType =="生活用品"){
-            dailyTotal+=records[i].footprint;
+    var bus=0;
+    var train=0;
+    var mrt=0;
+    var hsr=0;
+    var cup=0;
+    var bag=0;
+    var tableware=0;
+    for(var i=0;i<records.length;i++){
+        if(records[i].type == "公車"){
+            bus+=records[i].footprint;
+        }else if(records[i].type == "火車"){
+            train+=records[i].footprint;
+        }else if(records[i].type == "捷運"){
+            mrt+=records[i].footprint;
+        }else if(records[i].type == "高鐵"){
+            hsr+=records[i].footprint;
+        }else if(records[i].type == "環保杯"){
+            cup+=records[i].footprint;
+        }else if(records[i].type == "環保袋"){
+            bag+=records[i].footprint;
+        }else if(records[i].type == "環保餐具"){
+            tableware+=records[i].footprint;
         }
     }
+    if(type =="全部" || type == "init"){
+        dailyTotal=cup+bag+tableware;
+        trafficTotal=train+mrt+bus+hsr;
+        data = {
+            labels: ['交通', '生活用品'],
+            datasets: [{
+                label: '減碳量',
+                data: [trafficTotal, dailyTotal],
+            }]
+        };
+    }else if(type == "交通"){
+        data = {
+            labels: ['公車','火車','捷運','高鐵'],
+            datasets: [{
+                label: '減碳量',
+                data: [bus,train,mrt,hsr],
+            }]
+        };
+    }else if(type == "生活用品"){
+        data = {
+            labels: ['環保杯','環保袋','環保餐具'],
+            datasets: [{
+                label: '減碳量',
+                data: [cup,bag,tableware],
+            }]
+        };
+    }
     const chartElement = document.getElementById("recordChart");
-    const data = {
-        labels: ['交通', '生活用品'],
-        datasets: [{
-            label: '減碳量',
-            data: [trafficTotal, dailyTotal],
-        }]
-    };
-
     // 判斷是否已經存在舊的圖
     if (myChart !== null) {
         myChart.destroy();
@@ -608,7 +644,7 @@ function showRecord() {
         }
     }
     // 圓餅圖
-    showNewChart();
+    showNewChart("init");
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
@@ -628,6 +664,7 @@ function sortRecordsBySelectedOption() {
     }
 
     showNewRecord(sortedRecords);
+    showNewChart(selectedCategory);
 }
 // 監聽排序選項變化事件
 document.getElementById("category").addEventListener("change", sortRecordsBySelectedOption);
