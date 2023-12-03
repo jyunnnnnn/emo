@@ -15,9 +15,8 @@ var mapLines = [];//一次紀錄的路線線段
 
 // 初始化Google Map
 function initMap() {
-    if ("geolocation" in navigator) {
-        // 當前位置
-        navigator.geolocation.getCurrentPosition(function(position) {
+     navigator.geolocation.getCurrentPosition(
+        function(position) {
             var currentLocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -42,7 +41,6 @@ function initMap() {
                     }
                 ]
             });
-
             infoWindow = new google.maps.InfoWindow();
             // 當前位置標記
             var circle = new google.maps.Marker({
@@ -73,10 +71,11 @@ function initMap() {
                     stopRecording(); //true
                 }
             });// 路線紀錄(開始/停止)
-        });
-    } else {
-        alert("不支援定位");
-    }
+        },
+        function(error){
+            console.error('Error getting geolocation:', error);
+        }
+    )
 }
 
 
