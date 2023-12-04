@@ -370,7 +370,7 @@
 
 <script src="/frontend/map.js"></script>
 <!-- 初始化地圖 -->
-<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=initMap'}"></script>
+<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&callback=initMap&libraries=geometry'}"></script>
 
 <script src="/frontend/mapUI.js"></script>
 </html>

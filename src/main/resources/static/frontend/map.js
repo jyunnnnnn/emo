@@ -685,6 +685,7 @@ function startRecording() {
     isRecording = true;
 
     // 每五秒記錄一次
+    kilometer=0;
     intervalId = setInterval(function () {
         recordLocation();
     }, 1000);
@@ -697,9 +698,12 @@ function stopRecording() {
 
     //這裡存一下recordedPositions 要顯示十一次重畫
     //或在clearMapLines 存mapLines資料
+    //存kilometer
 
     console.log(mapLines);
-
+    console.log("kilometer: "+kilometer.toFixed(3)+" KM");
+    //清除距離
+    kilometer=0;
     // 清除時間間隔
     clearInterval(intervalId);
     // 清空位置紀錄
@@ -751,6 +755,8 @@ function drawLines() {
         line.setMap(map);
 
         mapLines.push(line);
+        //累加計算兩點之間距離
+        kilometer += (google.maps.geometry.spherical.computeDistanceBetween(lastTwoPoints[0],lastTwoPoints[1])/1000);
     }
 }
 //清線
