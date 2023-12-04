@@ -594,6 +594,7 @@ function showNewChart(type) {
         type: 'pie',
         data: data,
     });
+
 }
 
 // 查看歷史紀錄
@@ -649,26 +650,48 @@ function showRecord() {
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
     var selectedCategory = $("#category option:selected").text();
-    var selectedTime = $("#time option:selected").text();
-
+    var selectedType = $("#sortType option:selected").text();
     var sortedRecords = records;
 
     if (selectedCategory !== "全部") {
         sortedRecords = sortedRecords.filter(record => record.classType === selectedCategory);
     }
 
-    if (selectedTime === "近到遠") {
-        sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
-    } else if (selectedTime === "遠到近") {
-        sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
+    if (selectedType === "時間") {
+        $("#method").attr("label", "時間");
+        $("#option1").val("new");
+        $("#option1").text("近到遠");
+        $("#option2").val("old");
+        $("#option2").text("遠到近");
+        var selectedMethod = $("#sortMethod option:selected").text();
+        if (selectedMethod === "近到遠") {
+            sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
+        } else if (selectedMethod === "遠到近") {
+            sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
+        }
+    } else if (selectedType === "減碳量") {
+        $("#method").attr("label", "減碳量");
+        $("#option1").val("more");
+        $("#option1").text("多到少");
+        $("#option2").val("less");
+        $("#option2").text("少到多");
+        var selectedMethod = $("#sortMethod option:selected").text();
+        if (selectedMethod === "多到少") {
+            sortedRecords.sort((a, b) => b.footprint - a.footprint);
+        } else if (selectedMethod === "少到多") {
+            sortedRecords.sort((a, b) => a.footprint - b.footprint);
+        }
     }
 
     showNewRecord(sortedRecords);
-    showNewChart(selectedCategory);
 }
 // 監聽排序選項變化事件
-document.getElementById("category").addEventListener("change", sortRecordsBySelectedOption);
-document.getElementById("time").addEventListener("change", sortRecordsBySelectedOption);
+document.getElementById("category").addEventListener("change", function (){
+    sortRecordsBySelectedOption();
+    showNewChart($("#category option:selected").text());
+});
+document.getElementById("sortType").addEventListener("change", sortRecordsBySelectedOption);
+document.getElementById("sortMethod").addEventListener("change", sortRecordsBySelectedOption);
 function showNewRecord(records) {
     var thisRecords = records;
     var container = document.getElementById("listContent");
