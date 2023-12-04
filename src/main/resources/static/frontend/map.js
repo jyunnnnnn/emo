@@ -684,7 +684,7 @@ function startRecording() {
     $('#startRecording').text('結束');
     isRecording = true;
 
-    // 每五秒記錄一次
+    // 每1秒記錄一次
     kilometer=0;
     intervalId = setInterval(function () {
         recordLocation();
@@ -698,6 +698,7 @@ function stopRecording() {
 
     //這裡存一下recordedPositions 要顯示十一次重畫
     //或在clearMapLines 存mapLines資料
+    //好像?抓mapLines就可以直接出現線條(還未確定，等資料庫可新增這筆在測試)
     //存kilometer
 
     console.log(mapLines);
@@ -762,7 +763,7 @@ function drawLines() {
 //清線
 function clearMapLines() {
     for (var i = 0; i < mapLines.length; i++) {
-            mapLines[i].setMap(null);
-        }
-        mapLines = [];
+        mapLines[i].setMap(null);
+    }
+    mapLines = [];
 }
