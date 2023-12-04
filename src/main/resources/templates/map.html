@@ -147,7 +147,7 @@
         <form action="" class="recordForm">
             <div class="radio-inputs" id="classType" name="radio">
                 <!-- 類別選項/交通 -->
-                <label>
+                <label id="trafficLabel" style="display: none">
                     <input id="trafficRadio" class="radio-input" type="radio" name="engine">
                     <span class="radio-tile">
                         <span class="radio-icon">
@@ -164,8 +164,8 @@
                 </label>
 
                 <!-- 類別選項/生活用品 -->
-                <label>
-                    <input id="dailyRadio" class="radio-input" type="radio" name="engine">
+                <label id="dailyLabel">
+                    <input id="dailyRadio" class="radio-input" type="radio" name="engine" checked="true">
                     <span class="radio-tile">
                     <span class="radio-icon">
                     <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 960 960" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="10px" height="10px" fill="none">
@@ -197,7 +197,7 @@
             <!-- 行為選項 -->
             <!-- 行為選項/SPACE -->
             <label id="subType">
-                <div id="SPACE">
+                <div id="SPACE"  style="display: none;">
                     <select id="categorySelect" class="recordForm-control" name="category">
                         <option disabled>請先選擇類別</option>
                     </select>
@@ -216,7 +216,7 @@
                 </div>
 
                 <!-- 行為選項/生活用品 -->
-                <div id="dailyMenu" style="display: none;">
+                <div id="dailyMenu" style="display: block;">
                     <select class="recordForm-control" id="dailyType" name="dailyType">
                         <option value="daily-cup">環保杯</option>
                         <option value="daily-tableware">環保餐具</option>

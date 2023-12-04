@@ -81,13 +81,6 @@ document.getElementById('closeModifyRecordModal').addEventListener('click', func
     document.getElementById('modifyFW').style.display = 'none';
 });
 
-
-// 交通選單
-document.getElementById('trafficRadio').addEventListener('change', function () {
-    document.getElementById('trafficMenu').style.display = 'block';
-    document.getElementById('dailyMenu').style.display = 'none';
-    document.getElementById('SPACE').style.display = 'none';
-})
 // 生活用品選單
 document.getElementById('dailyRadio').addEventListener('change', function () {
     document.getElementById('trafficMenu').style.display = 'none';
