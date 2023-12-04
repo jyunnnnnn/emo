@@ -595,6 +595,8 @@ function showNewChart(type) {
         data: data,
     });
 
+    const chartBox = document.getElementById("chartBox");
+    chartBox.style.display = "block";
 }
 
 // 查看歷史紀錄
@@ -611,6 +613,9 @@ function showRecord() {
         recordDiv.style.display = "inline";
         recordDiv.style.textAlign = "center";
         recordDiv.textContent = "沒有紀錄";
+
+        var chartBox = document.getElementById("chartBox");
+        chartBox.style.display = "none";
 
         container.appendChild(recordDiv);
     } else {
@@ -687,8 +692,8 @@ function sortRecordsBySelectedOption() {
 }
 // 監聽排序選項變化事件
 document.getElementById("category").addEventListener("change", function (){
-    sortRecordsBySelectedOption();
     showNewChart($("#category option:selected").text());
+    sortRecordsBySelectedOption();
 });
 document.getElementById("sortType").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("sortMethod").addEventListener("change", sortRecordsBySelectedOption);
@@ -699,33 +704,44 @@ function showNewRecord(records) {
     container.style.overflowY = "scroll";
     container.style.maxHeight = "300px";
 
-    for (var i = 0; i < thisRecords.length; i++) {
-        // 創建新的<div>元素
+    if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
         recordDiv.style.display = "inline";
-        recordDiv.style.textAlign = "left";
-        // 創建新的 <p> 元素
-        var recordElement = document.createElement("p");
-        var timeSpan = document.createElement("span");
-        timeSpan.textContent = thisRecords[i].time + " ";
-        var typeSpan = document.createElement("span");
-        typeSpan.textContent = thisRecords[i].type + " ";
-        var footprintSpan = document.createElement("span");
-        footprintSpan.textContent = " (" + thisRecords[i].footprint + "g Co2E)";
-
-        // 將 <span> 元素附加到 <p> 元素
-        recordElement.appendChild(timeSpan);
-        recordElement.appendChild(typeSpan);
-        recordElement.appendChild(footprintSpan);
-
-        recordDiv.appendChild(recordElement);
+        recordDiv.style.textAlign = "center";
+        recordDiv.textContent = "沒有紀錄";
         container.appendChild(recordDiv);
-        recordDiv.id  = 'record_' + thisRecords[i].recordId;
-                (function(recordId) {
-                        recordDiv.addEventListener('click', function() {
-                            recordClick(recordId);
-                        });
-                    })(thisRecords[i].recordId);
+
+        var chartBox = document.getElementById("chartBox");
+        chartBox.style.display = "none";
+    }else{
+        for (var i = 0; i < thisRecords.length; i++) {
+            // 創建新的<div>元素
+            var recordDiv = document.createElement("div");
+            recordDiv.style.display = "inline";
+            recordDiv.style.textAlign = "left";
+            // 創建新的 <p> 元素
+            var recordElement = document.createElement("p");
+            var timeSpan = document.createElement("span");
+            timeSpan.textContent = thisRecords[i].time + " ";
+            var typeSpan = document.createElement("span");
+            typeSpan.textContent = thisRecords[i].type + " ";
+            var footprintSpan = document.createElement("span");
+            footprintSpan.textContent = " (" + thisRecords[i].footprint + "g Co2E)";
+
+            // 將 <span> 元素附加到 <p> 元素
+            recordElement.appendChild(timeSpan);
+            recordElement.appendChild(typeSpan);
+            recordElement.appendChild(footprintSpan);
+
+            recordDiv.appendChild(recordElement);
+            container.appendChild(recordDiv);
+            recordDiv.id  = 'record_' + thisRecords[i].recordId;
+            (function(recordId) {
+                recordDiv.addEventListener('click', function() {
+                    recordClick(recordId);
+                });
+            })(thisRecords[i].recordId);
+        }
     }
 }
 
