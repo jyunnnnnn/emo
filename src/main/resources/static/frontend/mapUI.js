@@ -3,6 +3,12 @@ document.getElementById('openRecordModal').addEventListener('click', function ()
     // 顯示懸浮窗
     document.getElementById('recordFW').style.display = 'flex';
     document.getElementById('recordFW').style.position = 'fixed';
+    document.getElementById('trafficLabel').style.display = 'none';
+    document.getElementById('dailyLabel').style.display = 'block';
+    document.getElementById('dailyRadio').checked = true;
+    document.getElementById('trafficMenu').style.display = 'none';
+    document.getElementById('dailyMenu').style.display = 'block';
+    document.getElementById('SPACE').style.display = 'none';
 });
 // 儲存按鈕
 document.getElementById('saveRecord').addEventListener('click', function () {

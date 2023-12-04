@@ -291,7 +291,7 @@ function recordModal(){
         if(currentInfoWindowRecord.classType === "交通"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyTrafficRadio').checked = true;
-            document.getElementById('modifyDailyRadio').style.display = 'none';
+            document.getElementById('modifyDailyLabel').style.display = 'none';
             document.getElementById('modifyTrafficMenu').style.display = 'block';
             document.getElementById('modifyDailyMenu').style.display = 'none';
             document.getElementById('modifySPACE').style.display = 'none';
@@ -307,10 +307,11 @@ function recordModal(){
             }
 
             document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
+            document.getElementById('modifyKilometer').disabled = true;
         }else if(currentInfoWindowRecord.classType === "生活用品"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyDailyRadio').checked = true;
-            document.getElementById('modifyTrafficRadio').style.display = 'none';
+            document.getElementById('modifyTrafficLabel').style.display = 'none';
             document.getElementById('modifyTrafficMenu').style.display = 'none';
             document.getElementById('modifyDailyMenu').style.display = 'block';
             document.getElementById('modifySPACE').style.display = 'none';
@@ -720,6 +721,7 @@ function stopRecording() {
     document.getElementById('dailyLabel').style.display = 'none';
     document.getElementById('trafficMenu').style.display = 'block';
     document.getElementById('dailyMenu').style.display = 'none';
+    document.getElementById('SPACE').style.display = 'none';
     document.getElementById('kilometer').value = kilometer.toFixed(3);
     document.getElementById('kilometer').disabled = 'true';
 
