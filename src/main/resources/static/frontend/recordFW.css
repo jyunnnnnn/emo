@@ -140,6 +140,10 @@
     outline: none;
     border-inline: 2px solid #808686;
 }
+.recordForm .input:disabled {
+    outline: none;
+    background: rgb(215, 212, 212);
+}
 .recordForm .save-button {
     display: block;
     /*width: 100%;*/

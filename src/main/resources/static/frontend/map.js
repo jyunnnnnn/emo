@@ -15,9 +15,8 @@ var mapLines = [];//一次紀錄的路線線段
 
 // 初始化Google Map
 function initMap() {
-    if ("geolocation" in navigator) {
-        // 當前位置
-        navigator.geolocation.getCurrentPosition(function(position) {
+     navigator.geolocation.getCurrentPosition(
+        function(position) {
             var currentLocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -42,7 +41,6 @@ function initMap() {
                     }
                 ]
             });
-
             infoWindow = new google.maps.InfoWindow();
             // 當前位置標記
             var circle = new google.maps.Marker({
@@ -73,10 +71,11 @@ function initMap() {
                     stopRecording(); //true
                 }
             });// 路線紀錄(開始/停止)
-        });
-    } else {
-        alert("不支援定位");
-    }
+        },
+        function(error){
+            console.error('Error getting geolocation:', error);
+        }
+    )
 }
 
 
@@ -291,6 +290,7 @@ function recordModal(){
         if(currentInfoWindowRecord.classType === "交通"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyTrafficRadio').checked = true;
+            document.getElementById('modifyDailyLabel').style.display = 'none';
             document.getElementById('modifyTrafficMenu').style.display = 'block';
             document.getElementById('modifyDailyMenu').style.display = 'none';
             document.getElementById('modifySPACE').style.display = 'none';
@@ -306,9 +306,11 @@ function recordModal(){
             }
 
             document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
+            document.getElementById('modifyKilometer').disabled = true;
         }else if(currentInfoWindowRecord.classType === "生活用品"){
             //console.log(currentInfoWindowRecord.classType);
             document.getElementById('modifyDailyRadio').checked = true;
+            document.getElementById('modifyTrafficLabel').style.display = 'none';
             document.getElementById('modifyTrafficMenu').style.display = 'none';
             document.getElementById('modifyDailyMenu').style.display = 'block';
             document.getElementById('modifySPACE').style.display = 'none';
@@ -820,7 +822,8 @@ function startRecording() {
     $('#startRecording').text('結束');
     isRecording = true;
 
-    // 每五秒記錄一次
+    // 每1秒記錄一次
+    kilometer=0;
     intervalId = setInterval(function () {
         recordLocation();
     }, 1000);
@@ -833,15 +836,32 @@ function stopRecording() {
 
     //這裡存一下recordedPositions 要顯示十一次重畫
     //或在clearMapLines 存mapLines資料
+    //好像?抓mapLines就可以直接出現線條(還未確定，等資料庫可新增這筆在測試)
+    //存kilometer
 
     console.log(mapLines);
-
+    console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
     // 清空位置紀錄
     recordedPositions = [];
     // 移除地圖上的線條
     clearMapLines();
+
+    // 打開紀錄懸浮窗
+    document.getElementById('recordFW').style.display = 'flex';
+    document.getElementById('recordFW').style.position = 'fixed';
+    document.getElementById('trafficRadio').checked = 'true';
+    document.getElementById('trafficLabel').style.display = 'block';
+    document.getElementById('dailyLabel').style.display = 'none';
+    document.getElementById('trafficMenu').style.display = 'block';
+    document.getElementById('dailyMenu').style.display = 'none';
+    document.getElementById('SPACE').style.display = 'none';
+    document.getElementById('kilometer').value = kilometer.toFixed(3);
+    document.getElementById('kilometer').disabled = 'true';
+
+    //清除距離
+    kilometer = 0;
 }
 
 function recordLocation() {
@@ -887,12 +907,14 @@ function drawLines() {
         line.setMap(map);
 
         mapLines.push(line);
+        //累加計算兩點之間距離
+        kilometer += (google.maps.geometry.spherical.computeDistanceBetween(lastTwoPoints[0],lastTwoPoints[1])/1000);
     }
 }
 //清線
 function clearMapLines() {
     for (var i = 0; i < mapLines.length; i++) {
-            mapLines[i].setMap(null);
-        }
-        mapLines = [];
+        mapLines[i].setMap(null);
+    }
+    mapLines = [];
 }
