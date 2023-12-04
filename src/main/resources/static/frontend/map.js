@@ -147,7 +147,6 @@ function saveRecord(event){
             if(classType && type && data_value && latitude && longitude && footprint && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
                 var now = new Date();
                 //console.log(now);
-
                 var year = now.getFullYear();
                 var month = (now.getMonth() + 1).toString().padStart(2, '0');
                 var day = now.getDate().toString().padStart(2, '0');
@@ -649,7 +648,22 @@ function showRecord() {
             })(thisRecords[i].recordId);
         }
     }
+    var now = new Date();
+    //console.log(now);
+    var year = now.getFullYear();
+    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+    var day = now.getDate().toString().padStart(2, '0');
+    var formattedDate = `${year}-${month}-${day}`;
+    records.sort((a, b) => new Date(a.time) - new Date(b.time));
+    var datePart = records[0].time.slice(0, 10);
+    $('#startDate').val(datePart);
+    $('#endDate').val(formattedDate);
     // 圓餅圖
+    $('#startDate').attr('min', datePart);
+    $('#startDate').attr('max', formattedDate);
+    $('#endDate').attr('min', datePart);
+    $('#endDate').attr('max', formattedDate);
+
     showNewChart("init");
 }
 // 排序歷史紀錄
@@ -665,14 +679,14 @@ function sortRecordsBySelectedOption() {
     if (selectedType === "時間") {
         $("#method").attr("label", "時間");
         $("#option1").val("new");
-        $("#option1").text("近到遠");
+        $("#option1").text("遠到近");
         $("#option2").val("old");
-        $("#option2").text("遠到近");
+        $("#option2").text("近到遠");
         var selectedMethod = $("#sortMethod option:selected").text();
         if (selectedMethod === "近到遠") {
-            sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
-        } else if (selectedMethod === "遠到近") {
             sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
+        } else if (selectedMethod === "遠到近") {
+            sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
         }
     } else if (selectedType === "減碳量") {
         $("#method").attr("label", "減碳量");
@@ -687,7 +701,14 @@ function sortRecordsBySelectedOption() {
             sortedRecords.sort((a, b) => a.footprint - b.footprint);
         }
     }
-
+    var startDate=$('#startDate').val()
+    var endDate=$('#endDate').val()
+    sortedRecords=sortedRecords.filter(record =>{
+        var recordDate = new Date(record.time.split(' ')[0]); // 提取日期部分
+        return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
+    });
+    $('#startDate').attr('max', endDate);
+    $('#endDate').attr('min', startDate);
     showNewRecord(sortedRecords);
 }
 // 監聽排序選項變化事件
@@ -697,6 +718,8 @@ document.getElementById("category").addEventListener("change", function (){
 });
 document.getElementById("sortType").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("sortMethod").addEventListener("change", sortRecordsBySelectedOption);
+document.getElementById("startDate").addEventListener("change", sortRecordsBySelectedOption);
+document.getElementById("endDate").addEventListener("change",sortRecordsBySelectedOption);
 function showNewRecord(records) {
     var thisRecords = records;
     var container = document.getElementById("listContent");
