@@ -529,7 +529,7 @@ function showTotalFootprint(){
 
 // 圓餅圖
 let myChart = null;
-function showNewChart(type) {
+function showNewChart(nowRecords,type) {
     var data;
     var trafficTotal=0;
     var dailyTotal=0;
@@ -540,21 +540,21 @@ function showNewChart(type) {
     var cup=0;
     var bag=0;
     var tableware=0;
-    for(var i=0;i<records.length;i++){
-        if(records[i].type == "公車"){
-            bus+=records[i].footprint;
-        }else if(records[i].type == "火車"){
-            train+=records[i].footprint;
-        }else if(records[i].type == "捷運"){
-            mrt+=records[i].footprint;
-        }else if(records[i].type == "高鐵"){
-            hsr+=records[i].footprint;
-        }else if(records[i].type == "環保杯"){
-            cup+=records[i].footprint;
-        }else if(records[i].type == "環保袋"){
-            bag+=records[i].footprint;
-        }else if(records[i].type == "環保餐具"){
-            tableware+=records[i].footprint;
+    for(var i=0;i<nowRecords.length;i++){
+        if(nowRecords[i].type == "公車"){
+            bus+=nowRecords[i].footprint;
+        }else if(nowRecords[i].type == "火車"){
+            train+=nowRecords[i].footprint;
+        }else if(nowRecords[i].type == "捷運"){
+            mrt+=nowRecords[i].footprint;
+        }else if(nowRecords[i].type == "高鐵"){
+            hsr+=nowRecords[i].footprint;
+        }else if(nowRecords[i].type == "環保杯"){
+            cup+=nowRecords[i].footprint;
+        }else if(nowRecords[i].type == "環保袋"){
+            bag+=nowRecords[i].footprint;
+        }else if(nowRecords[i].type == "環保餐具"){
+            tableware+=nowRecords[i].footprint;
         }
     }
     if(type =="全部" || type == "init"){
@@ -666,7 +666,7 @@ function showRecord() {
     $('#endDate').attr('min', datePart);
     $('#endDate').attr('max', formattedDate);
 
-    showNewChart("init");
+    showNewChart(thisRecords,"init");
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
@@ -715,15 +715,15 @@ function sortRecordsBySelectedOption() {
 }
 // 監聽排序選項變化事件
 document.getElementById("category").addEventListener("change", function (){
-    showNewChart($("#category option:selected").text());
+
     sortRecordsBySelectedOption();
 });
 document.getElementById("sortType").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("sortMethod").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("startDate").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("endDate").addEventListener("change",sortRecordsBySelectedOption);
-function showNewRecord(records) {
-    var thisRecords = records;
+function showNewRecord(sortedRecords) {
+    var thisRecords = sortedRecords;
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
@@ -767,7 +767,9 @@ function showNewRecord(records) {
                 });
             })(thisRecords[i].recordId);
         }
+
     }
+    showNewChart(thisRecords,$("#category option:selected").text());
 }
 
 //刪除Emo_User
