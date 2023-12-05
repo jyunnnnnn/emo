@@ -13,6 +13,7 @@ var markers =[];//所有marker
 var recordedPositions = [];//路線紀錄(點)
 var mapLines = [];//一次紀錄的路線線段
 
+var circle; //當前位置 用於每5秒更新(清除、重劃)
 // 初始化Google Map
 function initMap() {
      navigator.geolocation.getCurrentPosition(
@@ -42,15 +43,15 @@ function initMap() {
                 ]
             });
             infoWindow = new google.maps.InfoWindow();
-            // 當前位置標記
-            var circle = new google.maps.Marker({
-                position: currentLocation,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 5
-                },
-                map: map
-            });
+            // // 當前位置標記 //改成每五秒刷新定位
+            // circle = new google.maps.Marker({
+            //     position: currentLocation,
+            //     icon: {
+            //         path: google.maps.SymbolPath.CIRCLE,
+            //         scale: 5
+            //     },
+            //     map: map
+            // });
             console.log("map finish");
             User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
             username =User.username;
@@ -78,7 +79,37 @@ function initMap() {
     )
 }
 
+//watchPosition()=>裝置換位置就會自己動
+navigator.geolocation.watchPosition(
+    function(position) {
+        updateCurrentCircle(position);
+    },
+    function(error) {
+        console.error('獲取地理位置時出錯：', error);
+    }
+);
+//更新標記
+function updateCurrentCircle(position) {
+    var currentLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+    };
 
+    // 清除舊位置的圈圈
+    if (circle) {
+        circle.setMap(null);
+    }
+
+    // 在新當前位置上標記圈圈
+    circle = new google.maps.Marker({
+        position: currentLocation,
+        map: map,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 5
+        }
+    });
+}
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
