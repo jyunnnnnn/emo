@@ -11,6 +11,7 @@ document.getElementById('openRecordModal').addEventListener('click', function ()
     document.getElementById('trafficMenu').style.display = 'none';
     document.getElementById('dailyMenu').style.display = 'block';
     document.getElementById('SPACE').style.display = 'none';
+    document.getElementById('gramRadios').style.display = 'flex';
     document.getElementById('smallRadio').checked = true;
     document.getElementById('gram').disabled = true;
     var spanContent = document.getElementById('small').innerText;

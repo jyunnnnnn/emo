@@ -353,6 +353,7 @@ function recordModal(){
             document.getElementById('trafficMenu').style.display = 'none';
             document.getElementById('dailyMenu').style.display = 'block';
             document.getElementById('SPACE').style.display = 'none';
+            document.getElementById('gramRadios').style.display = 'flex';
             document.getElementById('customRadio').checked = true;
 
             if(currentInfoWindowRecord.type === "環保杯"){
