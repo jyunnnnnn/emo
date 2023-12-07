@@ -638,7 +638,7 @@ function showRecord() {
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
-    container.style.maxHeight = "300px";
+    container.style.maxHeight = "180px";
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
@@ -758,7 +758,7 @@ function showNewRecord(sortedRecords) {
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
-    container.style.maxHeight = "300px";
+    container.style.maxHeight = "180px";
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
