@@ -293,7 +293,7 @@ function addMarker(recordToAdd) {
            let infoWindowContent = `
                <div>
                    <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${recordToAdd.type}</h6>
-                   <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為：${recordToAdd.footprint}gCO2E</p>
+                   <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為：${recordToAdd.footprint}g Co2E</p>
                    <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">${recordToAdd.time}</p>
                    <button id="editButton" type="button" style="position: absolute; right: 10px; bottom: 10px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px;" onclick="recordModal()">編輯</button>
                </div>`;
@@ -566,6 +566,7 @@ function showTotalFootprint(){
         totalFPDiv.textContent = totalFP + "g Co2E";
         totalFPDiv.style.maxWidth = "300px";
         container.appendChild(totalFPDiv);
+        document.getElementById('deleteDataFP').textContent = "共減去 " + totalFP + " g Co2E";
     }
 }
 
