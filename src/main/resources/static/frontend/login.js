@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+
+
     // 按下註冊切換表單
     $('#switch-to-signup').click(function (e) {
         e.preventDefault();
@@ -171,6 +174,11 @@ $(document).ready(function () {
         var inputAccount = $('#exampleInputAccount1').val();
         var inputPassword = $('#password-field').val();
 
+        if(!inputAccount || !inputPassword){
+            alert("請確認輸入欄位是否輸入");
+            return;
+        }
+
         $.ajax({
             type: 'GET',
             url: encodeURI('/api/login?username=' + inputAccount + '&password=' + inputPassword),
@@ -189,6 +197,8 @@ $(document).ready(function () {
             }
         });
     });
+
+
 
     //忘記密碼頁面 送出驗證碼按鈕
     $('#send-email').click(function(e){
@@ -354,8 +364,28 @@ $(document).ready(function () {
             }
         });
     }
-
-
-
-
 });
+
+//Google登入回呼函式
+function handleCallback(response) {
+    //使用者資料解碼
+   var profile= JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))))
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/googleLogin',
+        contentType: 'application/json',
+        data: JSON.stringify(profile),
+        success: function (response) {
+                var userData = response.user;
+                var userString = JSON.stringify(userData,null,2);
+                localStorage.setItem('EmoAppUser', userString);
+                alert(response.message);
+                window.location.href = response.location;
+        },
+        error: function (response) {
+            console.log("使用google帳號登入失敗");
+        }
+    });
+
+ }
