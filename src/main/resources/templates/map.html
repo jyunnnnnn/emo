@@ -416,6 +416,28 @@
         </form>
     </div>
 </div>
+
+<!-- 懸浮窗：確認關閉新增/修改 -->
+<div id="closeAuthFW" onclick="closeFW(event)">
+    <div id="closeAuthModal" class="settingContainer" style="width:300px; height: 200px;">
+        <!-- 關閉 -->
+        <button class="btn" id="closeAuthBtn" style="top:10px; right:10px;">
+            <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <g>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                </g>
+            </svg>
+        </button>
+
+        <div class="recordHeading" id="closeAuthModalLabel">要關閉視窗嗎？</div>
+        <div style="font-family: 'Crimson Pro', serif; font-size: 15px; display: inline">目前新增/更新的紀錄會遺失</div>
+
+        <button class="setBtn" id="closeRecord" style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 10px;">
+            <div class="setText" style="right: 12%">關閉</div>
+        </button>
+    </div>
+</div>
 </body>
 
 <script src="/frontend/map.js"></script>

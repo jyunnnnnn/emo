@@ -78,6 +78,7 @@
 /* 懸浮窗 */
 #modifyFW,
 #recordFW,
+#closeAuthFW,
 #recordListFW{
     display: none;
     position: fixed;
@@ -331,6 +332,7 @@
 @media only screen and (max-width: 1000px) {
     #modifyFW,
     #recordFW,
+    #closeAuthFW,
     #recordListFW{
         display: none;
         position: fixed;

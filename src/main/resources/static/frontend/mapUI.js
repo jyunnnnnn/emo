@@ -77,7 +77,8 @@ document.getElementById('rename').addEventListener('click', function () {
 
 function closeFW(event){
     if (event.target.id === 'recordFW') {
-        document.getElementById('recordFW').style.display = 'none';
+        document.getElementById('closeAuthFW').style.display = 'flex';
+        document.getElementById('closeAuthFW').position = 'fixed';
     } else if(event.target.id === 'recordListFW') {
         document.getElementById('recordListFW').style.display = 'none';
     } else if(event.target.id === 'settingFW') {
@@ -85,15 +86,27 @@ function closeFW(event){
     } else if(event.target.id === 'deleteFW') {
         document.getElementById('deleteFW').style.display = 'none';
     } else if(event.target.id === 'modifyFW') {
-        document.getElementById('modifyFW').style.display = 'none';
+        document.getElementById('closeAuthFW').style.display = 'flex';
+        document.getElementById('closeAuthFW').position = 'fixed';
     } else if(event.target.id === 'renameFW') {
         document.getElementById('renameFW').style.display = 'none';
+    } else if(event.target.id === 'closeAuthFW') {
+        document.getElementById('closeAuthFW').style.display = 'none';
     }
 }
 
 // 關閉紀錄懸浮窗
 document.getElementById('closeRecordModal').addEventListener('click', function () {
+    document.getElementById('closeAuthFW').style.display = 'flex';
+    document.getElementById('closeAuthFW').position = 'fixed';
+});
+document.getElementById('closeAuthBtn').addEventListener('click', function () {
+    document.getElementById('closeAuthFW').style.display = 'none';
+});
+document.getElementById('closeRecord').addEventListener('click', function () {
+    document.getElementById('closeAuthFW').style.display = 'none';
     document.getElementById('recordFW').style.display = 'none';
+    document.getElementById('modifyFW').style.display = 'none';
 });
 // 關閉查看懸浮窗
 document.getElementById('closeListModal').addEventListener('click', function () {
@@ -113,7 +126,8 @@ document.getElementById('closeRenameModal').addEventListener('click', function (
 });
 // 關閉修改紀錄懸浮窗
 document.getElementById('closeModifyRecordModal').addEventListener('click', function () {
-    document.getElementById('modifyFW').style.display = 'none';
+    document.getElementById('closeAuthFW').style.display = 'flex';
+    document.getElementById('closeAuthFW').position = 'fixed';
 });
 
 // 生活用品選單
