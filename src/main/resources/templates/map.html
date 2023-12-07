@@ -141,7 +141,7 @@
 </div>
 <!-- 懸浮窗：確認刪除 -->
 <div id="deleteFW" onclick="closeFW(event)">
-    <div id="deleteModal" class="settingContainer" style="width:330px; height: 250px;">
+    <div id="deleteModal" class="settingContainer" style="width:330px;">
         <!-- 關閉 -->
         <button class="btn" id="closeDeleteModal" style="top:10px; right:10px;">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -153,7 +153,10 @@
         </button>
 
         <div class="recordHeading" id="deleteAuthModalLabel">確定要刪除嗎？</div>
-        <div style="font-family: 'Crimson Pro', serif; font-size: 15px; display: inline" id="deleteData"></div>
+        <div style="font-family: 'Crimson Pro', serif; font-size: 15px; display: inline" id="deleteDataTime">123</div>
+        <div style="font-family: 'Crimson Pro', serif; font-size: 15px; display: inline" id="deleteDataDaily"></div>
+        <div style="font-family: 'Crimson Pro', serif; font-size: 15px; display: inline" id="deleteDataTraffic"></div>
+        <div style="font-family: 'Crimson Pro', serif; font-size: 15px; display: inline" id="deleteDataFP"></div>
         <!-- 驗證密碼-->
         <input id="passwordAuth" name="passwordAuth" class="input" type="text" placeholder="請輸入使用者密碼">
 

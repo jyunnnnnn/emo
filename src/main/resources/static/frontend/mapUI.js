@@ -141,6 +141,28 @@ document.getElementById('deleteAccount').addEventListener('click', function () {
     // 顯示懸浮窗
     document.getElementById('deleteFW').style.display = 'flex';
     document.getElementById('deleteFW').style.position = 'fixed';
+    var time = document.getElementById('deleteDataTime');
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+    var day = now.getDate().toString().padStart(2, '0');
+    var hours = now.getHours().toString().padStart(2, '0');
+    var minutes = now.getMinutes().toString().padStart(2, '0');
+    var seconds = now.getSeconds().toString().padStart(2, '0');
+    var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    time.textContent = "截至" + formattedDate;
+
+    var trafficCount = 0;
+    var dailyCount = 0;
+    var footprint = 0;
+    var traffic = document.getElementById('deleteDataTraffic');
+    var daily = document.getElementById('deleteDataDaily');
+    for(var i=0; i<records.length; i++){
+        if(records[i].classType === "交通") trafficCount++;
+        else if(records[i].classType === "生活用品") dailyCount++;
+    }
+    traffic.textContent = "已紀錄 " + trafficCount + " 次環保交通";
+    daily.textContent = "已紀錄 " + dailyCount + " 次環保生活用品";
 });
 // 點擊修改暱稱按鈕
 document.getElementById('rename').addEventListener('click', function () {
