@@ -137,6 +137,11 @@ $(document).ready(function () {
                 }
             });
         }
+        //回到登入頁面註冊好的帳號密碼出現在頁面上
+        var AccountField = document.getElementById("exampleInputAccount1");
+        AccountField.value = inputAccount;
+        var PasswordField = document.getElementById("password-field");
+        PasswordField.value = inputPassword;
     });
 
     //檢查是否為email格式
