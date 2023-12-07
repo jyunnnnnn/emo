@@ -146,4 +146,14 @@ public class UserService {
 
         return OK;
     }
+    public int updateNicknameByUsername(String nickname,String username) {
+        //檢查帳號是否存在
+        User result = this.repository.findByUsername(username);
+        if (result != null) {
+            User updatedUser = new User(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId());
+            this.repository.save(updatedUser);
+            return OK;
+        }
+        return FAIL;
+    }
 }

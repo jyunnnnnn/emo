@@ -150,4 +150,12 @@ public class UserController {
             return ResponseEntity.ok(Collections.singletonMap("message", username + "已可以修改密碼"));
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", username + "賦予密碼修改權限失敗"));
     }
+    //修改暱稱
+    @PutMapping("/updateNickname")
+    public ResponseEntity<?> updateNickname(@RequestParam("username") String username, @RequestParam("nickname") String newNickname) {
+        int result = this.userService.updateNicknameByUsername(username, newNickname);
+        if (result == UserService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改暱稱成功"));
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改暱稱失敗"));
+    }
 }
