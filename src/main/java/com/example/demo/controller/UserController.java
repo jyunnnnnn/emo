@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.User;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,9 +90,9 @@ public class UserController {
         int result = this.userService.isAccountExists(email);
         //使用者是否存在
         if (result == UserService.USER_FOUND) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者已存在"));
+            return ResponseEntity.ok(Collections.singletonMap("message", "使用者已存在"));
         }
-        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
+        return ResponseEntity.ok(Collections.singletonMap("message", "使用者不存在"));
     }
 
     //刪除帳號
@@ -150,6 +152,7 @@ public class UserController {
             return ResponseEntity.ok(Collections.singletonMap("message", username + "已可以修改密碼"));
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", username + "賦予密碼修改權限失敗"));
     }
+
     //修改暱稱
     @PutMapping("/updateNickname")
     public ResponseEntity<?> updateNickname(@RequestParam("username") String username, @RequestParam("nickname") String newNickname) {
@@ -158,5 +161,27 @@ public class UserController {
         if (result == UserService.OK)
             return ResponseEntity.ok(Collections.singletonMap("message", "修改暱稱成功"));
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改暱稱失敗"));
+    }
+
+    //Google登入
+    @PostMapping("/googleLogin")
+    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws JsonProcessingException {
+
+        //抓取該google帳戶userId
+        User result = this.userService.googleLogin(googleInfo);
+
+
+        //google登入失敗
+        if (result==null)
+            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用google帳號登入失敗"));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userDataJson = objectMapper.writeValueAsString(result);
+        //登入成功
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "登入成功!");
+        response.put("location", "/map");
+        response.put("user", userDataJson);
+        return ResponseEntity.ok(response);
     }
 }

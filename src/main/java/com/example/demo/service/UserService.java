@@ -1,9 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,11 +121,6 @@ public class UserService {
         }
     }
 
-    //獲取使用者暱稱
-    public String getNickname(String username) {
-        User result = this.repository.findByUsername(username);
-        return result.getNickname();
-    }
 
     //檢查該帳號是否可以重設密碼
     public int checkPasswordChangable(String username) {
@@ -146,8 +145,7 @@ public class UserService {
 
         return OK;
     }
-    public int updateNicknameByUsername(String username,String nickname) {
-        System.out.println("Received request with username: " + username + " and nickname: " + nickname);
+    public int updateNicknameByUsername(String nickname, String username) {
         //檢查帳號是否存在
         User result = this.repository.findByUsername(username);
         if (result != null) {
@@ -156,5 +154,41 @@ public class UserService {
             return OK;
         }
         return FAIL;
+    }
+    public User googleLogin(String googleInfo) throws JsonProcessingException {
+        /*
+            帳號:@ + 電子郵件去除@之後的字串
+            密碼:jsonNode.get('sub') 以Google帳號特殊ID為密碼
+            nickname:jsonNode.get('name') 以該Google帳號名稱作為暱稱
+            email:email
+            userId:getTime()
+         */
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 轉換json字串
+        JsonNode jsonNode = objectMapper.readTree(googleInfo);
+
+        String username = String.valueOf(jsonNode.get("email"));
+        username = '@' + username.substring(1, username.indexOf('@'));
+
+        String password = String.valueOf(jsonNode.get("sub"));
+        password = password.substring(1, password.length() - 1);
+        String nickname = String.valueOf(jsonNode.get("name"));
+        nickname = nickname.substring(1, nickname.length() - 1);
+        String email = String.valueOf(jsonNode.get("email"));
+        email = email.substring(1, email.length() - 1);
+        String userId = String.valueOf(new Date().getTime());
+
+
+        User googleUser = new User(username, password, nickname, email, userId);
+
+        int result = createUser(googleUser);
+
+        if (result == OK) {//該google帳戶不存在，註冊帳戶
+            return googleUser;
+        } else if (result == ACCOUNT_ALREADY_EXIST) {//該帳戶已存在
+            return fetchOneUserByUsername(username);
+        }
+
+        return null;
     }
 }
