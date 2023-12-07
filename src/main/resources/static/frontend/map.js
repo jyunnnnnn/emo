@@ -80,6 +80,7 @@ function initMap() {
 }
 
 //watchPosition()=>裝置換位置就會自己動
+/*
 navigator.geolocation.watchPosition(
     function(position) {
         updateCurrentCircle(position);
@@ -110,6 +111,7 @@ function updateCurrentCircle(position) {
         }
     });
 }
+*/
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -170,7 +172,7 @@ function saveRecord(event){
             } else if ($("#dailyRadio").is(":checked")) {
                 classType = $("#daily").text();
                 type = $("#dailyMenu option:selected").text();
-                data_value = document.getElementById('count').value;
+                data_value = document.getElementById('gram').value;
             }
             footprint = calculateFootprint(type,data_value);
             // 保存紀錄到後端
@@ -315,58 +317,66 @@ function addMarker(recordToAdd) {
 //修改懸浮視窗是歷史紀錄
 function recordModal(){
     // 顯示懸浮窗
-        document.getElementById('modifyFW').style.display = 'flex';
-        document.getElementById('modifyFW').style.position = 'fixed';
+        document.getElementById('recordFW').style.display = 'flex';
+        document.getElementById('recordFW').style.position = 'fixed';
+        document.getElementById('saveRecord').style.display = 'none';
+        document.getElementById('updateRecord').style.display = 'block';
+        document.getElementById('deleteRecord').style.display = 'block';
 
         if(currentInfoWindowRecord.classType === "交通"){
             //console.log(currentInfoWindowRecord.classType);
-            document.getElementById('modifyTrafficRadio').checked = true;
-            document.getElementById('modifyDailyLabel').style.display = 'none';
-            document.getElementById('modifyTrafficMenu').style.display = 'block';
-            document.getElementById('modifyDailyMenu').style.display = 'none';
-            document.getElementById('modifySPACE').style.display = 'none';
+            document.getElementById('trafficLabel').style.display = 'block'
+            document.getElementById('dailyLabel').style.display = 'none'
+            document.getElementById('trafficRadio').checked = true;
+            document.getElementById('dailyLabel').style.display = 'none';
+            document.getElementById('trafficMenu').style.display = 'block';
+            document.getElementById('dailyMenu').style.display = 'none';
+            document.getElementById('SPACE').style.display = 'none';
 
             if(currentInfoWindowRecord.type === "公車"){
-                document.getElementById('modifyTrafficType').value = 'traffic-bus';
+                document.getElementById('trafficType').value = 'traffic-bus';
             }else if(currentInfoWindowRecord.type === "捷運"){
-                document.getElementById('modifyTrafficType').value = 'traffic-MRT';
+                document.getElementById('trafficType').value = 'traffic-MRT';
             }else if(currentInfoWindowRecord.type === "火車"){
-                document.getElementById('modifyTrafficType').value = 'traffic-train';
+                document.getElementById('trafficType').value = 'traffic-train';
             }else if(currentInfoWindowRecord.type === "高鐵"){
-                document.getElementById('modifyTrafficType').value = 'traffic-HSR';
+                document.getElementById('trafficType').value = 'traffic-HSR';
             }
 
-            document.getElementById('modifyKilometer').value = currentInfoWindowRecord.data_value;
-            document.getElementById('modifyKilometer').disabled = true;
+            document.getElementById('kilometer').value = currentInfoWindowRecord.data_value;
+            document.getElementById('kilometer').disabled = true;
         }else if(currentInfoWindowRecord.classType === "生活用品"){
-            //console.log(currentInfoWindowRecord.classType);
-            document.getElementById('modifyDailyRadio').checked = true;
-            document.getElementById('modifyTrafficLabel').style.display = 'none';
-            document.getElementById('modifyTrafficMenu').style.display = 'none';
-            document.getElementById('modifyDailyMenu').style.display = 'block';
-            document.getElementById('modifySPACE').style.display = 'none';
+            document.getElementById('trafficLabel').style.display = 'none'
+            document.getElementById('dailyLabel').style.display = 'block'
+            document.getElementById('dailyRadio').checked = true;
+            document.getElementById('trafficLabel').style.display = 'none';
+            document.getElementById('trafficMenu').style.display = 'none';
+            document.getElementById('dailyMenu').style.display = 'block';
+            document.getElementById('SPACE').style.display = 'none';
+            document.getElementById('customRadio').checked = true;
 
             if(currentInfoWindowRecord.type === "環保杯"){
-                document.getElementById('modifyDailyType').value = 'daily-cup';
+                document.getElementById('dailyType').value = 'daily-cup';
             }else if(currentInfoWindowRecord.type === "環保餐具"){
-                document.getElementById('modifyDailyType').value = 'daily-tableware';
+                document.getElementById('dailyType').value = 'daily-tableware';
             }else if(currentInfoWindowRecord.type === "環保袋"){
-                document.getElementById('modifyDailyType').value = 'daily-bag';
+                document.getElementById('dailyType').value = 'daily-bag';
             }
-            document.getElementById('modifyCount').value = currentInfoWindowRecord.data_value;
+            document.getElementById('gram').value = currentInfoWindowRecord.data_value;
+            document.getElementById('gram').disabled = false;
         }
 }
 // 修改記錄按鈕事件處理 //test
 function updateRecord(){
     event.preventDefault();
-    if ($("#modifyTrafficRadio").is(":checked")) {
-        var classType = $("#modifyTraffic").text();
-        var type = $("#modifyTrafficMenu option:selected").text();
-        var data_value = document.getElementById('modifyKilometer').value;
-    } else if ($("#modifyDailyRadio").is(":checked")) {
-        var classType = $("#modifyDaily").text();
-        var type = $("#modifyDailyMenu option:selected").text();
-        var data_value = document.getElementById('modifyCount').value;
+    if ($("#trafficRadio").is(":checked")) {
+        var classType = $("#traffic").text();
+        var type = $("#trafficMenu option:selected").text();
+        var data_value = document.getElementById('kilometer').value;
+    } else if ($("#dailyRadio").is(":checked")) {
+        var classType = $("#daily").text();
+        var type = $("#dailyMenu option:selected").text();
+        var data_value = document.getElementById('gram').value;
     }
     if(classType && type && data_value && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
         updateRecordToBackend(classType, type, data_value);
@@ -392,7 +402,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         modifyRecordToBackend(record);
         updateRecordInArray(newClassType, newType, newDataValue,footprint);//更新record[]
         updateMarkerContent(record);
-        document.getElementById('modifyFW').style.display = 'none';
+        document.getElementById('recordFW').style.display = 'none';
     }
     else {
         alert("請重新登入");
@@ -465,7 +475,7 @@ function deleteRecord(){
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
         deleteMarker();
         //console.log(records);
-        document.getElementById("modifyFW").style.display = "none";
+        document.getElementById("recordFW").style.display = "none";
     } else{
         console.log("取消刪除");
     }
@@ -638,7 +648,7 @@ function showRecord() {
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
-    container.style.maxHeight = "180px";
+    container.style.maxHeight = "170px";
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
@@ -758,7 +768,7 @@ function showNewRecord(sortedRecords) {
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
-    container.style.maxHeight = "180px";
+    container.style.maxHeight = "170px";
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
@@ -856,7 +866,7 @@ function startRecording() {
     isRecording = true;
 
     // 每1秒記錄一次
-    kilometer=0;
+    kilometer = 0;
     intervalId = setInterval(function () {
         recordLocation();
     }, 1000);
@@ -889,6 +899,7 @@ function stopRecording() {
     document.getElementById('dailyLabel').style.display = 'none';
     document.getElementById('trafficMenu').style.display = 'block';
     document.getElementById('dailyMenu').style.display = 'none';
+    document.getElementById('gramRadios').style.display = 'none';
     document.getElementById('SPACE').style.display = 'none';
     document.getElementById('kilometer').value = kilometer.toFixed(3);
     document.getElementById('kilometer').disabled = 'true';
@@ -901,6 +912,7 @@ function recordLocation() {
     if ("geolocation" in navigator) {
         // 獲取目前位置
         navigator.geolocation.getCurrentPosition(function (position) {
+            console.log("1");
 //            var currentLocation = {
 //                lat: position.coords.latitude,
 //                lng: position.coords.longitude
@@ -912,6 +924,8 @@ function recordLocation() {
 
             // 儲存記錄的位置
             recordedPositions.push(currentLocation);
+            console.log(currentLocation);
+            console.log("2");
 
             // 在記錄的位置之間繪製線條
             drawLines();
