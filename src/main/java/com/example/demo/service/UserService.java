@@ -146,7 +146,8 @@ public class UserService {
 
         return OK;
     }
-    public int updateNicknameByUsername(String nickname,String username) {
+    public int updateNicknameByUsername(String username,String nickname) {
+        System.out.println("Received request with username: " + username + " and nickname: " + nickname);
         //檢查帳號是否存在
         User result = this.repository.findByUsername(username);
         if (result != null) {

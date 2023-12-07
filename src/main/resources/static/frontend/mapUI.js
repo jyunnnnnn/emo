@@ -56,7 +56,7 @@ document.getElementById('rename').addEventListener('click', function () {
     // 顯示懸浮窗
     document.getElementById('renameFW').style.display = 'flex';
     document.getElementById('renameFW').style.position = 'fixed';
-    document.getElementById('newName').placeholder = username;
+    document.getElementById('newName').placeholder = nickname;
 });
 
 function closeFW(event){

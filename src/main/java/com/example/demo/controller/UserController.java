@@ -153,6 +153,7 @@ public class UserController {
     //修改暱稱
     @PutMapping("/updateNickname")
     public ResponseEntity<?> updateNickname(@RequestParam("username") String username, @RequestParam("nickname") String newNickname) {
+        System.out.println("Received request with username: " + username + " and nickname: " + newNickname);
         int result = this.userService.updateNicknameByUsername(username, newNickname);
         if (result == UserService.OK)
             return ResponseEntity.ok(Collections.singletonMap("message", "修改暱稱成功"));

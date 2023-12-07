@@ -178,8 +178,7 @@ $(document).ready(function () {
 
             success: function (response) {
                 var userData = response.user;
-                var userString = JSON.stringify(userData,null,2);
-                localStorage.setItem('EmoAppUser', userString);
+                localStorage.setItem('EmoAppUser', userData);
                 alert(response.message);
                 window.location.href = response.location;
             },

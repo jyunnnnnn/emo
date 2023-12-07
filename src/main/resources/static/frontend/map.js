@@ -6,7 +6,7 @@ var records = [];//進入系統時把該用戶的環保紀錄存進去
 var isRecording = false;//false=>開始  true=>結束
 var username;//使用者名稱
 var User;
-
+var nickname;
 var currentInfoWindowRecord; // 目前 infoWindow 的內容
 var currentMarker;//目前Marker
 var markers =[];//所有marker
@@ -53,9 +53,10 @@ function initMap() {
             //     map: map
             // });
             console.log("map finish");
-            User = JSON.parse(JSON.parse(localStorage.getItem('EmoAppUser')));
-            username =User.username;
-            $('#user').text(username);
+            User =JSON.parse(localStorage.getItem('EmoAppUser'));
+            nickname =User.nickname;
+            username = User.username;
+            $('#user').text(nickname);
             loadEcoRecords(User.userId);//載入環保紀錄
             loadFootprintData();//載入碳足跡計算
             $('#logoutAccount').click(logoutAccount);//登出
@@ -65,6 +66,7 @@ function initMap() {
             $('#deleteRecord').click(deleteRecord)//刪除紀錄
             $('#recordListButton').click(showRecord);//查看環保紀錄
             $('#settingButton').click(showTotalFootprint);
+            $('#renameBtn').click(modifyNickname);
             $('#startRecording').click(function () {
                 if (!isRecording) {
                     startRecording(); //false
@@ -78,7 +80,7 @@ function initMap() {
         }
     )
 }
-
+//此處有bug等rui修
 //watchPosition()=>裝置換位置就會自己動
 navigator.geolocation.watchPosition(
     function(position) {
@@ -143,7 +145,41 @@ function calculateFootprint(type,data_value) {
     footprint=data_value * coefficient;
     return footprint;
 }
-
+function modifyNickname() {
+    var userDataString = localStorage.getItem('EmoAppUser');
+    if (userDataString) {
+        var userData = JSON.parse(localStorage.getItem('EmoAppUser'));;
+        var newNickname = $('#newName').val();
+        if (newNickname !== '') {
+            userData.nickname = newNickname;
+            var updatedUserDataString = JSON.stringify(userData);
+            localStorage.setItem('EmoAppUser', updatedUserDataString);
+            User.nick = newNickname;
+            nickname = newNickname;
+            $('#user').text(nickname);
+            alert("修改成功");
+            document.getElementById('renameFW').style.display = 'none';
+            updateNewNicknameToBackend(newNickname);
+        } else {
+            alert("暱稱不得為空");
+        }
+    } else {
+        alert("請重新登入");
+        window.location.href = '/login';
+    }
+}
+function updateNewNicknameToBackend(newNickname){
+    $.ajax({
+            type: 'PUT',
+            url: '/api/updateNickname?username=' + username +'&nickname='+newNickname,
+            success: function(response) {
+                console.log(response); // 成功更新時的處理邏輯
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // 更新失敗時的處理邏輯
+            }
+        });
+}
 // 記錄按鈕事件處理
 function saveRecord(event){
     event.preventDefault();
