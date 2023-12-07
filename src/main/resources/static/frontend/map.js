@@ -54,8 +54,8 @@ function initMap() {
             // });
             console.log("map finish");
             User =JSON.parse(localStorage.getItem('EmoAppUser'));
-            nickname =User.nickname;
-            username = User.username;
+            username=User.username;
+            nickname=User.nickname;
             $('#user').text(nickname);
             loadEcoRecords(User.userId);//載入環保紀錄
             loadFootprintData();//載入碳足跡計算
