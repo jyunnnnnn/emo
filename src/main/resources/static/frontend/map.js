@@ -711,9 +711,9 @@ function sortRecordsBySelectedOption() {
 
     if (selectedType === "時間") {
         $("#method").attr("label", "時間");
-        $("#option1").val("new");
+        $("#option1").val("old");
         $("#option1").text("遠到近");
-        $("#option2").val("old");
+        $("#option2").val("new");
         $("#option2").text("近到遠");
         var selectedMethod = $("#sortMethod option:selected").text();
         if (selectedMethod === "近到遠") {

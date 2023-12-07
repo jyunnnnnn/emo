@@ -9,6 +9,7 @@ document.getElementById('openRecordModal').addEventListener('click', function ()
     document.getElementById('trafficMenu').style.display = 'none';
     document.getElementById('dailyMenu').style.display = 'block';
     document.getElementById('SPACE').style.display = 'none';
+    $("#count").val(1);
 });
 // 儲存按鈕
 document.getElementById('saveRecord').addEventListener('click', function () {
@@ -38,6 +39,21 @@ document.getElementById('recordListButton').addEventListener('click', function (
     // 顯示懸浮窗
     document.getElementById('recordListFW').style.display = 'flex';
     document.getElementById('recordListFW').style.position = 'fixed';
+    $('#category').val('all');
+    $('#sortType').val('time');
+    $("#method").attr("label", "時間");
+    $("#option1").val("old");
+    $("#option1").text("遠到近");
+    $("#option2").val("new");
+    $("#option2").text("近到遠");
+    $('#sortMethod').val('old');
+
+    $('#startDate').val(records[0].time.slice(0, 10));
+    var year = now.getFullYear();
+    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+    var day = now.getDate().toString().padStart(2, '0');
+    var formattedDate = `${year}-${month}-${day}`;
+    $('#endDate').val(formattedDate);
 });
 // 點擊設定按鈕
 document.getElementById('settingButton').addEventListener('click', function () {
