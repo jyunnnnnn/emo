@@ -9,6 +9,11 @@
     color:  rgb(103, 103, 103);
 }
 
+#listContent p:hover {
+    color: #e0e0e0; /* 需要替換成你想要的背景顏色 */
+    cursor: pointer; /* 讓游標在 hover 時變成手型 */
+}
+
 .showUser{
     transform:scale(1.5);
     display:flex;
