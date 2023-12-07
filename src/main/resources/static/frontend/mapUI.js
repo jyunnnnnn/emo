@@ -51,6 +51,13 @@ document.getElementById('deleteAccount').addEventListener('click', function () {
     document.getElementById('deleteFW').style.display = 'flex';
     document.getElementById('deleteFW').style.position = 'fixed';
 });
+// 點擊修改暱稱按鈕
+document.getElementById('rename').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('renameFW').style.display = 'flex';
+    document.getElementById('renameFW').style.position = 'fixed';
+    document.getElementById('newName').placeholder = username;
+});
 
 function closeFW(event){
     if (event.target.id === 'recordFW') {
@@ -63,6 +70,8 @@ function closeFW(event){
         document.getElementById('deleteFW').style.display = 'none';
     } else if(event.target.id === 'modifyFW') {
         document.getElementById('modifyFW').style.display = 'none';
+    } else if(event.target.id === 'renameFW') {
+        document.getElementById('renameFW').style.display = 'none';
     }
 }
 
@@ -81,6 +90,10 @@ document.getElementById('closeSettingModal').addEventListener('click', function 
 // 關閉刪除懸浮窗
 document.getElementById('closeDeleteModal').addEventListener('click', function () {
     document.getElementById('deleteFW').style.display = 'none';
+});
+// 關閉刪除懸浮窗
+document.getElementById('closeRenameModal').addEventListener('click', function () {
+    document.getElementById('renameFW').style.display = 'none';
 });
 // 關閉修改紀錄懸浮窗
 document.getElementById('closeModifyRecordModal').addEventListener('click', function () {
