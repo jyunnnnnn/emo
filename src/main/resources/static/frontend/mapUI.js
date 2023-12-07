@@ -2,6 +2,7 @@
 document.getElementById('openRecordModal').addEventListener('click', function () {
     // 顯示懸浮窗
     document.getElementById('recordFW').style.display = 'flex';
+    document.getElementById('saveRecord').style.display = 'block';
     document.getElementById('updateRecord').style.display = 'none';
     document.getElementById('deleteRecord').style.display = 'none';
     document.getElementById('trafficLabel').style.display = 'none';
@@ -30,6 +31,7 @@ dailyTypeSelect.addEventListener('change', function() {
         var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
         var value = match ? match[0] : "";
         document.getElementById('gram').value = value;
+        document.getElementById('gram').disabled = true;
     } else if (selectedValue === 'daily-tableware') {
         $("#small").text("小(10g)");
         $("#medium").text("中(15g)");
@@ -39,7 +41,7 @@ dailyTypeSelect.addEventListener('change', function() {
         var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
         var value = match ? match[0] : "";
         document.getElementById('gram').value = value;
-        document.getElementById('gram').value = value;
+        document.getElementById('gram').disabled = true;
     } else if (selectedValue === 'daily-bag') {
         $("#small").text("小(15g)");
         $("#medium").text("中(20g)");
@@ -49,6 +51,7 @@ dailyTypeSelect.addEventListener('change', function() {
         var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
         var value = match ? match[0] : "";
         document.getElementById('gram').value = value;
+        document.getElementById('gram').disabled = true;
     }
 });
 // 監聽克數變化

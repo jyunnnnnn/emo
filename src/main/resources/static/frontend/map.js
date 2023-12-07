@@ -894,6 +894,9 @@ function stopRecording() {
     // 打開紀錄懸浮窗
     document.getElementById('recordFW').style.display = 'flex';
     document.getElementById('recordFW').style.position = 'fixed';
+    document.getElementById('saveRecord').style.display = 'block';
+    document.getElementById('deleteRecord').style.display = 'none';
+    document.getElementById('updateRecord').style.display = 'none';
     document.getElementById('trafficRadio').checked = 'true';
     document.getElementById('trafficLabel').style.display = 'block';
     document.getElementById('dailyLabel').style.display = 'none';
