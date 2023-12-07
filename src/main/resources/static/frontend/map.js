@@ -67,6 +67,7 @@ function initMap() {
             $('#recordListButton').click(showRecord);//查看環保紀錄
             $('#settingButton').click(showTotalFootprint);
             $('#renameBtn').click(modifyNickname);
+            $('#deleteEditRecord').click(deleteMultiRecord);
             $('#startRecording').click(function () {
                 if (!isRecording) {
                     startRecording(); //false
@@ -501,7 +502,23 @@ function updateRecordInArray(newClassType, newType, newDataValue,newFootprint){
         console.log('Record not found');
     }
 }
-
+function deleteMultiRecord(){
+        var selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
+        var selectedRecordIds = [];
+        selectedCheckboxes.each(function() {
+             var recordId = $(this).closest('div').attr('id').split('_')[1];
+             selectedRecordIds.push(recordId);
+        });
+        if (selectedRecordIds.length > 0) {
+            console.log('要刪除的記錄 ID：', selectedRecordIds);
+            //刪除records裡的
+            //刪除資料庫裡的
+            //刪除地圖上的標記
+            showRecord();
+        } else {
+            alert('沒有選中任何記錄');
+        }
+}
 //刪除資料
 function deleteRecord(){
     event.preventDefault();
