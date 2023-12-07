@@ -224,3 +224,25 @@ document.getElementById('dailyRadio').addEventListener('change', function () {
     document.getElementById('dailyMenu').style.display = 'block';
     document.getElementById('SPACE').style.display = 'none';
 })
+
+// 批量編輯歷史紀錄
+document.getElementById('editRecord').addEventListener('click', function() {
+    event.preventDefault();
+    document.getElementById('editRecord').style.display = 'none';
+    document.getElementById('saveEditRecord').style.display = 'block';
+    document.getElementById('deleteEditRecord').style.display = 'block';
+    var checkboxes = document.querySelectorAll('.checkbox-container');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.style.display = 'flex';
+    });
+});
+document.getElementById('saveEditRecord').addEventListener('click', function() {
+    event.preventDefault();
+    document.getElementById('editRecord').style.display = 'block';
+    document.getElementById('saveEditRecord').style.display = 'none';
+    document.getElementById('deleteEditRecord').style.display = 'none';
+    var checkboxes = document.querySelectorAll('.checkbox-container');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.style.display = 'none';
+    });
+});

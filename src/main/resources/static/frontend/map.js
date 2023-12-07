@@ -686,7 +686,7 @@ function showRecord() {
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
-    container.style.maxHeight = "170px";
+    container.style.maxHeight = "150px";
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
@@ -694,16 +694,27 @@ function showRecord() {
         recordDiv.style.textAlign = "center";
         recordDiv.textContent = "沒有紀錄";
 
-        var chartBox = document.getElementById("chartBox");
-        chartBox.style.display = "none";
-
         container.appendChild(recordDiv);
     } else {
         for (var i = 0; i < thisRecords.length; i++) {
+            // 創建新的checkbox
+            var checkbox = document.createElement('label');
+            checkbox.className = 'checkbox-container';
+            var input = document.createElement('input');
+            input.type = 'checkbox';
+            input.className = 'custom-checkbox';
+            var span = document.createElement('span');
+            span.className = 'checkmark';
+            span.id  = 'check_' + thisRecords[i].recordId;
+            checkbox.appendChild(input);
+            checkbox.appendChild(span);
+            checkbox.style.marginRight = "3px";
+            checkbox.style.display = "none";
+
             // 創建新的<div>元素
             var recordDiv = document.createElement("div");
-            recordDiv.style.display = "inline";
-            recordDiv.style.textAlign = "left";
+            recordDiv.style.display = "flex";
+            recordDiv.style.alignItems = "center";
 
             // 創建新的 <p> 元素
             var recordElement = document.createElement("p");
@@ -719,15 +730,17 @@ function showRecord() {
             recordElement.appendChild(typeSpan);
             recordElement.appendChild(footprintSpan);
 
+            recordDiv.appendChild(checkbox);
             recordDiv.appendChild(recordElement);
             container.appendChild(recordDiv);
             recordDiv.id  = 'record_' + thisRecords[i].recordId;
             (function(recordId) {
-                recordDiv.addEventListener('click', function() {
+                recordElement.addEventListener('click', function() {
                     recordClick(recordId);
                 });
             })(thisRecords[i].recordId);
         }
+        showNewChart(thisRecords,"init");
     }
     var now = new Date();
     //console.log(now);
@@ -744,8 +757,6 @@ function showRecord() {
     $('#startDate').attr('max', formattedDate);
     $('#endDate').attr('min', datePart);
     $('#endDate').attr('max', formattedDate);
-
-    showNewChart(thisRecords,"init");
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
@@ -806,7 +817,7 @@ function showNewRecord(sortedRecords) {
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
-    container.style.maxHeight = "170px";
+    container.style.maxHeight = "150px";
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
@@ -846,9 +857,8 @@ function showNewRecord(sortedRecords) {
                 });
             })(thisRecords[i].recordId);
         }
-
+        showNewChart(thisRecords,$("#category option:selected").text());
     }
-    showNewChart(thisRecords,$("#category option:selected").text());
 }
 
 //刪除Emo_User

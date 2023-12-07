@@ -9,6 +9,11 @@
     color:  rgb(103, 103, 103);
 }
 
+#listContent p:hover {
+    color: #e0e0e0; /* 需要替換成你想要的背景顏色 */
+    cursor: pointer; /* 讓游標在 hover 時變成手型 */
+}
+
 .showUser{
     transform:scale(1.5);
     display:flex;
@@ -269,6 +274,88 @@
 .recordForm-control::-ms-expand {
     display: none;
 }
+
+/* 編輯多項紀錄 */
+#editRecord,
+#saveEditRecord,
+#deleteEditRecord{
+    display: block;
+    width: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Crimson Pro', serif;
+    background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
+    color: white;
+    margin: 8px auto;
+    border-radius: 20px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+#editRecord:hover,
+#saveEditRecord:hover,
+#deleteEditRecord:hover {
+    transform: scale(1.03);
+}
+#editRecord:active,
+#saveEditRecord:active,
+#deleteEditRecord:active {
+    transform: scale(0.95);
+}
+
+.checkbox-container {
+    display: inline-block;
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 28px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+.custom-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:checked ~ .checkmark {
+    background-color: #2196F3;
+    box-shadow: 0 3px 7px rgba(33, 150, 243, 0.3);
+}
+
+.custom-checkbox:checked ~ .checkmark:after {
+    display: block;
+}
+
+.custom-checkbox:checked ~ .checkmark:after {
+    animation: checkAnim 0.2s forwards;
+}
+
 
 /* 類別 */
 .radio-inputs {
