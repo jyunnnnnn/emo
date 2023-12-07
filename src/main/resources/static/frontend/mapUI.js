@@ -113,6 +113,9 @@ document.getElementById('recordListButton').addEventListener('click', function (
     // 顯示懸浮窗
     document.getElementById('recordListFW').style.display = 'flex';
     document.getElementById('recordListFW').style.position = 'fixed';
+    document.getElementById('editRecord').style.display = 'block';
+    document.getElementById('saveEditRecord').style.display = 'none';
+    document.getElementById('deleteEditRecord').style.display = 'none';
     $('#category').val('all');
     $('#sortType').val('time');
     $("#method").attr("label", "時間");
