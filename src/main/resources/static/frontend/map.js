@@ -693,9 +693,6 @@ function showRecord() {
         recordDiv.style.textAlign = "center";
         recordDiv.textContent = "沒有紀錄";
 
-        var chartBox = document.getElementById("chartBox");
-        chartBox.style.display = "none";
-
         container.appendChild(recordDiv);
     } else {
         for (var i = 0; i < thisRecords.length; i++) {
@@ -727,6 +724,7 @@ function showRecord() {
                 });
             })(thisRecords[i].recordId);
         }
+        showNewChart(thisRecords,"init");
     }
     var now = new Date();
     //console.log(now);
@@ -743,8 +741,6 @@ function showRecord() {
     $('#startDate').attr('max', formattedDate);
     $('#endDate').attr('min', datePart);
     $('#endDate').attr('max', formattedDate);
-
-    showNewChart(thisRecords,"init");
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
@@ -845,9 +841,8 @@ function showNewRecord(sortedRecords) {
                 });
             })(thisRecords[i].recordId);
         }
-
+        showNewChart(thisRecords,$("#category option:selected").text());
     }
-    showNewChart(thisRecords,$("#category option:selected").text());
 }
 
 //刪除Emo_User
