@@ -855,10 +855,25 @@ function showNewRecord(sortedRecords) {
         chartBox.style.display = "none";
     }else{
         for (var i = 0; i < thisRecords.length; i++) {
+            // 創建新的checkbox
+            var checkbox = document.createElement('label');
+            checkbox.className = 'checkbox-container';
+            var input = document.createElement('input');
+            input.type = 'checkbox';
+            input.className = 'custom-checkbox';
+            var span = document.createElement('span');
+            span.className = 'checkmark';
+            span.id  = 'check_' + thisRecords[i].recordId;
+            checkbox.appendChild(input);
+            checkbox.appendChild(span);
+            checkbox.style.marginRight = "3px";
+            checkbox.style.display = "none";
+
             // 創建新的<div>元素
             var recordDiv = document.createElement("div");
-            recordDiv.style.display = "inline";
-            recordDiv.style.textAlign = "left";
+            recordDiv.style.display = "flex";
+            recordDiv.style.alignItems = "center";
+
             // 創建新的 <p> 元素
             var recordElement = document.createElement("p");
             var timeSpan = document.createElement("span");
@@ -873,6 +888,7 @@ function showNewRecord(sortedRecords) {
             recordElement.appendChild(typeSpan);
             recordElement.appendChild(footprintSpan);
 
+            recordDiv.appendChild(checkbox);
             recordDiv.appendChild(recordElement);
             container.appendChild(recordDiv);
             recordDiv.id  = 'record_' + thisRecords[i].recordId;
