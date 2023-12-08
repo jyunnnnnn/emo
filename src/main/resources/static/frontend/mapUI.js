@@ -124,13 +124,18 @@ document.getElementById('recordListButton').addEventListener('click', function (
     $("#option2").val("new");
     $("#option2").text("近到遠");
     $('#sortMethod').val('old');
-
     var now = new Date();
-    $('#startDate').val(records[0].time.slice(0, 10));
     var year = now.getFullYear();
     var month = (now.getMonth() + 1).toString().padStart(2, '0');
     var day = now.getDate().toString().padStart(2, '0');
     var formattedDate = `${year}-${month}-${day}`;
+    var datePart;
+        if(records.length>0){
+             datePart = records[0].time.slice(0, 10);
+        }else{
+            datePart=formattedDate;
+        }
+    $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
 });
 // 點擊設定按鈕
@@ -230,6 +235,16 @@ document.getElementById('dailyRadio').addEventListener('change', function () {
 
 // 批量編輯歷史紀錄
 document.getElementById('editRecord').addEventListener('click', function() {
+    event.preventDefault();
+    document.getElementById('editRecord').style.display = 'none';
+    document.getElementById('saveEditRecord').style.display = 'block';
+    document.getElementById('deleteEditRecord').style.display = 'block';
+    var checkboxes = document.querySelectorAll('.checkbox-container');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.style.display = 'flex';
+    });
+});
+document.getElementById('deleteEditRecord').addEventListener('click', function() {
     event.preventDefault();
     document.getElementById('editRecord').style.display = 'none';
     document.getElementById('saveEditRecord').style.display = 'block';

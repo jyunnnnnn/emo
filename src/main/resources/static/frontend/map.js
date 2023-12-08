@@ -67,7 +67,7 @@ function initMap() {
             $('#recordListButton').click(showRecord);//查看環保紀錄
             $('#settingButton').click(showTotalFootprint);
             $('#renameBtn').click(modifyNickname);
-            $('#deleteEditRecord').click(deleteMultiRecord);
+            $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
             $('#startRecording').click(function () {
                 if (!isRecording) {
                     startRecording(); //false
@@ -506,14 +506,15 @@ function deleteMultiRecord(){
         var selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
         var selectedRecordIds = [];
         selectedCheckboxes.each(function() {
-             var recordId = $(this).closest('div').attr('id').split('_')[1];
+             var recordIdString = $(this).closest('div').attr('id').split('_')[1];
+             var recordId = parseInt(recordIdString, 10);
+             deleteRecordInArray(recordId);//刪除records裡的
+             deleteRecordToBackend(recordId);//刪除資料庫裡的
+             //刪除地圖上的標記(rui救我)
              selectedRecordIds.push(recordId);
         });
         if (selectedRecordIds.length > 0) {
-            console.log('要刪除的記錄 ID：', selectedRecordIds);
-            //刪除records裡的
-            //刪除資料庫裡的
-            //刪除地圖上的標記
+            //console.log('要刪除的記錄 ID：', selectedRecordIds);
             showRecord();
         } else {
             alert('沒有選中任何記錄');
@@ -757,8 +758,9 @@ function showRecord() {
                 });
             })(thisRecords[i].recordId);
         }
-        showNewChart(thisRecords,"init");
+
     }
+    showNewChart(thisRecords,"init");
     var now = new Date();
     //console.log(now);
     var year = now.getFullYear();
@@ -766,10 +768,16 @@ function showRecord() {
     var day = now.getDate().toString().padStart(2, '0');
     var formattedDate = `${year}-${month}-${day}`;
     records.sort((a, b) => new Date(a.time) - new Date(b.time));
-    var datePart = records[0].time.slice(0, 10);
+    var datePart;
+    if(records.length>0){
+         datePart = records[0].time.slice(0, 10);
+    }else{
+        datePart=formattedDate;
+    }
+
     $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
-    // 圓餅圖
+    // 時間始末
     $('#startDate').attr('min', datePart);
     $('#startDate').attr('max', formattedDate);
     $('#endDate').attr('min', datePart);
