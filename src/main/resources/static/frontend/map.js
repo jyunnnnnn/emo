@@ -323,7 +323,8 @@ function addMarker(recordToAdd) {
                 position: currentLocation,
                 map: map,
                 title: recordToAdd.type,
-                icon: thisIcon
+                icon: thisIcon,
+                id:recordToAdd.recordId
             });
 
            //小改
@@ -510,6 +511,7 @@ function deleteMultiRecord(){
              var recordId = parseInt(recordIdString, 10);
              deleteRecordInArray(recordId);//刪除records裡的
              deleteRecordToBackend(recordId);//刪除資料庫裡的
+             deleteMarker(recordId);
              //刪除地圖上的標記(rui救我)
              selectedRecordIds.push(recordId);
         });
@@ -528,7 +530,7 @@ function deleteRecord(){
     if (result) {
         deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
-        deleteMarker();
+        deleteMarker(currentInfoWindowRecord.recordId);
         //console.log(records);
         document.getElementById("recordFW").style.display = "none";
     } else{
@@ -559,14 +561,21 @@ function deleteRecordToBackend(recordId) {
 }
 
 //刪mark
-function deleteMarker(){
-    currentMarker.infoWindow.close();
-    currentMarker.setMap(null);
+function deleteMarker(markerId){
+    //在Markers裡找指定Marker
+    var markerToDelete = markers.find(function(marker) {
+        return marker.id === markerId;
+    });
+    if (markerToDelete) {
 
-    // 找到 currentMarker 在 markers 移除
-    var index = markers.indexOf(currentMarker);
-    if (index > -1) {
-        markers.splice(index, 1);
+        markerToDelete.infoWindow.close();
+        markerToDelete.setMap(null);
+
+        // 在 markers 移除
+        var index = markers.indexOf(markerToDelete);
+        if (index > -1) {
+            markers.splice(index, 1);
+        }
     }
 }
 //點擊列表中的record
