@@ -99,11 +99,7 @@ document.getElementById('saveRecord').addEventListener('click', function () {
     }
 
     if(classType && type && data_value){
-        if (Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
-            document.getElementById('recordFW').style.display = 'none';
-        } else {
-            alert("請輸入正整數");
-        }
+        document.getElementById('recordFW').style.display = 'none';
     } else {
         alert("請輸入完整資訊");
     }

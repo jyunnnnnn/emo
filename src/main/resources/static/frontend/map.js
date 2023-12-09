@@ -213,7 +213,11 @@ function saveRecord(event){
             }
             footprint = calculateFootprint(type,data_value);
             // 保存紀錄到後端
-            if(classType && type && data_value && latitude && longitude && footprint && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
+            if(data_value <= 0){
+               alert("請輸入正數");
+               return;
+            }
+            if(classType && type && data_value && latitude && longitude && footprint && data_value) {
                 var now = new Date();
                 //console.log(now);
                 var year = now.getFullYear();
@@ -228,6 +232,7 @@ function saveRecord(event){
                 recordId = now.getTime();
                 saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
             }
+
         });
     } else {
         alert("不支援定位");
@@ -416,10 +421,10 @@ function updateRecord(){
         var type = $("#dailyMenu option:selected").text();
         var data_value = document.getElementById('gram').value;
     }
-    if(classType && type && data_value && Number.isInteger(parseInt(data_value,10)) && parseInt(data_value,10) > 0) {
+    if(classType && type && data_value && data_value > 0) {
         updateRecordToBackend(classType, type, data_value);
-    } else if(!Number.isInteger(parseInt(data_value,10)) || parseInt(data_value,10) < 0) {
-        alert("請輸入正整數")
+    } else {
+        alert("請輸入正數")
     }
 }
 // 更新紀錄的函數
