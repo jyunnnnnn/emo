@@ -175,8 +175,12 @@ public class UserController {
         if (result==null)
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用google帳號登入失敗"));
 
+
+        //轉換json字串
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(result);
+
+
         //登入成功
         Map<String, String> response = new HashMap<>();
         response.put("message", "登入成功!");

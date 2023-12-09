@@ -167,8 +167,10 @@ public class UserService {
         // 轉換json字串
         JsonNode jsonNode = objectMapper.readTree(googleInfo);
 
+
+        //----------------提取使用者資訊----------------
         String username = String.valueOf(jsonNode.get("email"));
-        username = "@Google" + username.substring(1, username.indexOf('@'));
+        username = "@Google-" + username.substring(1, username.indexOf('@'));
 
         String password = String.valueOf(jsonNode.get("sub"));
         password = password.substring(1, password.length() - 1);
@@ -180,7 +182,9 @@ public class UserService {
 
 
         User googleUser = new User(username, password, nickname, email, userId);
+        //----------------提取使用者資訊----------------
 
+        //建立使用者 or 使用者登入
         int result = createUser(googleUser);
 
         if (result == OK) {//該google帳戶不存在，註冊帳戶
