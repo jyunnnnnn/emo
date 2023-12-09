@@ -168,7 +168,7 @@ public class UserService {
         JsonNode jsonNode = objectMapper.readTree(googleInfo);
 
         String username = String.valueOf(jsonNode.get("email"));
-        username = '@' + username.substring(1, username.indexOf('@'));
+        username = "@Google" + username.substring(1, username.indexOf('@'));
 
         String password = String.valueOf(jsonNode.get("sub"));
         password = password.substring(1, password.length() - 1);
