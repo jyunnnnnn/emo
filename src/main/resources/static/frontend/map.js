@@ -12,13 +12,16 @@ var currentMarker;//目前Marker
 var markers =[];//所有marker
 var recordedPositions = [];//路線紀錄(點)
 var mapLines = [];//一次紀錄的路線線段
+var watchId; //當前位置ID
+var options;//地圖精準度 更新當前位置function用
 
-var circle; //當前位置 用於每5秒更新(清除、重劃)
+var circle; //當前位置標記 用於每5秒更新(清除、重劃)
+var currentLocation;
 // 初始化Google Map
 function initMap() {
      navigator.geolocation.getCurrentPosition(
         function(position) {
-            var currentLocation = {
+            currentLocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
@@ -43,16 +46,19 @@ function initMap() {
                 ]
             });
             infoWindow = new google.maps.InfoWindow();
-            // // 當前位置標記 //改成每五秒刷新定位
-            // circle = new google.maps.Marker({
-            //     position: currentLocation,
-            //     icon: {
-            //         path: google.maps.SymbolPath.CIRCLE,
-            //         scale: 5
-            //     },
-            //     map: map
-            // });
+
+            // 當前位置標記
+            circle = new google.maps.Marker({
+                position: currentLocation,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5
+                },
+                map: map
+            });
             console.log("map finish");
+            //watchPosition()=>裝置換位置就會自己動
+            watchId = navigator.geolocation.watchPosition(success, error, options);
             User =JSON.parse(localStorage.getItem('EmoAppUser'));
             username=User.username;
             nickname=User.nickname;
@@ -80,21 +86,38 @@ function initMap() {
             console.error('Error getting geolocation:', error);
         }
     )
+
 }
+
 //此處有bug等rui修
-//watchPosition()=>裝置換位置就會自己動
-/*
-navigator.geolocation.watchPosition(
-    function(position) {
-        updateCurrentCircle(position);
-    },
-    function(error) {
-        console.error('獲取地理位置時出錯：', error);
+
+function success(pos){
+    navigator.geolocation.clearWatch(watchId);
+    //console.log(pos,currentLocation);
+    if (pos.coords.latitude !== currentLocation.lat || pos.coords.longitude !== currentLocation.lng) {
+        currentLocation = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+        };
+        updateCurrentCircle(pos);
     }
-);
+    // 重新啟動位置監測
+    watchId = navigator.geolocation.watchPosition(success, error, options);
+}
+
+function error(err) {
+    console.error(`ERROR(${err.code}): ${err.message}`);
+    watchId = navigator.geolocation.watchPosition(success, error, options);
+}
+
+options = {
+    enableHighAccuracy: false,
+    timeout: 5000,
+    maximumAge: 0,
+};
 //更新標記
 function updateCurrentCircle(position) {
-    var currentLocation = {
+    currentLocation = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
     };
@@ -114,7 +137,8 @@ function updateCurrentCircle(position) {
         }
     });
 }
-*/
+
+
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -196,11 +220,11 @@ function saveRecord(event){
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
-//            latitude = position.coords.latitude;
-//            longitude = position.coords.longitude;
+           latitude = position.coords.latitude;
+           longitude = position.coords.longitude;
 //            抓取真實位置
-            latitude = map.getCenter().lat();
-            longitude = map.getCenter().lng();
+//             latitude = map.getCenter().lat();
+//             longitude = map.getCenter().lng();
 //            抓取中心位置 這是備案
             if ($("#trafficRadio").is(":checked")) {
                 classType = $("#traffic").text();
@@ -328,7 +352,8 @@ function addMarker(recordToAdd) {
                 position: currentLocation,
                 map: map,
                 title: recordToAdd.type,
-                icon: thisIcon
+                icon: thisIcon,
+                id:recordToAdd.recordId
             });
 
            //小改
@@ -493,6 +518,7 @@ function updateMarkerContent(newContent) {
         console.error('InfoWindow not available.');
     }
 }
+
 //更新record[]
 function updateRecordInArray(newClassType, newType, newDataValue,newFootprint){
     var recordIndex = records.findIndex(record => record.recordId === currentInfoWindowRecord.recordId);
@@ -515,12 +541,14 @@ function deleteMultiRecord(){
              var recordId = parseInt(recordIdString, 10);
              deleteRecordInArray(recordId);//刪除records裡的
              deleteRecordToBackend(recordId);//刪除資料庫裡的
+             deleteMarker(recordId);
              //刪除地圖上的標記(rui救我)
              selectedRecordIds.push(recordId);
         });
         if (selectedRecordIds.length > 0) {
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
             showRecord();
+            alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');
         }
@@ -533,7 +561,7 @@ function deleteRecord(){
     if (result) {
         deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
-        deleteMarker();
+        deleteMarker(currentInfoWindowRecord.recordId);
         //console.log(records);
         document.getElementById("recordFW").style.display = "none";
     } else{
@@ -564,14 +592,21 @@ function deleteRecordToBackend(recordId) {
 }
 
 //刪mark
-function deleteMarker(){
-    currentMarker.infoWindow.close();
-    currentMarker.setMap(null);
+function deleteMarker(markerId){
+    //在Markers裡找指定Marker
+    var markerToDelete = markers.find(function(marker) {
+        return marker.id === markerId;
+    });
+    if (markerToDelete) {
 
-    // 找到 currentMarker 在 markers 移除
-    var index = markers.indexOf(currentMarker);
-    if (index > -1) {
-        markers.splice(index, 1);
+        markerToDelete.infoWindow.close();
+        markerToDelete.setMap(null);
+
+        // 在 markers 移除
+        var index = markers.indexOf(markerToDelete);
+        if (index > -1) {
+            markers.splice(index, 1);
+        }
     }
 }
 //點擊列表中的record
@@ -1010,14 +1045,14 @@ function recordLocation() {
         // 獲取目前位置
         navigator.geolocation.getCurrentPosition(function (position) {
             console.log("1");
-//            var currentLocation = {
-//                lat: position.coords.latitude,
-//                lng: position.coords.longitude
-//            };
-            var currentLocation = {
-                lat: map.getCenter().lat(),
-                lng: map.getCenter().lng()
-            };
+           var currentLocation = {
+               lat: position.coords.latitude,
+               lng: position.coords.longitude
+           };
+//             var currentLocation = {
+//                 lat: map.getCenter().lat(),
+//                 lng: map.getCenter().lng()
+//             };
 
             // 儲存記錄的位置
             recordedPositions.push(currentLocation);
