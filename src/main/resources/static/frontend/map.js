@@ -990,7 +990,11 @@ function deleteRecordByAccount(userId){
 function logoutAccount(){
     alert("登出成功");
     localStorage.removeItem('EmoAppUser');
+
+    google.accounts.id.disableAutoSelect ();
+
     window.location.href= '/login';
+
 }
 function deleteAccount(){
     if($('#passwordAuth').val() == User.password){

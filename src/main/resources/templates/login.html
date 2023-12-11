@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=1">
     <title>Login</title>
     <!--Google Login API script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -150,6 +151,12 @@ body {
                 width: 120px;
                 height: 50px;
             }
+
+            .googleLoginWrapper{
+                transform:scale(1.5,1.5);
+                margin-left:15px;
+            }
+
         }
 </style>
 
@@ -175,30 +182,41 @@ body {
                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <br><br>
+
+
                 <button type="submit" class="form-control btn" id="login-button">登入</button>
+
+
+
                 <br><br>
                 <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                     沒有帳號？ &nbsp;
                     <a href="#" id="switch-to-signup">註冊</a>
+                    &nbsp;&nbsp;
+                    <div class="googleLoginWrapper">
+                        <!-- Google Login -->
+                        <div id="g_id_onload"
+                             data-client_id="897314769362-rctsq2837g8fqo08nf7ip8b7n3g0dm52.apps.googleusercontent.com"
+                             data-context="signin"
+                             data-ux_mode="popup"
+                             data-callback="handleCallback"
+                             data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                             data-type="icon"
+                             data-shape="pill"
+                             data-theme="outline"
+                             data-text="signin_with"
+                             data-size="large"
+                             data-width="328"
+                        >
+                        </div>
+                    </div>
                     <a href="#" id="no-account" style="margin-left: auto;">忘記密碼？</a>
                 </label>
 
             </form>
-            <!-- Google Login -->
-            <div id="g_id_onload"
-                 data-client_id="897314769362-rctsq2837g8fqo08nf7ip8b7n3g0dm52.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-callback="handleCallback"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin"
-                 data-type="icon"
-                 data-shape="square"
-                 data-theme="outline"
-                 data-text="signin_with"
-                 data-size="large">
-            </div>
+
         </div>
     </div>
 </div>
