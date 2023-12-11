@@ -714,6 +714,16 @@ function showNewChart(nowRecords,type) {
     }else if(type == "交通"){
         if(bus+train+mrt+shr==0){
             chartBox.style.display = "none";
+            var container = document.getElementById("listContent");
+            container.innerHTML = ""; // 清空容器內容
+            container.style.overflowY = "scroll";
+            container.style.maxHeight = "150px";
+            var recordDiv = document.createElement("div");
+            recordDiv.style.display = "inline";
+            recordDiv.style.textAlign = "center";
+            recordDiv.textContent = "沒有紀錄";
+            container.appendChild(recordDiv);
+
             return;
         }
         data = {
@@ -726,6 +736,15 @@ function showNewChart(nowRecords,type) {
     }else if(type == "生活用品"){
         if(cup+bag+tableware==0){
             chartBox.style.display = "none";
+            var container = document.getElementById("listContent");
+            container.innerHTML = ""; // 清空容器內容
+            container.style.overflowY = "scroll";
+            container.style.maxHeight = "150px";
+            var recordDiv = document.createElement("div");
+            recordDiv.style.display = "inline";
+            recordDiv.style.textAlign = "center";
+            recordDiv.textContent = "沒有紀錄";
+            container.appendChild(recordDiv);
             return;
         }
         data = {
