@@ -543,12 +543,12 @@ function deleteMultiRecord(){
              deleteRecordToBackend(recordId);//刪除資料庫裡的
              deleteMarker(recordId);
              document.getElementById("record_" + recordId).remove();
-             //刪除地圖上的標記(rui救我)
              selectedRecordIds.push(recordId);
         });
         if (selectedRecordIds.length > 0) {
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
-            showNewChart(records, $("#category option:selected").text());
+            var nowType=$("#category option:selected").text();
+            showNewChart(records,nowType);
             alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');
@@ -668,6 +668,7 @@ function showTotalFootprint(){
 // 圓餅圖
 let myChart = null;
 function showNewChart(nowRecords,type) {
+    const chartBox = document.getElementById("chartBox");
     var data;
     var trafficTotal=0;
     var dailyTotal=0;
@@ -698,6 +699,11 @@ function showNewChart(nowRecords,type) {
     if(type =="全部" || type == "init"){
         dailyTotal=cup+bag+tableware;
         trafficTotal=train+mrt+bus+hsr;
+        if(dailyTotal+trafficTotal==0){
+            chartBox.style.display = "none";
+            //這邊應該要讓列表出現沒有紀錄
+            return;
+        }
         data = {
             labels: ['交通', '生活用品'],
             datasets: [{
@@ -706,6 +712,10 @@ function showNewChart(nowRecords,type) {
             }]
         };
     }else if(type == "交通"){
+        if(bus+train+mrt+shr==0){
+            chartBox.style.display = "none";
+            return;
+        }
         data = {
             labels: ['公車','火車','捷運','高鐵'],
             datasets: [{
@@ -714,6 +724,10 @@ function showNewChart(nowRecords,type) {
             }]
         };
     }else if(type == "生活用品"){
+        if(cup+bag+tableware==0){
+            chartBox.style.display = "none";
+            return;
+        }
         data = {
             labels: ['環保杯','環保袋','環保餐具'],
             datasets: [{
@@ -734,7 +748,6 @@ function showNewChart(nowRecords,type) {
         data: data,
     });
 
-    const chartBox = document.getElementById("chartBox");
     chartBox.style.display = "block";
 }
 
