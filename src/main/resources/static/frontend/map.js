@@ -878,22 +878,21 @@ document.getElementById("sortMethod").addEventListener("change", sortRecordsBySe
 document.getElementById("startDate").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("endDate").addEventListener("change",sortRecordsBySelectedOption);
 function showNewRecord(sortedRecords) {
-    var thisRecords = sortedRecords;
+    var thisRecords = records;
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
     container.style.maxHeight = "150px";
+    var display = document.getElementById("saveEditRecord").style.display;
 
     if(thisRecords.length == 0){
         var recordDiv = document.createElement("div");
         recordDiv.style.display = "inline";
         recordDiv.style.textAlign = "center";
         recordDiv.textContent = "沒有紀錄";
-        container.appendChild(recordDiv);
 
-        var chartBox = document.getElementById("chartBox");
-        chartBox.style.display = "none";
-    }else{
+        container.appendChild(recordDiv);
+    } else {
         for (var i = 0; i < thisRecords.length; i++) {
             // 創建新的checkbox
             var checkbox = document.createElement('label');
@@ -907,7 +906,7 @@ function showNewRecord(sortedRecords) {
             checkbox.appendChild(input);
             checkbox.appendChild(span);
             checkbox.style.marginRight = "3px";
-            checkbox.style.display = "none";
+            checkbox.style.display = display;
 
             // 創建新的<div>元素
             var recordDiv = document.createElement("div");
@@ -933,7 +932,7 @@ function showNewRecord(sortedRecords) {
             container.appendChild(recordDiv);
             recordDiv.id  = 'record_' + thisRecords[i].recordId;
             (function(recordId) {
-                recordDiv.addEventListener('click', function() {
+                recordElement.addEventListener('click', function() {
                     recordClick(recordId);
                 });
             })(thisRecords[i].recordId);

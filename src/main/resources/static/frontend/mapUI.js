@@ -247,7 +247,7 @@ document.getElementById('deleteEditRecord').addEventListener('click', function()
     document.getElementById('deleteEditRecord').style.display = 'block';
     var checkboxes = document.querySelectorAll('.checkbox-container');
     checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'flex';
+        checkbox.style.display = 'block';
     });
 });
 document.getElementById('saveEditRecord').addEventListener('click', function() {
