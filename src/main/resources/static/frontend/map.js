@@ -542,12 +542,13 @@ function deleteMultiRecord(){
              deleteRecordInArray(recordId);//刪除records裡的
              deleteRecordToBackend(recordId);//刪除資料庫裡的
              deleteMarker(recordId);
+             document.getElementById("record_" + recordId).remove();
              //刪除地圖上的標記(rui救我)
              selectedRecordIds.push(recordId);
         });
         if (selectedRecordIds.length > 0) {
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
-            showRecord();
+            showNewChart(records, $("#category option:selected").text());
             alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');
