@@ -878,7 +878,7 @@ document.getElementById("sortMethod").addEventListener("change", sortRecordsBySe
 document.getElementById("startDate").addEventListener("change", sortRecordsBySelectedOption);
 document.getElementById("endDate").addEventListener("change",sortRecordsBySelectedOption);
 function showNewRecord(sortedRecords) {
-    var thisRecords = records;
+    var thisRecords = sortedRecords;
     var container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
