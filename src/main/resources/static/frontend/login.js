@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
 
-
     // 按下註冊切換表單
     $('#switch-to-signup').click(function (e) {
         e.preventDefault();
@@ -392,3 +391,4 @@ function handleCallback(response) {
     });
 
  }
+

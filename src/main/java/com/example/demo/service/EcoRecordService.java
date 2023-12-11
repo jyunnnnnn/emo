@@ -21,7 +21,7 @@ public class EcoRecordService {
 
     //增加新紀錄到資料庫中
     public void addRecord(EcoRecord ecoRecord) {
-        System.out.println(ecoRecord);
+        System.out.println(ecoRecord + "已新增到資料庫中.");
         this.repository.save(ecoRecord);
     }
 
