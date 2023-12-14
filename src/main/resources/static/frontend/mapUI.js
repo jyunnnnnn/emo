@@ -260,3 +260,5 @@ document.getElementById('saveEditRecord').addEventListener('click', function() {
         checkbox.style.display = 'none';
     });
 });
+
+

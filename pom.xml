@@ -74,21 +74,21 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.12.5</version> <!-- 请替换为最新版本 -->
+			<version>2.14.2</version> <!-- 请替换为最新版本 -->
 		</dependency>
 
 		<!-- Jackson DataBind (用于对象和 JSON 之间的映射) -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.12.5</version> <!-- 请替换为最新版本 -->
+			<version>2.15.1</version> <!-- 请替换为最新版本 -->
 		</dependency>
 
 		<!-- Jackson Annotations (用于支持 Jackson 注解) -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.12.5</version> <!-- 请替换为最新版本 -->
+			<version>2.15.1</version> <!-- 请替换为最新版本 -->
 		</dependency>
 
     </dependencies>
