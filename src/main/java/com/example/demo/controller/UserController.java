@@ -31,7 +31,7 @@ public class UserController {
 
     //註冊新帳號
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User request) {
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User request) throws Exception {
 
 
         int result = userService.createUser(request);
@@ -165,7 +165,7 @@ public class UserController {
 
     //Google登入
     @PostMapping("/googleLogin")
-    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws JsonProcessingException {
+    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws Exception {
 
         //抓取該google帳戶userId
         User result = this.userService.googleLogin(googleInfo);

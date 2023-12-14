@@ -1,4 +1,55 @@
+
+
+//加密金鑰
+var key;
+//加密偏移量
+var iv;
+
+function getEncryptKey() {
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            type: 'GET',
+            url: '/api/getEncryptKey',
+            contentType: 'application/json',
+            success: function (response) {
+                key = response.key;
+                iv = response.iv;
+                resolve();  // 解析 Promise 表示成功取得金鑰和偏移量
+            },
+            error: function (xhr, status, error) {
+                console.log("獲取金鑰失敗");
+                reject();  // 拒絕 Promise 表示無法取得金鑰和偏移量
+            }
+        });
+    });
+}
+
+//加密
+function encrypt(text,key,iv) {
+    var encrypted;
+ encrypted= CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
+         iv: CryptoJS.enc.Utf8.parse(iv),
+         mode: CryptoJS.mode.CBC,
+         padding: CryptoJS.pad.Pkcs7
+     });
+    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+}
+
+
+//解密
+function decrypt(ciphertext,key,iv){
+    var decrypt;
+     decrypt= CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse(key), {
+            iv: CryptoJS.enc.Utf8.parse(iv),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+          return decrypt.toString(CryptoJS.enc.Utf8);
+}
+
+
 $(document).ready(function () {
+
 
 
     // 按下註冊切換表單
@@ -96,6 +147,15 @@ $(document).ready(function () {
         var now = new Date();
         var userId=now.getTime();
         // nickname default:username
+         getEncryptKey().then(function() {
+            // 在這裡執行需要 key 和 iv 的程式碼
+            inputPassword=encrypt(inputPassword,key,iv);
+        }).catch(function() {
+            console.log("無法取得金鑰和偏移量");
+        });
+
+
+
         var userData = {
             username: inputAccount,
             password: inputPassword,
@@ -183,22 +243,30 @@ $(document).ready(function () {
             return;
         }
 
-        $.ajax({
-            type: 'GET',
-            url: encodeURI('/api/login?username=' + inputAccount + '&password=' + inputPassword),
-            contentType: 'application/json',
+         getEncryptKey().then(function() {
+                // 在這裡執行需要 key 和 iv 的程式碼
+                inputPassword=encrypt(inputPassword,key,iv);
+                //檢驗登入
+                $.ajax({
+                    type: 'GET',
+                    url: encodeURI('/api/login?username=' + inputAccount + '&password=' + inputPassword),
+                    contentType: 'application/json',
 
-            success: function (response) {
-                var userData = response.user;
-                localStorage.setItem('EmoAppUser', userData);
-                alert(response.message);
-                window.location.href = response.location;
-            },
-            error: function (xhr, status, error) {
-                var errorMessage = JSON.parse(xhr.responseText);
-                alert(errorMessage.message);
-            }
-        });
+                    success: function (response) {
+                        var userData = response.user;
+                        localStorage.setItem('EmoAppUser', userData);
+                        alert(response.message);
+                        window.location.href = response.location;
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage = JSON.parse(xhr.responseText);
+                        alert(errorMessage.message);
+                    }
+                });
+            }).catch(function() {
+                console.log("無法取得金鑰和偏移量");
+            });
+
     });
 
 
@@ -292,11 +360,8 @@ $(document).ready(function () {
             url: '/api/allowChangePassword?username=' + username,
             contentType: 'application/json',
             success: function (response) {
-
-
             },
             error: function (response) {
-
             }
         });
     }
@@ -353,19 +418,26 @@ $(document).ready(function () {
 
     //修改特定帳號的密碼
     function updatePassword(username,newPassword){
+        let encryptPassword="";
+         getEncryptKey().then(function() {
+                // 在這裡執行需要 key 和 iv 的程式碼
+                encryptPassword=encrypt(newPassword,key,iv);
+                $.ajax({
+                    type: 'PUT',
+                    url: '/api/updateByUsername?username=' + username +"&password="+encryptPassword  ,
+                    contentType: 'application/json',
+                    success: function (response) {
+                        alert("密碼修改成功");
+                        window.location.href = "login";
+                    },
+                    error: function (response) {
+                        alert("密碼修改失敗");
+                    }
+                });
+            }).catch(function() {
+                console.log("無法取得金鑰和偏移量");
+            });
 
-        $.ajax({
-            type: 'PUT',
-            url: '/api/updateByUsername?username=' + username +"&password="+newPassword  ,
-            contentType: 'application/json',
-            success: function (response) {
-                alert("密碼修改成功");
-                window.location.href = "login";
-            },
-            error: function (response) {
-                alert("密碼修改失敗");
-            }
-        });
     }
 });
 

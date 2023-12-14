@@ -39,11 +39,12 @@ public class UserService {
 
 
     //建立新使用者帳號
-    public int createUser(User newUser) {
+    public int createUser(User newUser) throws Exception {
         //檢查帳號是否存在
         if (isAccountExists(newUser.getUsername()) == UserService.USER_FOUND) {
             return ACCOUNT_ALREADY_EXIST;
         }
+        newUser.setPassword(new AESEncryption().encrypt(newUser.getPassword()));
         this.repository.save(newUser);
         return OK;
     }
@@ -54,6 +55,7 @@ public class UserService {
 
     //登入帳號
     public int login(String username, String password) {
+
         User user = this.repository.findByUsername(username);
         if (user == null) return FAIL;
         if (user.getPassword().equals(password)) return OK;
@@ -155,7 +157,7 @@ public class UserService {
         }
         return FAIL;
     }
-    public User googleLogin(String googleInfo) throws JsonProcessingException {
+    public User googleLogin(String googleInfo) throws Exception {
         /*
             帳號:@ + 電子郵件去除@之後的字串
             密碼:jsonNode.get('sub') 以Google帳號特殊ID為密碼

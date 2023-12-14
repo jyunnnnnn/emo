@@ -17,6 +17,7 @@ var options;//地圖精準度 更新當前位置function用
 
 var circle; //當前位置標記 用於每5秒更新(清除、重劃)
 var currentLocation;
+
 // 初始化Google Map
 function initMap() {
      navigator.geolocation.getCurrentPosition(
@@ -1015,14 +1016,20 @@ function logoutAccount(){
     window.location.href= '/login';
 
 }
+//刪除帳號
 function deleteAccount(){
-    if($('#passwordAuth').val() == User.password){
-        deleteAccountToBackend(User.userId);
-        deleteRecordByAccount(User.userId);
-    }
-    else{
-       alert("密碼錯誤");
-    }
+    getEncryptKey().then(function() {
+        var encryptPass =encrypt( $('#passwordAuth').val(),key,iv);
+       if( encryptPass == User.password){
+           deleteAccountToBackend(User.userId);
+           deleteRecordByAccount(User.userId);
+       }
+       else{
+          alert("密碼錯誤");
+       }
+    }).catch(function() {
+        console.log("無法取得金鑰和偏移量");
+    });
 }
 ////路線紀錄，不知道有沒有功能
 function startRecording() {
@@ -1132,4 +1139,55 @@ function clearMapLines() {
         mapLines[i].setMap(null);
     }
     mapLines = [];
+}
+
+
+//加密金鑰
+var key;
+//加密偏移量
+var iv;
+
+//獲取加密金鑰
+function getEncryptKey() {
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            type: 'GET',
+            url: '/api/getEncryptKey',
+            contentType: 'application/json',
+            success: function (response) {
+                key = response.key;
+                iv = response.iv;
+                resolve();  // 解析 Promise 表示成功取得金鑰和偏移量
+            },
+            error: function (xhr, status, error) {
+                console.log("獲取金鑰失敗");
+                reject();  // 拒絕 Promise 表示無法取得金鑰和偏移量
+            }
+        });
+    });
+}
+
+
+
+//加密
+function encrypt(text,key,iv) {
+    var encrypted;
+ encrypted= CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
+         iv: CryptoJS.enc.Utf8.parse(iv),
+         mode: CryptoJS.mode.CBC,
+         padding: CryptoJS.pad.Pkcs7
+     });
+    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+}
+
+
+//解密
+function decrypt(ciphertext,key,iv){
+    var decrypt;
+     decrypt= CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse(key), {
+            iv: CryptoJS.enc.Utf8.parse(iv),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+          return decrypt.toString(CryptoJS.enc.Utf8);
 }
