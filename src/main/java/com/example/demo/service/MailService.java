@@ -17,13 +17,13 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailService {
 
-    private final String SenderEmail = "sw710407@gmail.com";//寄送者mail
+    private final String SenderEmail = "penny85946256@gmail.com";//寄送者mail
 
     private Map<String, String> validCode = new HashMap<>();//紀錄電子郵件驗證碼
     private Map<String, Boolean> valid = new HashMap<>();//紀錄某電子郵件是否可以再寄送驗證碼
     private Map<String,TimerTask> timer = new HashMap<>();
     private final Timer cTimer = new Timer();
-    private final String APIKey = "dfmiylxxxzixdkds";// 電子郵件API金鑰
+    private final String APIKey = "gznpcmfhredpnfhk";// 電子郵件API金鑰
     public static final int MAIL_VALIDCODE_CORRECT = 0;// 電子郵件驗證碼正確
     public static final int MAIL_VALIDCODE_INCORRECT = 1;// 電子郵件驗證碼錯誤
 
@@ -54,7 +54,7 @@ public class MailService {
     }
 
     // 寄送驗證碼(email)
-    public void sendMail(String userMail) {
+    public void sendMail(String userMail) throws MessagingException {
 
         Properties props = new Properties();
         // Setting mail proctocol detail
@@ -99,6 +99,7 @@ public class MailService {
 
         } catch (MessagingException e) {
             e.printStackTrace();
+            throw new MessagingException();
         }
 
     }
