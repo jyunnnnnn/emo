@@ -713,7 +713,7 @@ function showNewChart(nowRecords,type) {
             }]
         };
     }else if(type == "交通"){
-        if(bus+train+mrt+shr==0){
+        if(bus+train+mrt+hsr==0){
             chartBox.style.display = "none";
             var container = document.getElementById("listContent");
             container.innerHTML = ""; // 清空容器內容
