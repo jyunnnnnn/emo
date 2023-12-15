@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -157,7 +159,7 @@ public class UserService {
         }
         return FAIL;
     }
-    public User googleLogin(String googleInfo) throws Exception {
+    public User googleLogin(String googleData) throws Exception {
         /*
             帳號:@ + 電子郵件去除@之後的字串
             密碼:jsonNode.get('sub') 以Google帳號特殊ID為密碼
@@ -166,8 +168,9 @@ public class UserService {
             userId:getTime()
          */
         ObjectMapper objectMapper = new ObjectMapper();
+
         // 轉換json字串
-        JsonNode jsonNode = objectMapper.readTree(googleInfo);
+        JsonNode jsonNode = objectMapper.readTree(googleData);
 
 
         //----------------提取使用者資訊----------------
@@ -175,7 +178,7 @@ public class UserService {
         username = "@Google-" + username.substring(1, username.indexOf('@'));
 
         String password = String.valueOf(jsonNode.get("sub"));
-        password = password.substring(1, password.length() - 1);
+        password = new AESEncryption().encrypt(password.substring(1, password.length() - 1)) ;
         String nickname = String.valueOf(jsonNode.get("name"));
         nickname = nickname.substring(1, nickname.length() - 1);
         String email = String.valueOf(jsonNode.get("email"));

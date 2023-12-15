@@ -166,7 +166,6 @@ public class UserController {
     //Google登入
     @PostMapping("/googleLogin")
     public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws Exception {
-
         //抓取該google帳戶userId
         User result = this.userService.googleLogin(googleInfo);
 

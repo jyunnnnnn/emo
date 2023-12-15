@@ -444,7 +444,7 @@ $(document).ready(function () {
 //Google登入回呼函式
 function handleCallback(response) {
     //使用者資料解碼
-   var profile= JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))))
+   var profile= JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))));
 
     $.ajax({
         type: 'POST',
