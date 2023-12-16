@@ -29,7 +29,9 @@ function initMap() {
             // 創建地圖
             map = new google.maps.Map(document.getElementById('map'), {
                 center: currentLocation,
-                zoom: 15,
+                zoom: 18,
+                minZoom: 5, // 設定最小縮放級別
+                maxZoom: 50, // 設定最大縮放級別
                 mapTypeControl: false,
                 zoomControl: false,
                 scaleControl: false,
