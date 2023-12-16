@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=1">
   <title>EMO HomePage</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!--    import js and css-->
@@ -36,6 +37,7 @@
         }
         img{
             max-width: 100%;
+            padding:5px;
         }
         .btn{
             border-radius: 40px;
@@ -159,12 +161,10 @@
                 font-size: 2rem;
                 padding-left: 30px;
             }
-            .form-control.btn{
-                font-size: 2rem;
-            }
             .emo{
-                font-size: 11em;
+                font-size: 390%;
             }
+
         }
 
 </style>
@@ -206,10 +206,10 @@
 </header>
 <section id = "home">
   <!-- <h3 style="color:red;font-size:147px;">&nbsp</h3> -->
-  <h3 style="color:red;font-size:50px;">&nbsp</h3>
+  <h3 style="color:red;font-size:30px;"class="d-none d-lg-block">&nbsp</h3>
   <div class="container">
     <div class = "row">
-      <div class="col-xl-5 col-12 text-white introduction text-center">
+      <div class="col-lg-5 col-11 text-white introduction text-center">
         <p>
           &emsp; &emsp;這是一款可以紀錄日常活動中與環保相關的活動，並記錄您省下的碳足跡的行動網頁應用程式，
           旨在協助您追踪並降低個人的碳足跡。透過簡單的使用介面與直覺的地圖設計，
@@ -226,16 +226,22 @@
           </svg></button>
         <br><br>
       </div>
-      <div class="col-xl-1 col-0"></div>
+      <div class="col-lg-1 col-0"></div>
       <!-- <div class="col-xl-2 col-6 introduction "> -->
-      <div class="col-xl-2 col-6 introduction ">
+
+      <div class="col-lg-2 col-6 introduction text-white text-center">
+        <!--<div class="col-xl-6 text-center text-white">-->
+          <p>使用者介面範例：</p>
+        <!-- </div> -->
         <img class="ui" src="frontend/img/ui1.png" alt="UI Image 1">
       </div>
-      <div class="col-xl-2 col-6 introduction text-white">
+      <div class="col-lg-2 col-6 introduction text-white">
+        <p>&emsp;</p>
         <img class="ui " src="frontend/img/ui2.png" alt="UI Image 2">
-        <br><br><p>＊使用者介面範例＊</p>
+
       </div>
-      <div class="col-xl-2 col-6 introduction text-center">
+      <div class="col-lg-2 col-6 introduction text-center">
+        <p>&emsp;</p>
         <img class="ui" src="frontend/img/ui3.png" alt="UI Image 3">
       </div>
       <!-- <div class="col-xl-6"></div>
@@ -247,13 +253,13 @@
   </div>
 </section>
 <section  id="resources">
-  <h3 style="color:red;font-size:100px;">&nbsp</h3>
+  <h3 style="color:red;font-size:100px;"class="d-none d-lg-block">&nbsp</h3>
   <div class="container">
     <div class="row">
-      <div class="col-xl-12 text-center text-white mb-4">
+      <div class="col-lg-12 text-center text-white mb-2">
         <h2>碳足跡計算相關資料來源</h2>
       </div>
-      <div class="col-xl-5 col-12 transparent-box">
+      <div class="col-lg-5 col-11 transparent-box">
         <h2>
           <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 960 960" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="45px" height="45px" fill="black">
                             <g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
@@ -279,13 +285,13 @@
         <p>每樣物品排放量計算方式為排放係數x重量<br>
           (係數參考來源：
           <a class="link" href="https://data.moenv.gov.tw/dataset/detail/CFP_P_02" target="_blank">環境部碳足跡排放係數</a>
-
+          <br>
           <a class="link" href="https://tccdaka.com/tw/project/lowCarbonTravel/report/減碳計算機.pdf" target="_blank">減碳計算機</a>)
           <!-- <br><br> -->
         </p>
       </div>
-      <div class="col-xl-1 col-12"></div> <!-- Empty column -->
-      <div class="col-xl-5 col-12 transparent-box">
+      <div class="col-lg-1 col-12"></div> <!-- Empty column -->
+      <div class="col-lg-5 col-11 transparent-box">
         <h2>
           <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 260 260" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="45px" height="45px" fill="black">
                         <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
