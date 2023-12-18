@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -18,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 public class MailService {
 
     private final String SenderEmail = "penny85946256@gmail.com";//寄送者mail
-
+    private final String senderName ="EmoTeam";//寄件人名稱
     private Map<String, String> validCode = new HashMap<>();//紀錄電子郵件驗證碼
     private Map<String, Boolean> valid = new HashMap<>();//紀錄某電子郵件是否可以再寄送驗證碼
     private Map<String,TimerTask> timer = new HashMap<>();
@@ -76,7 +77,7 @@ public class MailService {
 
             Message message = new MimeMessage(session);
 
-            message.setFrom(new InternetAddress(SenderEmail));
+            message.setFrom(new InternetAddress(SenderEmail,senderName));
 
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(userMail));
@@ -100,6 +101,8 @@ public class MailService {
         } catch (MessagingException e) {
             e.printStackTrace();
             throw new MessagingException();
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
 
     }
