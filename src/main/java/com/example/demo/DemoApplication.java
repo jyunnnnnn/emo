@@ -3,6 +3,7 @@ package com.example.demo;
 
 import com.example.demo.service.AESEncryption;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
