@@ -60,6 +60,10 @@ function initMap() {
                 map: map
             });
             console.log("map finish");
+            if (localStorage.getItem('EmoAppUser')==null) {
+                alert("請重新登入");
+                window.location.href = '/login';
+            }
             //watchPosition()=>裝置換位置就會自己動
             watchId = navigator.geolocation.watchPosition(success, error, options);
             User =JSON.parse(localStorage.getItem('EmoAppUser'));
@@ -178,7 +182,7 @@ function findCoefficientByType(type) {
 function calculateFootprint(type,data_value) {
     var footprint = 0;
     var coefficient = findCoefficientByType(type);
-    footprint=data_value * coefficient;
+    footprint=(data_value * coefficient).toFixed(3);
     return footprint;
 }
 function modifyNickname() {

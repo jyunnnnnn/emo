@@ -26,7 +26,7 @@ dailyTypeSelect.addEventListener('change', function() {
     if (selectedValue === 'daily-cup') {
         $("#small").text("小(5g)");
         $("#medium").text("中(10g)");
-        $("#large").text("小(15g)");
+        $("#large").text("大(15g)");
         document.getElementById('smallRadio').checked = true;
         var spanContent = document.getElementById('small').innerText;
         var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
@@ -34,9 +34,9 @@ dailyTypeSelect.addEventListener('change', function() {
         document.getElementById('gram').value = value;
         document.getElementById('gram').disabled = true;
     } else if (selectedValue === 'daily-tableware') {
-        $("#small").text("小(10g)");
-        $("#medium").text("中(15g)");
-        $("#large").text("小(20g)");
+        $("#small").text("小(15g)");
+        $("#medium").text("中(20g)");
+        $("#large").text("大(25g)");
         document.getElementById('smallRadio').checked = true;
         var spanContent = document.getElementById('small').innerText;
         var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
@@ -44,9 +44,9 @@ dailyTypeSelect.addEventListener('change', function() {
         document.getElementById('gram').value = value;
         document.getElementById('gram').disabled = true;
     } else if (selectedValue === 'daily-bag') {
-        $("#small").text("小(15g)");
-        $("#medium").text("中(20g)");
-        $("#large").text("小(25g)");
+        $("#small").text("小(2g)");
+        $("#medium").text("中(5g)");
+        $("#large").text("大(10g)");
         document.getElementById('smallRadio').checked = true;
         var spanContent = document.getElementById('small').innerText;
         var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
