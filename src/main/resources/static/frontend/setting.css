@@ -1,5 +1,6 @@
 #settingFW,
 #renameFW,
+#adminFW,
 #deleteFW{
     display: none;
     position: fixed;
@@ -71,6 +72,62 @@
     color: rgb(123, 125, 127);
 }
 
+/* 管理員按鈕 */
+#adminButton{
+    transform: scale(1.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 6%;
+    right: 15%;
+    font-family: 'Crimson Pro', serif;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;
+}
+#adminButton:hover{
+    color:  rgb(103, 103, 103);
+}
+
+#editFP,
+#saveFP,
+#deleteFP{
+    display: block;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Crimson Pro', serif;
+    background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
+    color: white;
+    margin: 8px auto;
+    border-radius: 20px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+#editFP:hover,
+#saveFP:hover,
+#deleteFP:hover {
+    transform: scale(1.03);
+}
+#editFP:active,
+#saveFP:active,
+#deleteFP:active {
+    transform: scale(0.95);
+}
+
+.inputFP{
+    padding-left: 0.8em;
+    outline: none;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+.inputFP:hover,
+.inputFP:focus {
+    border: 2px solid #4A9DEC;
+    background-color: white;
+}
+
+
+
+
 /* 登出鈕 */
 .setBtn {
     display: flex;
@@ -137,5 +194,11 @@
         align-content: center;
         align-items: center;
         transform: scale(2);
+    }
+
+    #adminButton{
+        transform: scale(2.1);
+        top: 4.3%;
+        right: 20%;
     }
 }

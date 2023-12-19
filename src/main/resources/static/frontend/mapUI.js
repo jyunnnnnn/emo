@@ -134,6 +134,45 @@ document.getElementById('recordListButton').addEventListener('click', function (
     $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
 });
+// 點擊管理員按鈕
+document.getElementById('adminButton').addEventListener('click', function () {
+    // 顯示懸浮窗
+    document.getElementById('adminFW').style.display = 'flex';
+    document.getElementById('adminFW').style.position = 'fixed';
+    document.getElementById('editFP').style.display = 'block';
+    document.getElementById('saveFP').style.display = 'none';
+    document.getElementById('deleteFP').style.display = 'none';
+});
+// 管理員編輯
+document.getElementById('editFP').addEventListener('click', function() {
+    event.preventDefault();
+    document.getElementById('editFP').style.display = 'none';
+    document.getElementById('saveFP').style.display = 'block';
+    document.getElementById('deleteFP').style.display = 'block';
+    var checkboxes = document.querySelectorAll('.checkbox-container');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.style.display = 'flex';
+    });
+    var inputs = document.querySelectorAll('.inputFP');
+    inputs.forEach(function(input) {
+        input.disabled = false;
+    });
+});
+document.getElementById('saveFP').addEventListener('click', function() {
+    event.preventDefault();
+    document.getElementById('editFP').style.display = 'block';
+    document.getElementById('saveFP').style.display = 'none';
+    document.getElementById('deleteFP').style.display = 'none';
+    var checkboxes = document.querySelectorAll('.checkbox-container');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.style.display = 'none';
+    });
+    var inputs = document.querySelectorAll('.inputFP');
+    inputs.forEach(function(inputs) {
+        inputs.disabled = true;
+    });
+});
+
 // 點擊設定按鈕
 document.getElementById('settingButton').addEventListener('click', function () {
     // 顯示懸浮窗
@@ -190,6 +229,8 @@ function closeFW(event){
         document.getElementById('renameFW').style.display = 'none';
     } else if(event.target.id === 'closeAuthFW') {
         document.getElementById('closeAuthFW').style.display = 'none';
+    } else if(event.target.id === 'adminFW') {
+        document.getElementById('adminFW').style.display = 'none';
     }
 }
 
@@ -221,6 +262,11 @@ document.getElementById('closeDeleteModal').addEventListener('click', function (
 document.getElementById('closeRenameModal').addEventListener('click', function () {
     document.getElementById('renameFW').style.display = 'none';
 });
+// 關閉管理員懸浮窗
+document.getElementById('closeAdminModal').addEventListener('click', function () {
+    document.getElementById('adminFW').style.display = 'none';
+});
+
 
 // 生活用品選單
 document.getElementById('dailyRadio').addEventListener('change', function () {
@@ -239,17 +285,7 @@ document.getElementById('editRecord').addEventListener('click', function() {
     checkboxes.forEach(function(checkbox) {
         checkbox.style.display = 'flex';
     });
-});
-document.getElementById('deleteEditRecord').addEventListener('click', function() {
-    event.preventDefault();
-    document.getElementById('editRecord').style.display = 'none';
-    document.getElementById('saveEditRecord').style.display = 'block';
-    document.getElementById('deleteEditRecord').style.display = 'block';
-    var checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'block';
-    });
-});
+})
 document.getElementById('saveEditRecord').addEventListener('click', function() {
     event.preventDefault();
     document.getElementById('editRecord').style.display = 'block';

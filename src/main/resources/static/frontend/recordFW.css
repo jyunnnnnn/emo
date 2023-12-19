@@ -5,7 +5,6 @@
     transform:scale(1.5);
 }
 #settingButton:hover{
-    /*box-shadow: 0px 15px 20px rgb(183, 188, 189);*/
     color:  rgb(103, 103, 103);
 }
 
@@ -486,7 +485,7 @@
 
     #settingButton,
     .showUser{
-        top:4%;
+        top: 4%;
         transform: scale(2.2);
     }
 }

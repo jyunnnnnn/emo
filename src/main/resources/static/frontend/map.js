@@ -74,6 +74,7 @@ function initMap() {
             $('#updateRecord').click(updateRecord)//修改紀錄
             $('#deleteRecord').click(deleteRecord)//刪除紀錄
             $('#recordListButton').click(showRecord);//查看環保紀錄
+            $('#adminButton').click(showFPdata)
             $('#settingButton').click(showTotalFootprint);
             $('#renameBtn').click(modifyNickname);
             $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
@@ -84,6 +85,11 @@ function initMap() {
                     stopRecording(); //true
                 }
             });// 路線紀錄(開始/停止)
+            if(username === 'admin'){
+                document.getElementById('adminButton').style.display = 'block';
+            }else{
+                document.getElementById('adminButton').style.display = 'none';
+            }
         },
         function(error){
             console.error('Error getting geolocation:', error);
@@ -974,6 +980,54 @@ function showNewRecord(sortedRecords) {
             })(thisRecords[i].recordId);
         }
         showNewChart(thisRecords,$("#category option:selected").text());
+    }
+}
+
+// 打開管理員介面
+function showFPdata() {
+    var thisData = FootprintData;
+    var container = document.getElementById("adminData");
+    container.innerHTML = ""; // 清空容器內容
+    container.style.overflowY = "scroll";
+    container.style.maxHeight = "150px";
+    for (var i = 0; i < thisData.length; i++) {
+        // 勾選框
+        var checkbox = document.createElement('label');
+        checkbox.className = 'checkbox-container';
+        var input = document.createElement('input');
+        input.type = 'checkbox';
+        input.className = 'custom-checkbox';
+        var span = document.createElement('span');
+        span.className = 'checkmark';
+        checkbox.appendChild(input);
+        checkbox.appendChild(span);
+        checkbox.style.marginRight = "3px";
+        span.style.top = "5px";
+        checkbox.style.display = "none";
+        // 創建新的<div>元素
+        var footprintDiv = document.createElement("div");
+        footprintDiv.style.width = "200px";
+        footprintDiv.style.background = "white";
+        footprintDiv.style.display = "flex";
+        footprintDiv.style.alignItems = "center";
+
+        // 創建新的 <input> 元素
+        var typeInput = document.createElement("input");
+        typeInput.type = 'text';
+        typeInput.value = thisData[i].type;
+        typeInput.className = 'inputFP';
+        typeInput.disabled = true;
+
+        var footprintInput = document.createElement("input");
+        footprintInput.type = 'text';
+        footprintInput.value = thisData[i].coefficient;
+        footprintInput.className = 'inputFP';
+        footprintInput.disabled = true;
+
+        footprintDiv.appendChild(checkbox);
+        footprintDiv.appendChild(typeInput);
+        footprintDiv.appendChild(footprintInput);
+        container.appendChild(footprintDiv);
     }
 }
 
