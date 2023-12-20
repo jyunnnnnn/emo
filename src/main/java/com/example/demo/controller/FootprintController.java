@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 import com.example.demo.service.Footprint;
 import com.example.demo.service.FootprintService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 @RestController
 @RequestMapping("/api")
@@ -40,5 +42,22 @@ public class FootprintController {
 
         return ResponseEntity.ok("Footprint added successfully");
     }
-
+    @PutMapping("/updateFootprint")
+    public ResponseEntity<?> updateFootprint(@RequestParam("FPId") String FPId,@RequestParam("coefficient") double newCoefficient) {
+        System.out.println("Received request with FPId: " + FPId + " and coefficient: " + newCoefficient);
+        int result = this.footprintService.updateFootprintByFPId(FPId, newCoefficient);
+        if (result == FootprintService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改係數成功"));
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改係數失敗"));
+    }
+    @DeleteMapping("/deleteAllFootprint")
+    public ResponseEntity<?> deleteAllRecord() {
+        try {
+            this.footprintService.deleteAllFootprint();
+            return ResponseEntity.ok("Ok");
+        } catch (Exception err) {
+            System.err.println(err + "刪除所有紀錄過程出現錯誤");
+            return ResponseEntity.ok("Fail");
+        }
+    }
 }

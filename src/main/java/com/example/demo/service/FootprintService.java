@@ -12,7 +12,8 @@ public class FootprintService {
 
 
     private final FootprintRepository repository;
-
+    public static int OK = 7;
+    public static int FAIL = 8;
     @Autowired
     public FootprintService( FootprintRepository repository ) {this.repository = repository;}
 
@@ -23,6 +24,24 @@ public class FootprintService {
     public void addFootprint(Footprint footprint) {
         System.out.println(footprint);
         this.repository.save(footprint);
+    }
+    public int updateFootprintByFPId(String FPId, double newCoefficient) {
+        Footprint result = this.repository.findByFPId(FPId);
+        if (result != null) {
+            Footprint updatedFootprint = new Footprint(FPId,result.getType(), newCoefficient);
+            this.repository.save(updatedFootprint);
+            return OK;
+        }
+        return FAIL;
+    }
+    public int deleteAllFootprint() {
+        try {
+            this.repository.deleteAll();
+        } catch (Exception err) {
+            System.err.println(err + " 刪除所有紀錄過程出現問題");
+            return FAIL;
+        }
+        return OK;
     }
 }
 
