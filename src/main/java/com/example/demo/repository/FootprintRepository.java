@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FootprintRepository extends MongoRepository<Footprint,String>{
     Footprint findByFPId(String type);
+    void deleteByFPId(String FPId);
 }

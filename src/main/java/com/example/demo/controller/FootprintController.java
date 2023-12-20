@@ -60,4 +60,15 @@ public class FootprintController {
             return ResponseEntity.ok("Fail");
         }
     }
+    @DeleteMapping("/deleteOneFootprint")
+    public ResponseEntity<?> deleteOneFootprint(@RequestParam("FPId") String FPId) {
+        try {
+            this.footprintService.deleteOneFootprint(FPId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception err) {
+            System.err.println("刪除" + FPId + "紀錄過程出現問題");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

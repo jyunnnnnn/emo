@@ -43,6 +43,9 @@ public class FootprintService {
         }
         return OK;
     }
+    public void deleteOneFootprint(String FPId) {
+        this.repository.deleteByFPId(FPId);
+    }
 }
 
 //    static {
