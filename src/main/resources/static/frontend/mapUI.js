@@ -154,8 +154,10 @@ document.getElementById('editFP').addEventListener('click', function() {
         checkbox.style.display = 'flex';
     });
     var inputs = document.querySelectorAll('.inputFP');
-    inputs.forEach(function(input) {
-        input.disabled = false;
+    inputs.forEach(function(input, index) {
+        if (index % 2 != 0) {
+            input.disabled = false;
+        }
     });
 });
 document.getElementById('saveFP').addEventListener('click', function() {
