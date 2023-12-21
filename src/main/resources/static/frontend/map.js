@@ -1058,6 +1058,7 @@ function updateAllFootprint() {
                 success: function (response) {
                     // 成功處理回傳的資料
                     //console.log('FP更新成功:', response);
+                    loadFootprintData();
                 },
                 error: function (xhr, status, error) {
                     // 處理錯誤
@@ -1084,6 +1085,7 @@ function deleteSelectedFootprints() {
                     console.log('成功刪除:', response);
                     // 重新載入或更新資料
                     // 例如，重新呼叫 showFPdata() 或更新資料列表
+                    loadFootprintData();
                 },
                 error: function(xhr, status, error) {
                     // 處理錯誤
