@@ -20,12 +20,14 @@ var currentLocation;
 
 // 初始化Google Map
 function initMap() {
+    console.log("進入init");
      navigator.geolocation.getCurrentPosition(
         function(position) {
             currentLocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
+             console.log("抓取位置成功 開始建構地圖");
             // 創建地圖
             map = new google.maps.Map(document.getElementById('map'), {
                 center: currentLocation,
@@ -48,6 +50,7 @@ function initMap() {
                     }
                 ]
             });
+            console.log("獲取標記及訊息窗");
             infoWindow = new google.maps.InfoWindow();
 
             // 當前位置標記
