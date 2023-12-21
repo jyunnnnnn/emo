@@ -105,12 +105,23 @@ function initMap() {
 //此處有bug等rui修
 
 function success(pos){
+    const distanceThreshold = 0.005; // 五公尺
     navigator.geolocation.clearWatch(watchId);
     //console.log(pos,currentLocation);
-    if (pos.coords.latitude !== currentLocation.lat || pos.coords.longitude !== currentLocation.lng) {
+    const newLat = pos.coords.latitude;
+    const newLng = pos.coords.longitude;
+
+    const point1 = new google.maps.LatLng(newLat, newLng);
+    const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    // 計算新位置和當前位置的距離
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+    // 轉換為公里
+    const distanceInKm = distance / 1000;
+    // 只有當距離超過閾值時才更新位置和圓圈 (小於五公尺不更新)
+    if (distance > distanceThreshold) {
         currentLocation = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
+            lat: newLat,
+            lng: newLng
         };
         updateCurrentCircle(pos);
     }
@@ -124,9 +135,9 @@ function error(err) {
 }
 
 options = {
-    enableHighAccuracy: false,
+    enableHighAccuracy: false,//低精準
     timeout: 5000,
-    maximumAge: 0,
+    maximumAge: 1000,//緩存位置1秒
 };
 //更新標記
 function updateCurrentCircle(position) {
