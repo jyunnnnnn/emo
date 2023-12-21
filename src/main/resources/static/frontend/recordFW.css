@@ -152,6 +152,7 @@
     margin: 20px;
     position: fixed;
     display: block;
+    transform: scale(0.9);
 }
 
 .recordHeading {
@@ -474,18 +475,22 @@
         justify-items: center;
         align-content: center;
         align-items: center;
-        transform: scale(2);
     }
 
     #openRecordModal,
     #recordListButton,
     #startRecording{
-        transform: scale(1.5);
+        transform: scale(0.9);
+        font-size: 15px;
+        padding:5px;
     }
 
     #settingButton,
     .showUser{
         top: 4%;
-        transform: scale(2.2);
+        transform: scale(1.8);
+    }
+    .recordContainer {
+        transform: scale(0.9);
     }
 }
