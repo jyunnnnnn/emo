@@ -21,88 +21,92 @@ var currentLocation;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
-     navigator.geolocation.getCurrentPosition(
-        function(position) {
-            currentLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-             console.log("抓取位置成功 開始建構地圖");
-            // 創建地圖
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: currentLocation,
-                zoom: 18,
-                minZoom: 5, // 設定最小縮放級別
-                maxZoom: 50, // 設定最大縮放級別
-                mapTypeControl: false,
-                zoomControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                rotateControl: false,
-                fullscreenControl: false,
-                styles: [
-                    {
-                        featureType: 'poi',
-                        elementType: 'labels',
-                        stylers: [
-                            { visibility: 'off' }
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    currentLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                     console.log("抓取位置成功 開始建構地圖");
+                    // 創建地圖
+                    map = new google.maps.Map(document.getElementById('map'), {
+                        center: currentLocation,
+                        zoom: 18,
+                        minZoom: 5, // 設定最小縮放級別
+                        maxZoom: 50, // 設定最大縮放級別
+                        mapTypeControl: false,
+                        zoomControl: false,
+                        scaleControl: false,
+                        streetViewControl: false,
+                        rotateControl: false,
+                        fullscreenControl: false,
+                        styles: [
+                            {
+                                featureType: 'poi',
+                                elementType: 'labels',
+                                stylers: [
+                                    { visibility: 'off' }
+                                ]
+                            }
                         ]
+                    });
+                    console.log("獲取標記及訊息窗");
+                    infoWindow = new google.maps.InfoWindow();
+
+                    // 當前位置標記
+                    circle = new google.maps.Marker({
+                        position: currentLocation,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 5
+                        },
+                        map: map
+                    });
+                    console.log("map finish");
+                    if (localStorage.getItem('EmoAppUser')==null) {
+                        alert("請重新登入");
+                        window.location.href = '/login';
                     }
-                ]
-            });
-            console.log("獲取標記及訊息窗");
-            infoWindow = new google.maps.InfoWindow();
-
-            // 當前位置標記
-            circle = new google.maps.Marker({
-                position: currentLocation,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 5
+                    //watchPosition()=>裝置換位置就會自己動
+                    watchId = navigator.geolocation.watchPosition(success, error, options);
+                    User =JSON.parse(localStorage.getItem('EmoAppUser'));
+                    username=User.username;
+                    nickname=User.nickname;
+                    $('#user').text(nickname);
+                    loadEcoRecords(User.userId);//載入環保紀錄
+                    loadFootprintData();//載入碳足跡計算
+                    $('#logoutAccount').click(logoutAccount);//登出
+                    $('#delete').click(deleteAccount);//刪除帳號
+                    $('#saveRecord').click(saveRecord);// 添加標記
+                    $('#updateRecord').click(updateRecord)//修改紀錄
+                    $('#deleteRecord').click(deleteRecord)//刪除紀錄
+                    $('#recordListButton').click(showRecord);//查看環保紀錄
+                    $('#adminButton').click(showFPdata)
+                    $('#settingButton').click(showTotalFootprint);
+                    $('#renameBtn').click(modifyNickname);
+                    $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
+                    $('#startRecording').click(function () {
+                        if (!isRecording) {
+                            startRecording(); //false
+                        } else {
+                            stopRecording(); //true
+                        }
+                    });// 路線紀錄(開始/停止)
+                    if(username === 'admin'){
+                        document.getElementById('adminButton').style.display = 'block';
+                    }else{
+                        document.getElementById('adminButton').style.display = 'none';
+                    }
                 },
-                map: map
-            });
-            console.log("map finish");
-            if (localStorage.getItem('EmoAppUser')==null) {
-                alert("請重新登入");
-                window.location.href = '/login';
-            }
-            //watchPosition()=>裝置換位置就會自己動
-            watchId = navigator.geolocation.watchPosition(success, error, options);
-            User =JSON.parse(localStorage.getItem('EmoAppUser'));
-            username=User.username;
-            nickname=User.nickname;
-            $('#user').text(nickname);
-            loadEcoRecords(User.userId);//載入環保紀錄
-            loadFootprintData();//載入碳足跡計算
-            $('#logoutAccount').click(logoutAccount);//登出
-            $('#delete').click(deleteAccount);//刪除帳號
-            $('#saveRecord').click(saveRecord);// 添加標記
-            $('#updateRecord').click(updateRecord)//修改紀錄
-            $('#deleteRecord').click(deleteRecord)//刪除紀錄
-            $('#recordListButton').click(showRecord);//查看環保紀錄
-            $('#adminButton').click(showFPdata)
-            $('#settingButton').click(showTotalFootprint);
-            $('#renameBtn').click(modifyNickname);
-            $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
-            $('#startRecording').click(function () {
-                if (!isRecording) {
-                    startRecording(); //false
-                } else {
-                    stopRecording(); //true
+                function(error){
+                    console.error('Error getting geolocation:', error);
                 }
-            });// 路線紀錄(開始/停止)
-            if(username === 'admin'){
-                document.getElementById('adminButton').style.display = 'block';
-            }else{
-                document.getElementById('adminButton').style.display = 'none';
-            }
-        },
-        function(error){
-            console.error('Error getting geolocation:', error);
-        }
-    )
-
+            )
+    }
+    else{
+        alert("瀏覽器不支持地理位置功能");
+    }
 }
 
 //此處有bug等rui修
