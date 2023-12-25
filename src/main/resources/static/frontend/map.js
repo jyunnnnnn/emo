@@ -142,12 +142,12 @@ function success(pos){
         updateCurrentCircle(pos);
     }
     // 重新啟動位置監測
-    //watchId = navigator.geolocation.watchPosition(success, error, options);
+    watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 function error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
-    //watchId = navigator.geolocation.watchPosition(success, error, options);
+    watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 options = {
