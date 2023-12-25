@@ -109,23 +109,32 @@ function initMap() {
     }
 }
 
+
 //此處有bug等rui修
 
 function success(pos){
-    const distanceThreshold = 0.005; // 五公尺
+    // distanceThreshold = 0.005; // 五公尺
     navigator.geolocation.clearWatch(watchId);
     //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
 
-    const point1 = new google.maps.LatLng(newLat, newLng);
-    const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    //const point1 = new google.maps.LatLng(newLat, newLng);
+    //const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
     // 計算新位置和當前位置的距離
-    const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+    //const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
     // 轉換為公里
-    const distanceInKm = distance / 1000;
+    //const distanceInKm = distance / 1000;
     // 只有當距離超過閾值時才更新位置和圓圈 (小於五公尺不更新)
-    if (distance > distanceThreshold) {
+    // if (distance > distanceThreshold) {
+    //     currentLocation = {
+    //         lat: newLat,
+    //         lng: newLng
+    //     };
+    //     updateCurrentCircle(pos);
+    // }
+
+    if (newLat !== currentLocation.lat || newLng !== currentLocation.lng) {
         currentLocation = {
             lat: newLat,
             lng: newLng
@@ -133,12 +142,12 @@ function success(pos){
         updateCurrentCircle(pos);
     }
     // 重新啟動位置監測
-    watchId = navigator.geolocation.watchPosition(success, error, options);
+    //watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 function error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
-    watchId = navigator.geolocation.watchPosition(success, error, options);
+    //watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 options = {
