@@ -151,7 +151,7 @@ function error(err) {
 }
 
 options = {
-    enableHighAccuracy: false,//低精準
+    enableHighAccuracy: true,//高精準
     timeout: 5000,
     maximumAge: 1000,//緩存位置1秒
 };
