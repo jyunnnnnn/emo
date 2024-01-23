@@ -1,0 +1,87 @@
+{
+  "RecordCategory": {
+    "daily": {
+      "base": {
+        "paper": 0.1,
+        "plastic": 1.95
+      },
+      "content": [
+        {
+          "index": "cup",
+          "name": "環保杯",
+          "coefficient": 0,
+          "unit": "kgCO2e",
+          "option": {
+            "large": 15,
+            "medium": 10,
+            "small": 5
+          },
+          "baseline": "plastic"
+        },
+        {
+          "index": "tableware",
+          "name": "環保餐具",
+          "coefficient": 0,
+          "unit": "kgCO2e",
+          "option": {
+            "large": 25,
+            "medium": 20,
+            "small": 15
+          },
+          "baseline": "paper"
+        },
+        {
+          "index": "bag",
+          "name": "環保袋",
+          "coefficient": 0,
+          "unit": "kgCO2e",
+          "option": {
+            "large": 10,
+            "medium": 5,
+            "small": 2
+          },
+          "baseline": "plastic"
+        }
+      ]
+    },
+    "transportation": {
+      "base": {
+        "car": 110,
+        "scooter": 100
+      },
+      "content": [
+        {
+          "index": "bus",
+          "name": "公車",
+          "coefficient": 40,
+          "unit": "gCO2e/km",
+          "baseline": "car"
+        },
+        {
+          "index": "MRT",
+          "name": "捷運",
+          "coefficient": 40,
+          "unit": "gCO2e/km",
+          "baseline": "car"
+        },
+        {
+          "index": "train",
+          "name": "火車",
+          "coefficient": 60,
+          "unit": "gCO2e/km",
+          "baseline": "car"
+        },
+        {
+          "index": "HSR",
+          "name": "高鐵",
+          "coefficient": 32,
+          "unit": "gCO2e/km",
+          "baseline": "car"
+        }
+      ]
+    }
+  },
+  "setting": {
+    "name": "joe"
+  }
+}
