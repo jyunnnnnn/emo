@@ -1,13 +1,13 @@
 // 記錄按鈕事件處理
 function saveRecord(event){
     event.preventDefault();
-    var latitude;
-    var longitude;
-    var classType;
-    var type;
-    var data_value;
-    var footprint;
-    var recordId;
+    let latitude;
+    let longitude;
+    let classType;
+    let type;
+    let data_value;
+    let footprint;
+    let recordId;
     if ("geolocation" in navigator) {
         // 當前位置
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -33,16 +33,16 @@ function saveRecord(event){
                return;
             }
             if(classType && type && data_value && latitude && longitude && footprint && data_value) {
-                var now = new Date();
+                let now = new Date();
                 //console.log(now);
-                var year = now.getFullYear();
-                var month = (now.getMonth() + 1).toString().padStart(2, '0');
-                var day = now.getDate().toString().padStart(2, '0');
-                var hours = now.getHours().toString().padStart(2, '0');
-                var minutes = now.getMinutes().toString().padStart(2, '0');
-                var seconds = now.getSeconds().toString().padStart(2, '0');
+                let year = now.getFullYear();
+                let month = (now.getMonth() + 1).toString().padStart(2, '0');
+                let day = now.getDate().toString().padStart(2, '0');
+                let hours = now.getHours().toString().padStart(2, '0');
+                let minutes = now.getMinutes().toString().padStart(2, '0');
+                let seconds = now.getSeconds().toString().padStart(2, '0');
 
-                var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 //console.log(formattedDate);
                 recordId = now.getTime();
                 saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
@@ -55,7 +55,7 @@ function saveRecord(event){
 }
 // 保存紀錄的函數
 function saveRecordToBackend(userId,classType, type, data_value, latitude, longitude,footprint,formattedDate,recordId) {
-    var record = {
+    let record = {
         userId: userId, // 使用者 ID，這裡使用本地存儲的使用者名稱
         classType: classType,
         type: type,
@@ -101,15 +101,15 @@ function loadEcoRecords(userId) {
         success: function (data) {
             // 處理成功時的邏輯
             records = data;
-            var thisRecords = records;
+            let thisRecords = records;
             //console.log(records);
-             for (var i = 0; i < thisRecords.length; i++) {
+             for (let i = 0; i < thisRecords.length; i++) {
                     addMarker(thisRecords[i]);
              }
         },
         error: function(xhr, status, error) {
-           var errorData = JSON.parse(xhr.responseText);
-           var errorMessage = errorData.message;
+           let errorData = JSON.parse(xhr.responseText);
+           let errorMessage = errorData.message;
            alert(errorMessage);
        }
     });
@@ -119,18 +119,18 @@ function loadEcoRecords(userId) {
 function addMarker(recordToAdd) {
         recordToAdd.data_value = recordToAdd.data_value.toString();
         recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
-        var thisIcon;
+        let thisIcon;
         if (recordToAdd.classType === "交通") {
             thisIcon = '/frontend/img/traffic.ico';
         } else if (recordToAdd.classType === "生活用品") {
             thisIcon = '/frontend/img/daily.ico';
         }
         if (map) {
-            var currentLocation = {
+            let currentLocation = {
                 lat: recordToAdd.latitude,
                 lng: recordToAdd.longitude
             }//抓現在位置
-            var marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
                 position: currentLocation,
                 map: map,
                 title: recordToAdd.type,

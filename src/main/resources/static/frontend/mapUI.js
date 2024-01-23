@@ -14,23 +14,23 @@ document.getElementById('openRecordModal').addEventListener('click', function ()
     document.getElementById('gramRadios').style.display = 'flex';
     document.getElementById('smallRadio').checked = true;
     document.getElementById('gram').disabled = true;
-    var spanContent = document.getElementById('small').innerText;
-    var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-    var value = match ? match[0] : "";
+    let spanContent = document.getElementById('small').innerText;
+    let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+    let value = match ? match[0] : "";
     document.getElementById('gram').value = value;
 });
 // 監聽小類別
-var dailyTypeSelect = document.getElementById('dailyType');
+let dailyTypeSelect = document.getElementById('dailyType');
 dailyTypeSelect.addEventListener('change', function() {
-    var selectedValue = dailyTypeSelect.value;
+    let selectedValue = dailyTypeSelect.value;
     if (selectedValue === 'daily-cup') {
         $("#small").text("小(5g)");
         $("#medium").text("中(10g)");
         $("#large").text("大(15g)");
         document.getElementById('smallRadio').checked = true;
-        var spanContent = document.getElementById('small').innerText;
-        var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-        var value = match ? match[0] : "";
+        let spanContent = document.getElementById('small').innerText;
+        let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+        let value = match ? match[0] : "";
         document.getElementById('gram').value = value;
         document.getElementById('gram').disabled = true;
     } else if (selectedValue === 'daily-tableware') {
@@ -38,9 +38,9 @@ dailyTypeSelect.addEventListener('change', function() {
         $("#medium").text("中(20g)");
         $("#large").text("大(25g)");
         document.getElementById('smallRadio').checked = true;
-        var spanContent = document.getElementById('small').innerText;
-        var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-        var value = match ? match[0] : "";
+        let spanContent = document.getElementById('small').innerText;
+        let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+        let value = match ? match[0] : "";
         document.getElementById('gram').value = value;
         document.getElementById('gram').disabled = true;
     } else if (selectedValue === 'daily-bag') {
@@ -48,9 +48,9 @@ dailyTypeSelect.addEventListener('change', function() {
         $("#medium").text("中(5g)");
         $("#large").text("大(10g)");
         document.getElementById('smallRadio').checked = true;
-        var spanContent = document.getElementById('small').innerText;
-        var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-        var value = match ? match[0] : "";
+        let spanContent = document.getElementById('small').innerText;
+        let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+        let value = match ? match[0] : "";
         document.getElementById('gram').value = value;
         document.getElementById('gram').disabled = true;
     }
@@ -62,21 +62,21 @@ radioButtons.forEach(button => {
         // 在這裡執行你想要的操作，根據選中的 radio 按鈕的不同做不同的處理
         if (this.id === 'smallRadio') {
             $("#gram").prop("disabled", true);
-            var spanContent = document.getElementById('small').innerText;
-            var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-            var value = match ? match[0] : "";
+            let spanContent = document.getElementById('small').innerText;
+            let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+            let value = match ? match[0] : "";
             $("#gram").val(value);
         } else if (this.id === 'mediumRadio') {
             $("#gram").prop("disabled", true);
-            var spanContent = document.getElementById('medium').innerText;
-            var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-            var value = match ? match[0] : "";
+            let spanContent = document.getElementById('medium').innerText;
+            let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+            let value = match ? match[0] : "";
             $("#gram").val(value);
         } else if (this.id === 'largeRadio') {
             $("#gram").prop("disabled", true);
-            var spanContent = document.getElementById('large').innerText;
-            var match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-            var value = match ? match[0] : "";
+            let spanContent = document.getElementById('large').innerText;
+            let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
+            let value = match ? match[0] : "";
             $("#gram").val(value);
         } else if (this.id === 'customRadio') {
             $("#gram").prop("disabled", false);
@@ -87,7 +87,7 @@ radioButtons.forEach(button => {
 
 // 儲存按鈕
 document.getElementById('saveRecord').addEventListener('click', function () {
-    var selected;
+    let selected;
     if ($("#trafficRadio").is(":checked")) {
         classType = $("#traffic").text();
         type = $("#trafficMenu option:selected").text();
@@ -120,12 +120,12 @@ document.getElementById('recordListButton').addEventListener('click', function (
     $("#option2").val("new");
     $("#option2").text("近到遠");
     $('#sortMethod').val('old');
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = (now.getMonth() + 1).toString().padStart(2, '0');
-    var day = now.getDate().toString().padStart(2, '0');
-    var formattedDate = `${year}-${month}-${day}`;
-    var datePart;
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = (now.getMonth() + 1).toString().padStart(2, '0');
+    let day = now.getDate().toString().padStart(2, '0');
+    let formattedDate = `${year}-${month}-${day}`;
+    let datePart;
         if(records.length>0){
              datePart = records[0].time.slice(0, 10);
         }else{
@@ -149,11 +149,11 @@ document.getElementById('editFP').addEventListener('click', function() {
     document.getElementById('editFP').style.display = 'none';
     document.getElementById('saveFP').style.display = 'block';
     document.getElementById('deleteFP').style.display = 'block';
-    var checkboxes = document.querySelectorAll('.checkbox-container');
+    let checkboxes = document.querySelectorAll('.checkbox-container');
     checkboxes.forEach(function(checkbox) {
         checkbox.style.display = 'flex';
     });
-    var inputs = document.querySelectorAll('.inputFP');
+    let inputs = document.querySelectorAll('.inputFP');
     inputs.forEach(function(input, index) {
         if (index % 2 != 0) {
             input.disabled = false;
@@ -165,11 +165,11 @@ document.getElementById('saveFP').addEventListener('click', function() {
     document.getElementById('editFP').style.display = 'block';
     document.getElementById('saveFP').style.display = 'none';
     document.getElementById('deleteFP').style.display = 'none';
-    var checkboxes = document.querySelectorAll('.checkbox-container');
+    let checkboxes = document.querySelectorAll('.checkbox-container');
     checkboxes.forEach(function(checkbox) {
         checkbox.style.display = 'none';
     });
-    var inputs = document.querySelectorAll('.inputFP');
+    let inputs = document.querySelectorAll('.inputFP');
     inputs.forEach(function(inputs) {
         inputs.disabled = true;
     });
@@ -186,23 +186,23 @@ document.getElementById('deleteAccount').addEventListener('click', function () {
     // 顯示懸浮窗
     document.getElementById('deleteFW').style.display = 'flex';
     document.getElementById('deleteFW').style.position = 'fixed';
-    var time = document.getElementById('deleteDataTime');
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = (now.getMonth() + 1).toString().padStart(2, '0');
-    var day = now.getDate().toString().padStart(2, '0');
-    var hours = now.getHours().toString().padStart(2, '0');
-    var minutes = now.getMinutes().toString().padStart(2, '0');
-    var seconds = now.getSeconds().toString().padStart(2, '0');
-    var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    let time = document.getElementById('deleteDataTime');
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = (now.getMonth() + 1).toString().padStart(2, '0');
+    let day = now.getDate().toString().padStart(2, '0');
+    let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+    let seconds = now.getSeconds().toString().padStart(2, '0');
+    let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     time.textContent = "截至" + formattedDate;
 
-    var trafficCount = 0;
-    var dailyCount = 0;
-    var footprint = 0;
-    var traffic = document.getElementById('deleteDataTraffic');
-    var daily = document.getElementById('deleteDataDaily');
-    for(var i=0; i<records.length; i++){
+    let trafficCount = 0;
+    let dailyCount = 0;
+    let footprint = 0;
+    let traffic = document.getElementById('deleteDataTraffic');
+    let daily = document.getElementById('deleteDataDaily');
+    for(let i=0; i<records.length; i++){
         if(records[i].classType === "交通") trafficCount++;
         else if(records[i].classType === "生活用品") dailyCount++;
     }
@@ -283,7 +283,7 @@ document.getElementById('editRecord').addEventListener('click', function() {
     document.getElementById('editRecord').style.display = 'none';
     document.getElementById('saveEditRecord').style.display = 'block';
     document.getElementById('deleteEditRecord').style.display = 'block';
-    var checkboxes = document.querySelectorAll('.checkbox-container');
+    let checkboxes = document.querySelectorAll('.checkbox-container');
     checkboxes.forEach(function(checkbox) {
         checkbox.style.display = 'flex';
     });
@@ -293,7 +293,7 @@ document.getElementById('saveEditRecord').addEventListener('click', function() {
     document.getElementById('editRecord').style.display = 'block';
     document.getElementById('saveEditRecord').style.display = 'none';
     document.getElementById('deleteEditRecord').style.display = 'none';
-    var checkboxes = document.querySelectorAll('.checkbox-container');
+    let checkboxes = document.querySelectorAll('.checkbox-container');
     checkboxes.forEach(function(checkbox) {
         checkbox.style.display = 'none';
     });

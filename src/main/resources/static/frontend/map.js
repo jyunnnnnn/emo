@@ -1,22 +1,22 @@
-var map;
-var infoWindow;
-var intervalId;//時間間隔
-var FootprintData = [];
-var records = [];//進入系統時把該用戶的環保紀錄存進去
-var isRecording = false;//false=>開始  true=>結束
-var username;//使用者名稱
-var User;
-var nickname;
-var currentInfoWindowRecord; // 目前 infoWindow 的內容
-var currentMarker;//目前Marker
-var markers =[];//所有marker
-var recordedPositions = [];//路線紀錄(點)
-var mapLines = [];//一次紀錄的路線線段
-var watchId; //當前位置ID
-var options;//地圖精準度 更新當前位置function用
+let map;
+let infoWindow;
+let intervalId;//時間間隔
+let FootprintData = [];
+let records = [];//進入系統時把該用戶的環保紀錄存進去
+let isRecording = false;//false=>開始  true=>結束
+let username;//使用者名稱
+let User;
+let nickname;
+let currentInfoWindowRecord; // 目前 infoWindow 的內容
+let currentMarker;//目前Marker
+let markers =[];//所有marker
+let recordedPositions = [];//路線紀錄(點)
+let mapLines = [];//一次紀錄的路線線段
+let watchId; //當前位置ID
+let options;//地圖精準度 更新當前位置function用
 
-var circle; //當前位置標記 用於每5秒更新(清除、重劃)
-var currentLocation;
+let circle; //當前位置標記 用於每5秒更新(清除、重劃)
+let currentLocation;
 
 // 初始化Google Map
 function initMap() {
@@ -53,7 +53,6 @@ function initMap() {
                     });
                     console.log("獲取標記及訊息窗");
                     infoWindow = new google.maps.InfoWindow();
-
                     // 當前位置標記
                     circle = new google.maps.Marker({
                         position: currentLocation,
@@ -93,11 +92,7 @@ function initMap() {
                             stopRecording(); //true
                         }
                     });// 路線紀錄(開始/停止)
-                    if(username === 'admin'){
-                        document.getElementById('adminButton').style.display = 'block';
-                    }else{
-                        document.getElementById('adminButton').style.display = 'none';
-                    }
+                    document.getElementById('adminButton').style.display = User.userId === 1702984904982 ? 'block' : 'none';
                 },
                 function(error){
                     console.error('Error getting geolocation:', error);
@@ -108,9 +103,7 @@ function initMap() {
         alert("瀏覽器不支持地理位置功能");
     }
 }
-
-
-
+//更新現在位置
 function updateCurrentCircle(position) {
     currentLocation = {
         lat: position.coords.latitude,
@@ -135,52 +128,92 @@ function updateCurrentCircle(position) {
 //載入碳足跡計算係數(再來用設定檔)
 function loadFootprintData() {
     $.ajax({
-            url: '/api/getFootprint',
+            url: '/api/GetAllRecordJson',
             method: 'GET',
             success: function (data) {
                 // 處理成功時的邏輯
-                FootprintData = data;
-                //console.log(FootprintData);
-
+                const parsedData = JSON.parse(data);
+                console.log(parsedData);
+                abc(parsedData);//待改名
             },
             error: function(xhr, status, error) {
-               var errorData = JSON.parse(xhr.responseText);
-               var errorMessage = errorData.message;
+               let errorData = JSON.parse(xhr.responseText);
+               let errorMessage = errorData.message;
                alert(errorMessage);
            }
         });
 }
-//透過type找到coefficient(重寫)
-function findCoefficientByType(type) {
-    var result = FootprintData.find(function(item) {
-        return item.type === type;
+function abc(jsonData) {
+
+    FootprintData=[];
+    BaselineData=[];
+    // 遍歷 daily 內容
+    jsonData.daily.content.forEach(({name: type,coefficient,baseline,option,unit}) => {
+        FootprintData.push({ type,coefficient,baseline,option,unit, class:"daily"});
     });
-    // 如果找到對應的 type，返回 coefficient，否則返回 null 或其他預設值
-    return result ? result.coefficient : null;
+    // 遍歷 transportation 內容
+    jsonData.transportation.content.forEach(({name: type,coefficient,baseline,unit}) => {
+        FootprintData.push({ type,coefficient,baseline,unit,class:"transportation"});
+    });
+    // 遍歷 daily 基準
+    jsonData.daily.base.forEach(item => {
+        console.log(item);
+    })
+    BaselineData.push()
+    BaselineData.push(jsonData.transportation.base)
+    console.log(BaselineData)
+    console.log(FootprintData);
+
 }
+//透過type找到coefficient(重寫)
+//function findCoefficientByType(type) {
+//    let result = FootprintData.find(function(item) {
+//        return item.type === type;
+//    });
+//    // 如果找到對應的 type，返回 coefficient，否則返回 null 或其他預設值
+//    return result ? result.coefficient : null;
+//}
+
 //計算footprint(重寫)
 function calculateFootprint(type,data_value) {
-    var footprint = 0;
-    var coefficient = findCoefficientByType(type);
+    let findBaseLine = FootprintData.find(function(item) {
+        if(item.type === type){
+            jsonData.daily.base.forEach(baseLine=>{
+                return baseLine === item.baseline ? baseline : null;
+            });
+        };
+    });
+    console.log(findBaseLine);
+    let footprint = 0;
+    let coefficient = findCoefficientByType(type);
     footprint=(data_value * coefficient).toFixed(3);
     return footprint;
 }
-//改暱稱(合併)
+//改暱稱
 function modifyNickname() {
-    var userDataString = localStorage.getItem('EmoAppUser');
+    let userDataString = localStorage.getItem('EmoAppUser');
     if (userDataString) {
-        var userData = JSON.parse(localStorage.getItem('EmoAppUser'));;
-        var newNickname = $('#newName').val();
+        let userData = JSON.parse(localStorage.getItem('EmoAppUser'));;
+        let newNickname = $('#newName').val();
         if (newNickname !== '') {
             userData.nickname = newNickname;
-            var updatedUserDataString = JSON.stringify(userData);
+            let updatedUserDataString = JSON.stringify(userData);
             localStorage.setItem('EmoAppUser', updatedUserDataString);
             User.nick = newNickname;
             nickname = newNickname;
             $('#user').text(nickname);
             alert("修改成功");
             document.getElementById('renameFW').style.display = 'none';
-            updateNewNicknameToBackend(newNickname);
+            $.ajax({
+                type: 'PUT',
+                url: '/api/updateNickname?username=' + username +'&nickname='+newNickname,
+                success: function(response) {
+                    console.log(response); // 成功更新時的處理邏輯
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // 更新失敗時的處理邏輯
+                }
+            });
         } else {
             alert("暱稱不得為空");
         }
@@ -189,18 +222,52 @@ function modifyNickname() {
         window.location.href = '/login';
     }
 }
-function updateNewNicknameToBackend(newNickname){
-    $.ajax({
-            type: 'PUT',
-            url: '/api/updateNickname?username=' + username +'&nickname='+newNickname,
-            success: function(response) {
-                console.log(response); // 成功更新時的處理邏輯
-            },
-            error: function(xhr, status, error) {
-                console.error(error); // 更新失敗時的處理邏輯
-            }
-        });
+
+//刪除帳號
+function deleteAccount(){
+    getEncryptKey().then(function() {
+        let encryptPass =encrypt( $('#passwordAuth').val(),key,iv);
+       if( encryptPass == User.password){
+           $.ajax({
+               type: 'DELETE',
+               url: `/api/deleteUserAccount?userId=${User.userId}`,
+               contentType: 'application/string',
+               success: function(response) {
+                   //console.log(response); // 成功刪除時的處理邏輯
+               },
+               error: function(xhr, status, error) {
+                   console.error(error); // 刪除失敗時的處理邏輯
+               }
+           });
+           alert("帳號刪除成功");
+           localStorage.removeItem('EmoAppUser');
+           window.location.href= '/login';
+           //刪除Emo_User
+           $.ajax({
+               type: 'DELETE',
+               url: `/api/deleteSpecificUserRecord?userId=${User.userId}`,
+               contentType: 'application/string',
+               success: function(response) {
+                   //console.log(response); // 成功刪除時的處理邏輯
+               },
+               error: function(xhr, status, error) {
+                   console.error(error); // 刪除失敗時的處理邏輯
+               }
+           });
+           //刪除Emo_Record裡面指定用戶的紀錄
+       }
+       else{
+          alert("密碼錯誤");
+       }
+    }).catch(function() {
+        console.log("無法取得金鑰和偏移量");
+    });
 }
+
+
+
+
+
 
 
 function clearForm(){
@@ -212,38 +279,6 @@ function clearForm(){
     document.getElementById('dailyMenu').style.display = 'none';
     document.getElementById('SPACE').style.display = 'block';
 }
-
-//刪除Emo_User
-function deleteAccountToBackend(userId){
-    $.ajax({
-        type: 'DELETE',
-        url: `/api/deleteUserAccount?userId=${userId}`,
-        contentType: 'application/string',
-        success: function(response) {
-            //console.log(response); // 成功刪除時的處理邏輯
-        },
-        error: function(xhr, status, error) {
-            console.error(error); // 刪除失敗時的處理邏輯
-        }
-    });
-    alert("帳號刪除成功");
-    localStorage.removeItem('EmoAppUser');
-    window.location.href= '/login';
-}
-//刪除Emo_Record裡面指定用戶的紀錄
-function deleteRecordByAccount(userId){
-     $.ajax({
-            type: 'DELETE',
-            url: `/api/deleteSpecificUserRecord?userId=${userId}`,
-            contentType: 'application/string',
-            success: function(response) {
-                //console.log(response); // 成功刪除時的處理邏輯
-            },
-            error: function(xhr, status, error) {
-                console.error(error); // 刪除失敗時的處理邏輯
-            }
-        });
-}
 //登出
 function logoutAccount(){
     alert("登出成功");
@@ -254,25 +289,10 @@ function logoutAccount(){
     window.location.href= '/login';
 
 }
-//刪除帳號
-function deleteAccount(){
-    getEncryptKey().then(function() {
-        var encryptPass =encrypt( $('#passwordAuth').val(),key,iv);
-       if( encryptPass == User.password){
-           deleteAccountToBackend(User.userId);
-           deleteRecordByAccount(User.userId);
-       }
-       else{
-          alert("密碼錯誤");
-       }
-    }).catch(function() {
-        console.log("無法取得金鑰和偏移量");
-    });
-}
 //加密金鑰
-var key;
+let key;
 //加密偏移量
-var iv;
+let iv;
 //獲取加密金鑰
 function getEncryptKey() {
     return new Promise(function(resolve, reject) {
@@ -294,7 +314,7 @@ function getEncryptKey() {
 }
 //加密
 function encrypt(text,key,iv) {
-    var encrypted;
+    let encrypted;
  encrypted= CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
          iv: CryptoJS.enc.Utf8.parse(iv),
          mode: CryptoJS.mode.CBC,
@@ -304,7 +324,7 @@ function encrypt(text,key,iv) {
 }
 //解密
 function decrypt(ciphertext,key,iv){
-    var decrypt;
+    let decrypt;
      decrypt= CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse(key), {
             iv: CryptoJS.enc.Utf8.parse(iv),
             mode: CryptoJS.mode.CBC,

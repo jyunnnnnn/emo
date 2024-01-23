@@ -55,13 +55,13 @@ function recordModal(){
 function updateRecord(){
     event.preventDefault();
     if ($("#trafficRadio").is(":checked")) {
-        var classType = $("#traffic").text();
-        var type = $("#trafficMenu option:selected").text();
-        var data_value = document.getElementById('kilometer').value;
+        let classType = $("#traffic").text();
+        let type = $("#trafficMenu option:selected").text();
+        let data_value = document.getElementById('kilometer').value;
     } else if ($("#dailyRadio").is(":checked")) {
-        var classType = $("#daily").text();
-        var type = $("#dailyMenu option:selected").text();
-        var data_value = document.getElementById('gram').value;
+        let classType = $("#daily").text();
+        let type = $("#dailyMenu option:selected").text();
+        let data_value = document.getElementById('gram').value;
     }
     if(classType && type && data_value && data_value > 0) {
         updateRecordToBackend(classType, type, data_value);
@@ -71,8 +71,8 @@ function updateRecord(){
 }
 // 更新紀錄的函數
 function updateRecordToBackend(newClassType, newType, newDataValue) {
-    var footprint = calculateFootprint(newType,newDataValue);
-    var record = {
+    let footprint = calculateFootprint(newType,newDataValue);
+    let record = {
         userId: currentInfoWindowRecord.userId, // 使用者 ID
         classType: newClassType,
         type: newType,
@@ -123,7 +123,7 @@ function updateMarkerContent(newContent) {
          //class="btn btn-secondary"
     if (currentMarker.infoWindow) {
         //console.log("更新infowindow成功");
-        var thisIcon;
+        let thisIcon;
         if (currentInfoWindowRecord.classType === "交通") {
             thisIcon = '/frontend/img/traffic.ico';
         } else if (currentInfoWindowRecord.classType === "生活用品") {
@@ -138,7 +138,7 @@ function updateMarkerContent(newContent) {
 
 //更新record[]
 function updateRecordInArray(newClassType, newType, newDataValue,newFootprint){
-    var recordIndex = records.findIndex(record => record.recordId === currentInfoWindowRecord.recordId);
+    let recordIndex = records.findIndex(record => record.recordId === currentInfoWindowRecord.recordId);
     if (recordIndex !== -1) {
         // 有紀錄，更新
         records[recordIndex].classType = newClassType;

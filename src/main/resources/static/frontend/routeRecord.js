@@ -99,11 +99,11 @@ function recordLocation() {
         // 獲取目前位置
         navigator.geolocation.getCurrentPosition(function (position) {
             console.log("1");
-           var currentLocation = {
+           let currentLocation = {
                lat: position.coords.latitude,
                lng: position.coords.longitude
            };
-//             var currentLocation = {
+//             let currentLocation = {
 //                 lat: map.getCenter().lat(),
 //                 lng: map.getCenter().lng()
 //             };
@@ -124,12 +124,12 @@ function recordLocation() {
 function drawLines() {
     if (recordedPositions.length >= 2) {
         //一段一段畫
-        var lastTwoPoints = recordedPositions.slice(-2); // 取得最後兩個點
-        var lineCoordinates = lastTwoPoints.map(function (position) {
+        let lastTwoPoints = recordedPositions.slice(-2); // 取得最後兩個點
+        let lineCoordinates = lastTwoPoints.map(function (position) {
             return new google.maps.LatLng(position.lat, position.lng);
         });
 
-        var line = new google.maps.Polyline({
+        let line = new google.maps.Polyline({
             path: lineCoordinates,
             geodesic: true,
             strokeColor: '#0D5025',
@@ -146,7 +146,7 @@ function drawLines() {
 }
 //清線
 function clearMapLines() {
-    for (var i = 0; i < mapLines.length; i++) {
+    for (let i = 0; i < mapLines.length; i++) {
         mapLines[i].setMap(null);
     }
     mapLines = [];

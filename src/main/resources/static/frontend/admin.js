@@ -1,20 +1,20 @@
 // 打開管理員介面
 function showFPdata() {
-    var thisData = FootprintData;
+    let thisData = FootprintData;
     //console.log(thisData);
-    var container = document.getElementById("adminData");
+    let container = document.getElementById("adminData");
     container.innerHTML = ""; // 清空容器內容
     container.style.overflowY = "scroll";
     container.style.maxHeight = "150px";
-    for (var i = 0; i < thisData.length; i++) {
+    for (let i = 0; i < thisData.length; i++) {
         // 勾選框
-        var checkbox = document.createElement('label');
+        let checkbox = document.createElement('label');
         checkbox.className = 'checkbox-container';
-        var input = document.createElement('input');
+        let input = document.createElement('input');
         input.type = 'checkbox';
         input.className = 'custom-checkbox';
         input.id = thisData[i].fpid;
-        var span = document.createElement('span');
+        let span = document.createElement('span');
         span.className = 'checkmark';
         checkbox.appendChild(input);
         checkbox.appendChild(span);
@@ -22,20 +22,20 @@ function showFPdata() {
         span.style.top = "5px";
         checkbox.style.display = "none";
         // 創建新的<div>元素
-        var footprintDiv = document.createElement("div");
+        let footprintDiv = document.createElement("div");
         footprintDiv.style.width = "200px";
         footprintDiv.style.background = "white";
         footprintDiv.style.display = "flex";
         footprintDiv.style.alignItems = "center";
 
         // 創建新的 <input> 元素
-        var typeInput = document.createElement("input");
+        let typeInput = document.createElement("input");
         typeInput.type = 'text';
         typeInput.value = thisData[i].type;
         typeInput.className = 'inputFP';
         typeInput.disabled = true;
 
-        var footprintInput = document.createElement("input");
+        let footprintInput = document.createElement("input");
         footprintInput.type = 'text';
         footprintInput.value = thisData[i].coefficient;
         footprintInput.className = 'inputFP';
@@ -52,12 +52,12 @@ function showFPdata() {
 }
 //修改footprint
 function updateAllFootprint() {
-    var footprints = $('.inputFP');
+    let footprints = $('.inputFP');
     //console.log(footprints);
     footprints.each(function(index) {
-        var type = footprints.eq(index).val();
-        var coefficient = footprints.eq(index + 1).val();
-        var id = footprints.eq(index + 1).attr('id');
+        let type = footprints.eq(index).val();
+        let coefficient = footprints.eq(index + 1).val();
+        let id = footprints.eq(index + 1).attr('id');
 
         if (index % 2 === 0) {
             // 使用 AJAX 送出 POST 請求給後端
@@ -82,7 +82,7 @@ function updateAllFootprint() {
 function deleteSelectedFootprints() {
     $('.custom-checkbox').each(function(index, checkbox) {
         if (checkbox.checked) {
-            var footprintID = $(checkbox).attr('id');
+            let footprintID = $(checkbox).attr('id');
             // 將收集到的被勾選的 ID 發送到後端進行刪除操作
             console.log(footprintID);
             $.ajax({
