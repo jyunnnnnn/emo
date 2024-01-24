@@ -1,6 +1,5 @@
 function success(pos){
-    // distanceThreshold = 0.005; // 五公尺
-    //navigator.geolocation.clearWatch(watchId);//停止監測
+    distanceThreshold = 0.010; // 十公尺
     //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
@@ -97,12 +96,6 @@ function stopRecording() {
 }
 
 function recordLocation() {
-
-    let currentLocation = {
-        lat: watchId.coords.latitude,
-        lng: watchId.coords.longitude
-    };
-
     // 儲存記錄的位置
     recordedPositions.push(currentLocation);
     //console.log(currentLocation);

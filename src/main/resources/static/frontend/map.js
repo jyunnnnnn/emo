@@ -106,10 +106,6 @@ function initMap() {
 }
 //更新現在位置
 function updateCurrentCircle(position) {
-    currentLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-    };
 
     // 清除舊位置的圈圈
     if (circle) {
@@ -125,6 +121,8 @@ function updateCurrentCircle(position) {
             scale: 5
         }
     });
+    //跑到中心
+    map.panTo(currentLocation);
 }
 //載入碳足跡計算係數(再來用設定檔)
 function loadFootprintData() {
