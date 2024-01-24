@@ -114,7 +114,7 @@ function initMap() {
 
 function success(pos){
     // distanceThreshold = 0.005; // 五公尺
-    navigator.geolocation.clearWatch(watchId);
+    //navigator.geolocation.clearWatch(watchId);
     //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
@@ -134,6 +134,7 @@ function success(pos){
     //     updateCurrentCircle(pos);
     // }
 
+    //更新位置
     if (newLat !== currentLocation.lat || newLng !== currentLocation.lng) {
         currentLocation = {
             lat: newLat,
@@ -142,11 +143,12 @@ function success(pos){
         updateCurrentCircle(pos);
     }
     // 重新啟動位置監測
-    watchId = navigator.geolocation.watchPosition(success, error, options);
+    //watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 function error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
+    navigator.geolocation.clearWatch(watchId);
     watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
@@ -157,10 +159,6 @@ options = {
 };
 //更新標記
 function updateCurrentCircle(position) {
-    currentLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-    };
 
     // 清除舊位置的圈圈
     if (circle) {
@@ -1180,7 +1178,7 @@ function deleteAccount(){
         console.log("無法取得金鑰和偏移量");
     });
 }
-////路線紀錄，不知道有沒有功能
+////路線紀錄
 function startRecording() {
     // 按下變成結束
     $('#startRecording').text('結束');
@@ -1233,30 +1231,12 @@ function stopRecording() {
 }
 
 function recordLocation() {
-    if ("geolocation" in navigator) {
-        // 獲取目前位置
-        navigator.geolocation.getCurrentPosition(function (position) {
-            console.log("1");
-           var currentLocation = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-           };
-//             var currentLocation = {
-//                 lat: map.getCenter().lat(),
-//                 lng: map.getCenter().lng()
-//             };
+    // 儲存記錄的位置
+    recordedPositions.push(currentLocation);
+    //console.log(currentLocation);
 
-            // 儲存記錄的位置
-            recordedPositions.push(currentLocation);
-            console.log(currentLocation);
-            console.log("2");
-
-            // 在記錄的位置之間繪製線條
-            drawLines();
-        });
-    } else {
-        alert("不支援定位");
-    }
+    // 在記錄的位置之間繪製線條
+    drawLines();
 }
 
 function drawLines() {
