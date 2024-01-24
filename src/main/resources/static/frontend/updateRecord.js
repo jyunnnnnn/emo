@@ -54,14 +54,17 @@ function recordModal(){
 // 修改記錄按鈕事件處理 //test
 function updateRecord(){
     event.preventDefault();
+    let classType
+    let type
+    let data_value
     if ($("#trafficRadio").is(":checked")) {
-        let classType = $("#traffic").text();
-        let type = $("#trafficMenu option:selected").text();
-        let data_value = document.getElementById('kilometer').value;
+        classType = $("#traffic").text();
+        type = $("#trafficMenu option:selected").text();
+        data_value = document.getElementById('kilometer').value;
     } else if ($("#dailyRadio").is(":checked")) {
-        let classType = $("#daily").text();
-        let type = $("#dailyMenu option:selected").text();
-        let data_value = document.getElementById('gram').value;
+        classType = $("#daily").text();
+        type = $("#dailyMenu option:selected").text();
+        data_value = document.getElementById('gram').value;
     }
     if(classType && type && data_value && data_value > 0) {
         updateRecordToBackend(classType, type, data_value);
@@ -72,6 +75,7 @@ function updateRecord(){
 // 更新紀錄的函數
 function updateRecordToBackend(newClassType, newType, newDataValue) {
     let footprint = calculateFootprint(newType,newDataValue);
+    //console.log(footprint,newType,newDataValue)
     let record = {
         userId: currentInfoWindowRecord.userId, // 使用者 ID
         classType: newClassType,

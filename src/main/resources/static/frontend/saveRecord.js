@@ -34,14 +34,12 @@ function saveRecord(event){
             }
             if(classType && type && data_value && latitude && longitude && footprint && data_value) {
                 let now = new Date();
-                //console.log(now);
                 let year = now.getFullYear();
                 let month = (now.getMonth() + 1).toString().padStart(2, '0');
                 let day = now.getDate().toString().padStart(2, '0');
                 let hours = now.getHours().toString().padStart(2, '0');
                 let minutes = now.getMinutes().toString().padStart(2, '0');
                 let seconds = now.getSeconds().toString().padStart(2, '0');
-
                 let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 //console.log(formattedDate);
                 recordId = now.getTime();
@@ -53,6 +51,7 @@ function saveRecord(event){
         alert("不支援定位");
     }
 }
+
 // 保存紀錄的函數
 function saveRecordToBackend(userId,classType, type, data_value, latitude, longitude,footprint,formattedDate,recordId) {
     let record = {

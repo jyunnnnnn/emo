@@ -157,6 +157,7 @@ function showNewChart(nowRecords,type) {
 // 查看歷史紀錄
 function showRecord() {
 //列表顯示環保紀錄
+    console.log("showrecord")
     let thisRecords = records;
     let container = document.getElementById("listContent");
     container.innerHTML = ""; // 清空容器內容

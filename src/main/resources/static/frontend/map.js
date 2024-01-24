@@ -2,6 +2,7 @@ let map;
 let infoWindow;
 let intervalId;//時間間隔
 let FootprintData = [];
+let BaselineData;
 let records = [];//進入系統時把該用戶的環保紀錄存進去
 let isRecording = false;//false=>開始  true=>結束
 let username;//使用者名稱
@@ -133,8 +134,8 @@ function loadFootprintData() {
             success: function (data) {
                 // 處理成功時的邏輯
                 const parsedData = JSON.parse(data);
-                console.log(parsedData);
-                abc(parsedData);//待改名
+                //console.log(parsedData);
+                FPConstructor(parsedData);//待改名
             },
             error: function(xhr, status, error) {
                let errorData = JSON.parse(xhr.responseText);
@@ -143,10 +144,8 @@ function loadFootprintData() {
            }
         });
 }
-function abc(jsonData) {
-
+function FPConstructor(jsonData) {
     FootprintData=[];
-    BaselineData=[];
     // 遍歷 daily 內容
     jsonData.daily.content.forEach(({name: type,coefficient,baseline,option,unit}) => {
         FootprintData.push({ type,coefficient,baseline,option,unit, class:"daily"});
@@ -155,38 +154,22 @@ function abc(jsonData) {
     jsonData.transportation.content.forEach(({name: type,coefficient,baseline,unit}) => {
         FootprintData.push({ type,coefficient,baseline,unit,class:"transportation"});
     });
-    // 遍歷 daily 基準
-    jsonData.daily.base.forEach(item => {
-        console.log(item);
-    })
-    BaselineData.push()
-    BaselineData.push(jsonData.transportation.base)
-    console.log(BaselineData)
-    console.log(FootprintData);
-
+    // 合併基準為物件
+    BaselineData = Object.assign({}, jsonData.daily.base, jsonData.transportation.base);
 }
-//透過type找到coefficient(重寫)
-//function findCoefficientByType(type) {
-//    let result = FootprintData.find(function(item) {
-//        return item.type === type;
-//    });
-//    // 如果找到對應的 type，返回 coefficient，否則返回 null 或其他預設值
-//    return result ? result.coefficient : null;
-//}
 
 //計算footprint(重寫)
 function calculateFootprint(type,data_value) {
-    let findBaseLine = FootprintData.find(function(item) {
+    let findTarget = FootprintData.find(function(item) {
         if(item.type === type){
-            jsonData.daily.base.forEach(baseLine=>{
-                return baseLine === item.baseline ? baseline : null;
-            });
+           return item.baseline;
         };
     });
-    console.log(findBaseLine);
+    baseCoefficient = BaselineData[findTarget.baseline];//基準係數值
+    nowCoefficient = findTarget.coefficient;//現在係數值
     let footprint = 0;
-    let coefficient = findCoefficientByType(type);
-    footprint=(data_value * coefficient).toFixed(3);
+    footprint=(data_value * (baseCoefficient-nowCoefficient)).toFixed(3);
+    //console.log(nowCoefficient,typeof(nowCoefficient),baseCoefficient,typeof(baseCoefficient),footprint);
     return footprint;
 }
 //改暱稱
@@ -264,12 +247,6 @@ function deleteAccount(){
     });
 }
 
-
-
-
-
-
-
 function clearForm(){
     $('input[type="radio"]:checked').each(function() {
         $(this).prop('checked', false);
@@ -279,6 +256,12 @@ function clearForm(){
     document.getElementById('dailyMenu').style.display = 'none';
     document.getElementById('SPACE').style.display = 'block';
 }
+
+
+
+
+
+
 //登出
 function logoutAccount(){
     alert("登出成功");
