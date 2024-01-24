@@ -1,43 +1,45 @@
 function success(pos){
     // distanceThreshold = 0.005; // 五公尺
-    navigator.geolocation.clearWatch(watchId);
+    //navigator.geolocation.clearWatch(watchId);//停止監測
     //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
 
-    //const point1 = new google.maps.LatLng(newLat, newLng);
-    //const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
-    // 計算新位置和當前位置的距離
-    //const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    // 轉換為公里
-    //const distanceInKm = distance / 1000;
+    const point1 = new google.maps.LatLng(newLat, newLng);
+    const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    //計算新位置和當前位置的距離
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+    //轉換為公里
+    const distanceInKm = distance / 1000;
     // 只有當距離超過閾值時才更新位置和圓圈 (小於五公尺不更新)
-    // if (distance > distanceThreshold) {
-    //     currentLocation = {
-    //         lat: newLat,
-    //         lng: newLng
-    //     };
-    //     updateCurrentCircle(pos);
-    // }
-
-    if (newLat !== currentLocation.lat || newLng !== currentLocation.lng) {
+    if (distance > distanceThreshold) {
         currentLocation = {
             lat: newLat,
             lng: newLng
         };
         updateCurrentCircle(pos);
     }
+
+    //有無改變位置
+    // if (newLat !== currentLocation.lat || newLng !== currentLocation.lng) {
+    //     currentLocation = {
+    //         lat: newLat,
+    //         lng: newLng
+    //     };
+    //     updateCurrentCircle(pos);
+    // }
     // 重新啟動位置監測
-    watchId = navigator.geolocation.watchPosition(success, error, options);
+    //watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 function error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
+    navigator.geolocation.clearWatch(watchId);//停止監測
     watchId = navigator.geolocation.watchPosition(success, error, options);
 }
 
 options = {
-    enableHighAccuracy: true,//高精準
+    enableHighAccuracy: true,//高精準，耗能
     timeout: 5000,
     maximumAge: 1000,//緩存位置1秒
 };
@@ -95,30 +97,17 @@ function stopRecording() {
 }
 
 function recordLocation() {
-    if ("geolocation" in navigator) {
-        // 獲取目前位置
-        navigator.geolocation.getCurrentPosition(function (position) {
-            console.log("1");
-           let currentLocation = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-           };
-//             let currentLocation = {
-//                 lat: map.getCenter().lat(),
-//                 lng: map.getCenter().lng()
-//             };
 
-            // 儲存記錄的位置
-            recordedPositions.push(currentLocation);
-            console.log(currentLocation);
-            console.log("2");
+    let currentLocation = {
+        lat: watchId.coords.latitude,
+        lng: watchId.coords.longitude
+    };
 
-            // 在記錄的位置之間繪製線條
-            drawLines();
-        });
-    } else {
-        alert("不支援定位");
-    }
+    // 儲存記錄的位置
+    recordedPositions.push(currentLocation);
+    //console.log(currentLocation);
+    // 在記錄的位置之間繪製線條
+    drawLines();
 }
 
 function drawLines() {

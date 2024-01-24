@@ -54,7 +54,7 @@ function initMap() {
                     });
                     console.log("獲取標記及訊息窗");
                     infoWindow = new google.maps.InfoWindow();
-                    // 當前位置標記
+                    // 一開始 當前位置標記
                     circle = new google.maps.Marker({
                         position: currentLocation,
                         icon: {
