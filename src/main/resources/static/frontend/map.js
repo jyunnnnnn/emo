@@ -174,6 +174,9 @@ function updateCurrentCircle(position) {
             scale: 5
         }
     });
+
+    //跑到中心
+    map.panTo(currentLocation);
 }
 
 
