@@ -1,81 +1,44 @@
 // 記錄按鈕事件處理
 function saveRecord(event){
     event.preventDefault();
-    let latitude;
-    let longitude;
-    let classType;
-    let type;
-    let data_value;
-    let footprint;
-    let recordId;
-    if ("geolocation" in navigator) {
-        // 當前位置
-        navigator.geolocation.getCurrentPosition(function(position) {
-           latitude = position.coords.latitude;
-           longitude = position.coords.longitude;
-//            抓取真實位置
-//             latitude = map.getCenter().lat();
-//             longitude = map.getCenter().lng();
-//            抓取中心位置 這是備案
-            if ($("#trafficRadio").is(":checked")) {
-                classType = $("#traffic").text();
-                type = $("#trafficMenu option:selected").text();
-                data_value = document.getElementById('kilometer').value;
-            } else if ($("#dailyRadio").is(":checked")) {
-                classType = $("#daily").text();
-                type = $("#dailyMenu option:selected").text();
-                data_value = document.getElementById('gram').value;
-            }
-            footprint = calculateFootprint(type,data_value);
-            // 保存紀錄到後端
-            if(data_value <= 0){
-               alert("請輸入正數");
-               return;
-            }
-            if(classType && type && data_value && latitude && longitude && footprint && data_value) {
-                let now = new Date();
-                let year = now.getFullYear();
-                let month = (now.getMonth() + 1).toString().padStart(2, '0');
-                let day = now.getDate().toString().padStart(2, '0');
-                let hours = now.getHours().toString().padStart(2, '0');
-                let minutes = now.getMinutes().toString().padStart(2, '0');
-                let seconds = now.getSeconds().toString().padStart(2, '0');
-                let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-                //console.log(formattedDate);
-                recordId = now.getTime();
-                saveRecordToBackend(User.userId,classType, type, data_value, latitude, longitude,footprint ,formattedDate,recordId);
-            }
-
-        });
-    } else {
-        alert("不支援定位");
+    let record={
+        userId: User.userId, // 使用者 ID，這裡使用本地存儲的使用者名稱
+        classType: null,
+        type: null,
+        data_value: null,
+        latitude: currentLocation.lat,
+        longitude: currentLocation.lng,
+        footprint:null,
+        time: getFormattedDate(),
+        recordId:null
     }
-}
-
-// 保存紀錄的函數
-function saveRecordToBackend(userId,classType, type, data_value, latitude, longitude,footprint,formattedDate,recordId) {
-    let record = {
-        userId: userId, // 使用者 ID，這裡使用本地存儲的使用者名稱
-        classType: classType,
-        type: type,
-        data_value: data_value,
-        latitude: latitude,
-        longitude: longitude,
-        footprint:footprint,
-        time: formattedDate,
-        recordId:recordId
-    };
-    if(record.userId) {
+    let now = new Date();
+    record.recordId = now.getTime();
+    //重複部分等fish看能不能合併
+    if ($("#trafficRadio").is(":checked")) {
+        record.classType = $("#traffic").text();
+        record.type = $("#trafficMenu option:selected").text();
+        record.data_value = document.getElementById('kilometer').value;
+    } else if ($("#dailyRadio").is(":checked")) {
+        record.classType = $("#daily").text();
+        record.type = $("#dailyMenu option:selected").text();
+        record.data_value = document.getElementById('gram').value;
+    }
+    record.footprint = calculateFootprint(type,data_value);
+    if(data_value <= 0){
+       alert("請輸入正數");
+       return;
+    }else if(Object.values(record).includes(null)){
+       alert("請重新登入");
+       window.location.href = '/login';
+       console.log(record);
+       return;
+    }else{
         uploadRecordToBackend(record);
         records.push(record);
         addMarker(record);
         clearForm();
     }
-    else {
-        alert("請重新登入");
-        window.location.href = '/login';
-    }
-    // 上傳紀錄到後端
 }
 // 將紀錄上傳到後端
 function uploadRecordToBackend(record) {
@@ -160,4 +123,17 @@ function addMarker(recordToAdd) {
                 currentMarker = marker;
            });
         }
+}
+
+
+function getFormattedDate(){
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = (now.getMonth() + 1).toString().padStart(2, '0');
+        let day = now.getDate().toString().padStart(2, '0');
+        let hours = now.getHours().toString().padStart(2, '0');
+        let minutes = now.getMinutes().toString().padStart(2, '0');
+        let seconds = now.getSeconds().toString().padStart(2, '0');
+        let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return formattedDate;
 }

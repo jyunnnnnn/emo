@@ -1,3 +1,7 @@
+let intervalId;//時間間隔
+let recordedPositions = [];//路線紀錄(點)
+let mapLines = [];//一次紀錄的路線線段
+let isRecording = false;//false=>開始  true=>結束
 function success(pos){
     distanceThreshold = 0.010; // 十公尺
     //console.log(pos,currentLocation);
@@ -42,7 +46,14 @@ options = {
     timeout: 5000,
     maximumAge: 1000,//緩存位置1秒
 };
-
+// 路線紀錄(開始/停止)
+function checkIsRecording() {
+    if (!isRecording) {
+        startRecording(); //false
+    } else {
+        stopRecording(); //true
+    }
+}
 ////路線紀錄
 function startRecording() {
     // 按下變成結束

@@ -1,5 +1,5 @@
 // 設定頁面顯示總減碳量(刪掉)
-function showTotalFootprint(){
+function showSettingPage(){
     let thisRecords = records;
     let container = document.getElementById("totalFootprint");
     container.innerHTML = ""; // 清空容器內容

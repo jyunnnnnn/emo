@@ -1,117 +1,104 @@
 let map;
 let infoWindow;
-let intervalId;//時間間隔
 let FootprintData = [];
 let BaselineData;
-let records = [];//進入系統時把該用戶的環保紀錄存進去
-let isRecording = false;//false=>開始  true=>結束
+let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let username;//使用者名稱
 let User;
 let nickname;
+let currentLocation;//當前經緯度
+let watchId; //當前位置ID
+let options;//地圖精準度 更新當前位置function用
+let circle; //當前位置標記 用於每5秒更新(清除、重劃)
+
+
 let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
-let recordedPositions = [];//路線紀錄(點)
-let mapLines = [];//一次紀錄的路線線段
-let watchId; //當前位置ID
-let options;//地圖精準度 更新當前位置function用
 
-let circle; //當前位置標記 用於每5秒更新(清除、重劃)
-let currentLocation;
 
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    currentLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                     console.log("抓取位置成功 開始建構地圖");
-                    // 創建地圖
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: currentLocation,
-                        zoom: 18,
-                        minZoom: 5, // 設定最小縮放級別
-                        maxZoom: 50, // 設定最大縮放級別
-                        mapTypeControl: false,
-                        zoomControl: false,
-                        scaleControl: false,
-                        streetViewControl: false,
-                        rotateControl: false,
-                        fullscreenControl: false,
-                        styles: [
-                            {
-                                featureType: 'poi',
-                                elementType: 'labels',
-                                stylers: [
-                                    { visibility: 'off' }
-                                ]
-                            }
-                        ]
-                    });
-                    console.log("獲取標記及訊息窗");
-                    infoWindow = new google.maps.InfoWindow();
-                    // 一開始 當前位置標記
-                    circle = new google.maps.Marker({
-                        position: currentLocation,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 5
-                        },
-                        map: map
-                    });
-                    console.log("map finish");
-                    if (localStorage.getItem('EmoAppUser')==null) {
-                        alert("請重新登入");
-                        window.location.href = '/login';
-                    }
-                    //watchPosition()=>裝置換位置就會自己動
-                    watchId = navigator.geolocation.watchPosition(success, error, options);
-                    User =JSON.parse(localStorage.getItem('EmoAppUser'));
-                    username=User.username;
-                    nickname=User.nickname;
-                    $('#user').text(nickname);
-                    loadEcoRecords(User.userId);//載入環保紀錄
-                    loadFootprintData();//載入碳足跡計算
-                    $('#logoutAccount').click(logoutAccount);//登出
-                    $('#delete').click(deleteAccount);//刪除帳號
-                    $('#saveRecord').click(saveRecord);// 添加標記
-                    $('#updateRecord').click(updateRecord)//修改紀錄
-                    $('#deleteRecord').click(deleteRecord)//刪除紀錄
-                    $('#recordListButton').click(showRecord);//查看環保紀錄
-                    $('#adminButton').click(showFPdata)
-                    $('#settingButton').click(showTotalFootprint);
-                    $('#renameBtn').click(modifyNickname);
-                    $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
-                    $('#startRecording').click(function () {
-                        if (!isRecording) {
-                            startRecording(); //false
-                        } else {
-                            stopRecording(); //true
+            function(position) {
+                currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                 console.log("抓取位置成功 開始建構地圖");
+                // 創建地圖
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: currentLocation,
+                    zoom: 18,
+                    minZoom: 5, // 設定最小縮放級別
+                    maxZoom: 50, // 設定最大縮放級別
+                    mapTypeControl: false,
+                    zoomControl: false,
+                    scaleControl: false,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: false,
+                    styles: [
+                        {
+                            featureType: 'poi',
+                            elementType: 'labels',
+                            stylers: [
+                                { visibility: 'off' }
+                            ]
                         }
-                    });// 路線紀錄(開始/停止)
-                    document.getElementById('adminButton').style.display = User.userId === 1702984904982 ? 'block' : 'none';
-                },
-                function(error){
-                    console.error('Error getting geolocation:', error);
-                }
-            )
+                    ]
+                });
+                console.log("獲取標記及訊息窗");
+                // 一開始 當前位置標記
+                circle = new google.maps.Marker({
+                    position: currentLocation,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 5
+                    },
+                    map: map
+                });
+                console.log("map finish");
+                if (localStorage.getItem('EmoAppUser')==null) {
+                    alert("請重新登入");
+                    window.location.href = '/login';
+                }else {systemInit()}
+            },
+            function(error){ console.error('Error getting geolocation:', error);}
+        )
     }
     else{
         alert("瀏覽器不支持地理位置功能");
     }
 }
+function systemInit(){
+    //watchPosition()=>裝置換位置就會自己動
+    watchId = navigator.geolocation.watchPosition(success, error, options);
+    User =JSON.parse(localStorage.getItem('EmoAppUser'));
+    username=User.username;
+    nickname=User.nickname;
+    loadEcoRecords(User.userId);//載入環保紀錄
+    loadFootprintData();//載入碳足跡計算
+    $('#user').text(nickname);
+    $('#logoutAccount').click(logoutAccount);//登出
+    $('#delete').click(deleteAccount);//刪除帳號
+    $('#saveRecord').click(saveRecord);// 添加標記
+    $('#updateRecord').click(updateRecord)//修改紀錄
+    $('#deleteRecord').click(deleteRecord)//刪除紀錄
+    $('#recordListButton').click(showRecord);//查看環保紀錄
+    $('#adminButton').click(showFPdata)
+    $('#settingButton').click(showSettingPage);
+    $('#renameBtn').click(modifyNickname);
+    $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
+    $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
+    document.getElementById('adminButton').style.display = User.userId === 1702984904982 ? 'block' : 'none';
+}
 //更新現在位置
 function updateCurrentCircle(position) {
-
     // 清除舊位置的圈圈
-    if (circle) {
-        circle.setMap(null);
-    }
-
+    if (circle) {circle.setMap(null);}
     // 在新當前位置上標記圈圈
     circle = new google.maps.Marker({
         position: currentLocation,
@@ -132,7 +119,6 @@ function loadFootprintData() {
             success: function (data) {
                 // 處理成功時的邏輯
                 const parsedData = JSON.parse(data);
-                //console.log(parsedData);
                 FPConstructor(parsedData);//待改名
             },
             error: function(xhr, status, error) {
@@ -155,8 +141,7 @@ function FPConstructor(jsonData) {
     // 合併基準為物件
     BaselineData = Object.assign({}, jsonData.daily.base, jsonData.transportation.base);
 }
-
-//計算footprint(重寫)
+//計算footprint
 function calculateFootprint(type,data_value) {
     let findTarget = FootprintData.find(function(item) {
         if(item.type === type){
@@ -203,7 +188,6 @@ function modifyNickname() {
         window.location.href = '/login';
     }
 }
-
 //刪除帳號
 function deleteAccount(){
     getEncryptKey().then(function() {
@@ -245,6 +229,7 @@ function deleteAccount(){
     });
 }
 
+////////////////////////////////
 function clearForm(){
     $('input[type="radio"]:checked').each(function() {
         $(this).prop('checked', false);
@@ -255,18 +240,12 @@ function clearForm(){
     document.getElementById('SPACE').style.display = 'block';
 }
 
-
-
-
-
-
+////////////////////////////////這邊以下不知道哪來的
 //登出
 function logoutAccount(){
     alert("登出成功");
     localStorage.removeItem('EmoAppUser');
-
     google.accounts.id.disableAutoSelect ();
-
     window.location.href= '/login';
 
 }
