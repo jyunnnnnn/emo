@@ -2,6 +2,27 @@ let intervalId;//時間間隔
 let recordedPositions = [];//路線紀錄(點)
 let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
+let trafficFPData;
+
+function getTrafficData(callback) {
+    $.ajax({
+        url: '/api/GetAllRecordJson',
+        method: 'GET',
+        success: function (data) {
+            // 處理成功時的邏輯
+            trafficFPData = JSON.parse(data);
+            if (callback) {
+                callback();
+            }
+        },
+        error: function(xhr, status, error) {
+            let errorData = JSON.parse(xhr.responseText);
+            let errorMessage = errorData.message;
+            alert(errorMessage);
+        }
+    });
+}
+
 function success(pos){
     distanceThreshold = 0.010; // 十公尺
     //console.log(pos,currentLocation);
@@ -86,25 +107,48 @@ function stopRecording() {
     // 移除地圖上的線條
     clearMapLines();
 
-    // 打開紀錄懸浮窗
-    document.getElementById('recordFW').style.display = 'flex';
-    document.getElementById('recordFW').style.position = 'fixed';
-    document.getElementById('saveRecord').style.display = 'block';
-    document.getElementById('deleteRecord').style.display = 'none';
-    document.getElementById('updateRecord').style.display = 'none';
-    document.getElementById('trafficRadio').checked = 'true';
-    document.getElementById('trafficLabel').style.display = 'block';
-    document.getElementById('dailyLabel').style.display = 'none';
-    document.getElementById('trafficMenu').style.display = 'block';
-    document.getElementById('dailyMenu').style.display = 'none';
-    document.getElementById('gramRadios').style.display = 'none';
-    document.getElementById('SPACE').style.display = 'none';
+    // 打開路線記錄懸浮窗
+    document.getElementById('routeFW').style.display = 'flex';
+    document.getElementById('routeFW').style.position = 'fixed';
     document.getElementById('kilometer').value = kilometer.toFixed(3);
     document.getElementById('kilometer').disabled = 'true';
+    getTrafficData(function () {
+        let select = $('#trafficType');
+        console.log(trafficFPData);
+        let trafficDatas = trafficFPData.transportation.content;
+        console.log(trafficDatas);
+        select.empty();
+        select.append($('<option>', {
+            text: "請選擇一項行為",
+            selected: true,
+            disabled: true
+        }));
+        for(let trafficData of trafficDatas){
+            select.append($('<option>', {
+                value: trafficData.index,
+                text: trafficData.name
+            }));
+        }
+    });
 
     //清除距離
     kilometer = 0;
 }
+// 路線記錄儲存
+$('#saveTrafficRecord').on('click', function () {
+    event.preventDefault();
+    let type = $('#trafficType option:selected').text();
+    let data_value = $('#kilometer').val();
+
+    if(data_value <= 0) {
+        alert("請輸入正數");
+    } else if(type && data_value) {
+        saveRecord("交通", type, data_value);
+        $('#recordFW').css("display", "none");
+    } else {
+        alert("請輸入完整資訊");
+    }
+});
 
 function recordLocation() {
     // 儲存記錄的位置

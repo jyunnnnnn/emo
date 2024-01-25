@@ -116,7 +116,6 @@ function addMarker(recordToAdd) {
                 currentInfoWindowRecord = recordToAdd;
                 currentMarker = marker;
            });
-            console.log("finish");
         }
 }
 

@@ -66,8 +66,6 @@ $('input[name="typeRadio"]').on('change', function() {
     let classType = $('input[name="typeRadio"]:checked').val();
     if(classType != ''){
         getData(function () {
-            $('#SPACE').css("display", "none");
-
             let select = $('#type');
             selectDatas = footPrintData[classType].content;
             select.empty();
@@ -142,7 +140,7 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
         $("#gram").val(value);
     }
 });
-// 儲存按鈕
+// 一般記錄儲存
 $('#saveRecord').on('click', function () {
     event.preventDefault();
     let classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
@@ -276,6 +274,9 @@ function closeFW(event){
     if (event.target.id === 'recordFW') {
         document.getElementById('closeAuthFW').style.display = 'flex';
         document.getElementById('closeAuthFW').position = 'fixed';
+    } else if (event.target.id === 'routeFW') {
+        document.getElementById('closeAuthFW').style.display = 'flex';
+        document.getElementById('closeAuthFW').position = 'fixed';
     } else if(event.target.id === 'recordListFW') {
         document.getElementById('recordListFW').style.display = 'none';
     } else if(event.target.id === 'settingFW') {
@@ -296,12 +297,17 @@ document.getElementById('closeRecordModal').addEventListener('click', function (
     document.getElementById('closeAuthFW').style.display = 'flex';
     document.getElementById('closeAuthFW').position = 'fixed';
 });
+document.getElementById('closeRouteModal').addEventListener('click', function () {
+    document.getElementById('closeAuthFW').style.display = 'flex';
+    document.getElementById('closeAuthFW').position = 'fixed';
+});
 document.getElementById('closeAuthBtn').addEventListener('click', function () {
     document.getElementById('closeAuthFW').style.display = 'none';
 });
 document.getElementById('closeRecord').addEventListener('click', function () {
     document.getElementById('closeAuthFW').style.display = 'none';
     document.getElementById('recordFW').style.display = 'none';
+    document.getElementById('routeFW').style.display = 'none';
 });
 // 關閉查看懸浮窗
 document.getElementById('closeListModal').addEventListener('click', function () {
@@ -324,13 +330,6 @@ document.getElementById('closeAdminModal').addEventListener('click', function ()
     document.getElementById('adminFW').style.display = 'none';
 });
 
-
-// 生活用品選單
-document.getElementById('dailyRadio').addEventListener('change', function () {
-    document.getElementById('trafficMenu').style.display = 'none';
-    document.getElementById('dailyMenu').style.display = 'block';
-    document.getElementById('SPACE').style.display = 'none';
-})
 
 // 批量編輯歷史紀錄
 document.getElementById('editRecord').addEventListener('click', function() {

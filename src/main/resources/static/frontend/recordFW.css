@@ -126,6 +126,7 @@
 
 /* 懸浮窗 */
 #recordFW,
+#routeFW,
 #closeAuthFW,
 #recordListFW{
     display: none;
