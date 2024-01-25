@@ -84,7 +84,6 @@ function systemInit(){
     $('#user').text(nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#delete').click(deleteAccount);//刪除帳號
-    $('#saveRecord').click(saveRecord);// 添加標記
     $('#updateRecord').click(updateRecord)//修改紀錄
     $('#deleteRecord').click(deleteRecord)//刪除紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
@@ -141,21 +140,21 @@ function FPConstructor(jsonData) {
     // 合併基準為物件
     BaselineData = Object.assign({}, jsonData.daily.base, jsonData.transportation.base);
 }
-//計算footprint
+// 計算footprint
 function calculateFootprint(type,data_value) {
+    console.trace();
     let findTarget = FootprintData.find(function(item) {
-        if(item.type === type){
-           return item.baseline;
-        };
+        return item.type === type;
     });
-    baseCoefficient = BaselineData[findTarget.baseline];//基準係數值
-    nowCoefficient = findTarget.coefficient;//現在係數值
+
+    let baseCoefficient = BaselineData[findTarget.baseline];//基準係數值
+    let nowCoefficient = findTarget.coefficient;//現在係數值
     let footprint = 0;
-    footprint=(data_value * (baseCoefficient-nowCoefficient)).toFixed(3);
-    //console.log(nowCoefficient,typeof(nowCoefficient),baseCoefficient,typeof(baseCoefficient),footprint);
+    footprint = (data_value * (baseCoefficient-nowCoefficient)).toFixed(3);
+    // console.log(nowCoefficient,typeof(nowCoefficient),baseCoefficient,typeof(baseCoefficient),footprint);
     return footprint;
 }
-//改暱稱
+// 改暱稱
 function modifyNickname() {
     let userDataString = localStorage.getItem('EmoAppUser');
     if (userDataString) {
@@ -230,15 +229,7 @@ function deleteAccount(){
 }
 
 ////////////////////////////////
-function clearForm(){
-    $('input[type="radio"]:checked').each(function() {
-        $(this).prop('checked', false);
-    });
-    document.getElementById('kilometer').value = 'none';
-    document.getElementById('trafficMenu').style.display = 'none';
-    document.getElementById('dailyMenu').style.display = 'none';
-    document.getElementById('SPACE').style.display = 'block';
-}
+
 
 ////////////////////////////////這邊以下不知道哪來的
 //登出

@@ -1,109 +1,164 @@
-// 紀錄按鈕
-document.getElementById('openRecordModal').addEventListener('click', function () {
-    // 顯示懸浮窗
-    document.getElementById('recordFW').style.display = 'flex';
-    document.getElementById('saveRecord').style.display = 'block';
-    document.getElementById('updateRecord').style.display = 'none';
-    document.getElementById('deleteRecord').style.display = 'none';
-    document.getElementById('trafficLabel').style.display = 'none';
-    document.getElementById('dailyLabel').style.display = 'block';
-    document.getElementById('dailyRadio').checked = true;
-    document.getElementById('trafficMenu').style.display = 'none';
-    document.getElementById('dailyMenu').style.display = 'block';
-    document.getElementById('SPACE').style.display = 'none';
-    document.getElementById('gramRadios').style.display = 'flex';
-    document.getElementById('smallRadio').checked = true;
-    document.getElementById('gram').disabled = true;
-    let spanContent = document.getElementById('small').innerText;
-    let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-    let value = match ? match[0] : "";
-    document.getElementById('gram').value = value;
-});
-// 監聽小類別
-let dailyTypeSelect = document.getElementById('dailyType');
-dailyTypeSelect.addEventListener('change', function() {
-    let selectedValue = dailyTypeSelect.value;
-    if (selectedValue === 'daily-cup') {
-        $("#small").text("小(5g)");
-        $("#medium").text("中(10g)");
-        $("#large").text("大(15g)");
-        document.getElementById('smallRadio').checked = true;
-        let spanContent = document.getElementById('small').innerText;
-        let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-        let value = match ? match[0] : "";
-        document.getElementById('gram').value = value;
-        document.getElementById('gram').disabled = true;
-    } else if (selectedValue === 'daily-tableware') {
-        $("#small").text("小(15g)");
-        $("#medium").text("中(20g)");
-        $("#large").text("大(25g)");
-        document.getElementById('smallRadio').checked = true;
-        let spanContent = document.getElementById('small').innerText;
-        let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-        let value = match ? match[0] : "";
-        document.getElementById('gram').value = value;
-        document.getElementById('gram').disabled = true;
-    } else if (selectedValue === 'daily-bag') {
-        $("#small").text("小(2g)");
-        $("#medium").text("中(5g)");
-        $("#large").text("大(10g)");
-        document.getElementById('smallRadio').checked = true;
-        let spanContent = document.getElementById('small').innerText;
-        let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-        let value = match ? match[0] : "";
-        document.getElementById('gram').value = value;
-        document.getElementById('gram').disabled = true;
-    }
-});
-// 監聽克數變化
-const radioButtons = document.querySelectorAll('.gram-inputs input[type="radio"]');
-radioButtons.forEach(button => {
-    button.addEventListener('change', function() {
-        // 在這裡執行你想要的操作，根據選中的 radio 按鈕的不同做不同的處理
-        if (this.id === 'smallRadio') {
-            $("#gram").prop("disabled", true);
-            let spanContent = document.getElementById('small').innerText;
-            let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-            let value = match ? match[0] : "";
-            $("#gram").val(value);
-        } else if (this.id === 'mediumRadio') {
-            $("#gram").prop("disabled", true);
-            let spanContent = document.getElementById('medium').innerText;
-            let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-            let value = match ? match[0] : "";
-            $("#gram").val(value);
-        } else if (this.id === 'largeRadio') {
-            $("#gram").prop("disabled", true);
-            let spanContent = document.getElementById('large').innerText;
-            let match = spanContent.match(/\d+/); // 正則表達式 \d+ 用於匹配一個或多個數字
-            let value = match ? match[0] : "";
-            $("#gram").val(value);
-        } else if (this.id === 'customRadio') {
-            $("#gram").prop("disabled", false);
-            $("#gram").val("");
+let footPrintData;
+let selectDatas;
+
+function getData(callback) {
+    $.ajax({
+        url: '/api/GetAllRecordJson',
+        method: 'GET',
+        success: function (data) {
+            // 處理成功時的邏輯
+            footPrintData = JSON.parse(data);
+            if (callback) {
+                callback();
+            }
+        },
+        error: function(xhr, status, error) {
+            let errorData = JSON.parse(xhr.responseText);
+            let errorMessage = errorData.message;
+            alert(errorMessage);
         }
     });
-});
+}
 
-// 儲存按鈕
-document.getElementById('saveRecord').addEventListener('click', function () {
-    let selected;
-    if ($("#trafficRadio").is(":checked")) {
-        classType = $("#traffic").text();
-        type = $("#trafficMenu option:selected").text();
-        data_value = document.getElementById('kilometer').value;
-    } else if ($("#dailyRadio").is(":checked")) {
-        classType = $("#daily").text();
-        type = $("#dailyMenu option:selected").text();
-        data_value = document.getElementById('gram').value;
+// 一般記錄按鈕
+$('#openRecordModal').on('click', function() {
+    $('#recordFW').css("display", "flex");
+
+    // 初始化行為選單
+    $('#type').empty();
+    $('#type').append($('<option>', {
+        disabled: true,
+        selected: true,
+        text: "請先選擇類別"
+    }));
+    // 初始化克數按鈕
+    $('#gramRadios').empty();
+    let label = $('<label>', {
+        class: 'gram'
+    });
+    let input = $('<input>', {
+        type: 'radio',
+        name: 'radio',
+        disabled: true
+    });
+    let span = $('<span>', {
+        class: 'name',
+        text: '請先選擇類別',
+        id: 'initType'
+    });
+    label.append(input, span);
+    $('#gramRadios').append(label);
+    // 初始化克數輸入框
+    $("#gram").prop("disabled", true);
+    $('#gram').val("");
+    $('#gram').attr("placeholder", "請先選擇類別");
+
+    let checked = $('input[name="typeRadio"]:checked');
+    if(checked){
+        checked.prop('checked', false);
     }
+});
+// 監聽類別變化
+$('input[name="typeRadio"]').on('change', function() {
+    $('#initType').text("請先選擇行為");
+    $('#gram').attr("placeholder", "請先選擇行為");
 
-    if(classType && type && data_value){
-        document.getElementById('recordFW').style.display = 'none';
+    let classType = $('input[name="typeRadio"]:checked').val();
+    if(classType != ''){
+        getData(function () {
+            $('#SPACE').css("display", "none");
+
+            let select = $('#type');
+            selectDatas = footPrintData[classType].content;
+            select.empty();
+            select.append($('<option>', {
+                text: "請選擇一項行為",
+                selected: true,
+                disabled: true
+            }));
+            for(let selectData of selectDatas){
+                select.append($('<option>', {
+                    value: selectData.index,
+                    text: selectData.name
+                }));
+            }
+        });
+    }
+});
+// 監聽行為變化
+$('#type').on('change', function(){
+    let gram = $('#gramRadios');
+    $('#gram').attr("placeholder", "請選擇克數");
+    gram.empty();
+    let selected = $(this).val();
+
+    let options;
+    for(let selectData of selectDatas){
+        if(selectData.index === selected){
+            options = selectData.option;
+            break;
+        }
+    }
+    for(let [key, value] of Object.entries(options)){
+        let label = $('<label>', {
+            class: 'gram'
+        });
+        let input = $('<input>', {
+            type: 'radio',
+            name: 'radio',
+            id: key + 'Radio'
+        });
+        let span = $('<span>', {
+            class: 'name',
+            text: key
+        });
+        label.append(input, span);
+        gram.append(label);
+    }
+    let label = $('<label>', {
+        class: 'gram'
+    });
+    let input = $('<input>', {
+        type: 'radio',
+        name: 'radio',
+    });
+    let span = $('<span>', {
+        class: 'name',
+        text: '自訂'
+    });
+    label.append(input, span);
+    gram.append(label);
+});
+// 監聽克數變化
+$('#gramRadios').on('change', 'input[type="radio"]', function() {
+    let text = $(this).siblings('.name').text();
+    if(text === "自訂"){
+        $("#gram").prop("disabled", false);
+        $("#gram").val("");
+    } else {
+        $("#gram").prop("disabled", true);
+        let match = text.match(/\d+/);
+        let value = match ? match[0] : "";
+        $("#gram").val(value);
+    }
+});
+// 儲存按鈕
+$('#saveRecord').on('click', function () {
+    event.preventDefault();
+    let classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
+    let type = $('#type option:selected').text();
+    let data_value = $('#gram').val();
+
+    if(data_value <= 0) {
+        alert("請輸入正數");
+    } else if(classType && type && data_value) {
+        saveRecord(classType, type, data_value);
+        $('#recordFW').css("display", "none");
     } else {
         alert("請輸入完整資訊");
     }
 });
+
 // 查看按鈕
 document.getElementById('recordListButton').addEventListener('click', function () {
     // 顯示懸浮窗

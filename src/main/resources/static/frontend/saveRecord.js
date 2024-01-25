@@ -1,6 +1,5 @@
 // 記錄按鈕事件處理
-function saveRecord(event){
-    event.preventDefault();
+function saveRecord(classType, type, data_value){
     let record={
         userId: User.userId, // 使用者 ID，這裡使用本地存儲的使用者名稱
         classType: null,
@@ -15,16 +14,12 @@ function saveRecord(event){
     let now = new Date();
     record.recordId = now.getTime();
     //重複部分等fish看能不能合併
-    if ($("#trafficRadio").is(":checked")) {
-        record.classType = $("#traffic").text();
-        record.type = $("#trafficMenu option:selected").text();
-        record.data_value = document.getElementById('kilometer').value;
-    } else if ($("#dailyRadio").is(":checked")) {
-        record.classType = $("#daily").text();
-        record.type = $("#dailyMenu option:selected").text();
-        record.data_value = document.getElementById('gram').value;
-    }
+    record.classType = classType;
+    record.type = type;
+    record.data_value = data_value;
+
     record.footprint = calculateFootprint(type,data_value);
+    console.log(record.footprint);
     if(data_value <= 0){
        alert("請輸入正數");
        return;
@@ -37,7 +32,6 @@ function saveRecord(event){
         uploadRecordToBackend(record);
         records.push(record);
         addMarker(record);
-        clearForm();
     }
 }
 // 將紀錄上傳到後端
@@ -122,6 +116,7 @@ function addMarker(recordToAdd) {
                 currentInfoWindowRecord = recordToAdd;
                 currentMarker = marker;
            });
+            console.log("finish");
         }
 }
 

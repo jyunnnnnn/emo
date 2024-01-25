@@ -64,9 +64,9 @@
     </div>
     <!-- 主按鈕區 -->
     <div id="recordBtns">
-        <!-- 紀錄鈕 -->
+        <!-- 一般記錄鈕 -->
         <button class="recordButton" id="openRecordModal"> 一般記錄 </button>
-        <!-- 路線紀錄按鈕-->
+        <!-- 路線記錄鈕 -->
         <button class="recordButton" id="startRecording"> 路線記錄 </button>
         <!-- 查看紀錄鈕 -->
         <button class="recordButton" id="recordListButton"> 查看紀錄 </button>
@@ -215,30 +215,13 @@
             </svg>
         </button>
 
-        <div class="recordHeading" id="activityModalLabel">行為記錄</div>
-        <!-- 類別選項 -->
+        <div class="recordHeading" id="activityModalLabel">一般記錄</div>
         <form action="" class="recordForm">
-            <div class="radio-inputs" id="classType" name="radio">
-                <!-- 類別選項/交通 -->
-                <label id="trafficLabel" style="display: none">
-                    <input id="trafficRadio" class="radio-input" type="radio" name="engine">
-                    <span class="radio-tile">
-                        <span class="radio-icon">
-                            <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 260 260" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="200px" height="200px" fill="none">
-                              <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
-                              <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
-                              <g id="SVGRepo_iconCarrier">
-                                <path d="M188,28H68A28.03146,28.03146,0,0,0,40,56V184a28.03146,28.03146,0,0,0,28,28H87.99951L68.7998,237.59961a4.00039,4.00039,0,0,0,6.4004,4.80078L98.00049,212h59.999l22.80029,30.40039a4.00039,4.00039,0,1,0,6.4004-4.80078L168.00049,212H188a28.03146,28.03146,0,0,0,28-28V56A28.03146,28.03146,0,0,0,188,28ZM48,124V76h76v48Zm84-48h76v48H132ZM68,36H188a20.02229,20.02229,0,0,1,20,20V68H48V56A20.02229,20.02229,0,0,1,68,36ZM188,204H68a20.02229,20.02229,0,0,1-20-20V132H208v52A20.02229,20.02229,0,0,1,188,204ZM92,172a8,8,0,1,1-8-8A8.00917,8.00917,0,0,1,92,172Zm88,0a8,8,0,1,1-8-8A8.00917,8.00917,0,0,1,180,172Z"></path>
-                              </g>
-                            </svg>
-                        </span>
-                        <span class="radio-label" id="traffic">交通</span>
-                    </span>
-                </label>
-
+            <!-- 類別選項 -->
+            <div class="radio-inputs" name="radio">
                 <!-- 類別選項/生活用品 -->
                 <label id="dailyLabel">
-                    <input id="dailyRadio" class="radio-input" type="radio" name="engine" checked="true">
+                    <input id="dailyRadio" class="radio-input" type="radio" name="typeRadio" value="daily">
                     <span class="radio-tile">
                     <span class="radio-icon">
                     <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 960 960" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="10px" height="10px" fill="none">
@@ -266,62 +249,22 @@
                     </span>
                 </label>
             </div>
-
             <!-- 行為選項 -->
             <!-- 行為選項/SPACE -->
             <label id="subType">
-                <div id="SPACE"  style="display: none;">
-                    <select id="categorySelect" class="recordForm-control" name="category">
-                        <option disabled>請先選擇類別</option>
-                    </select>
-                    <input required="" class="input" type="text" placeholder="請先選擇類別" disabled="disabled">
-                </div>
-
-                <!-- 行為選項/交通 -->
-                <div id="trafficMenu" style="display: none;">
-                    <select class="recordForm-control" id="trafficType" name="trafficType">
-                        <option value="traffic-bus">公車</option>
-                        <option value="traffic-MRT">捷運</option>
-                        <option value="traffic-train">火車</option>
-                        <option value="traffic-HSR">高鐵</option>
-                    </select>
-                    <input id="kilometer" name="kilometer" class="input" type="number" placeholder="請輸入里程數(KM)">
-                </div>
-
-                <!-- 行為選項/生活用品 -->
-                <div id="dailyMenu" style="display: block;">
-                    <select class="recordForm-control" id="dailyType" name="dailyType">
-                        <option value="daily-cup">環保杯</option>
-                        <option value="daily-tableware">環保餐具</option>
-                        <option value="daily-bag">環保袋</option>
+                <div id="menu" style="display: block;">
+                    <!-- 行為選項 -->
+                    <select class="recordForm-control" id="type">
                     </select>
 
+                    <!-- 克數選項 -->
                     <div class="gram-inputs" id="gramRadios">
-                        <label class="gram">
-                            <input type="radio" name="radio" id="smallRadio">
-                            <span class="name" id="small">小(5g)</span>
-                        </label>
-                        <label class="gram">
-                            <input type="radio" name="radio" id="mediumRadio">
-                            <span class="name" id="medium">中(10g)</span>
-                        </label>
-                        <label class="gram">
-                            <input type="radio" name="radio" id="largeRadio">
-                            <span class="name" id="large">大(15g)</span>
-                        </label>
-                        <label class="gram">
-                            <input type="radio" name="radio" id="customRadio">
-                            <span class="name" id="custom">自訂</span>
-                        </label>
                     </div>
-
-                    <input id="gram" name="gram" class="input" type="number" placeholder="請輸入公克數">
+                    <input id="gram" name="gram" class="input" type="number">
                 </div>
             </label>
             <!-- 儲存 -->
             <input id="saveRecord" class="save-button" type="submit" value="儲存">
-            <input id="updateRecord" class="save-button" type="submit" value="確認更新" style="display: none">
-            <input id="deleteRecord" class="save-button" type="submit" value="刪除資料" style="display: none">
         </form>
     </div>
 </div>
@@ -339,7 +282,7 @@
             </svg>
         </button>
 
-        <div class="recordHeading" id="activityListModalLabel">歷史記錄</div>
+        <div class="recordHeading" id="activityListModalLabel">歷史紀錄</div>
         <div class="chart-box" id="chartBox" style="display: none; width: 300px; height: 300px;"><canvas id="recordChart" style="display: block; box-sizing: border-box; height: 279px; width: 279px;"></canvas></div>
         <div style="display: flex; justify-content: space-between;">
             <div style="flex:1; display: inline-flex; align-items: center;">
