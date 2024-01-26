@@ -2,26 +2,6 @@ let intervalId;//時間間隔
 let recordedPositions = [];//路線紀錄(點)
 let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
-let trafficFPData;
-
-function getTrafficData(callback) {
-    $.ajax({
-        url: '/api/GetAllRecordJson',
-        method: 'GET',
-        success: function (data) {
-            // 處理成功時的邏輯
-            trafficFPData = JSON.parse(data);
-            if (callback) {
-                callback();
-            }
-        },
-        error: function(xhr, status, error) {
-            let errorData = JSON.parse(xhr.responseText);
-            let errorMessage = errorData.message;
-            alert(errorMessage);
-        }
-    });
-}
 
 function success(pos){
     distanceThreshold = 0.010; // 十公尺
@@ -112,24 +92,22 @@ function stopRecording() {
     document.getElementById('routeFW').style.position = 'fixed';
     document.getElementById('kilometer').value = kilometer.toFixed(3);
     document.getElementById('kilometer').disabled = 'true';
-    getTrafficData(function () {
-        let select = $('#trafficType');
-        console.log(trafficFPData);
-        let trafficDatas = trafficFPData.transportation.content;
-        console.log(trafficDatas);
-        select.empty();
-        select.append($('<option>', {
-            text: "請選擇一項行為",
-            selected: true,
-            disabled: true
-        }));
-        for(let trafficData of trafficDatas){
-            select.append($('<option>', {
-                value: trafficData.index,
-                text: trafficData.name
-            }));
-        }
+
+    let select = $('#trafficType');
+    let trafficDatas = FootprintData.filter(function(item) {
+        return item.class === "transportation";
     });
+    select.empty();
+    select.append($('<option>', {
+        text: "請選擇一項行為",
+        selected: true,
+        disabled: true
+    }));
+    for(let trafficData of trafficDatas){
+        select.append($('<option>', {
+            text: trafficData.type
+        }));
+    }
 
     //清除距離
     kilometer = 0;

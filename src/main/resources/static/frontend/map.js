@@ -142,7 +142,6 @@ function FPConstructor(jsonData) {
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {
-    console.trace();
     let findTarget = FootprintData.find(function(item) {
         return item.type === type;
     });

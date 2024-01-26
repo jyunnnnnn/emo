@@ -1,24 +1,4 @@
-let footPrintData;
 let selectDatas;
-
-function getData(callback) {
-    $.ajax({
-        url: '/api/GetAllRecordJson',
-        method: 'GET',
-        success: function (data) {
-            // 處理成功時的邏輯
-            footPrintData = JSON.parse(data);
-            if (callback) {
-                callback();
-            }
-        },
-        error: function(xhr, status, error) {
-            let errorData = JSON.parse(xhr.responseText);
-            let errorMessage = errorData.message;
-            alert(errorMessage);
-        }
-    });
-}
 
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
@@ -65,22 +45,21 @@ $('input[name="typeRadio"]').on('change', function() {
 
     let classType = $('input[name="typeRadio"]:checked').val();
     if(classType != ''){
-        getData(function () {
-            let select = $('#type');
-            selectDatas = footPrintData[classType].content;
-            select.empty();
-            select.append($('<option>', {
-                text: "請選擇一項行為",
-                selected: true,
-                disabled: true
-            }));
-            for(let selectData of selectDatas){
-                select.append($('<option>', {
-                    value: selectData.index,
-                    text: selectData.name
-                }));
-            }
+        let select = $('#type');
+        selectDatas = FootprintData.filter(function(item) {
+            return item.class === classType;
         });
+        select.empty();
+        select.append($('<option>', {
+            text: "請選擇一項行為",
+            selected: true,
+            disabled: true
+        }));
+        for(let selectData of selectDatas){
+            select.append($('<option>', {
+                text: selectData.type
+            }));
+        }
     }
 });
 // 監聽行為變化
@@ -88,15 +67,15 @@ $('#type').on('change', function(){
     let gram = $('#gramRadios');
     $('#gram').attr("placeholder", "請選擇克數");
     gram.empty();
-    let selected = $(this).val();
-
+    let selected = $('#type option:selected').text();
     let options;
     for(let selectData of selectDatas){
-        if(selectData.index === selected){
+        if(selectData.type === selected){
             options = selectData.option;
             break;
         }
     }
+
     for(let [key, value] of Object.entries(options)){
         let label = $('<label>', {
             class: 'gram'
