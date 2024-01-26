@@ -103,6 +103,7 @@ function addMarker(recordToAdd) {
                    <button id="editButton" type="button" style="position: absolute; right: 10px; bottom: 10px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px;" onclick="recordModal()">編輯</button>
                </div>`;
                //class="btn btn-secondary"
+            console.log("fuck");
            let infoWindow = new google.maps.InfoWindow({
                content: infoWindowContent
            });

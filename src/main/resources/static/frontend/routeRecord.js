@@ -88,10 +88,13 @@ function stopRecording() {
     clearMapLines();
 
     // 打開路線記錄懸浮窗
-    document.getElementById('routeFW').style.display = 'flex';
-    document.getElementById('routeFW').style.position = 'fixed';
-    document.getElementById('kilometer').value = kilometer.toFixed(3);
-    document.getElementById('kilometer').disabled = 'true';
+    $('#routeFW').css("display", "flex");
+    $('#routeFW').css("position", "fixed");
+    $('#kilometer').val(kilometer.toFixed(3));
+
+    $('#saveTrafficRecord').css("display", "block");
+    $('#updateTrafficRecord').css("display", "none");
+    $('#deleteTrafficRecord').css("display", "none");
 
     let select = $('#trafficType');
     let trafficDatas = FootprintData.filter(function(item) {
