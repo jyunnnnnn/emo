@@ -29,7 +29,8 @@ function deleteRecord(){
         deleteRecordToBackend(currentInfoWindowRecord.recordId);
         deleteMarker(currentInfoWindowRecord.recordId);
         //console.log(records);
-        document.getElementById("recordFW").style.display = "none";
+        $('recordFW').css("display", "none");
+        $('routeFW').css("display", "none");
     } else{
         console.log("取消刪除");
     }
