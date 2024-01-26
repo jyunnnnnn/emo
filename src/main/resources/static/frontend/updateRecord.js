@@ -65,6 +65,7 @@ function modifyRecordToBackend(record) {
 //更新marker inFoWindow
 
 function updateMarkerContent(newContent) {
+    newContent.footprint = parseFloat(newContent.footprint, 10).toFixed(3) *1000/1000;
     let modifyContent=`
          <div>
              <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${newContent.type}</h6>
