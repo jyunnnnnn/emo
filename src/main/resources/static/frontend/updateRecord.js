@@ -1,19 +1,19 @@
-
 // 修改記錄按鈕事件處理 //test
-function updateRecord(){
+function updateRecord(event, updateFW){
     event.preventDefault();
-    let classType
-    let type
-    let data_value
-    if ($("#trafficRadio").is(":checked")) {
-        classType = $("#traffic").text();
-        type = $("#trafficMenu option:selected").text();
-        data_value = document.getElementById('kilometer').value;
-    } else if ($("#dailyRadio").is(":checked")) {
-        classType = $("#daily").text();
-        type = $("#dailyMenu option:selected").text();
-        data_value = document.getElementById('gram').value;
+    let classType;
+    let type;
+    let data_value;
+    if(updateFW === "traffic"){
+        classType = "交通";
+        type = $('#trafficType option:selected').text();
+        data_value = $('#kilometer').val();
+    } else {
+        classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
+        type =  $('#type option:selected').text();
+        data_value = $('#gram').val();
     }
+
     if(classType && type && data_value && data_value > 0) {
         updateRecordToBackend(classType, type, data_value);
     } else {

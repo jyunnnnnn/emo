@@ -7,6 +7,7 @@ import java.util.Map;
 public class RecordWrapper {
     Map<String, Double> base;
     List<RecordItem> content;
+    String name;
 
     @Override
     public String toString() {

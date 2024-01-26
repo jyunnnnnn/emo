@@ -5,6 +5,7 @@
         "paper": 0.242,
         "plastic": 1.95
       },
+      "name": "生活用品",
       "content": [
         {
           "index": "cup",
@@ -49,6 +50,7 @@
         "car": 110,
         "scooter": 100
       },
+      "name": "交通",
       "content": [
         {
           "index": "bus",
