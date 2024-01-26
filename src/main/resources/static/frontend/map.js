@@ -64,7 +64,9 @@ function initMap() {
                 if (localStorage.getItem('EmoAppUser')==null) {
                     alert("請重新登入");
                     window.location.href = '/login';
-                }else {systemInit()}
+                }else {
+                    systemInit();
+                }
             },
             function(error){ console.error('Error getting geolocation:', error);}
         )
@@ -76,16 +78,20 @@ function initMap() {
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
     watchId = navigator.geolocation.watchPosition(success, error, options);
-    User =JSON.parse(localStorage.getItem('EmoAppUser'));
-    username=User.username;
-    nickname=User.nickname;
+    User = JSON.parse(localStorage.getItem('EmoAppUser'));
+    username = User.username;
+    nickname = User.nickname;
     loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
     $('#user').text(nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#delete').click(deleteAccount);//刪除帳號
-    $('#updateRecord').click(updateRecord)//修改紀錄
-    $('#deleteRecord').click(deleteRecord)//刪除紀錄
+    $('#updateRecord').click(updateRecord)// 修改一般紀錄
+    $('#deleteRecord').click(deleteRecord)// 刪除一般紀錄
+    $('#updateTrafficRecord').click(function(event) {
+        updateRecord(event, "traffic");
+    }); // 修改路線紀錄
+    $('#deleteTrafficRecord').click(deleteRecord)// 刪除路線紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#adminButton').click(showFPdata)
     $('#settingButton').click(showSettingPage);
@@ -128,27 +134,29 @@ function loadFootprintData() {
         });
 }
 function FPConstructor(jsonData) {
-    FootprintData=[];
-    // 遍歷 daily 內容
-    jsonData.daily.content.forEach(({name: type,coefficient,baseline,option,unit}) => {
-        FootprintData.push({ type,coefficient,baseline,option,unit, class:"daily"});
-    });
-    // 遍歷 transportation 內容
-    jsonData.transportation.content.forEach(({name: type,coefficient,baseline,unit}) => {
-        FootprintData.push({ type,coefficient,baseline,unit,class:"transportation"});
-    });
-    // 合併基準為物件
-    BaselineData = Object.assign({}, jsonData.daily.base, jsonData.transportation.base);
+    FootprintData = [];
+    for(let [key,value] of Object.entries(jsonData)){
+        let base = jsonData[key].base;
+        let name = jsonData[key].name;
+        if(key === "transportation"){
+            jsonData[key].content.forEach(({name: type, coefficient, baseline, unit}) => {
+                FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
+            });
+        } else {
+            jsonData[key].content.forEach(({name: type,coefficient,baseline,option,unit}) => {
+                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name});
+             });
+        }
+    }
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {
-    console.trace();
     let findTarget = FootprintData.find(function(item) {
         return item.type === type;
     });
 
-    let baseCoefficient = BaselineData[findTarget.baseline];//基準係數值
-    let nowCoefficient = findTarget.coefficient;//現在係數值
+    let baseCoefficient = findTarget.baseCoefficient; // 基準係數值
+    let nowCoefficient = findTarget.coefficient; // 現在係數值
     let footprint = 0;
     footprint = (data_value * (baseCoefficient-nowCoefficient)).toFixed(3);
     // console.log(nowCoefficient,typeof(nowCoefficient),baseCoefficient,typeof(baseCoefficient),footprint);

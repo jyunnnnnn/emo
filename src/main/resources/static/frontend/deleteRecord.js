@@ -21,9 +21,9 @@ function deleteMultiRecord(){
 }
 //刪除資料
 function deleteRecord(){
-    event.preventDefault();
     //我先用confirm做:0
-    var result = confirm("確定要刪除目前資料嗎？");
+    event.preventDefault();
+    let result = confirm("確定要刪除目前資料嗎？");
     if (result) {
         deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
         deleteRecordToBackend(currentInfoWindowRecord.recordId);

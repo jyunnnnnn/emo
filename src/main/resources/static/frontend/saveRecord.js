@@ -73,50 +73,50 @@ function loadEcoRecords(userId) {
 }
 //新增標記
 function addMarker(recordToAdd) {
-        recordToAdd.data_value = recordToAdd.data_value.toString();
-        recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
-        let thisIcon;
-        if (recordToAdd.classType === "交通") {
-            thisIcon = '/frontend/img/traffic.ico';
-        } else if (recordToAdd.classType === "生活用品") {
-            thisIcon = '/frontend/img/daily.ico';
-        }
-        if (map) {
-            let currentLocation = {
-                lat: recordToAdd.latitude,
-                lng: recordToAdd.longitude
-            }//抓現在位置
-            let marker = new google.maps.Marker({
-                position: currentLocation,
-                map: map,
-                title: recordToAdd.type,
-                icon: thisIcon,
-                id:recordToAdd.recordId
-            });
+    recordToAdd.footprint = parseFloat(recordToAdd.footprint,10).toFixed(3) *1000/1000;
+    recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
+    let thisIcon;
+    if (recordToAdd.classType === "交通") {
+        thisIcon = '/frontend/img/traffic.ico';
+    } else if (recordToAdd.classType === "生活用品") {
+        thisIcon = '/frontend/img/daily.ico';
+    }
+    if (map) {
+        let currentLocation = {
+            lat: recordToAdd.latitude,
+            lng: recordToAdd.longitude
+        }//抓現在位置
+        let marker = new google.maps.Marker({
+            position: currentLocation,
+            map: map,
+            title: recordToAdd.type,
+            icon: thisIcon,
+            id:recordToAdd.recordId
+        });
 
-           //小改
-           let infoWindowContent = `
-               <div>
-                   <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${recordToAdd.type}</h6>
-                   <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為：${recordToAdd.footprint}g Co2E</p>
-                   <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">${recordToAdd.time}</p>
-                   <button id="editButton" type="button" style="position: absolute; right: 10px; bottom: 10px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px;" onclick="recordModal()">編輯</button>
-               </div>`;
-               //class="btn btn-secondary"
-           let infoWindow = new google.maps.InfoWindow({
-               content: infoWindowContent
-           });
+       //小改
+       let infoWindowContent = `
+           <div>
+               <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${recordToAdd.type}</h6>
+               <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為：${recordToAdd.footprint}g Co2E</p>
+               <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">${recordToAdd.time}</p>
+               <button id="editButton" type="button" style="position: absolute; right: 10px; bottom: 10px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px;" onclick="recordModal()">編輯</button>
+           </div>`;
+           //class="btn btn-secondary"
+       let infoWindow = new google.maps.InfoWindow({
+           content: infoWindowContent
+       });
 
-           marker.infoWindow = infoWindow;
-           markers.push(marker);
+       marker.infoWindow = infoWindow;
+       markers.push(marker);
 
-            // 監聽 marker click 事件
-           marker.addListener('click', e => {
-                infoWindow.open(this.map, marker);
-                currentInfoWindowRecord = recordToAdd;
-                currentMarker = marker;
-           });
-        }
+        // 監聽 marker click 事件
+       marker.addListener('click', e => {
+            infoWindow.open(this.map, marker);
+            currentInfoWindowRecord = recordToAdd;
+            currentMarker = marker;
+       });
+    }
 }
 
 
