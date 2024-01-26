@@ -240,14 +240,7 @@ document.getElementById('deleteAccount').addEventListener('click', function () {
     document.getElementById('deleteFW').style.display = 'flex';
     document.getElementById('deleteFW').style.position = 'fixed';
     let time = document.getElementById('deleteDataTime');
-    let now = new Date();
-    let year = now.getFullYear();
-    let month = (now.getMonth() + 1).toString().padStart(2, '0');
-    let day = now.getDate().toString().padStart(2, '0');
-    let hours = now.getHours().toString().padStart(2, '0');
-    let minutes = now.getMinutes().toString().padStart(2, '0');
-    let seconds = now.getSeconds().toString().padStart(2, '0');
-    let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    let formattedDate = getFormattedDate();
     time.textContent = "截至" + formattedDate;
 
     let trafficCount = 0;
