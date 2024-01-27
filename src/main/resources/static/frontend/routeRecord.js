@@ -8,7 +8,6 @@ function success(pos){
     //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
-
     const point1 = new google.maps.LatLng(newLat, newLng);
     const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
     //計算新位置和當前位置的距離

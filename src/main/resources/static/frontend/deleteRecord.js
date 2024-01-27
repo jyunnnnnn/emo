@@ -1,3 +1,5 @@
+//markerID?? == recordID嗎 看要不要把 三個delete function合併
+
 function deleteMultiRecord(){
         var selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
         var selectedRecordIds = [];

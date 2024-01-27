@@ -13,11 +13,9 @@ function saveRecord(classType, type, data_value){
     }
     let now = new Date();
     record.recordId = now.getTime();
-    //重複部分等fish看能不能合併
     record.classType = classType;
     record.type = type;
     record.data_value = data_value;
-
     record.footprint = calculateFootprint(type,data_value);
     console.log(record.footprint);
     if(data_value <= 0){

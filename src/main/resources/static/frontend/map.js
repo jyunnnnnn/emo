@@ -154,7 +154,6 @@ function calculateFootprint(type,data_value) {
     let findTarget = FootprintData.find(function(item) {
         return item.type === type;
     });
-
     let baseCoefficient = findTarget.baseCoefficient; // 基準係數值
     let nowCoefficient = findTarget.coefficient; // 現在係數值
     let footprint = 0;

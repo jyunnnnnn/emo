@@ -1,4 +1,4 @@
-// 修改記錄按鈕事件處理 //test
+// 修改記錄按鈕事件處理 
 function updateRecord(event, updateFW){
     event.preventDefault();
     let classType;

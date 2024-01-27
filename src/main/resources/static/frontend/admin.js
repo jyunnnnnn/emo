@@ -1,3 +1,5 @@
+//重寫
+
 // 打開管理員介面
 function showFPdata() {
     let thisData = FootprintData;
