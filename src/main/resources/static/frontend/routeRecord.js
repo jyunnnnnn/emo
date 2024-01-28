@@ -12,8 +12,6 @@ function success(pos){
     const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
     //計算新位置和當前位置的距離
     const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    //轉換為公里
-    const distanceInKm = distance / 1000;
     // 只有當距離超過閾值時才更新位置和圓圈 (小於五公尺不更新)
     if (distance > distanceThreshold) {
         currentLocation = {

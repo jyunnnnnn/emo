@@ -1,52 +1,45 @@
-//markerID?? == recordID嗎 看要不要把 三個delete function合併
-
+//刪除多筆資料
 function deleteMultiRecord(){
-        var selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
-        var selectedRecordIds = [];
+    let result = confirm("確定要刪除目前資料嗎？");
+    if (result) {
+        let selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
+        let selectedRecordIds = [];
         selectedCheckboxes.each(function() {
-             var recordIdString = $(this).closest('div').attr('id').split('_')[1];
-             var recordId = parseInt(recordIdString, 10);
-             deleteRecordInArray(recordId);//刪除records裡的
-             deleteRecordToBackend(recordId);//刪除資料庫裡的
-             deleteMarker(recordId);
+             let recordIdString = $(this).closest('div').attr('id').split('_')[1];
+             let recordId = parseInt(recordIdString, 10);
+             deleteRecord(recordId);
              document.getElementById("record_" + recordId).remove();
              selectedRecordIds.push(recordId);
         });
         if (selectedRecordIds.length > 0) {
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
-            var nowType=$("#category option:selected").text();
+            let nowType=$("#category option:selected").text();
             showNewChart(records,nowType);
             alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');
         }
+        console.log(records);
+    } else{
+        console.log("取消刪除");
+    }    
 }
-//刪除資料
-function deleteRecord(){
-    //我先用confirm做:0
+//刪除單筆資料
+function deleteSingleRecord(){
     event.preventDefault();
     let result = confirm("確定要刪除目前資料嗎？");
     if (result) {
-        deleteRecordInArray(currentInfoWindowRecord.recordId);//更新record[]
-        deleteRecordToBackend(currentInfoWindowRecord.recordId);
-        deleteMarker(currentInfoWindowRecord.recordId);
+        deleteRecord(currentInfoWindowRecord.recordId);
         $('#recordFW').css("display", "none");
         $('#routeFW').css("display", "none");
-        console.log("records");
+        console.log(records);
     } else{
         console.log("取消刪除");
     }
 }
-
-//從records刪資料
-function deleteRecordInArray(recordId){
-    records = records.filter(item => item.recordId !== recordId);
-
-}
-
-//從後端刪資料
-function deleteRecordToBackend(recordId) {
-    //console.log(records);
+//透過recordId刪資料
+function deleteRecord(recordId){
+    records = records.filter(item => item.recordId !== recordId);//更新系統內record[]
     $.ajax({
         type: 'DELETE',
         url: `/api/deleteOneRecord?recordId=${recordId}`,
@@ -57,25 +50,17 @@ function deleteRecordToBackend(recordId) {
         error: function(xhr, status, error) {
             console.error(error); // 刪除失敗時的處理邏輯
         }
-    });
-}
-
-//刪mark
-function deleteMarker(markerId){
-    //在Markers裡找指定Marker
-    var markerToDelete = markers.find(function(marker) {
-        return marker.id === markerId;
-    });
+    });//刪除資料庫裡的record
+    let markerToDelete = markers.find(function(marker) {
+        return marker.id === recordId;
+    });//在Markers裡找指定Marker
     if (markerToDelete) {
-
         markerToDelete.infoWindow.close();
         markerToDelete.setMap(null);
-
         // 在 markers 移除
-        var index = markers.indexOf(markerToDelete);
+        let index = markers.indexOf(markerToDelete);
         if (index > -1) {
             markers.splice(index, 1);
         }
-    }
+    }//刪mark
 }
-

@@ -1,5 +1,6 @@
-let selectDatas;
+//136行 fish 那個有沒有辦法用別的方法判斷 saverecord savetrafficrecord 交通的記錄有問題
 
+let selectDatas;
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
     $('#recordFW').css("display", "flex");
@@ -130,14 +131,18 @@ $('#saveRecord').on('click', function () {
     let classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
     let type = $('#type option:selected').text();
     let data_value = $('#gram').val();
-
-    if(data_value <= 0) {
-        alert("請輸入正數");
-    } else if(classType && type && data_value) {
+    if(!classType){
+        alert("請選擇類別");
+        return;
+    }else if(type=="請選擇一項行為" ||type=="請先選擇類別"){
+        alert("請選擇行為");
+        return;
+    }else if(data_value <= 0){
+       alert("請輸入正數");
+       return;
+    }else{
         saveRecord(classType, type, data_value);
         $('#recordFW').css("display", "none");
-    } else {
-        alert("請輸入完整資訊");
     }
 });
 

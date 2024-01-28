@@ -1,11 +1,10 @@
-let map;
-let infoWindow;
-let FootprintData = [];
-let BaselineData;
+let map;//地圖
+let infoWindow;//圖標資訊窗
+let FootprintData = [];//各環保行為資訊 物件陣列
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
-let username;//使用者名稱
-let User;
-let nickname;
+let User;//使用者 物件
+let username;//使用者名稱 之後拿掉
+let nickname;//使用者暱稱 之後拿掉
 let currentLocation;//當前經緯度
 let watchId; //當前位置ID
 let options;//地圖精準度 更新當前位置function用
@@ -87,11 +86,11 @@ function systemInit(){
     $('#logoutAccount').click(logoutAccount);//登出
     $('#delete').click(deleteAccount);//刪除帳號
     $('#updateRecord').click(updateRecord)// 修改一般紀錄
-    $('#deleteRecord').click(deleteRecord)// 刪除一般紀錄
-    $('#updateTrafficRecord').click(function(event) {
-        updateRecord(event, "traffic");
-    }); // 修改路線紀錄
-    $('#deleteTrafficRecord').click(deleteRecord)// 刪除路線紀錄
+    $('#deleteRecord').click(deleteSingleRecord)// 刪除一般紀錄
+    $('#updateTrafficRecord').click(function(event) {updateRecord(event, "traffic");}); // 修改路線紀錄
+
+
+    $('#deleteTrafficRecord').click(deleteSingleRecord)// 刪除路線紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#adminButton').click(showFPdata)
     $('#settingButton').click(showSettingPage);

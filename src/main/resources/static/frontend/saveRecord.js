@@ -16,12 +16,9 @@ function saveRecord(classType, type, data_value){
     record.classType = classType;
     record.type = type;
     record.data_value = data_value;
+    console.log(record);
     record.footprint = calculateFootprint(type,data_value);
-    console.log(record.footprint);
-    if(data_value <= 0){
-       alert("請輸入正數");
-       return;
-    }else if(Object.values(record).includes(null)){
+    if(Object.values(record).includes(null)){
        alert("請重新登入");
        window.location.href = '/login';
        console.log(record);
