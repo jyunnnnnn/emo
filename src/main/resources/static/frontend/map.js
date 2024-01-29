@@ -3,14 +3,10 @@ let infoWindow;//圖標資訊窗
 let FootprintData = [];//各環保行為資訊 物件陣列
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let User;//使用者 物件
-let username;//使用者名稱 之後拿掉
-let nickname;//使用者暱稱 之後拿掉
 let currentLocation;//當前經緯度
 let watchId; //當前位置ID
 let options;//地圖精準度 更新當前位置function用
 let circle; //當前位置標記 用於每5秒更新(清除、重劃)
-
-
 let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
@@ -78,18 +74,14 @@ function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User = JSON.parse(localStorage.getItem('EmoAppUser'));
-    username = User.username;
-    nickname = User.nickname;
     loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
-    $('#user').text(nickname);
+    $('#user').text(User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#delete').click(deleteAccount);//刪除帳號
     $('#updateRecord').click(updateRecord)// 修改一般紀錄
     $('#deleteRecord').click(deleteSingleRecord)// 刪除一般紀錄
     $('#updateTrafficRecord').click(function(event) {updateRecord(event, "traffic");}); // 修改路線紀錄
-
-
     $('#deleteTrafficRecord').click(deleteSingleRecord)// 刪除路線紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
     $('#adminButton').click(showFPdata)
@@ -162,22 +154,18 @@ function calculateFootprint(type,data_value) {
 }
 // 改暱稱
 function modifyNickname() {
-    let userDataString = localStorage.getItem('EmoAppUser');
-    if (userDataString) {
-        let userData = JSON.parse(localStorage.getItem('EmoAppUser'));;
+    if (User) {
         let newNickname = $('#newName').val();
         if (newNickname !== '') {
-            userData.nickname = newNickname;
-            let updatedUserDataString = JSON.stringify(userData);
+            User.nickname = newNickname;
+            let updatedUserDataString = JSON.stringify(User);
             localStorage.setItem('EmoAppUser', updatedUserDataString);
-            User.nick = newNickname;
-            nickname = newNickname;
-            $('#user').text(nickname);
+            $('#user').text(User.nickname);
             alert("修改成功");
             document.getElementById('renameFW').style.display = 'none';
             $.ajax({
                 type: 'PUT',
-                url: '/api/updateNickname?username=' + username +'&nickname='+newNickname,
+                url: '/api/updateNickname?username=' + User.username +'&nickname='+ User.nickname,
                 success: function(response) {
                     console.log(response); // 成功更新時的處理邏輯
                 },
