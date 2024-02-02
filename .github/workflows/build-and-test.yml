@@ -42,3 +42,4 @@ jobs:
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml' #read and show surefire test report
+          check_name: 'Test Report'
