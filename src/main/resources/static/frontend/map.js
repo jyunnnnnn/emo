@@ -90,6 +90,7 @@ function systemInit(){
     $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
     document.getElementById('adminButton').style.display = User.userId === 1702984904982 ? 'block' : 'none';
+    //判定管理員待改
 }
 //更新現在位置
 function updateCurrentCircle(position) {
@@ -107,7 +108,7 @@ function updateCurrentCircle(position) {
     //跑到中心
     map.panTo(currentLocation);
 }
-//載入碳足跡計算係數(再來用設定檔)
+//載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
             url: '/api/GetAllRecordJson',

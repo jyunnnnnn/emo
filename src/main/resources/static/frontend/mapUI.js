@@ -144,6 +144,21 @@ $('#saveRecord').on('click', function () {
         $('#recordFW').css("display", "none");
     }
 });
+// 路線記錄儲存
+$('#saveTrafficRecord').on('click', function () {
+    event.preventDefault();
+    let type = $('#trafficType option:selected');
+    let data_value = $('#kilometer').val();
+
+    if(data_value <= 0) {
+        alert("請輸入正數");
+    } else if(type.attr('id') == "noAction") {
+        alert("請選擇行為");
+    } else {
+        saveRecord("交通", type.text(), data_value);
+        $('#routeFW').css("display", "none");
+    }
+});
 
 // 查看按鈕
 $('#recordListButton').on('click', function () {
