@@ -13,6 +13,7 @@ $('#openRecordModal').on('click', function() {
     $('#type').append($('<option>', {
         disabled: true,
         selected: true,
+        id: "noType",
         text: "請先選擇類別"
     }));
     // 初始化克數按鈕
@@ -28,7 +29,6 @@ $('#openRecordModal').on('click', function() {
     let span = $('<span>', {
         class: 'name',
         text: '請先選擇類別',
-        id: 'initType'
     });
     label.append(input, span);
     $('#gramRadios').append(label);
@@ -56,6 +56,7 @@ $('input[name="typeRadio"]').on('change', function() {
         select.empty();
         select.append($('<option>', {
             text: "請選擇一項行為",
+            id: "noAction",
             selected: true,
             disabled: true
         }));
@@ -129,19 +130,19 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
 $('#saveRecord').on('click', function () {
     event.preventDefault();
     let classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
-    let type = $('#type option:selected').text();
+    let type = $('#type option:selected');
     let data_value = $('#gram').val();
     if(!classType){
         alert("請選擇類別");
         return;
-    }else if(type=="請選擇一項行為" ||type=="請先選擇類別"){
+    }else if(type.attr('id') == "noAction"){
         alert("請選擇行為");
         return;
     }else if(data_value <= 0){
        alert("請輸入正數");
        return;
     }else{
-        saveRecord(classType, type, data_value);
+        saveRecord(classType, type.text(), data_value);
         $('#recordFW').css("display", "none");
     }
 });

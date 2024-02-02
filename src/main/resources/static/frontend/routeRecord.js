@@ -89,6 +89,7 @@ function stopRecording() {
     select.empty();
     select.append($('<option>', {
         text: "請選擇一項行為",
+        id: "noAction",
         selected: true,
         disabled: true
     }));
@@ -104,16 +105,16 @@ function stopRecording() {
 // 路線記錄儲存
 $('#saveTrafficRecord').on('click', function () {
     event.preventDefault();
-    let type = $('#trafficType option:selected').text();
+    let type = $('#trafficType option:selected');
     let data_value = $('#kilometer').val();
 
     if(data_value <= 0) {
         alert("請輸入正數");
-    } else if(type && data_value) {
-        saveRecord("交通", type, data_value);
-        $('#recordFW').css("display", "none");
+    } else if(type.attr('id') == "noAction") {
+        alert("請選擇行為");
     } else {
-        alert("請輸入完整資訊");
+        saveRecord("交通", type.text(), data_value);
+        $('#routeFW').css("display", "none");
     }
 });
 
