@@ -10,7 +10,7 @@ let circle; //當前位置標記 用於每5秒更新(清除、重劃)
 let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
-
+let categories = {};
 
 // 初始化Google Map
 function initMap() {
@@ -116,6 +116,7 @@ function loadFootprintData() {
                 // 處理成功時的邏輯
                 const parsedData = JSON.parse(data);
                 FPConstructor(parsedData);//待改名
+                initCategory();
             },
             error: function(xhr, status, error) {
                let errorData = JSON.parse(xhr.responseText);
@@ -138,6 +139,32 @@ function FPConstructor(jsonData) {
                  FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name});
              });
         }
+    }
+}
+function initCategory(){
+    $('#category').append($('<option>', {
+        text: "全部",
+        value: "all",
+        selected: true
+    }));
+    for (let i = 0; i < FootprintData.length; i++) {
+        let currentCategory = FootprintData[i].classZH;
+        let currentType = FootprintData[i].type;
+
+        if (!categories[currentCategory]) {
+            categories[currentCategory] = {
+                footprint: 0,
+                action: []
+            };
+            $('#category').append($('<option>', {
+                text: currentCategory,
+                value: FootprintData[i].class
+            }));
+        }
+        categories[currentCategory].action.push({
+            type: currentType,
+            totalFP: 0
+        });
     }
 }
 // 計算footprint

@@ -33,7 +33,6 @@ function recordClick(recordId){
 }
 //讓被點擊的紀錄呈現畫面中間，並打開inFoWindow
 function showNowRecordInFoWindow(nowRecord){
-
     //跑到中心
     let centerPosition = new google.maps.LatLng(nowRecord.latitude, nowRecord.longitude);
     map.panTo(centerPosition);
@@ -52,185 +51,168 @@ function showNowRecordInFoWindow(nowRecord){
 }
 // 圓餅圖
 let myChart = null;
-function showNewChart(nowRecords,type) {
-    const chartBox = document.getElementById("chartBox");
+function showNewChart(nowRecords, type) {
     let data;
-    let trafficTotal=0;
-    let dailyTotal=0;
-    let bus=0;
-    let train=0;
-    let mrt=0;
-    let hsr=0;
-    let cup=0;
-    let bag=0;
-    let tableware=0;
-    for(let i=0;i<nowRecords.length;i++){
-        if(nowRecords[i].type == "公車"){
-            bus+=nowRecords[i].footprint;
-        }else if(nowRecords[i].type == "火車"){
-            train+=nowRecords[i].footprint;
-        }else if(nowRecords[i].type == "捷運"){
-            mrt+=nowRecords[i].footprint;
-        }else if(nowRecords[i].type == "高鐵"){
-            hsr+=nowRecords[i].footprint;
-        }else if(nowRecords[i].type == "環保杯"){
-            cup+=nowRecords[i].footprint;
-        }else if(nowRecords[i].type == "環保袋"){
-            bag+=nowRecords[i].footprint;
-        }else if(nowRecords[i].type == "環保餐具"){
-            tableware+=nowRecords[i].footprint;
+    let nowCategories = categories;
+    const chartBox = $("#chartBox");
+    for(let i=0; i<nowRecords.length; i++){
+        let found = false;
+        for (let category in nowCategories) {
+            if(found) break;
+            let parent = nowCategories[category];
+            nowCategories[category].action.forEach(function(subcategory) {
+                if(found) return;
+                if(subcategory.type === nowRecords[i].type) {
+                    subcategory.totalFP += nowRecords[i].footprint;
+                    parent.footprint += nowRecords[i].footprint;
+                    found = true;
+                }
+            });
         }
     }
+
     if(type =="全部" || type == "init"){
-        dailyTotal=cup+bag+tableware;
-        trafficTotal=train+mrt+bus+hsr;
-        if(dailyTotal+trafficTotal==0){
-            chartBox.style.display = "none";
-            //這邊應該要讓列表出現沒有紀錄
-            return;
+        for(let [key, value] of Object.entries(nowCategories)){
+            if(key.footprint != 0) {
+                found = true;
+                break;
+            }
         }
-        data = {
-            labels: ['交通', '生活用品'],
-            datasets: [{
-                label: '減碳量',
-                data: [trafficTotal, dailyTotal],
-            }]
-        };
-    }else if(type == "交通"){
-        if(bus+train+mrt+hsr==0){
-            chartBox.style.display = "none";
-            let container = document.getElementById("listContent");
-            container.innerHTML = ""; // 清空容器內容
-            container.style.overflowY = "scroll";
-            container.style.maxHeight = "150px";
-            let recordDiv = document.createElement("div");
-            recordDiv.style.display = "inline";
-            recordDiv.style.textAlign = "center";
-            recordDiv.textContent = "沒有紀錄";
-            container.appendChild(recordDiv);
+        if(!found){
+            $("#chartBox").css("display", "none");
+            $("#chartBox").text("沒有紀錄");
+            return;
+        } else {
+            data = {
+                labels: [],
+                datasets: [{
+                    label: '減碳量',
+                    data: [],
+                }]
+            };
+            for(let [key, value] of Object.entries(nowCategories)){
+                data.labels.push(key);
+                data.datasets[0].data.push(value.footprint);
+            }
+        }
+    }else{
+        if(nowCategories[type].footprint == 0){
+            chartBox.css("display", "none");
+            let container = $("#listContent");
+            container.empty(); // 清空容器內容
+            container.css({
+                "overflowY": "scroll",
+                "maxHeight": "150px"
+            });
+            let recordDiv = $("<div>")
+                .css({
+                    "display": "inline",
+                    "textAlign": "center"
+                })
+                .text("沒有紀錄");
+            container.append(recordDiv);
 
             return;
         }
         data = {
-            labels: ['公車','火車','捷運','高鐵'],
+            labels: [],
             datasets: [{
                 label: '減碳量',
-                data: [bus,train,mrt,hsr],
+                data: [],
             }]
         };
-    }else if(type == "生活用品"){
-        if(cup+bag+tableware==0){
-            chartBox.style.display = "none";
-            let container = document.getElementById("listContent");
-            container.innerHTML = ""; // 清空容器內容
-            container.style.overflowY = "scroll";
-            container.style.maxHeight = "150px";
-            let recordDiv = document.createElement("div");
-            recordDiv.style.display = "inline";
-            recordDiv.style.textAlign = "center";
-            recordDiv.textContent = "沒有紀錄";
-            container.appendChild(recordDiv);
-            return;
-        }
-        data = {
-            labels: ['環保杯','環保袋','環保餐具'],
-            datasets: [{
-                label: '減碳量',
-                data: [cup,bag,tableware],
-            }]
-        };
+
+        nowCategories[type].action.forEach(function(subcategory) {
+            data.labels.push(subcategory.type);
+            data.datasets[0].data.push(subcategory.totalFP);
+        });
     }
-    const chartElement = document.getElementById("recordChart");
+    const chartElement = $('#recordChart');
     // 判斷是否已經存在舊的圖
     if (myChart !== null) {
         myChart.destroy();
     }
-
     // 創建新的圖
     myChart = new Chart(chartElement, {
         type: 'pie',
         data: data,
     });
 
-    chartBox.style.display = "block";
+    chartBox.css("display", "block");
 }
 // 查看歷史紀錄
 function showRecord() {
-//列表顯示環保紀錄
-    console.log("showrecord")
+    //列表顯示環保紀錄
     let thisRecords = records;
-    let container = document.getElementById("listContent");
-    container.innerHTML = ""; // 清空容器內容
-    container.style.overflowY = "scroll";
-    container.style.maxHeight = "150px";
+    let container = $('#listContent');
+    container.empty();
+    container.css({
+        'overflow-y': 'scroll',
+        'max-height': '150px'
+    });
 
     if(thisRecords.length == 0){
-        let recordDiv = document.createElement("div");
-        recordDiv.style.display = "inline";
-        recordDiv.style.textAlign = "center";
-        recordDiv.textContent = "沒有紀錄";
-
-        container.appendChild(recordDiv);
+        let recordDiv = $("<div>")
+            .css({
+                'display': 'inline',
+                'text-align': 'center'
+            })
+            .text("沒有紀錄");
+        container.append(recordDiv);
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
             // 創建新的checkbox
-            let checkbox = document.createElement('label');
-            checkbox.className = 'checkbox-container';
-            let input = document.createElement('input');
-            input.type = 'checkbox';
-            input.className = 'custom-checkbox';
-            let span = document.createElement('span');
-            span.className = 'checkmark';
-            span.id  = 'check_' + thisRecords[i].recordId;
-            checkbox.appendChild(input);
-            checkbox.appendChild(span);
-            checkbox.style.marginRight = "3px";
-            checkbox.style.display = "none";
+            let checkbox = $('<label>')
+                .addClass('checkbox-container')
+                .css({
+                    'margin-right': '3px',
+                    'display': 'none'
+                });
+            let input = $('<input>')
+                .attr('type', 'checkbox')
+                .addClass('custom-checkbox');
+            let span = $('<span>')
+                .addClass('checkmark')
+                .attr('id', 'check_' + thisRecords[i].recordId);
+            checkbox.append(input).append(span);
 
             // 創建新的<div>元素
-            let recordDiv = document.createElement("div");
-            recordDiv.style.display = "flex";
-            recordDiv.style.alignItems = "center";
+            let recordDiv = $("<div>")
+                .css({
+                    'display': 'flex',
+                    'align-items': 'center'
+                });
 
             // 創建新的 <p> 元素
-            let recordElement = document.createElement("p");
-            let timeSpan = document.createElement("span");
-            timeSpan.textContent = thisRecords[i].time + " ";
-            let typeSpan = document.createElement("span");
-            typeSpan.textContent = thisRecords[i].type + " ";
-            let footprintSpan = document.createElement("span");
-            footprintSpan.textContent = " (" + thisRecords[i].footprint + "g Co2E)";
+            let recordElement = $("<p>");
+            let timeSpan = $("<span>")
+                .text(thisRecords[i].time + " ");
+            let typeSpan = $("<span>")
+                .text(thisRecords[i].type + " ");
+            let footprintSpan = $("<span>")
+                .text(" (" + thisRecords[i].footprint + "g Co2E)");
 
-            // 將 <span> 元素附加到 <p> 元素
-            recordElement.appendChild(timeSpan);
-            recordElement.appendChild(typeSpan);
-            recordElement.appendChild(footprintSpan);
+            recordElement.append(timeSpan, typeSpan, footprintSpan);
+            recordDiv.append(checkbox, recordElement);
+            recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
+            container.append(recordDiv);
 
-            recordDiv.appendChild(checkbox);
-            recordDiv.appendChild(recordElement);
-            container.appendChild(recordDiv);
-            recordDiv.id  = 'record_' + thisRecords[i].recordId;
             (function(recordId) {
-                recordElement.addEventListener('click', function() {
+                recordElement.on('click', function() {
                     recordClick(recordId);
                 });
             })(thisRecords[i].recordId);
         }
-
     }
     showNewChart(thisRecords,"init");
-    let now = new Date();
-    //console.log(now);
-    let year = now.getFullYear();
-    let month = (now.getMonth() + 1).toString().padStart(2, '0');
-    let day = now.getDate().toString().padStart(2, '0');
-    let formattedDate = `${year}-${month}-${day}`;
+
+    let formattedDate = getFormattedDate();
     records.sort((a, b) => new Date(a.time) - new Date(b.time));
     let datePart;
     if(records.length>0){
          datePart = records[0].time.slice(0, 10);
     }else{
-        datePart=formattedDate;
+        datePart = formattedDate;
     }
 
     $('#startDate').val(datePart);
@@ -247,7 +229,7 @@ function sortRecordsBySelectedOption() {
     let selectedType = $("#sortType option:selected").text();
     let sortedRecords = records;
 
-    if (selectedCategory !== "全部") {
+    if (selectedCategory != "全部") {
         sortedRecords = sortedRecords.filter(record => record.classType === selectedCategory);
     }
 
@@ -276,9 +258,9 @@ function sortRecordsBySelectedOption() {
             sortedRecords.sort((a, b) => a.footprint - b.footprint);
         }
     }
-    let startDate=$('#startDate').val()
-    let endDate=$('#endDate').val()
-    sortedRecords=sortedRecords.filter(record =>{
+    let startDate = $('#startDate').val()
+    let endDate = $('#endDate').val()
+    sortedRecords = sortedRecords.filter(record =>{
         let recordDate = new Date(record.time.split(' ')[0]); // 提取日期部分
         return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
     });
@@ -287,74 +269,69 @@ function sortRecordsBySelectedOption() {
     showNewRecord(sortedRecords);
 }
 // 監聽排序選項變化事件
-document.getElementById("category").addEventListener("change", function (){
+$('#category, #sortType, #sortMethod, #startDate, #endDate').on("change", sortRecordsBySelectedOption);
 
-    sortRecordsBySelectedOption();
-});
-document.getElementById("sortType").addEventListener("change", sortRecordsBySelectedOption);
-document.getElementById("sortMethod").addEventListener("change", sortRecordsBySelectedOption);
-document.getElementById("startDate").addEventListener("change", sortRecordsBySelectedOption);
-document.getElementById("endDate").addEventListener("change",sortRecordsBySelectedOption);
 function showNewRecord(sortedRecords) {
     let thisRecords = sortedRecords;
-    let container = document.getElementById("listContent");
-    container.innerHTML = ""; // 清空容器內容
-    container.style.overflowY = "scroll";
-    container.style.maxHeight = "150px";
-    let display = document.getElementById("saveEditRecord").style.display;
+    let container = $('#listContent');
+    container.empty();
+    container.css({
+        'overflow-y': 'scroll',
+        'max-height': '150px'
+    });
 
     if(thisRecords.length == 0){
-        let recordDiv = document.createElement("div");
-        recordDiv.style.display = "inline";
-        recordDiv.style.textAlign = "center";
-        recordDiv.textContent = "沒有紀錄";
-
-        container.appendChild(recordDiv);
+        let recordDiv = $("<div>")
+            .css({
+                'display': 'inline',
+                'text-align': 'center'
+            })
+            .text("沒有紀錄");
+        container.append(recordDiv);
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
             // 創建新的checkbox
-            let checkbox = document.createElement('label');
-            checkbox.className = 'checkbox-container';
-            let input = document.createElement('input');
-            input.type = 'checkbox';
-            input.className = 'custom-checkbox';
-            let span = document.createElement('span');
-            span.className = 'checkmark';
-            span.id  = 'check_' + thisRecords[i].recordId;
-            checkbox.appendChild(input);
-            checkbox.appendChild(span);
-            checkbox.style.marginRight = "3px";
-            checkbox.style.display = display;
+            let checkbox = $('<label>')
+                .addClass('checkbox-container')
+                .css({
+                    'margin-right': '3px',
+                    'display': 'none'
+                });
+            let input = $('<input>')
+                .attr('type', 'checkbox')
+                .addClass('custom-checkbox');
+            let span = $('<span>')
+                .addClass('checkmark')
+                .attr('id', 'check_' + thisRecords[i].recordId);
+            checkbox.append(input).append(span);
 
             // 創建新的<div>元素
-            let recordDiv = document.createElement("div");
-            recordDiv.style.display = "flex";
-            recordDiv.style.alignItems = "center";
+            let recordDiv = $("<div>")
+                .css({
+                    'display': 'flex',
+                    'align-items': 'center'
+                });
 
             // 創建新的 <p> 元素
-            let recordElement = document.createElement("p");
-            let timeSpan = document.createElement("span");
-            timeSpan.textContent = thisRecords[i].time + " ";
-            let typeSpan = document.createElement("span");
-            typeSpan.textContent = thisRecords[i].type + " ";
-            let footprintSpan = document.createElement("span");
-            footprintSpan.textContent = " (" + thisRecords[i].footprint + "g Co2E)";
+            let recordElement = $("<p>");
+            let timeSpan = $("<span>")
+                .text(thisRecords[i].time + " ");
+            let typeSpan = $("<span>")
+                .text(thisRecords[i].type + " ");
+            let footprintSpan = $("<span>")
+                .text(" (" + thisRecords[i].footprint + "g Co2E)");
 
-            // 將 <span> 元素附加到 <p> 元素
-            recordElement.appendChild(timeSpan);
-            recordElement.appendChild(typeSpan);
-            recordElement.appendChild(footprintSpan);
+            recordElement.append(timeSpan, typeSpan, footprintSpan);
+            recordDiv.append(checkbox, recordElement);
+            recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
+            container.append(recordDiv);
 
-            recordDiv.appendChild(checkbox);
-            recordDiv.appendChild(recordElement);
-            container.appendChild(recordDiv);
-            recordDiv.id  = 'record_' + thisRecords[i].recordId;
             (function(recordId) {
-                recordElement.addEventListener('click', function() {
+                recordElement.on('click', function() {
                     recordClick(recordId);
                 });
             })(thisRecords[i].recordId);
         }
-        showNewChart(thisRecords,$("#category option:selected").text());
     }
+    showNewChart(thisRecords, $("#category option:selected").text());
 }

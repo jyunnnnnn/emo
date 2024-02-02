@@ -1,5 +1,3 @@
-//136行 fish 那個有沒有辦法用別的方法判斷 saverecord savetrafficrecord 交通的記錄有問題
-
 let selectDatas;
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
@@ -158,17 +156,8 @@ $('#recordListButton').on('click', function () {
 
     $('#category').val('all');
     $('#sortType').val('time');
-    $("#method").attr("label", "時間");
-    $("#option1").val("old");
-    $("#option1").text("遠到近");
-    $("#option2").val("new");
-    $("#option2").text("近到遠");
     $('#sortMethod').val('old');
-    let now = new Date();
-    let year = now.getFullYear();
-    let month = (now.getMonth() + 1).toString().padStart(2, '0');
-    let day = now.getDate().toString().padStart(2, '0');
-    let formattedDate = `${year}-${month}-${day}`;
+    let formattedDate = getFormattedDate().match(/\d{4}-\d{2}-\d{2}/)[0];
     let datePart;
     if(records.length>0){
          datePart = records[0].time.slice(0, 10);
