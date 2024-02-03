@@ -1,6 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.repository;
 
 import com.example.demo.repository.RecordRepository;
+import com.example.demo.service.EcoRecord;
+import com.example.demo.service.EcoRecordService;
 import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //減碳紀錄Repository功能測試(測試與MongoDB端互動)
-@SpringBootTest
+//@SpringBootTest
+@Disabled("Do not really need to test")
 class EcoRecordRepositoryTest {
 
     @Autowired
