@@ -15,10 +15,11 @@ public interface RecordRepository extends MongoRepository<EcoRecord, String> {
     @Query("{ 'userId' : ?0 }")
     List<EcoRecord> findAllByUserId(@Param("userId") String userId);//抓取某使用者的所有紀錄
 
+    EcoRecord findByRecordId(@Param("_id") String recordId);//抓取特定紀錄Id之紀錄
+
     void deleteByRecordId(String RecordId);
 
     void deleteByUserId(String userId);
-
 
 
 }

@@ -33,7 +33,6 @@ public class ConfigService {
     }
 
     public String test() {
-
         return gson.toJson(record.getSetting());
     }
 

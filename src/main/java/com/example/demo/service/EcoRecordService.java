@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 public class EcoRecordService {
-    private final RecordRepository repository;
+    private RecordRepository repository = null;
 
     public static int OK = 1;
     public static int BAD = 0;
@@ -19,15 +19,17 @@ public class EcoRecordService {
         this.repository = repository;
     }
 
+    public EcoRecordService() {
+    }
+
     //增加新紀錄到資料庫中
-    public void addRecord(EcoRecord ecoRecord) {
-        System.out.println(ecoRecord + "已新增到資料庫中.");
-        this.repository.save(ecoRecord);
+    public EcoRecord addRecord(EcoRecord ecoRecord) {
+        return this.repository.save(ecoRecord);
     }
 
     //修改歷史紀錄
-    public void updateRecord(EcoRecord newEcoRecord) {
-        this.repository.save(newEcoRecord);
+    public EcoRecord updateRecord(EcoRecord newEcoRecord) {
+        return this.repository.save(newEcoRecord);
     }
 
     //刪除特定一個歷史紀錄
@@ -35,7 +37,10 @@ public class EcoRecordService {
         this.repository.deleteByRecordId(recordId);
     }
 
-
+    //查詢特定recordId之紀錄
+    public EcoRecord findOneRecord(String recordId) {
+        return this.repository.findByRecordId(recordId);
+    }
 
     //抓取特定使用者紀錄
     public List<EcoRecord> getSpecificUserRecords(String username) {
@@ -47,6 +52,7 @@ public class EcoRecordService {
     public List<EcoRecord> getAllRecords() {
         return this.repository.findAll();
     }
+
     //刪除特定使用者紀錄
     public int deleteSpecificUserRecord(String userId) {
         try {
