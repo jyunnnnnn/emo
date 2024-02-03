@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -18,13 +19,15 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailService {
 
-    private final String SenderEmail = "penny85946256@gmail.com";//寄送者mail
-    private final String senderName ="EmoTeam";//寄件人名稱
+    @Value("${emailService.mail}")
+    private String SenderEmail;//寄送者mail
+    private final String senderName = "EmoTeam";//寄件人名稱
     private Map<String, String> validCode = new HashMap<>();//紀錄電子郵件驗證碼
     private Map<String, Boolean> valid = new HashMap<>();//紀錄某電子郵件是否可以再寄送驗證碼
-    private Map<String,TimerTask> timer = new HashMap<>();
+    private Map<String, TimerTask> timer = new HashMap<>();
     private final Timer cTimer = new Timer();
-    private final String APIKey = "gznpcmfhredpnfhk";// 電子郵件API金鑰
+    @Value("${emailService.key}")
+    private String APIKey;// 電子郵件API金鑰
     public static final int MAIL_VALIDCODE_CORRECT = 0;// 電子郵件驗證碼正確
     public static final int MAIL_VALIDCODE_INCORRECT = 1;// 電子郵件驗證碼錯誤
 
@@ -77,7 +80,7 @@ public class MailService {
 
             Message message = new MimeMessage(session);
 
-            message.setFrom(new InternetAddress(SenderEmail,senderName));
+            message.setFrom(new InternetAddress(SenderEmail, senderName));
 
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(userMail));
@@ -95,7 +98,7 @@ public class MailService {
 
             System.out.println(userMail + "電子郵件驗證碼寄送成功!");
             TimerTask task = new Expired(userMail);
-            timer.put(userMail,task);
+            timer.put(userMail, task);
             cTimer.schedule(task, 5 * 60 * 1000);// 啟動計時器 5分鐘後讓驗證碼失效
 
         } catch (MessagingException e) {

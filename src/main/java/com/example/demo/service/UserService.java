@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +68,7 @@ public class UserService {
     //帳號是否存在
     public int isAccountExists(String username) {
         User result = this.repository.findByUsername(username);
+
         if (result != null) return USER_FOUND;
         return USER_NOT_FOUND;
     }
@@ -83,14 +85,6 @@ public class UserService {
         return NOT_EXIST;
     }
 
-    //帳號密碼是否正確
-    public int isValidUser(String username, String userInputPassword) {
-        User user = this.repository.findByUsername(username);
-        if (username.equals(user.getUsername()) && userInputPassword.equals(user.getPassword())) {
-            return CORRECT;
-        }
-        return INCORRECT;
-    }
 
     //抓取特定帳號資料
     public User fetchOneUserByUsername(String username) {
@@ -130,13 +124,14 @@ public class UserService {
     public int checkPasswordChangable(String username) {
 
         //該帳號是否可以修改密碼
-        System.out.println(passwordChangable.get(username));
+//        System.out.println(passwordChangable.get(username));
         if (passwordChangable.containsKey(username)) {
             //移除該帳號的修改密碼權限
             System.out.println(username + "可以修改密碼");
             passwordChangable.remove(username);
             return OK;
         }
+        System.out.println(username + "不可修改密碼");
         return FAIL;
     }
 
@@ -149,7 +144,8 @@ public class UserService {
 
         return OK;
     }
-    public int updateNicknameByUsername(String  username, String nickname) {
+
+    public int updateNicknameByUsername(String username, String nickname) {
         //檢查帳號是否存在
         User result = this.repository.findByUsername(username);
         if (result != null) {
@@ -159,6 +155,7 @@ public class UserService {
         }
         return FAIL;
     }
+
     public User googleLogin(String googleData) throws Exception {
         /*
             帳號:@ + 電子郵件去除@之後的字串
@@ -178,7 +175,7 @@ public class UserService {
         username = "@Google-" + username.substring(1, username.indexOf('@'));
 
         String password = String.valueOf(jsonNode.get("sub"));
-        password = new AESEncryption().encrypt(password.substring(1, password.length() - 1)) ;
+        password = new AESEncryption().encrypt(password.substring(1, password.length() - 1));
         String nickname = String.valueOf(jsonNode.get("name"));
         nickname = nickname.substring(1, nickname.length() - 1);
         String email = String.valueOf(jsonNode.get("email"));
