@@ -2,19 +2,20 @@
   "RecordCategory": {
     "daily": {
       "base": {
-        "paper": 0.1,
+        "paper": 0.242,
         "plastic": 1.95
       },
+      "name": "生活用品",
       "content": [
         {
           "index": "cup",
           "name": "環保杯",
           "coefficient": 0,
-          "unit": "kgCO2e",
+          "unit": "gCO2e",
           "option": {
-            "large": 15,
-            "medium": 10,
-            "small": 5
+            "小(5g)": 5,
+            "中(10g)": 10,
+            "大(15g)": 15
           },
           "baseline": "plastic"
         },
@@ -22,11 +23,11 @@
           "index": "tableware",
           "name": "環保餐具",
           "coefficient": 0,
-          "unit": "kgCO2e",
+          "unit": "gCO2e",
           "option": {
-            "large": 25,
-            "medium": 20,
-            "small": 15
+            "小(15g)": 15,
+            "中(20g)": 20,
+            "大(25g)": 25
           },
           "baseline": "paper"
         },
@@ -34,11 +35,11 @@
           "index": "bag",
           "name": "環保袋",
           "coefficient": 0,
-          "unit": "kgCO2e",
+          "unit": "gCO2e",
           "option": {
-            "large": 10,
-            "medium": 5,
-            "small": 2
+            "小(2g)": 2,
+            "中(5g)": 5,
+            "大(10g)": 10
           },
           "baseline": "plastic"
         }
@@ -49,6 +50,7 @@
         "car": 110,
         "scooter": 100
       },
+      "name": "交通",
       "content": [
         {
           "index": "bus",

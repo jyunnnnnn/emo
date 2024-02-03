@@ -1,9 +1,9 @@
 
 
 //加密金鑰
-var key;
+let key;
 //加密偏移量
-var iv;
+let iv;
 
 function getEncryptKey() {
     return new Promise(function(resolve, reject) {
@@ -26,7 +26,7 @@ function getEncryptKey() {
 
 //加密
 function encrypt(text,key,iv) {
-    var encrypted;
+    let encrypted;
  encrypted= CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
          iv: CryptoJS.enc.Utf8.parse(iv),
          mode: CryptoJS.mode.CBC,
@@ -38,7 +38,7 @@ function encrypt(text,key,iv) {
 
 //解密
 function decrypt(ciphertext,key,iv){
-    var decrypt;
+    let decrypt;
      decrypt= CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse(key), {
             iv: CryptoJS.enc.Utf8.parse(iv),
             mode: CryptoJS.mode.CBC,
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     //註冊頁面 發送驗證碼按鈕
     $('#sendVerifyingCodeButton').click(function (e) {
-        var inputEmail = $('#exampleInputEmail').val();
+        let inputEmail = $('#exampleInputEmail').val();
 
         //檢查是否有輸入電子郵件
         if (!inputEmail) {
@@ -116,9 +116,9 @@ $(document).ready(function () {
     // 註冊
     $('#return-to-login').click(function (e) {
         e.preventDefault();
-        var inputAccount = $('#exampleInputAccount2').val();
-        var inputPassword = $('#exampleInputPassword2').val();
-        var inputConfirmedPassword = $('#exampleInputPasswordcheck').val();
+        let inputAccount = $('#exampleInputAccount2').val();
+        let inputPassword = $('#exampleInputPassword2').val();
+        let inputConfirmedPassword = $('#exampleInputPasswordcheck').val();
 
         // userID
 
@@ -129,7 +129,7 @@ $(document).ready(function () {
         }
 
         // email
-        var inputEmail = $('#exampleInputEmail').val();
+        let inputEmail = $('#exampleInputEmail').val();
 
 
 
@@ -144,8 +144,8 @@ $(document).ready(function () {
             alert('請確認是否輸入密碼或確認密碼是否正確');
             return;
         }
-        var now = new Date();
-        var userId=now.getTime();
+        let now = new Date();
+        let userId=now.getTime();
         // nickname default:username
          getEncryptKey().then(function() {
             // 在這裡執行需要 key 和 iv 的程式碼
@@ -156,7 +156,7 @@ $(document).ready(function () {
 
 
 
-        var userData = {
+        let userData = {
             username: inputAccount,
             password: inputPassword,
             nickname: inputAccount,
@@ -164,7 +164,7 @@ $(document).ready(function () {
             userId: userId
         };
 
-        var verifyingCode = $('#exampleInputCheckCode').val();
+        let verifyingCode = $('#exampleInputCheckCode').val();
 
         //檢查驗證碼是否正確或是否為空
         if (!verifyingCode) {
@@ -188,8 +188,8 @@ $(document).ready(function () {
                             $('#signup-container').addClass('d-none');
                         },
                         error: function (xhr, status, error) {
-                            var errorData = JSON.parse(xhr.responseText);
-                            var errorMessage = errorData.message;
+                            let errorData = JSON.parse(xhr.responseText);
+                            let errorMessage = errorData.message;
                             alert(errorMessage);
                         }
                     });
@@ -200,15 +200,15 @@ $(document).ready(function () {
             });
         }
         //回到登入頁面註冊好的帳號密碼出現在頁面上
-        var AccountField = document.getElementById("exampleInputAccount1");
+        let AccountField = document.getElementById("exampleInputAccount1");
         AccountField.value = inputAccount;
-        var PasswordField = document.getElementById("password-field");
+        let PasswordField = document.getElementById("password-field");
         PasswordField.value = inputPassword;
     });
 
     //檢查是否為email格式
     function IsEmail(email) {
-        var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        let regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         if (!regex.test(email)) {
             return false;
         } else {
@@ -235,8 +235,8 @@ $(document).ready(function () {
     $('#login-button').click(function (e) {
         e.preventDefault();
 
-        var inputAccount = $('#exampleInputAccount1').val();
-        var inputPassword = $('#password-field').val();
+        let inputAccount = $('#exampleInputAccount1').val();
+        let inputPassword = $('#password-field').val();
 
         if(!inputAccount || !inputPassword){
             alert("請確認輸入欄位是否輸入");
@@ -253,13 +253,13 @@ $(document).ready(function () {
                     contentType: 'application/json',
 
                     success: function (response) {
-                        var userData = response.user;
+                        let userData = response.user;
                         localStorage.setItem('EmoAppUser', userData);
                         alert(response.message);
                         window.location.href = response.location;
                     },
                     error: function (xhr, status, error) {
-                        var errorMessage = JSON.parse(xhr.responseText);
+                        let errorMessage = JSON.parse(xhr.responseText);
                         alert(errorMessage.message);
                     }
                 });
@@ -274,7 +274,7 @@ $(document).ready(function () {
     //忘記密碼頁面 送出驗證碼按鈕
     $('#send-email').click(function(e){
         //使用者輸入帳號
-        var inputAccount = $('#exampleInputAccount3').val();
+        let inputAccount = $('#exampleInputAccount3').val();
 
         //檢查是否輸入帳號
         if(!inputAccount){
@@ -289,7 +289,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (response) {
                 //檢查是否已經寄送過
-                var email = response.email;
+                let email = response.email;
                 isSend(email);
             },
             error: function (response) {
@@ -305,9 +305,9 @@ $(document).ready(function () {
 
 
         //使用者輸入帳號
-        var inputAccount = $('#exampleInputAccount3').val();
+        let inputAccount = $('#exampleInputAccount3').val();
         //使用者輸入驗證碼
-        var inputCode =$('#Input-verify-code').val();
+        let inputCode =$('#Input-verify-code').val();
 
 
         //檢查是否輸入帳號
@@ -372,9 +372,9 @@ $(document).ready(function () {
         e.preventDefault();
 
         //使用者輸入的新密碼
-        var newPassword = $('#exampleInputPassword3').val();
+        let newPassword = $('#exampleInputPassword3').val();
         //確認新密碼
-        var newConfirmedPassword = $('#exampleInputPasswordcheck2').val();
+        let newConfirmedPassword = $('#exampleInputPasswordcheck2').val();
         //密碼欄位是否為空
         if(!newPassword || !newConfirmedPassword ){
             alert("請檢查密碼欄位是否輸入完全");
@@ -392,7 +392,7 @@ $(document).ready(function () {
         }
 
         //更新使用者資訊
-        var userAccount = $('#exampleInputAccount3').val();
+        let userAccount = $('#exampleInputAccount3').val();
         //檢查帳號欄位是否被刪除或修改為不存在的帳號 (漏洞:可能會先輸入自己的電子郵件帳號 在修改密碼欄位出來以後 更改成別人的電子郵件帳號在進行密碼修改)
         if(!userAccount){
             alert("請輸入帳號");
@@ -444,7 +444,7 @@ $(document).ready(function () {
 //Google登入回呼函式
 function handleCallback(response) {
     //使用者資料解碼
-   var profile= JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))));
+   let profile= JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))));
 
     $.ajax({
         type: 'POST',
@@ -452,7 +452,7 @@ function handleCallback(response) {
         contentType: 'application/json',
         data: JSON.stringify(profile),
         success: function (response) {
-                var userData = response.user;
+                let userData = response.user;
                 localStorage.setItem('EmoAppUser', userData);
                 alert(response.message);
                 window.location.href = response.location;
