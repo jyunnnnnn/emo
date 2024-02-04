@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build_and_Test
+name: Build and Test
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
       '**'
 
 jobs:
-  Build and Test:
+  Build_and_Test:
     runs-on: ubuntu-latest
     permissions:
       checks: write
