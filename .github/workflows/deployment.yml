@@ -1,6 +1,6 @@
 name: Deploy to Heroku
-
-on: #deploy event triggered only on push and pull request event happen on main branch
+#deploy event triggered only on push and pull request event happen on main branch
+on:
   push:
     branches:
       - master
