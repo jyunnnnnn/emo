@@ -3,11 +3,12 @@ name: Deploy to Heroku
 on: #deploy event triggered only on push and pull request event happen on main branch
   push: ['master','main']
   pull_request: ['master','main']
+
 jobs:
-  deploy:
+  Deployment:
     runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
+    steps:
+    - uses: actions/checkout@v3
     - uses: akhileshns/heroku-deploy@v3.13.15
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
