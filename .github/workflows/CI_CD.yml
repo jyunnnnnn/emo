@@ -6,27 +6,26 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build and Test
+name: CI/CD
 
 on:
   push:
-    branches: #Build and Test in all branch
-      - '**'
+    branches: [ "main" ,"master"]
   pull_request:
-    branches:
-      - '**'
+    branches: [ "main" ,"master"]
 
 jobs:
-  Build_and_Test:
+  build:
+
     runs-on: ubuntu-latest
     permissions:
       checks: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       #Setup JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -37,13 +36,16 @@ jobs:
       #Run Test
       - name: Test
         run: mvn -batch-mode test
-      #Publish Test Report
+
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml' #read and show surefire test report
           check_name: 'Test Report'
-
-
-
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
+          heroku_email: ${{secrets.HEROKU_MAIL}}
