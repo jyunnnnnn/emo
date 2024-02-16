@@ -254,7 +254,7 @@ $('#rename').on('click', function () {
     // 顯示懸浮窗
     $('#renameFW').css("display", "flex");
     $('#renameFW').css("position", "fixed");
-    $('#newName').attr("placeholder", nickname);
+    $('#newName').attr("placeholder", User.nickname);
 });
 
 function closeFW(event){

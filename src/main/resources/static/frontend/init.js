@@ -90,8 +90,7 @@ function systemInit(){
     $('#renameBtn').click(modifyNickname);
     $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
-    document.getElementById('adminButton').style.display = User.userId === 1702984904982 ? 'block' : 'none';
-    //判定管理員待改
+    document.getElementById('adminButton').style.display = 'none';
 }
 //更新現在位置
 function updateCurrentCircle(position) {
@@ -185,7 +184,9 @@ function calculateFootprint(type,data_value) {
 function modifyNickname() {
     if (User) {
         let newNickname = $('#newName').val();
-        if (newNickname !== '') {
+        if (newNickname == '' || newNickname.length > 10) {
+            alert("暱稱不得為空且長度不得大於10個字");
+        } else {
             User.nickname = newNickname;
             let updatedUserDataString = JSON.stringify(User);
             localStorage.setItem('EmoAppUser', updatedUserDataString);
@@ -202,8 +203,6 @@ function modifyNickname() {
                     console.error(error); // 更新失敗時的處理邏輯
                 }
             });
-        } else {
-            alert("暱稱不得為空");
         }
     } else {
         alert("請重新登入");

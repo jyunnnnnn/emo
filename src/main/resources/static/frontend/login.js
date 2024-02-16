@@ -254,9 +254,15 @@ $(document).ready(function () {
 
                     success: function (response) {
                         let userData = response.user;
-                        localStorage.setItem('EmoAppUser', userData);
-                        alert(response.message);
-                        window.location.href = response.location;
+                        if("admin" === JSON.parse(userData).username){
+                            alert("管理員登入")
+                            window.location.href = "admin";
+                        }
+                        else{
+                            localStorage.setItem('EmoAppUser', userData);
+                            alert(response.message);
+                            window.location.href = response.location;
+                        }
                     },
                     error: function (xhr, status, error) {
                         let errorMessage = JSON.parse(xhr.responseText);
