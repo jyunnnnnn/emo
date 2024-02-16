@@ -79,7 +79,8 @@ function systemInit(){
     loadFootprintData();//載入碳足跡計算
     $('#user').text(User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
-    $('#delete').click(deleteAccount);//刪除帳號
+    $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
+    $('#deleteAccount_sendVerifyCode').click(isSendVerifyCode);
     $('#updateRecord').click(updateRecord)// 修改一般紀錄
     $('#deleteRecord').click(deleteSingleRecord)// 刪除一般紀錄
     $('#updateTrafficRecord').click(function(event) {updateRecord(event, "traffic");}); // 修改路線紀錄
@@ -209,46 +210,6 @@ function modifyNickname() {
         window.location.href = '/login';
     }
 }
-//刪除帳號
-function deleteAccount(){
-    getEncryptKey().then(function() {
-        let encryptPass =encrypt( $('#passwordAuth').val(),key,iv);
-       if( encryptPass == User.password){
-           $.ajax({
-               type: 'DELETE',
-               url: `/api/deleteUserAccount?userId=${User.userId}`,
-               contentType: 'application/string',
-               success: function(response) {
-                   //console.log(response); // 成功刪除時的處理邏輯
-               },
-               error: function(xhr, status, error) {
-                   console.error(error); // 刪除失敗時的處理邏輯
-               }
-           });
-           alert("帳號刪除成功");
-           localStorage.removeItem('EmoAppUser');
-           window.location.href= '/login';
-           //刪除Emo_User
-           $.ajax({
-               type: 'DELETE',
-               url: `/api/deleteSpecificUserRecord?userId=${User.userId}`,
-               contentType: 'application/string',
-               success: function(response) {
-                   //console.log(response); // 成功刪除時的處理邏輯
-               },
-               error: function(xhr, status, error) {
-                   console.error(error); // 刪除失敗時的處理邏輯
-               }
-           });
-           //刪除Emo_Record裡面指定用戶的紀錄
-       }
-       else{
-          alert("密碼錯誤");
-       }
-    }).catch(function() {
-        console.log("無法取得金鑰和偏移量");
-    });
-}
 
 function getFormattedDate(){
         let now = new Date();
@@ -261,57 +222,11 @@ function getFormattedDate(){
         let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     return formattedDate;
 }
-
-
-////////////////////////////////這邊以下不知道哪來的
 //登出
 function logoutAccount(){
     alert("登出成功");
     localStorage.removeItem('EmoAppUser');
-    google.accounts.id.disableAutoSelect ();
+    google.accounts.id.disableAutoSelect();
     window.location.href= '/login';
 
-}
-//加密金鑰
-let key;
-//加密偏移量
-let iv;
-//獲取加密金鑰
-function getEncryptKey() {
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            type: 'GET',
-            url: '/api/getEncryptKey',
-            contentType: 'application/json',
-            success: function (response) {
-                key = response.key;
-                iv = response.iv;
-                resolve();  // 解析 Promise 表示成功取得金鑰和偏移量
-            },
-            error: function (xhr, status, error) {
-                console.log("獲取金鑰失敗");
-                reject();  // 拒絕 Promise 表示無法取得金鑰和偏移量
-            }
-        });
-    });
-}
-//加密
-function encrypt(text,key,iv) {
-    let encrypted;
- encrypted= CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
-         iv: CryptoJS.enc.Utf8.parse(iv),
-         mode: CryptoJS.mode.CBC,
-         padding: CryptoJS.pad.Pkcs7
-     });
-    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
-}
-//解密
-function decrypt(ciphertext,key,iv){
-    let decrypt;
-     decrypt= CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse(key), {
-            iv: CryptoJS.enc.Utf8.parse(iv),
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-          return decrypt.toString(CryptoJS.enc.Utf8);
 }
