@@ -1,7 +1,25 @@
 //重寫
+$(document).ready(function() {
+  $('#addNewContent').click(function() {
+    let newContent = {
+      index: $('#index').val(),
+      name: $('#name').val(),
+      coefficient: $('#coefficient').val(),
+      unit: $('#unit').val(),
+      option1: $('#option1').val(),
+      option2: $('#option2').val(),
+      option3: $('#option3').val(),
+      baseline: $('#baseline').val()
+    };
+
+    console.log(newContent);
+  });
+});
+
+
 
 // 打開管理員介面
-function showFPdata() {
+/*function showFPdata() {
     let thisData = FootprintData;
     //console.log(thisData);
     let container = document.getElementById("adminData");
@@ -105,4 +123,4 @@ function deleteSelectedFootprints() {
             });
         }
     });
-}
+}*/
