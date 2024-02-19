@@ -21,13 +21,17 @@ import java.util.Map;
 public class UserController {
 
 
-    private final UserService userService;
+    @Autowired
+    private  UserService userService;
+
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    public UserController() {
+    }
 
     //註冊新帳號
     @PostMapping("/register")
@@ -40,7 +44,7 @@ public class UserController {
             return ResponseEntity.ok(Collections.singletonMap("message", "帳號註冊成功"));
         }
 
-
+        System.out.println("error");
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號已存在"));
     }
 
@@ -171,7 +175,7 @@ public class UserController {
 
 
         //google登入失敗
-        if (result==null)
+        if (result == null)
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用google帳號登入失敗"));
 
 

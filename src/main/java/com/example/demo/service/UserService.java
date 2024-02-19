@@ -30,9 +30,12 @@ public class UserService {
     public static final int OK = 7;
 
     public static final int FAIL = 8;
-    private final UserRepository repository;
+    private UserRepository repository;
 
     private Map<String, Boolean> passwordChangable;//檢查該帳號是否可以更改密碼 (之後可以改成用重設密碼連結)
+
+    public UserService() {
+    }
 
     @Autowired
     public UserService(UserRepository repository) {
@@ -67,10 +70,15 @@ public class UserService {
 
     //帳號是否存在
     public int isAccountExists(String username) {
-        User result = this.repository.findByUsername(username);
+        try {
+            User result = this.repository.findByUsername(username);
+            if (result != null) return USER_FOUND;
+            return USER_NOT_FOUND;
+        } catch (Exception err) {
+            return USER_NOT_FOUND;
+        }
 
-        if (result != null) return USER_FOUND;
-        return USER_NOT_FOUND;
+
     }
 
     //返回特定信箱的帳號資訊

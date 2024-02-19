@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintStream;
 
 //設定檔Service物件
 @Service
@@ -24,8 +25,11 @@ public class ConfigService {
     //json內容解析成java物件
     ConfigurationWrapper record = gson.fromJson(configFile, ConfigurationWrapper.class);
 
+
     public ConfigService() throws FileNotFoundException {
     }
+
+
 
     //獲取所有減碳紀錄事項Json字串
     public String getAllRecordJson() {
