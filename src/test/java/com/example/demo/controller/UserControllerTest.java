@@ -46,8 +46,6 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private UserRepository userRepository;
     @Autowired
     private ObjectMapper objectMapper;
 
