@@ -10,8 +10,20 @@ $(document).ready(function() {
       option2: $('#option2').val(),
       option3: $('#option3').val(),
       baseline: $('#baseline').val()
-    };
 
+    };
+    $.ajax({
+        type: 'PUT',
+        url: '/api/addNewContent?index='+ newContent.index, // 替換成適當的後端路由
+        contentType: 'application/json',
+        data: JSON.stringify(newContent),
+        success: function(response) {
+            console.log('新增成功:', response);
+        },
+        error: function(xhr, status, error) {
+            console.error('新增失敗:', error);
+        }
+    });
     console.log(newContent);
   });
 });
