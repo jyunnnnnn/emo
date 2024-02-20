@@ -1,7 +1,6 @@
 package com.example.demo.service;
+import com.example.demo.entity.Footprint;
 import com.example.demo.repository.FootprintRepository;
-import com.example.demo.repository.RecordRepository;
-import com.example.demo.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

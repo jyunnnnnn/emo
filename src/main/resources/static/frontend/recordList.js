@@ -1,4 +1,5 @@
 // 設定頁面顯示總減碳量(刪掉)
+let dateArray=[];
 function showSettingPage(){
     let thisRecords = records;
     let container = document.getElementById("totalFootprint");
@@ -205,9 +206,8 @@ function showRecord() {
         }
     }
     showNewChart(thisRecords,"init");
-
-    let formattedDate = getFormattedDate();
     records.sort((a, b) => new Date(a.time) - new Date(b.time));
+    let formattedDate = getFormattedDate().slice(0, 10);
     let datePart;
     if(records.length>0){
          datePart = records[0].time.slice(0, 10);
@@ -215,13 +215,18 @@ function showRecord() {
         datePart = formattedDate;
     }
 
-    $('#startDate').val(datePart);
-    $('#endDate').val(formattedDate);
-    // 時間始末
-    $('#startDate').attr('min', datePart);
-    $('#startDate').attr('max', formattedDate);
-    $('#endDate').attr('min', datePart);
-    $('#endDate').attr('max', formattedDate);
+    flatpickr("#startDate", {
+        mode: "range", // 選擇模式
+        dateFormat: "Y-m-d", // 日期格式
+        defaultDate: [datePart, formattedDate], // 日期範圍
+        minDate: datePart,
+        maxDate: formattedDate,
+        allowInput: false,
+        onChange: function(selectedDates,dateStr){
+            dateArray = dateStr.split(' to ');
+            console.log(dateStr,dateArray);
+        }
+    });
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption() {
@@ -258,14 +263,12 @@ function sortRecordsBySelectedOption() {
             sortedRecords.sort((a, b) => a.footprint - b.footprint);
         }
     }
-    let startDate = $('#startDate').val()
-    let endDate = $('#endDate').val()
+    let startDate = dateArray[0];
+    let endDate = dateArray[1];
     sortedRecords = sortedRecords.filter(record =>{
         let recordDate = new Date(record.time.split(' ')[0]); // 提取日期部分
         return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
     });
-    $('#startDate').attr('max', endDate);
-    $('#endDate').attr('min', startDate);
     showNewRecord(sortedRecords);
 }
 // 監聽排序選項變化事件

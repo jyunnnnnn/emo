@@ -1,4 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.entity;
+
+import com.example.demo.entity.Record;
 
 import java.util.Map;
 

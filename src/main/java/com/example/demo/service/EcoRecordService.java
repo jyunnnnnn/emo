@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.EcoRecord;
 import com.example.demo.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EcoRecordService {

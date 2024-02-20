@@ -6,7 +6,9 @@
     <title>EMO</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <!--引入 flatpickr日期選擇器-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!--CryptoJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- 圓餅圖 -->
@@ -336,14 +338,10 @@
 
         <div class="recordHeading" id="activityListModalLabel">歷史紀錄</div>
         <div class="chart-box" id="chartBox" style="display: none; width: 300px; height: 300px;"><canvas id="recordChart" style="display: block; box-sizing: border-box; height: 279px; width: 279px;"></canvas></div>
-        <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: center;">
             <div style="flex:1; display: inline-flex; align-items: center;">
-                <p style="margin-top:16px; font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; color: rgb(123, 125, 127);">起始：</p>
-                <input type="date" id="startDate" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; color: rgb(123, 125, 127);"/>
-            </div>
-            <div style="flex:1; display: inline-flex; align-items: center;">
-                <p style="margin-top:16px; font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; color: rgb(123, 125, 127);">結束：</p>
-                <input type="date" id="endDate" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; color: rgb(123, 125, 127);"/>
+                <p style="margin-top:16px; font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; color: rgb(123, 125, 127);">請選擇日期：</p>
+                <input type="text" id="startDate"  style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; color: rgb(123, 125, 127);"/>
             </div>
         </div>
         <div id="typeSelect" style="margin-bottom: 10px; display: flex; justify-content: space-between;">

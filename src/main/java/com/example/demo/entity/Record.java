@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.entity;
 
 //每個紀錄都會有的資訊
 public class Record {

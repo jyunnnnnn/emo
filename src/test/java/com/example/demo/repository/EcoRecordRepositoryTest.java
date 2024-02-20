@@ -1,12 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.repository.RecordRepository;
-import com.example.demo.service.EcoRecord;
+import com.example.demo.entity.EcoRecord;
 import com.example.demo.service.EcoRecordService;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Date;

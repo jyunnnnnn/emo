@@ -1,15 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.AESEncryption;
+import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.desktop.SystemSleepEvent;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

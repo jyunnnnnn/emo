@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.entity;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

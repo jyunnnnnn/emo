@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.AESEncryption;
+import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +13,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.security.spec.RSAPrivateKeySpec;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;

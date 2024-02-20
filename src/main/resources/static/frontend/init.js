@@ -86,7 +86,6 @@ function systemInit(){
     $('#updateTrafficRecord').click(function(event) {updateRecord(event, "traffic");}); // 修改路線紀錄
     $('#deleteTrafficRecord').click(deleteSingleRecord)// 刪除路線紀錄
     $('#recordListButton').click(showRecord);//查看環保紀錄
-    $('#adminButton').click(showFPdata)
     $('#settingButton').click(showSettingPage);
     $('#renameBtn').click(modifyNickname);
     $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
