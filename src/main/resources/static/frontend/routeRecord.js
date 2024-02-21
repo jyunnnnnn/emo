@@ -4,22 +4,27 @@ let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
 
 function success(pos){
-    distanceThreshold = 10; // 十公尺
-    //console.log(pos,currentLocation);
+    // distanceThreshold = 10; // 十公尺
+    // //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
-    const point1 = new google.maps.LatLng(newLat, newLng);
-    const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
-    //計算新位置和當前位置的距離 meter
-    const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    // 只有當距離超過閾值時才更新位置和圓圈 (小於10公尺不更新)
-    if (distance > distanceThreshold) {
-        currentLocation = {
-            lat: newLat,
-            lng: newLng
-        };
-        updateCurrentCircle(pos);
-    }
+    // const point1 = new google.maps.LatLng(newLat, newLng);
+    // const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    // //計算新位置和當前位置的距離 meter
+    // const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+    // // 只有當距離超過閾值時才更新位置和圓圈 (小於10公尺不更新)
+    // if (distance > distanceThreshold) {
+    //     currentLocation = {
+    //         lat: newLat,
+    //         lng: newLng
+    //     };
+    //     updateCurrentCircle(pos);
+    // }
+    currentLocation = {
+        lat: newLat,
+        lng: newLng
+    };
+    updateCurrentCircle(pos);
 }
 
 function error(err) {
@@ -31,7 +36,8 @@ function error(err) {
 options = {
     enableHighAccuracy: false,//低精準，較不耗能
     timeout: 5000,//最長等待時間五秒
-    maximumAge: 1000,//緩存位置1秒
+    maximumAge: 10000,//緩存位置10秒
+    minimunDistance: 5, //移動超過5米觸發位置更新
 };
 // 路線紀錄(開始/停止)
 function checkIsRecording() {
