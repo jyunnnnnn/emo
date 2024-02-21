@@ -6,9 +6,11 @@ $(document).ready(function() {
       name: $('#name').val(),
       coefficient: $('#coefficient').val(),
       unit: $('#unit').val(),
-      option1: $('#option1').val(),
-      option2: $('#option2').val(),
-      option3: $('#option3').val(),
+      option: {
+          "大": $('#option1').val(),
+          "中": $('#option2').val(),
+          "小": $('#option3').val()
+      },
       baseline: $('#baseline').val()
 
     };
