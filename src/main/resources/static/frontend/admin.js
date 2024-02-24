@@ -1,3 +1,50 @@
+
+$(document).ready(function () {
+    //選擇輸入其他類別增加輸入框
+    $('#types').on('change', function() {
+        var select = $('#types');
+        var optionInput = $('#otherOption');
+        if (select.val() === 'addNew') {
+        optionInput.css('display', 'inline');
+        } else {
+        optionInput.css('display', 'none');
+        }
+    });
+    $('#types2').on('change', function() {
+        var select = $('#types2');
+        var optionInput = $('#otherOption2');
+        if (select.val() === 'addNew') {
+        optionInput.css('display', 'inline');
+        } else {
+        optionInput.css('display', 'none');
+        }
+    });
+
+    $('#options').on('change', function() {
+
+        if ($('#options').val() === 'daily') {
+            $('#daily').removeClass('d-none');
+            $('#dailybase').addClass('d-none');
+            $('#traffic').addClass('d-none');
+            $('#trafficbase').addClass('d-none');
+        } else if ($('#options').val() === 'daily-base') {
+            $('#daily').addClass('d-none');
+            $('#dailybase').removeClass('d-none');
+            $('#traffic').addClass('d-none');
+            $('#trafficbase').addClass('d-none');
+         } else if  ($('#options').val() === 'traffic') {
+            $('#daily').addClass('d-none');
+            $('#dailybase').addClass('d-none');
+            $('#traffic').removeClass('d-none');
+            $('#trafficbase').addClass('d-none');
+        }else if  ($('#options').val() === 'traffic-base') {
+            $('#daily').addClass('d-none');
+            $('#dailybase').addClass('d-none');
+            $('#traffic').addClass('d-none');
+            $('#trafficbase').removeClass('d-none');
+        }
+    });
+});
 //重寫
 $(document).ready(function() {
   $('#addNewContent').click(function() {

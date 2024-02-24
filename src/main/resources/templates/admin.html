@@ -2,27 +2,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Management page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=1">
+    <title>admin Setting</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 載入字型 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" href="/frontend/admin.css">
 </head>
 <body>
-"index" <input type="text" id="index" name="index" value="cup">
-<br>
-"name" <input type="text" id="name" name="name" value="環保杯">
-<br>
-"coefficient" <input type="text" id="coefficient" name="coefficient" value="0">
-<br>
-"unit"<input type="text" id="unit" name="unit" value="gCo2">
-<br>
-"option"
-<br>
-大<input type="text" id="option1" name="option1" value="15">
-中<input type="text" id="option2" name="option2" value="10">
-小<input type="text" id="option3" name="option3" value="5">
-<br>
-"baseline" <input type="text" id="baseline" name="baseline" value="plastic">
-<br>
-<button id="addNewContent">新增</button>
-</body>
+<div class="container center-div">
+    <div class="row">
+        <div class="col-lg-2 col-0"></div>
+        <div  class="manage-container col-lg-8 col-12 ">
+            <h2 class="text-center" style="color: rgb(123, 125, 127);">Admin Management</h2>
+            <br>
+            <label>請選擇欲更動的類別</label>
+            <select name="options" id="options">
+                <!-- <option value=""> </option> -->
+                <option value="daily">Daily</option>
+                <option value="daily-base">Daily-base</option>
+                <option value="traffic">Traffic</option>
+                <option value="traffic-base">Traffic-base</option>
+            </select>
+            <!-- daily -->
+            <div id="daily" class="">
+                <br>
+                <div class="form-group">
+                    <label>index</label>
+                    <select name="types" id="types">
+                        <option value="cup">cup</option>
+                        <option value="tableware">tableware</option>
+                        <option value="bag">bag</option>
+                        <option value="addNew">新增項目</option>
+                    </select>
+                    <input type="text" id="otherOption" style="display: none;">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>name</label>
+                    <input type="text" id="name" value="環保杯">
+                </div>
+                <br>
+                <div class="inline">
+                    <label>大</label>
+                    <input type="text" id="big" value="15">
+                    <label>中</label>
+                    <input type="text" id="mid" value="10">
+                    <label>小</label>
+                    <input type="text" id="small" value="5">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>coefficient</label>
+                    <input type="text" id="coefficient" value="0">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>unit</label>
+                    <input type="text" id="unit" value="gCo2">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>baseline</label>
+                    <input type="text" id="baseline" value="plastic">
+                </div>
+                <br>
+                <button type="submit" class="save-button btn " id="button">修改/新增</button>
+            </div>
+            <!-- daily-base -->
+            <div id="dailybase" class="d-none">
+                <br>
+                <div class="form-group">
+                    <label>paper</label>
+                    <input type="text" id="paper" value="0.242">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>plastic</label>
+                    <input type="text" id="plastic" value="1.95">
+                </div>
+                <br>
+                <button type="submit" class="save-button btn " id="button">修改</button>
+            </div>
+            <!-- traffic -->
+            <div id="traffic" class="d-none">
+                <br>
+                <div class="form-group">
+                    <label>index</label>
+                    <select name="types" id="types2">
+                        <option value="bus">bus</option>
+                        <option value="MRT">MRT</option>
+                        <option value="train">train</option>
+                        <option value="addNew">新增項目</option>
+                    </select>
+                    <input type="text" id="otherOption2" style="display: none;">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>name</label>
+                    <input type="text" id="name" value="公車">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>coefficient</label>
+                    <input type="text" id="coefficient" value="40.0">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>unit</label>
+                    <input type="text" id="unit" value="gCO2e/km">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>baseline</label>
+                    <input type="text" id="baseline" value="car">
+                </div>
+                <br>
+                <button type="submit" class="save-button btn " id="button">修改/新增</button>
+            </div>
+            <!-- traffic-base -->
+            <div id="trafficbase" class="d-none">
+                <br>
+                <div class="form-group">
+                    <label>car</label>
+                    <input type="text" id="car" value="110.0">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>scooter</label>
+                    <input type="text" id="scooter" value="100.0">
+                </div>
+                <br>
+                <button type="submit" class="save-button btn " id="button">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="/frontend/admin.js"></script>
+</body>
 </html>
