@@ -1,25 +1,23 @@
 // 設定頁面顯示總減碳量(刪掉)
 let dateArray=[];
-function showSettingPage(){
+let totalFP = 0;
+function showTotalFP(action){
     let thisRecords = records;
-    let container = document.getElementById("totalFootprint");
+    let container = $('#totalFootprint');
     container.innerHTML = ""; // 清空容器內容
 
-    let totalFPDiv = document.createElement("div");
-    totalFPDiv.style.display = "inline";
-    let totalFP = 0;
     if(thisRecords.length == 0){
-        totalFPDiv.textContent = "0g Co2E";
-        container.appendChild(totalFPDiv);
-    } else {
+        container.text("0g Co2E");
+    } else if(action == "init") {
         for (let i = 0; i < thisRecords.length; i++) {
-            totalFP += parseInt(thisRecords[i].footprint, 10);
+            totalFP += parseFloat(thisRecords[i].footprint, 10);
         }
-        totalFPDiv.textContent = totalFP + "g Co2E";
-        totalFPDiv.style.maxWidth = "300px";
-        container.appendChild(totalFPDiv);
-        document.getElementById('deleteDataFP').textContent = "共減去 " + totalFP + " g Co2E";
+        container.text("總減碳量: " + totalFP + "g Co2E");
+    } else {
+        totalFP += parseFloat(action, 10);
+        container.text("總減碳量: " + totalFP + "g Co2E");
     }
+    $('#deleteDataFP').text("共減去 " + totalFP + " g Co2E")
 }
 //點擊列表中的record
 function recordClick(recordId){
@@ -92,8 +90,10 @@ function showNewChart(nowRecords, type) {
                 }]
             };
             for(let [key, value] of Object.entries(nowCategories)){
-                data.labels.push(key);
-                data.datasets[0].data.push(value.footprint);
+                if(value.footprint != 0){
+                    data.labels.push(key);
+                    data.datasets[0].data.push(value.footprint);
+                }
             }
         }
     }else{
@@ -124,8 +124,10 @@ function showNewChart(nowRecords, type) {
         };
 
         nowCategories[type].action.forEach(function(subcategory) {
-            data.labels.push(subcategory.type);
-            data.datasets[0].data.push(subcategory.totalFP);
+            if(subcategory.totalFP != 0){
+                data.labels.push(subcategory.type);
+                data.datasets[0].data.push(subcategory.totalFP);
+            }
         });
     }
     const chartElement = $('#recordChart');
@@ -139,7 +141,7 @@ function showNewChart(nowRecords, type) {
         data: data,
     });
 
-    chartBox.css("display", "block");
+    chartBox.css("display", "inline-flex");
 }
 // 查看歷史紀錄
 function showRecord() {
@@ -210,9 +212,13 @@ function showRecord() {
     let formattedDate = getFormattedDate().slice(0, 10);
     let datePart;
     if(records.length>0){
-         datePart = records[0].time.slice(0, 10);
+        datePart = records[0].time.slice(0, 10);
+        dateArray[0] = datePart;
+        dateArray[1] = formattedDate;
     }else{
         datePart = formattedDate;
+        dateArray[0] = datePart;
+        dateArray[1] = formattedDate;
     }
 
     flatpickr("#startDate", {

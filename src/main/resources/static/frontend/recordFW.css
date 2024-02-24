@@ -28,7 +28,8 @@
 #userIcon {
   margin-right: 8px;
 }
-#user{
+#user,
+#totalFootprint{
     font-size:18px;
     margin:0px;
 }
@@ -154,6 +155,7 @@
     position: fixed;
     display: block;
     transform: scale(0.9);
+    align-items: center;
 }
 
 .recordHeading {
