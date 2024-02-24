@@ -54,6 +54,17 @@ function showNewChart(nowRecords, type) {
     let data;
     let nowCategories = categories;
     const chartBox = $("#chartBox");
+
+    // 重置圖表減碳量 防止重開時累加
+    for (let category in nowCategories) {
+        let parent = nowCategories[category];
+        parent.footprint = 0;
+
+        parent.action.forEach(function (subcategory) {
+            subcategory.totalFP = 0;
+        });
+    }
+
     for(let i=0; i<nowRecords.length; i++){
         let found = false;
         for (let category in nowCategories) {
