@@ -92,7 +92,7 @@ $('#type').on('change', function(){
         });
         let span = $('<span>', {
             class: 'name',
-            text: key
+            text: key + '(' + value + 'g)'
         });
         label.append(input, span);
         gram.append(label);
