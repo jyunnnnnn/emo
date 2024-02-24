@@ -12,12 +12,11 @@ function showTotalFP(action){
         for (let i = 0; i < thisRecords.length; i++) {
             totalFP += parseFloat(thisRecords[i].footprint, 10);
         }
-        container.text("總減碳量: " + totalFP + "g Co2E");
     } else {
         totalFP += parseFloat(action, 10);
-        container.text("總減碳量: " + totalFP + "g Co2E");
     }
-    $('#deleteDataFP').text("共減去 " + totalFP + " g Co2E")
+    container.text("總減碳量: " + totalFP.toFixed(2) + "g Co2E");
+    $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2) + " g Co2E")
 }
 //點擊列表中的record
 function recordClick(recordId){
@@ -51,6 +50,7 @@ function showNowRecordInFoWindow(nowRecord){
 // 圓餅圖
 let myChart = null;
 function showNewChart(nowRecords, type) {
+    found = false;
     let data;
     let nowCategories = categories;
     const chartBox = $("#chartBox");
@@ -83,14 +83,28 @@ function showNewChart(nowRecords, type) {
 
     if(type =="全部" || type == "init"){
         for(let [key, value] of Object.entries(nowCategories)){
-            if(key.footprint != 0) {
+            if(value.footprint != 0 && value.footprint != undefined) {
                 found = true;
                 break;
             }
         }
+        console.log(found);
         if(!found){
             $("#chartBox").css("display", "none");
-            $("#chartBox").text("沒有紀錄");
+            let container = $("#listContent");
+            container.empty(); // 清空容器內容
+            container.css({
+                "overflowY": "scroll",
+                "maxHeight": "150px"
+            });
+            let recordDiv = $("<div>")
+                .css({
+                    "display": "inline",
+                    "textAlign": "center"
+                })
+                .text("沒有紀錄");
+            container.append(recordDiv);
+
             return;
         } else {
             data = {
@@ -108,7 +122,7 @@ function showNewChart(nowRecords, type) {
             }
         }
     }else{
-        if(nowCategories[type].footprint == 0){
+        if(nowCategories[type].footprint == 0 || nowCategories[type].footprint == undefined){
             chartBox.css("display", "none");
             let container = $("#listContent");
             container.empty(); // 清空容器內容
@@ -149,7 +163,7 @@ function showNewChart(nowRecords, type) {
     // 創建新的圖
     myChart = new Chart(chartElement, {
         type: 'pie',
-        data: data,
+        data: data
     });
 
     chartBox.css("display", "inline-flex");
