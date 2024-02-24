@@ -1,6 +1,5 @@
 #settingFW,
 #renameFW,
-#adminFW,
 #deleteFW{
     display: none;
     position: fixed;
@@ -15,7 +14,7 @@
     align-items: center;
 }
 
-#passwordAuth{
+#deleteAccount_matchVerifyCode{
     font-family: 'Crimson Pro', serif;
     width: 100%;
     display: flex;
@@ -72,21 +71,6 @@
     color: rgb(123, 125, 127);
 }
 
-/* 管理員按鈕 */
-#adminButton{
-    transform: scale(1.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 6%;
-    right: 15%;
-    font-family: 'Crimson Pro', serif;
-    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;
-}
-#adminButton:hover{
-    color:  rgb(103, 103, 103);
-}
 
 #editFP,
 #saveFP,
@@ -193,11 +177,5 @@
         justify-items: center;
         align-content: center;
         align-items: center;
-    }
-
-    #adminButton{
-        transform: scale(1.6);
-        top: 4.3%;
-        right: 23%;
     }
 }

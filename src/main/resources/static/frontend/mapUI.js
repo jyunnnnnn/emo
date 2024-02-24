@@ -236,18 +236,7 @@ $('#deleteAccount').on('click', function () {
     $('#deleteFW').css("position", "fixed");
     let time = $('#deleteDataTime');
     let formattedDate = getFormattedDate();
-    time.textContent = "截至" + formattedDate;
-    let trafficCount = 0;
-    let dailyCount = 0;
-    let footprint = 0;
-    let traffic = $('#deleteDataTraffic');
-    let daily = $('#deleteDataDaily');
-    for(let i=0; i<records.length; i++){
-        if(records[i].classType === "交通") trafficCount++;
-        else if(records[i].classType === "生活用品") dailyCount++;
-    }
-    traffic.textContent = "已紀錄 " + trafficCount + " 次環保交通";
-    daily.textContent = "已紀錄 " + dailyCount + " 次環保生活用品";
+    time.text("截至" + formattedDate);
 });
 // 點擊修改暱稱按鈕
 $('#rename').on('click', function () {

@@ -39,6 +39,8 @@ function deleteSingleRecord(){
 }
 //透過recordId刪資料
 function deleteRecord(recordId){
+    let thisDelete = records.filter(item => item.recordId == recordId);
+    showTotalFP(-parseFloat(thisDelete[0].footprint,10));
     records = records.filter(item => item.recordId !== recordId);//更新系統內record[]
     $.ajax({
         type: 'DELETE',
