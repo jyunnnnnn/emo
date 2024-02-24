@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.RecordItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Service;

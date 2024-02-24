@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import java.lang.reflect.*;
 
-import com.example.demo.service.EcoRecord;
+import com.example.demo.entity.EcoRecord;
 import com.example.demo.service.EcoRecordService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
