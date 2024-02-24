@@ -5,82 +5,82 @@
         "paper": 0.242,
         "plastic": 1.95
       },
-      "name": "生活用品",
       "content": [
         {
+          "option": {
+            "小(5g)": 5.0,
+            "中(10g)": 10.0,
+            "大(15g)": 15.0
+          },
           "index": "cup",
           "name": "環保杯",
-          "coefficient": 0,
+          "coefficient": 0.0,
           "unit": "gCO2e",
-          "option": {
-            "小(5g)": 5,
-            "中(10g)": 10,
-            "大(15g)": 15
-          },
           "baseline": "plastic"
         },
         {
+          "option": {
+            "小(15g)": 15.0,
+            "中(20g)": 20.0,
+            "大(25g)": 25.0
+          },
           "index": "tableware",
           "name": "環保餐具",
-          "coefficient": 0,
+          "coefficient": 0.0,
           "unit": "gCO2e",
-          "option": {
-            "小(15g)": 15,
-            "中(20g)": 20,
-            "大(25g)": 25
-          },
           "baseline": "paper"
         },
         {
+          "option": {
+            "小(2g)": 2.0,
+            "中(5g)": 5.0,
+            "大(10g)": 10.0
+          },
           "index": "bag",
           "name": "環保袋",
-          "coefficient": 0,
+          "coefficient": 0.0,
           "unit": "gCO2e",
-          "option": {
-            "小(2g)": 2,
-            "中(5g)": 5,
-            "大(10g)": 10
-          },
           "baseline": "plastic"
         }
-      ]
+      ],
+      "name": "生活用品"
     },
     "transportation": {
       "base": {
-        "car": 110,
-        "scooter": 100
+        "car": 110.0,
+        "scooter": 100.0
       },
-      "name": "交通",
       "content": [
         {
           "index": "bus",
           "name": "公車",
-          "coefficient": 40,
+          "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car"
         },
         {
           "index": "MRT",
           "name": "捷運",
-          "coefficient": 40,
+          "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car"
         },
         {
           "index": "train",
           "name": "火車",
-          "coefficient": 60,
+          "coefficient": 60.0,
           "unit": "gCO2e/km",
           "baseline": "car"
         },
         {
           "index": "HSR",
           "name": "高鐵",
-          "coefficient": 32,
+          "coefficient": 32.0,
           "unit": "gCO2e/km",
           "baseline": "car"
         }
-      ]
+      ],
+      "name": "交通"
     }
   },
   "setting": {
