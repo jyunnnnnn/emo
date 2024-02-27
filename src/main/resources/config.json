@@ -5,6 +5,10 @@
         "paper": 0.242,
         "plastic": 1.95
       },
+      "units": {
+        "gCO2e": "克碳排放量",
+        "kgCO2e": "千克碳排放量"
+      },
       "content": [
         {
           "option": {
@@ -49,6 +53,12 @@
       "base": {
         "car": 110.0,
         "scooter": 100.0
+      },
+      "units": {
+        "gCO2e/km":"克碳排放量每公里",
+        "kgCO2e/km":"千克碳排放量每公里",
+        "gCO2e/m":"克碳排放量每公尺",
+        "kgCO2e/m":"千克碳排放量每公尺"
       },
       "content": [
         {
