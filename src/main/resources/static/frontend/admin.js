@@ -14,6 +14,20 @@ $(document).ready(function () {
            alert(errorMessage);
        }
     });
+     $.ajax({
+            url: '/api/GetAllSvgJson',
+            method: 'GET',
+            success: function (data) {
+                // 處理成功時的邏輯
+                svgData = JSON.parse(data);
+                console.log(svgData);
+            },
+            error: function(xhr, status, error) {
+               let errorData = JSON.parse(xhr.responseText);
+               let errorMessage = errorData.message;
+               alert(errorMessage);
+           }
+        });
 
     //選擇輸入其他類別增加輸入框
     $('#types').on('change', function() {

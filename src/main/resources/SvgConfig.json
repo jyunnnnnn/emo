@@ -1,0 +1,17 @@
+{
+  "svgImages": {
+    "daily": {
+      "theDaily": "path",
+      "cup": "path",
+      "tableware": "path",
+      "bag": "path"
+    },
+    "transportation": {
+      "theTransportation": "path",
+      "bus": "path",
+      "MRT": "path",
+      "train": "path",
+      "HSR": "path"
+    }
+  }
+}
