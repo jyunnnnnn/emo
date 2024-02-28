@@ -47,6 +47,7 @@ function showNowRecordInFoWindow(nowRecord){
         }
     }
 }
+
 // 圓餅圖
 let myChart = null;
 function showNewChart(nowRecords, type) {
@@ -88,7 +89,6 @@ function showNewChart(nowRecords, type) {
                 break;
             }
         }
-        console.log(found);
         if(!found){
             $("#chartBox").css("display", "none");
             let container = $("#listContent");
@@ -112,7 +112,10 @@ function showNewChart(nowRecords, type) {
                 datasets: [{
                     label: '減碳量',
                     data: [],
-                }]
+                }],
+                options: {
+                    cutoutPercentage: 50
+                }
             };
             for(let [key, value] of Object.entries(nowCategories)){
                 if(value.footprint != 0){
@@ -145,7 +148,10 @@ function showNewChart(nowRecords, type) {
             datasets: [{
                 label: '減碳量',
                 data: [],
-            }]
+            }],
+            options: {
+                cutoutPercentage: 50
+            }
         };
 
         nowCategories[type].action.forEach(function(subcategory) {
@@ -162,7 +168,7 @@ function showNewChart(nowRecords, type) {
     }
     // 創建新的圖
     myChart = new Chart(chartElement, {
-        type: 'pie',
+        type: 'doughnut',
         data: data
     });
 
