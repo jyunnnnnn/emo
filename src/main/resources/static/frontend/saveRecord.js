@@ -76,8 +76,9 @@ function addMarker(recordToAdd) {
     if (recordToAdd.classType === "交通") {
         thisIcon = '/frontend/img/traffic.ico';
     } else if (recordToAdd.classType === "生活用品") {
-        thisIcon = '/frontend/img/daily.ico';
+        thisIcon = '/frontend/img/生活用品.svg';
     }
+    console.log(thisIcon);
     if (map) {
         let currentLocation = {
             lat: recordToAdd.latitude,

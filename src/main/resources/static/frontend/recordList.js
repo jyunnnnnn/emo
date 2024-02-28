@@ -47,6 +47,7 @@ function showNowRecordInFoWindow(nowRecord){
         }
     }
 }
+
 // 圓餅圖
 let myChart = null;
 function showNewChart(nowRecords, type) {
@@ -88,7 +89,6 @@ function showNewChart(nowRecords, type) {
                 break;
             }
         }
-        console.log(found);
         if(!found){
             $("#chartBox").css("display", "none");
             let container = $("#listContent");
@@ -112,7 +112,10 @@ function showNewChart(nowRecords, type) {
                 datasets: [{
                     label: '減碳量',
                     data: [],
-                }]
+                }],
+                options: {
+                    cutoutPercentage: 50
+                }
             };
             for(let [key, value] of Object.entries(nowCategories)){
                 if(value.footprint != 0){
@@ -145,7 +148,10 @@ function showNewChart(nowRecords, type) {
             datasets: [{
                 label: '減碳量',
                 data: [],
-            }]
+            }],
+            options: {
+                cutoutPercentage: 50
+            }
         };
 
         nowCategories[type].action.forEach(function(subcategory) {
@@ -162,7 +168,7 @@ function showNewChart(nowRecords, type) {
     }
     // 創建新的圖
     myChart = new Chart(chartElement, {
-        type: 'pie',
+        type: 'doughnut',
         data: data
     });
 
@@ -189,6 +195,7 @@ function showRecord() {
         container.append(recordDiv);
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
+            let icon = `<img src="/frontend/img/歷史${thisRecords[i].classType}.svg" style="margin-right: 3px; margin-bottom: 13px;">`;
             // 創建新的checkbox
             let checkbox = $('<label>')
                 .addClass('checkbox-container')
@@ -211,8 +218,34 @@ function showRecord() {
                     'align-items': 'center'
                 });
 
+            let recordElement;
             // 創建新的 <p> 元素
-            let recordElement = $("<p>");
+            if (thisRecords[i].classType == "生活用品") {
+                recordElement = $("<p>")
+                    .css({
+                    })
+                    .hover(
+                        function() {
+                            $(this).css('background-color', '#9ED368');
+                        },
+                        function() {
+                            $(this).css('background-color', '');
+                        }
+                    );
+            } else {
+                recordElement = $("<p>")
+                    .css({
+                    })
+                    .hover(
+                        function() {
+                            $(this).css('background-color', '#5D9BEB');
+                        },
+                        function() {
+                            $(this).css('background-color', '');
+                        }
+                    );
+            }
+
             let timeSpan = $("<span>")
                 .text(thisRecords[i].time + " ");
             let typeSpan = $("<span>")
@@ -221,7 +254,7 @@ function showRecord() {
                 .text(" (" + thisRecords[i].footprint + "g Co2E)");
 
             recordElement.append(timeSpan, typeSpan, footprintSpan);
-            recordDiv.append(checkbox, recordElement);
+            recordDiv.append(checkbox, icon, recordElement);
             recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
             container.append(recordDiv);
 
