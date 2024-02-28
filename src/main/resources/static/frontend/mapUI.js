@@ -73,15 +73,15 @@ $('#type').on('change', function(){
     $('#gram').attr("placeholder", "請選擇克數");
     gram.empty();
     let selected = $('#type option:selected').text();
-    let options;
+    let item;
     for(let selectData of selectDatas){
         if(selectData.type === selected){
-            options = selectData.option;
+            item = selectData;
             break;
         }
     }
 
-    for(let [key, value] of Object.entries(options)){
+    for(let [key, value] of Object.entries(item.options)){
         let label = $('<label>', {
             class: 'gram'
         });
