@@ -8,6 +8,7 @@ import java.util.Map;
 //減碳紀錄類別物件 含比較基準以及此類別的所有減碳紀錄事項
 public class RecordWrapper {
     private Map<String, Double> base;
+    private String color;
 
     public Map<String, Double> getBase() {
         return base;
@@ -32,6 +33,13 @@ public class RecordWrapper {
     public void setName(String name) {
         this.name = name;
     }
+    public void getColor() {
+        this.color = color;
+    }
+    public void setColor(String color) {
+        this.name = name;
+    }
+
 
     private List<RecordItem> content;
     private String name;
