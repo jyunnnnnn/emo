@@ -149,7 +149,6 @@ function loadFootprintData() {
                 // 處理成功時的邏輯
                 const parsedData = JSON.parse(data);
                 FPConstructor(parsedData);//待改名
-                initCategory();
             },
             error: function(xhr, status, error) {
                let errorData = JSON.parse(xhr.responseText);
