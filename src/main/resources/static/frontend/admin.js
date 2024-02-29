@@ -1,4 +1,5 @@
 let parsedData;
+let categories = [];//類別大屬性有哪些
 $(document).ready(function () {
     $.ajax({
         url: '/api/GetAllRecordJson',
@@ -16,44 +17,13 @@ $(document).ready(function () {
            alert(errorMessage);
        }
     });
-    //daily types改變時下方值改變
-    $('#types').on('change', function() {
-        // 獲取所選選項的值
-        const selectedIndex = $(this).val();
-        // 根據所選選項的值更新表格的值
-        updateTableValues(selectedIndex);
-    });
-    //traffic types改變時下方值改變
-    $('#types2').on('change', function() {
-        // 獲取所選選項的值
-        const selectedIndex = $(this).val();
-        // 根據所選選項的值更新表格的值
-        updateTableValues2(selectedIndex);
-    });
 
+//切換顯示的區塊
     $('#options').on('change', function() {
+        let selectedOption = $(this).val();
 
-        if ($('#options').val() === 'daily') {
-            $('#daily').removeClass('d-none');
-            $('#dailybase').addClass('d-none');
-            $('#traffic').addClass('d-none');
-            $('#trafficbase').addClass('d-none');
-        } else if ($('#options').val() === 'daily-base') {
-            $('#daily').addClass('d-none');
-            $('#dailybase').removeClass('d-none');
-            $('#traffic').addClass('d-none');
-            $('#trafficbase').addClass('d-none');
-         } else if  ($('#options').val() === 'traffic') {
-            $('#daily').addClass('d-none');
-            $('#dailybase').addClass('d-none');
-            $('#traffic').removeClass('d-none');
-            $('#trafficbase').addClass('d-none');
-        }else if  ($('#options').val() === 'traffic-base') {
-            $('#daily').addClass('d-none');
-            $('#dailybase').addClass('d-none');
-            $('#traffic').addClass('d-none');
-            $('#trafficbase').removeClass('d-none');
-        }
+        $('.content-block').addClass('d-none'); // 隱藏所有區塊
+        $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
     });
 });
 //重寫
@@ -89,70 +59,166 @@ $(document).ready(function() {
 });
 //讀取設定檔的資料到頁面
 function setData(parsedData){
-//daily
-    for(let i=0; i <parsedData.daily.content.length ; i++){
-        let option = '`<option value="'+parsedData.daily.content[i].index+'">'+parsedData.daily.content[i].index+'</option>';
-        $('#types').append(option);
+//讀取大類別有哪些  ex.['daily', 'transportation']
+    for (let category in parsedData) {
+        if (parsedData.hasOwnProperty(category) && typeof parsedData[category] === "object" && parsedData[category].hasOwnProperty('content')) {
+            categories.push(category);
+        }
     }
-    //初始化為第一個選項的值
-    $('#name1').val(parsedData.daily.content[0].name);
-    $('#big').val(parsedData.daily.content[0].option.大);
-    $('#mid').val(parsedData.daily.content[0].option.中);
-    $('#small').val(parsedData.daily.content[0].option.小);
-    $('#coefficient1').val(parsedData.daily.content[0].coefficient);
-    $('#unit1').val(parsedData.daily.content[0].unit);
-    $('#baseline1').val(parsedData.daily.content[0].baseline);
-//daily base
-    $('#paper').val(parsedData.daily.base.paper);
-    $('#plastic').val(parsedData.daily.base.plastic);
-//traffic
-    for(let i=0; i <parsedData.transportation.content.length ; i++){
-        let option = '`<option value="'+parsedData.transportation.content[i].index+'">'+parsedData.transportation.content[i].index+'</option>';
-        $('#types2').append(option);
+
+    //新增所有大類別的option
+    for(let i =0; i<categories.length; i++){
+        let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
+        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
+        $('#options').append(category);
     }
-      //初始化為第一個選項的值
-      $('#name').val(parsedData.transportation.content[0].name);
-      $('#coefficient').val(parsedData.transportation.content[0].coefficient);
-      $('#unit').val(parsedData.transportation.content[0].unit);
-      $('#baseline').val(parsedData.transportation.content[0].baseline);
-//traffic base
-        $('#car').val(parsedData.transportation.base.car);
-        $('#scooter').val(parsedData.transportation.base.scooter);
+    for(let i =0; i<categories.length; i++){
+    //讀取物件的第一個 content 元素的索引名稱
+    //    let indexNames = Object.keys(parsedData[categories[i]].content[0]);
+    //    console.log(indexNames); // ["option", "index", "name", "coefficient", "unit", "baseline"]
+         //新增整塊頁面
+         let card ;
+         if(categories[i] == "daily"){
+           card = '<div id="'+categories[i]+'" class="content-block"><br>';
+            card +='<div class="form-group">'+
+                             '<label>index</label>'+
+                             '<select name="types" id="types'+i+'">'+
+                             '</select>'+
+                         '</div> <br>'+
+                         '<div class="form-group">'+
+                             '<label>name</label>'+
+                             '<input type="text" id="name'+i+'" >'+
+                         '</div> <br>'+
+                         '<div class="inline">'+
+                             '<label>大</label>'+
+                             '<input type="text" id="big">'+
+                             '<label>中</label>'+
+                             '<input type="text" id="mid">'+
+                             '<label>小</label>'+
+                             '<input type="text" id="small">'+
+                         '</div><br>'+
+                         '<div class="form-group">'+
+                             '<label>coefficient</label>'+
+                             '<input type="text" id="coefficient'+i+'">'+
+                         '</div><br>'+
+                         '<div class="form-group">'+
+                             '<label>unit</label>'+
+                             '<input type="text" id="unit'+i+'">'+
+                         '</div><br>'+
+                         '<div class="form-group">'+
+                             '<label>baseline</label>'+
+                             '<input type="text" id="baseline'+i+'">'+
+                         '</div><br>'+
+//                         ' <button class="save-button btn " id="button1">修改/新增</button>'+
+                         '</div>';
+                //初始化
+               $('#manage-container').append(card);
+                $('#name'+i).val(parsedData[categories[i]].content[0].name);
+                $('#big').val(parsedData[categories[i]].content[0].option.大);
+                $('#mid').val(parsedData[categories[i]].content[0].option.中);
+                $('#small').val(parsedData[categories[i]].content[0].option.小);
+                $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
+                $('#unit'+i).val(parsedData[categories[i]].content[0].unit);
+                $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
+         }else{
+            card = '<div id="'+categories[i]+'" class="content-block d-none"><br>';
+            card +='<div class="form-group">'+
+                        '<label>index</label>'+
+                        '<select name="types" id="types'+i+'">'+
+                        '</select>'+
+                    '</div> <br>'+
+                    '<div class="form-group">'+
+                        '<label>name</label>'+
+                        '<input type="text" id="name'+i+'" >'+
+                    '</div> <br>'+
+
+                    '<div class="form-group">'+
+                        '<label>coefficient</label>'+
+                        '<input type="text" id="coefficient'+i+'">'+
+                    '</div><br>'+
+                    '<div class="form-group">'+
+                        '<label>unit</label>'+
+                        '<input type="text" id="unit'+i+'">'+
+                    '</div><br>'+
+                    '<div class="form-group">'+
+                        '<label>baseline</label>'+
+                        '<input type="text" id="baseline'+i+'">'+
+                    '</div><br>'+
+//                    ' <button class="save-button btn " id="button1">修改/新增</button>'+
+                    '</div>';
+             $('#manage-container').append(card);
+              $('#name'+i).val(parsedData[categories[i]].content[0].name);
+              $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
+              $('#unit'+i).val(parsedData[categories[i]].content[0].unit);
+              $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
+         }
+
+
+
+        for(let j =0;j< parsedData[categories[i]].content.length;j++){
+            //新增 content 的下拉選項
+            let option = '`<option value="'+parsedData[categories[i]].content[j].index+'">'+parsedData[categories[i]].content[j].index+'</option>';
+            $('#types'+i).append(option);
+        }
+        //新增 base區塊
+        let base = parsedData[categories[i]].base;
+        let baseLength = Object.keys(base).length;
+        let baseKeys = Object.keys(base);
+        console.log("base 的長度為：" + baseLength);
+        let baseCard = '<div id="'+categories[i]+'-base" class="content-block d-none"><br>';
+        for(let m =0;m< baseLength;m++){
+           baseCard += '<div class="form-group">'+
+                      '<label>'+baseKeys[m]+'</label>'+
+                            '<input type="text" id="'+baseKeys[m]+'">'+
+                           ' </div> <br>';
+        }
+        baseCard += ' </div>';
+//                ' <button class="save-button btn " id="button1">修改/新增</button>';
+        $('#manage-container').append(baseCard);
+        //初始化
+        for(let m = 0;m< baseLength; m++){
+            $('#'+baseKeys[m]).val(parsedData[categories[i]].base[baseKeys[m]]);
+        }
+    }
+
+    //所有types開頭都會觸發 在創立元素後使用
+    $('[id^=types]').on('change', function() {
+         // 獲取所選選項的值
+        const selectedIndex = $(this).val();
+        console.log("selectedIndex",selectedIndex)
+        // 根據所選選項的值更新表格的值
+        updateTableValues(selectedIndex);
+    });
 }
 
-// 更新daily表格的值
+
+//切換的時候更改選項的值
 function updateTableValues(selectedIndex) {
-    // 根據所選選項的值從 parsedData 中獲取相應的內容
-    console.log(parsedData);
-    const index = parsedData.daily.content.findIndex(content => content.index === selectedIndex);
-    if (index !== -1) {
-        // 找到了
-        console.log("Index of selectedContent:", index);
-        // 根據索引位置更新表格的值
-         $('#name1').val(parsedData.daily.content[index].name);
-         $('#big').val(parsedData.daily.content[index].option.大);
-         $('#mid').val(parsedData.daily.content[index].option.中);
-         $('#small').val(parsedData.daily.content[index].option.小);
-         $('#coefficient1').val(parsedData.daily.content[index].coefficient);
-         $('#unit1').val(parsedData.daily.content[index].unit);
-         $('#baseline1').val(parsedData.daily.content[index].baseline);
-    } else {
-        console.log("selectedContent not found in parsedData.daily.content");
+    let targetCategory;
+    let targetNum;
+    //確認哪個大類別發生改動
+    for(let i = 0;i<categories.length;i++){
+         if (parsedData[categories[i]].content.some(content => content.index === selectedIndex)) {
+             targetCategory = categories[i];
+             targetNum = i;
+             console.log(selectedIndex + " 屬於 'daily'");
+             console.log("targetCategory", targetCategory);
+             console.log("targetnum", targetNum);
+         }
     }
-}
-// 更新traffic表格的值
-function updateTableValues2(selectedIndex) {
-    // 根據所選選項的值從 parsedData 中獲取相應的內容
-    console.log(parsedData);
-    const index = parsedData.transportation.content.findIndex(content => content.index === selectedIndex);
+//     console.log("0",parsedData);
+    let index = parsedData[targetCategory].content.findIndex(content => content.index === selectedIndex);
     if (index !== -1) {
         // 找到了
         console.log("Index of selectedContent:", index);
         // 根據索引位置更新表格的值
-      $('#name').val(parsedData.transportation.content[index].name);
-      $('#coefficient').val(parsedData.transportation.content[index].coefficient);
-      $('#unit').val(parsedData.transportation.content[index].unit);
-      $('#baseline').val(parsedData.transportation.content[index].baseline);
+         $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
+         $('#big').val(parsedData[targetCategory].content[index].option.大);
+         $('#mid').val(parsedData[targetCategory].content[index].option.中);
+         $('#small').val(parsedData[targetCategory].content[index].option.小);
+         $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
+         $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
+         $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
     } else {
         console.log("selectedContent not found in parsedData.daily.content");
     }
