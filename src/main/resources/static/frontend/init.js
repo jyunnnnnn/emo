@@ -116,7 +116,6 @@ function loadSVG(){
         success: function (data) {
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
-            console.log(svgData);
             svgConstructor(svgData);
         },
         error: function(xhr, status, error) {
@@ -128,12 +127,12 @@ function loadSVG(){
 }
 function svgConstructor(svgData) {
     for(let [key, value] of Object.entries(categories)){
-        $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+        $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
         $('#' + value.class + 'Radio').on('change', function() {
-            if (!this.checked) {
-                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+            if (this.checked) {
+                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
             } else {
-                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
             }
         });
     }

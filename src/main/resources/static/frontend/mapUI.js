@@ -37,8 +37,8 @@ $('#openRecordModal').on('click', function() {
 
     let checked = $('input[name="typeRadio"]:checked');
     let checkedVal = $('input[name="typeRadio"]:checked').val();
-    if(checked){
-        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal]);
+    if(checkedVal != undefined){
+        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal + 'Icon']);
         checked.prop('checked', false);
     }
 });
