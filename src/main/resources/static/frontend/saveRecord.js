@@ -78,7 +78,6 @@ function addMarker(recordToAdd) {
     } else if (recordToAdd.classType === "生活用品") {
         thisIcon = '/frontend/img/生活用品.svg';
     }
-    console.log(thisIcon);
     if (map) {
         let currentLocation = {
             lat: recordToAdd.latitude,

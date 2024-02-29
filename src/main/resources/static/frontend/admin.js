@@ -1,5 +1,6 @@
 let parsedData;
 let categories = [];//類別大屬性有哪些
+
 $(document).ready(function () {
     $.ajax({
         url: '/api/GetAllRecordJson',
@@ -17,20 +18,6 @@ $(document).ready(function () {
            alert(errorMessage);
        }
     });
-     $.ajax({
-            url: '/api/GetAllSvgJson',
-            method: 'GET',
-            success: function (data) {
-                // 處理成功時的邏輯
-                svgData = JSON.parse(data);
-                console.log(svgData);
-            },
-            error: function(xhr, status, error) {
-               let errorData = JSON.parse(xhr.responseText);
-               let errorMessage = errorData.message;
-               alert(errorMessage);
-           }
-        });
 
 //切換顯示的區塊
     $('#options').on('change', function() {

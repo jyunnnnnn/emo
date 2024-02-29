@@ -1,6 +1,7 @@
 let map;//地圖
 let infoWindow;//圖標資訊窗
 let FootprintData = [];//各環保行為資訊 物件陣列
+let svgData;
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let User;//使用者 物件
 let currentLocation;//當前經緯度
@@ -77,6 +78,7 @@ function systemInit(){
     User = JSON.parse(localStorage.getItem('EmoAppUser'));
     loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
+    loadSVG();//載入svg
     $('#user').text(User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -106,6 +108,38 @@ function updateCurrentCircle(position) {
     //跑到中心
     map.panTo(currentLocation);
 }
+//載入svg
+function loadSVG(){
+    $.ajax({
+        url: '/api/GetAllSvgJson',
+        method: 'GET',
+        success: function (data) {
+            // 處理成功時的邏輯
+            svgData = JSON.parse(data);
+            console.log(svgData);
+            svgConstructor(svgData);
+        },
+        error: function(xhr, status, error) {
+            let errorData = JSON.parse(xhr.responseText);
+            let errorMessage = errorData.message;
+            alert(errorMessage);
+        }
+    });
+}
+function svgConstructor(svgData) {
+    for(let [key, value] of Object.entries(categories)){
+        $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+        $('#' + value.class + 'Radio').on('change', function() {
+            if (!this.checked) {
+                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+            } else {
+                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+            }
+        });
+    }
+}
+
+
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -134,13 +168,14 @@ function FPConstructor(jsonData) {
                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
             });
         } else {
-            jsonData[key].content.forEach(({name: type,coefficient,baseline,option,unit}) => {
-                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name});
+            jsonData[key].content.forEach(({name: type, coefficient, baseline, option, unit, color}) => {
+                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name, color});
              });
         }
     }
+    initCategory(jsonData);
 }
-function initCategory(){
+function initCategory(jsonData){
     $('#category').append($('<option>', {
         text: "全部",
         value: "all",
@@ -152,7 +187,9 @@ function initCategory(){
 
         if (!categories[currentCategory]) {
             categories[currentCategory] = {
+                class: FootprintData[i].class,
                 footprint: 0,
+                color: jsonData[FootprintData[i].class].color,
                 action: []
             };
             $('#category').append($('<option>', {
@@ -162,6 +199,7 @@ function initCategory(){
         }
         categories[currentCategory].action.push({
             type: currentType,
+            color: FootprintData[i].color,
             totalFP: 0
         });
     }
