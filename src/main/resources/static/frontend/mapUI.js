@@ -376,7 +376,9 @@ function recordModal(){
 
         $('input[name="typeRadio"]').each(function() {
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.classType) {
+                let classType = $(this).val();
                 $(this).prop("checked", true);
+                $('#' + classType + 'Icon').html(svgData.svgImages[classType][classType + 'Hover']);
             }
         });
 
