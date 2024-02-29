@@ -106,6 +106,36 @@ function updateCurrentCircle(position) {
     //跑到中心
     map.panTo(currentLocation);
 }
+//載入svg
+$(document).ready(function () {
+    $.ajax({
+        url: '/api/GetAllSvgJson',
+        method: 'GET',
+        success: function (data) {
+            // 處理成功時的邏輯
+            svgData = JSON.parse(data);
+            console.log(svgData);
+        },
+        error: function(xhr, status, error) {
+            let errorData = JSON.parse(xhr.responseText);
+            let errorMessage = errorData.message;
+            alert(errorMessage);
+        }
+    });
+});
+function loadSVG(){
+    for(let [key, value] of Object.entries(categories)){
+        $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+        $('#' + value.class + 'Radio').on('change', function() {
+            if (!this.checked) {
+                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+            } else {
+                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+            }
+        });
+    }
+    console.log(FootprintData);
+}
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -152,6 +182,7 @@ function initCategory(){
 
         if (!categories[currentCategory]) {
             categories[currentCategory] = {
+                class: FootprintData[i].class,
                 footprint: 0,
                 action: []
             };
@@ -165,6 +196,7 @@ function initCategory(){
             totalFP: 0
         });
     }
+    loadSVG();
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {

@@ -36,7 +36,9 @@ $('#openRecordModal').on('click', function() {
     $('#gram').attr("placeholder", "請先選擇類別");
 
     let checked = $('input[name="typeRadio"]:checked');
+    let checkedVal = $('input[name="typeRadio"]:checked').val();
     if(checked){
+        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal]);
         checked.prop('checked', false);
     }
 });

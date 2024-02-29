@@ -1,4 +1,5 @@
 let parsedData;
+let svgData;
 $(document).ready(function () {
     $.ajax({
         url: '/api/GetAllRecordJson',
@@ -21,6 +22,7 @@ $(document).ready(function () {
                 // 處理成功時的邏輯
                 svgData = JSON.parse(data);
                 console.log(svgData);
+                loadSVG();
             },
             error: function(xhr, status, error) {
                let errorData = JSON.parse(xhr.responseText);

@@ -195,6 +195,7 @@ function showRecord() {
         container.append(recordDiv);
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
+            //svgData.svgImages.recordList[thisRecords[i].classType];
             let icon = `<img src="/frontend/img/歷史${thisRecords[i].classType}.svg" style="margin-right: 3px; margin-bottom: 13px;">`;
             // 創建新的checkbox
             let checkbox = $('<label>')
