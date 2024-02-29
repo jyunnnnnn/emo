@@ -185,6 +185,38 @@
         .navbar-toggler-icon {
             color: #fff;
          }
+         .faq {
+            /* border: 1px solid #ccc; */
+            margin-bottom: 10px;
+        }
+
+        .question {
+            /* background-color: #f0f0f0; */
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .arrow {
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .arrow.down {
+            transform: translateY(-50%) rotate(225deg);
+        }
+
+        .answer {
+            display: none;
+            padding: 10px;
+        }
+
 
         /* rwd */
         @media only screen and (max-width: 700px) {
@@ -429,25 +461,45 @@
   <h3 style="color:red;font-size:50px;"class="d-none d-lg-block">&nbsp</h3>
   <div class="container ">
     <div class="row">
-      <div class="col-lg-12 text-center text-white mb-2">
-        <h2>常見Q & A</h2>
+      <div class="col-lg-5 text-center text-white mb-2">
+        <br><br>
+        <h1>常見Q & A</h1>
       </div>
-      <div class="col-lg-5 col-11 transparent-box">
+      <div class="col-lg-6 transparent-box">
         <!-- <h2>
           生活用品類</h2> -->
-        <p><h4><strong>Ｑ：本平台和其他環保app的差別？<br><br></strong></h4>
+        <div class="faq">
+          <div class="question">
+            本平台和其他環保app的差別？
+            <span class="arrow"></span>
+          </div>
+          <div class="answer">
+            目前市面上許多環保碳足跡app都是以綁定悠遊卡或信用卡的方式直接進行計算，
+            本平臺則支援實際計算路線更為彈性。此外有別於其他app多為直接計算碳排放總量，
+            本平台提供的數據是減少的碳排放量，更為直觀。
+          </div>
+        </div>
+        <div class="faq">
+          <div class="question">
+            平台在紀錄路線時會取用使用者的位置與足跡是否有隱私疑慮？
+            <span class="arrow"></span>
+          </div>
+          <div class="answer">
+            使用者所有的數據資料與足跡本平台只會用於優化平台之用途並且會嚴格保密，決不外洩，請使用者放心使用。
+          </div>
+        </div>
+        <!-- <p><h4><strong>Ｑ：本平台和其他環保app的差別？<br><br></strong></h4>
         目前市面上許多環保碳足跡app都是以綁定悠遊卡或信用卡的方式直接進行計算，
         本平臺則支援實際計算路線更為彈性。此外有別於其他app多為直接計算碳排放總量，
         本平台提供的數據是減少的碳排放量，更為直觀。
-        </p>
+        </p> -->
       </div>
-      <div class="col-lg-1 col-12"></div> <!-- Empty column -->
-      <div class="col-lg-5 col-11 transparent-box">
+      <!-- <div class="col-lg-1 col-12"></div> Empty column -->
+      <!-- <div class="col-lg-5 col-11 transparent-box">
         <p><h4><strong>Ｑ：平台在紀錄路線時會取用使用者的位置與足跡，此部分是否有隱私疑慮？<br><br></strong></h4>
         使用者所有的數據資料與足跡本平台只會用於優化平台之用途並且會嚴格保密，決不外洩，請使用者放心使用。
         </p>
-        </p>
-      </div>
+      </div> -->
     </div>
   </div>
   <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
@@ -536,6 +588,26 @@
         // 窗口大小變化時檢查
         window.addEventListener('resize', checkScreenWidth);
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const questions = document.querySelectorAll('.question');
+
+        questions.forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const arrow = this.querySelector('.arrow');
+
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    arrow.classList.remove('down');
+                } else {
+                    answer.style.display = 'block';
+                    arrow.classList.add('down');
+                }
+            });
+        });
+    });
+
 
 </script>
 
