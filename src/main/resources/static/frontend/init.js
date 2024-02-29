@@ -1,6 +1,7 @@
 let map;//地圖
 let infoWindow;//圖標資訊窗
 let FootprintData = [];//各環保行為資訊 物件陣列
+let svgData;
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let User;//使用者 物件
 let currentLocation;//當前經緯度
@@ -77,6 +78,7 @@ function systemInit(){
     User = JSON.parse(localStorage.getItem('EmoAppUser'));
     loadEcoRecords(User.userId);//載入環保紀錄
     loadFootprintData();//載入碳足跡計算
+    loadSVG();//載入svg
     $('#user').text(User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -107,7 +109,7 @@ function updateCurrentCircle(position) {
     map.panTo(currentLocation);
 }
 //載入svg
-$(document).ready(function () {
+function loadSVG(){
     $.ajax({
         url: '/api/GetAllSvgJson',
         method: 'GET',
@@ -115,6 +117,7 @@ $(document).ready(function () {
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
             console.log(svgData);
+            svgConstructor(svgData);
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
@@ -122,8 +125,8 @@ $(document).ready(function () {
             alert(errorMessage);
         }
     });
-});
-function loadSVG(){
+}
+function svgConstructor(svgData) {
     for(let [key, value] of Object.entries(categories)){
         $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
         $('#' + value.class + 'Radio').on('change', function() {
@@ -135,6 +138,8 @@ function loadSVG(){
         });
     }
 }
+
+
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -198,7 +203,6 @@ function initCategory(jsonData){
             totalFP: 0
         });
     }
-    loadSVG();
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {

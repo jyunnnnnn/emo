@@ -77,11 +77,11 @@ function updateMarkerContent(newContent) {
     if (currentMarker.infoWindow) {
         //console.log("更新infowindow成功");
         let thisIcon;
-        if (currentInfoWindowRecord.classType === "交通") {
-            thisIcon = '/frontend/img/traffic.ico';
-        } else if (currentInfoWindowRecord.classType === "生活用品") {
-            thisIcon = '/frontend/img/daily.ico';
-        } else{ alert(currentInfoWindowRecord.classType) }
+        if (newContent.classType === "交通") {
+               thisIcon = '/frontend/img/traffic.ico';
+       } else if (newContent.classType === "生活用品") {
+           thisIcon = '/frontend/img/生活用品.svg';
+       } else{ alert(currentInfoWindowRecord.classType) }
         currentMarker.setIcon(thisIcon);
         currentMarker.infoWindow.setContent(modifyContent);
     }else {
