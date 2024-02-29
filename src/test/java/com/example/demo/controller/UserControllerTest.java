@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.User;
+import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONArray;
