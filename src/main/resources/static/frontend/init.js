@@ -163,8 +163,8 @@ function FPConstructor(jsonData) {
                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
             });
         } else {
-            jsonData[key].content.forEach(({name: type,coefficient,baseline,option,unit}) => {
-                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name});
+            jsonData[key].content.forEach(({name: type, coefficient, baseline, option, unit, color}) => {
+                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name, color});
              });
         }
     }
@@ -194,6 +194,7 @@ function initCategory(jsonData){
         }
         categories[currentCategory].action.push({
             type: currentType,
+            color: FootprintData[i].color,
             totalFP: 0
         });
     }

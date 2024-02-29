@@ -112,15 +112,20 @@ function showNewChart(nowRecords, type) {
                 datasets: [{
                     label: '減碳量',
                     data: [],
+                    backgroundColor: [],
                 }],
                 options: {
-                    cutoutPercentage: 50
+                    cutoutPercentage: 50,
+                    animation:{
+                        animateScale: true
+                    }
                 }
             };
             for(let [key, value] of Object.entries(nowCategories)){
                 if(value.footprint != 0){
                     data.labels.push(key);
                     data.datasets[0].data.push(value.footprint);
+                    data.datasets[0].backgroundColor.push(value.color);
                 }
             }
         }
@@ -148,6 +153,7 @@ function showNewChart(nowRecords, type) {
             datasets: [{
                 label: '減碳量',
                 data: [],
+                backgroundColor: [],
             }],
             options: {
                 cutoutPercentage: 50
@@ -158,6 +164,7 @@ function showNewChart(nowRecords, type) {
             if(subcategory.totalFP != 0){
                 data.labels.push(subcategory.type);
                 data.datasets[0].data.push(subcategory.totalFP);
+                data.datasets[0].backgroundColor.push(subcategory.color);
             }
         });
     }
@@ -319,12 +326,12 @@ function sortRecordsBySelectedOption() {
         let recordDate = new Date(record.time.split(' ')[0]); // 提取日期部分
         return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
     });
-    showNewRecord(sortedRecords);
+    showNewRecord(sortedRecords, selectedCategory);
 }
 // 監聽排序選項變化事件
 $('#category, #sortType, #sortMethod, #startDate, #endDate').on("change", sortRecordsBySelectedOption);
 
-function showNewRecord(sortedRecords) {
+function showNewRecord(sortedRecords, selectedCategory) {
     let thisRecords = sortedRecords;
     let container = $('#listContent');
     container.empty();
@@ -343,6 +350,45 @@ function showNewRecord(sortedRecords) {
         container.append(recordDiv);
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
+            let icon;
+            let recordElement;
+            if(selectedCategory != '全部'){
+                icon = $('<svg>')
+                    .html(svgData.svgImages.recordList[thisRecords[i].type]);
+                let action = categories[thisRecords[i].classType].action;
+                let actionColor;
+                for(let k=0; k<action.length; k++){
+                    if(action[k].type == thisRecords[i].type){
+                        actionColor = action[k].color;
+                        break;
+                    }
+                }
+                recordElement= $("<p>")
+                    .css({
+                    })
+                    .hover(
+                        function() {
+                            $(this).css('background-color', actionColor);
+                        },
+                        function() {
+                            $(this).css('background-color', '');
+                        }
+                    );
+            } else {
+                icon = $('<svg>')
+                    .html(svgData.svgImages.recordList[thisRecords[i].classType]);
+                recordElement= $("<p>")
+                    .css({
+                    })
+                    .hover(
+                        function() {
+                            $(this).css('background-color', categories[thisRecords[i].classType].color);
+                        },
+                        function() {
+                            $(this).css('background-color', '');
+                        }
+                    );
+            }
             // 創建新的checkbox
             let checkbox = $('<label>')
                 .addClass('checkbox-container')
@@ -365,8 +411,6 @@ function showNewRecord(sortedRecords) {
                     'align-items': 'center'
                 });
 
-            // 創建新的 <p> 元素
-            let recordElement = $("<p>");
             let timeSpan = $("<span>")
                 .text(thisRecords[i].time + " ");
             let typeSpan = $("<span>")
@@ -375,7 +419,7 @@ function showNewRecord(sortedRecords) {
                 .text(" (" + thisRecords[i].footprint + "g Co2E)");
 
             recordElement.append(timeSpan, typeSpan, footprintSpan);
-            recordDiv.append(checkbox, recordElement);
+            recordDiv.append(checkbox, icon, recordElement);
             recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
             container.append(recordDiv);
 

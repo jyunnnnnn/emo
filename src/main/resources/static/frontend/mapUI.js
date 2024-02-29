@@ -83,21 +83,26 @@ $('#type').on('change', function(){
         }
     }
 
-    for(let [key, value] of Object.entries(item.options)){
-        let label = $('<label>', {
-            class: 'gram'
-        });
-        let input = $('<input>', {
-            type: 'radio',
-            name: 'radio',
-            id: key + 'Radio'
-        });
-        let span = $('<span>', {
-            class: 'name',
-            text: key + '(' + value + 'g)'
-        });
-        label.append(input, span);
-        gram.append(label);
+    for(let [key, value] of Object.entries(item)){
+        if(key === "option"){
+            for(let [key, val] of Object.entries(value)){
+                let label = $('<label>', {
+                    class: 'gram'
+                });
+                let input = $('<input>', {
+                    type: 'radio',
+                    name: 'radio',
+                    id: key + 'Radio'
+                });
+                let span = $('<span>', {
+                    class: 'name',
+                    text: key + '(' + val + 'g)'
+                });
+                label.append(input, span);
+                gram.append(label);
+            }
+            break;
+        }
     }
     let label = $('<label>', {
         class: 'gram'

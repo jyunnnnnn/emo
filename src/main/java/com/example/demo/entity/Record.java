@@ -2,12 +2,13 @@ package com.example.demo.entity;
 
 //每個紀錄都會有的資訊
 public class Record {
-    public Record(String index, String name, double coefficient, String unit, String baseline) {
+    public Record(String index, String name, double coefficient, String unit, String baseline, String color) {
         this.index = index;
         this.name = name;
         this.coefficient = coefficient;
         this.unit = unit;
         this.baseline = baseline;
+        this.color = color;
     }
 
     //減碳紀錄索引
@@ -20,6 +21,8 @@ public class Record {
     private String unit;
     //每個減碳紀錄都有其對應的基準
     private String baseline;
+    //每個行為有自己的顏色
+    private String color;
 
     public String getIndex() {
         return index;
