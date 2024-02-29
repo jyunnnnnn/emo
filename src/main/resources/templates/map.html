@@ -12,7 +12,7 @@
     <!--CryptoJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- 圓餅圖 -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -298,9 +298,7 @@
 
         <div class="recordHeading" id="activityListModalLabel">歷史紀錄</div>
         <div style="display:flex; justify-content: center;">
-            <div class="chart-box" id="chartBox" style="display: none; width: 300px; height: 300px; justify-content: center;">
-                <canvas id="recordChart" style="display: block; box-sizing: border-box; height: 279px; width: 279px;"></canvas>
-            </div>
+            <div class="chart-box" id="chart" style="display: none; width: 300px; height: 300px; justify-content: center;"></div>
         </div>
         <div style="display: flex; justify-content: center;">
             <div style="flex:1; display: inline-flex; justify-content: center; align-items: center;">
@@ -326,7 +324,7 @@
                 </optgroup>
             </select>
         </div>
-        <div id="listContent" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 12px; max-width: 350px;"></div>
+        <div id="listContent" style="font-family: 'Crimson Pro', serif; align-items: center; font-size: 15px; max-width: 350px;"></div>
         <div style="display: flex">
             <input id="editRecord" class="save-button" type="submit" value="編輯">
             <input id="saveEditRecord" class="save-button" type="submit" value="完成" style="display: none;">

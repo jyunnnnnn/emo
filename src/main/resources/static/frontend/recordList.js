@@ -51,10 +51,7 @@ function showNowRecordInFoWindow(nowRecord){
 // 圓餅圖
 let myChart = null;
 function showNewChart(nowRecords, type) {
-    found = false;
-    let data;
     let nowCategories = categories;
-    const chartBox = $("#chartBox");
 
     // 重置圖表減碳量 防止重開時累加
     for (let category in nowCategories) {
@@ -82,57 +79,31 @@ function showNewChart(nowRecords, type) {
         }
     }
 
+    let chartBox = $('#chart');
+    let chart = echarts.init(chartBox[0]);
+
+    let legendData = [];
+    let seriesData = [];
+    let nowFP = 0;
+
     if(type =="全部" || type == "init"){
         for(let [key, value] of Object.entries(nowCategories)){
             if(value.footprint != 0 && value.footprint != undefined) {
-                found = true;
-                break;
-            }
-        }
-        if(!found){
-            $("#chartBox").css("display", "none");
-            let container = $("#listContent");
-            container.empty(); // 清空容器內容
-            container.css({
-                "overflowY": "scroll",
-                "maxHeight": "150px"
-            });
-            let recordDiv = $("<div>")
-                .css({
-                    "display": "inline",
-                    "textAlign": "center"
-                })
-                .text("沒有紀錄");
-            container.append(recordDiv);
-
-            return;
-        } else {
-            data = {
-                labels: [],
-                datasets: [{
-                    label: '減碳量',
-                    data: [],
-                    backgroundColor: [],
-                }],
-                options: {
-                    cutoutPercentage: 50,
-                    animation:{
-                        animateScale: true
+                legendData.push(key);
+                seriesData.push({
+                    name: key,
+                    value: value.footprint,
+                    itemStyle: {
+                        color: value.color
                     }
-                }
-            };
-            for(let [key, value] of Object.entries(nowCategories)){
-                if(value.footprint != 0){
-                    data.labels.push(key);
-                    data.datasets[0].data.push(value.footprint);
-                    data.datasets[0].backgroundColor.push(value.color);
-                }
+                });
+                nowFP += value.footprint;
             }
         }
-    }else{
+    } else {
         if(nowCategories[type].footprint == 0 || nowCategories[type].footprint == undefined){
             chartBox.css("display", "none");
-            let container = $("#listContent");
+            let container = $('#listContent');
             container.empty(); // 清空容器內容
             container.css({
                 "overflowY": "scroll",
@@ -145,42 +116,111 @@ function showNewChart(nowRecords, type) {
                 })
                 .text("沒有紀錄");
             container.append(recordDiv);
-
             return;
         }
-        data = {
-            labels: [],
-            datasets: [{
-                label: '減碳量',
-                data: [],
-                backgroundColor: [],
-            }],
-            options: {
-                cutoutPercentage: 50
-            }
-        };
-
         nowCategories[type].action.forEach(function(subcategory) {
             if(subcategory.totalFP != 0){
-                data.labels.push(subcategory.type);
-                data.datasets[0].data.push(subcategory.totalFP);
-                data.datasets[0].backgroundColor.push(subcategory.color);
+                legendData.push(subcategory.type);
+                seriesData.push({
+                    name: subcategory.type,
+                    value: subcategory.totalFP,
+                    itemStyle: {
+                        color: subcategory.color
+                    }
+                });
+                nowFP += subcategory.totalFP;
             }
         });
     }
-    const chartElement = $('#recordChart');
-    // 判斷是否已經存在舊的圖
-    if (myChart !== null) {
-        myChart.destroy();
-    }
-    // 創建新的圖
-    myChart = new Chart(chartElement, {
-        type: 'doughnut',
-        data: data
-    });
 
+    if(type === "全部" || type === "init") type = "總";
+    let option = {
+        grid: {
+            left: '0%',
+            right: '0%',
+            top: '0%',
+            bottom: '0%',
+            containLabel: false
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            top: '5%',
+            left: 'center',
+            fontFamily: "'Crimson Pro', serif",
+            data: legendData
+        },
+        graphic: [{
+            type: 'text',
+            left: 'center',
+            top: '40%',
+            style: {
+                text: type + "減碳量",
+                textAlign: 'center',
+                fill: '#000',
+                width: 30,
+                height: 30,
+                fontSize: 15,
+                color: "#4d4f5c",
+                fontFamily: "'Crimson Pro', serif"
+            }
+        }, {
+            type: 'text',
+            left: 'center',
+            top: '45%',
+            style: {
+                text: nowFP + 'g',
+                textAlign: 'center',
+                fill: '#000',
+                width: 30,
+                height: 30,
+                fontSize: 25,
+                fontFamily: "'Crimson Pro', serif"
+            }
+        }, {
+            type: 'text',
+            left: 'center',
+            top: '55%',
+            style: {
+                text: 'Co2E',
+                textAlign: 'center',
+                fill: '#000',
+                width: 30,
+                height: 30,
+                fontSize: 18,
+                fontFamily: "'Crimson Pro', serif"
+            }
+        }],
+        series: [
+            {
+                name: '減碳量',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center',
+                    fontFamily: "'Crimson Pro', serif"
+                },
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#F8F9FD',
+                    borderWidth: 2
+                },
+
+                labelLine: {
+                    show: false
+                },
+                data: seriesData
+            }
+        ]
+    };
+
+    chart.setOption(option);
     chartBox.css("display", "inline-flex");
 }
+
 // 查看歷史紀錄
 function showRecord() {
     //列表顯示環保紀錄
