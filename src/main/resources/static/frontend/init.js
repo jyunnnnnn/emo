@@ -134,7 +134,6 @@ function loadSVG(){
             }
         });
     }
-    console.log(FootprintData);
 }
 //載入碳足跡計算係數
 function loadFootprintData() {
@@ -169,8 +168,9 @@ function FPConstructor(jsonData) {
              });
         }
     }
+    initCategory(jsonData);
 }
-function initCategory(){
+function initCategory(jsonData){
     $('#category').append($('<option>', {
         text: "全部",
         value: "all",
@@ -184,6 +184,7 @@ function initCategory(){
             categories[currentCategory] = {
                 class: FootprintData[i].class,
                 footprint: 0,
+                color: jsonData[FootprintData[i].class].color,
                 action: []
             };
             $('#category').append($('<option>', {

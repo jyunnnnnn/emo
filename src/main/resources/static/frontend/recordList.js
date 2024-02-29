@@ -195,8 +195,8 @@ function showRecord() {
         container.append(recordDiv);
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
-            //svgData.svgImages.recordList[thisRecords[i].classType];
-            let icon = `<img src="/frontend/img/歷史${thisRecords[i].classType}.svg" style="margin-right: 3px; margin-bottom: 13px;">`;
+            let icon = $('<svg>')
+                .html(svgData.svgImages.recordList[thisRecords[i].classType]);
             // 創建新的checkbox
             let checkbox = $('<label>')
                 .addClass('checkbox-container')
@@ -219,33 +219,18 @@ function showRecord() {
                     'align-items': 'center'
                 });
 
-            let recordElement;
             // 創建新的 <p> 元素
-            if (thisRecords[i].classType == "生活用品") {
-                recordElement = $("<p>")
-                    .css({
-                    })
-                    .hover(
-                        function() {
-                            $(this).css('background-color', '#9ED368');
-                        },
-                        function() {
-                            $(this).css('background-color', '');
-                        }
-                    );
-            } else {
-                recordElement = $("<p>")
-                    .css({
-                    })
-                    .hover(
-                        function() {
-                            $(this).css('background-color', '#5D9BEB');
-                        },
-                        function() {
-                            $(this).css('background-color', '');
-                        }
-                    );
-            }
+            let recordElement= $("<p>")
+                .css({
+                })
+                .hover(
+                    function() {
+                        $(this).css('background-color', categories[thisRecords[i].classType].color);
+                    },
+                    function() {
+                        $(this).css('background-color', '');
+                    }
+                );
 
             let timeSpan = $("<span>")
                 .text(thisRecords[i].time + " ");

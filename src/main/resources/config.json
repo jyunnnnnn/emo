@@ -1,7 +1,7 @@
 {
   "RecordCategory": {
     "daily": {
-      "color": "blue",
+      "color": "#9ED368",
       "base": {
         "paper": 0.242,
         "plastic": 1.95
@@ -51,7 +51,7 @@
       "name": "生活用品"
     },
     "transportation": {
-      "color": "pink",
+      "color": "#5D9BEB",
       "base": {
         "car": 110.0,
         "scooter": 100.0
