@@ -111,8 +111,9 @@ function showNewChart(nowRecords, type) {
             });
             let recordDiv = $("<div>")
                 .css({
-                    "display": "inline",
-                    "textAlign": "center"
+                    'text-align': 'center',
+                    'justify-content': 'center',
+                    'font-size': '20px'
                 })
                 .text("沒有紀錄");
             container.append(recordDiv);
@@ -154,29 +155,27 @@ function showNewChart(nowRecords, type) {
         graphic: [{
             type: 'text',
             left: 'center',
-            top: '40%',
+            top: '38%',
             style: {
                 text: type + "減碳量",
                 textAlign: 'center',
                 fill: '#000',
                 width: 30,
                 height: 30,
-                fontSize: 15,
+                fontSize: 13,
                 color: "#4d4f5c",
-                fontFamily: "'Crimson Pro', serif"
             }
         }, {
             type: 'text',
             left: 'center',
             top: '45%',
             style: {
-                text: nowFP + 'g',
+                text: nowFP.toFixed(2, 10) + 'g',
                 textAlign: 'center',
                 fill: '#000',
                 width: 30,
                 height: 30,
-                fontSize: 25,
-                fontFamily: "'Crimson Pro', serif"
+                fontSize: 23,
             }
         }, {
             type: 'text',
@@ -189,7 +188,6 @@ function showNewChart(nowRecords, type) {
                 width: 30,
                 height: 30,
                 fontSize: 18,
-                fontFamily: "'Crimson Pro', serif"
             }
         }],
         series: [
@@ -235,8 +233,9 @@ function showRecord() {
     if(thisRecords.length == 0){
         let recordDiv = $("<div>")
             .css({
-                'display': 'inline',
-                'text-align': 'center'
+                'text-align': 'center',
+                'justify-content': 'center',
+                'font-size': '20px'
             })
             .text("沒有紀錄");
         container.append(recordDiv);
@@ -269,6 +268,8 @@ function showRecord() {
             // 創建新的 <p> 元素
             let recordElement= $("<p>")
                 .css({
+                    'display': 'inline-flex',
+                    'align-items': 'center'
                 })
                 .hover(
                     function() {
@@ -280,9 +281,14 @@ function showRecord() {
                 );
 
             let timeSpan = $("<span>")
-                .text(thisRecords[i].time + " ");
+                .text(thisRecords[i].time);
             let typeSpan = $("<span>")
-                .text(thisRecords[i].type + " ");
+                .text(thisRecords[i].type)
+                .css({
+                    'font-size': '20px',
+                    'margin-left' : '5px',
+                    'margin-right' : '5px'
+                });
             let footprintSpan = $("<span>")
                 .text(" (" + thisRecords[i].footprint + "g Co2E)");
 
@@ -383,8 +389,9 @@ function showNewRecord(sortedRecords, selectedCategory) {
     if(thisRecords.length == 0){
         let recordDiv = $("<div>")
             .css({
-                'display': 'inline',
-                'text-align': 'center'
+                'text-align': 'center',
+                'justify-content': 'center',
+                'font-size': '20px'
             })
             .text("沒有紀錄");
         container.append(recordDiv);
@@ -405,6 +412,8 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 }
                 recordElement= $("<p>")
                     .css({
+                        'display': 'inline-flex',
+                        'align-items': 'center'
                     })
                     .hover(
                         function() {
@@ -419,6 +428,8 @@ function showNewRecord(sortedRecords, selectedCategory) {
                     .html(svgData.svgImages.recordList[thisRecords[i].classType]);
                 recordElement= $("<p>")
                     .css({
+                        'display': 'inline-flex',
+                        'align-items': 'center'
                     })
                     .hover(
                         function() {
@@ -454,6 +465,11 @@ function showNewRecord(sortedRecords, selectedCategory) {
             let timeSpan = $("<span>")
                 .text(thisRecords[i].time + " ");
             let typeSpan = $("<span>")
+                .css({
+                    'font-size': '20px',
+                    'margin-left' : '5px',
+                    'margin-right' : '5px'
+                })
                 .text(thisRecords[i].type + " ");
             let footprintSpan = $("<span>")
                 .text(" (" + thisRecords[i].footprint + "g Co2E)");
