@@ -43,30 +43,32 @@ $('#openRecordModal').on('click', function() {
     }
 });
 // 監聽類別變化
-$('input[name="typeRadio"]').on('change', function() {
-    $('#initType').text("請先選擇行為");
-    $('#gram').attr("placeholder", "請先選擇行為");
+function typeListener(){
+    $('input[name="typeRadio"]').on('change', function() {
+        $('#initType').text("請先選擇行為");
+        $('#gram').attr("placeholder", "請先選擇行為");
 
-    let classType = $('input[name="typeRadio"]:checked').val();
-    if(classType != ''){
-        let select = $('#type');
-        selectDatas = FootprintData.filter(function(item) {
-            return item.class === classType;
-        });
-        select.empty();
-        select.append($('<option>', {
-            text: "請選擇一項行為",
-            id: "noAction",
-            selected: true,
-            disabled: true
-        }));
-        for(let selectData of selectDatas){
+        let classType = $('input[name="typeRadio"]:checked').val();
+        if(classType != ''){
+            let select = $('#type');
+            selectDatas = FootprintData.filter(function(item) {
+                return item.class === classType;
+            });
+            select.empty();
             select.append($('<option>', {
-                text: selectData.type
+                text: "請選擇一項行為",
+                id: "noAction",
+                selected: true,
+                disabled: true
             }));
+            for(let selectData of selectDatas){
+                select.append($('<option>', {
+                    text: selectData.type
+                }));
+            }
         }
-    }
-});
+    });
+}
 // 監聽行為變化
 $('#type').on('change', function(){
     $("#gram").prop("disabled", true);

@@ -77,7 +77,6 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User = JSON.parse(localStorage.getItem('EmoAppUser'));
     loadEcoRecords(User.userId);//載入環保紀錄
-    loadFootprintData();//載入碳足跡計算
     loadSVG();//載入svg
     $('#user').text(User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
@@ -116,7 +115,8 @@ function loadSVG(){
         success: function (data) {
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
-            svgConstructor(svgData);
+            loadFootprintData();//載入碳足跡計算
+            console.log(svgData);
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
@@ -127,6 +127,7 @@ function loadSVG(){
 }
 function svgConstructor(svgData) {
     for(let [key, value] of Object.entries(categories)){
+        console.log(key, value);
         $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
         $('#' + value.class + 'Radio').on('change', function() {
             if (this.checked) {
@@ -135,6 +136,7 @@ function svgConstructor(svgData) {
                 $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
             }
         });
+        console.log($('#' + value.class + 'Icon'));
     }
 }
 
@@ -184,6 +186,42 @@ function initCategory(jsonData){
         let currentType = FootprintData[i].type;
 
         if (!categories[currentCategory]) {
+            if(FootprintData[i].classZH != "交通"){
+                // 建立類別按鈕
+                let divElement = $('<div></div>');
+                divElement.addClass('radio-inputs');
+                divElement.attr('name', 'radio');
+                divElement.attr('id', FootprintData[i].class + 'Radio');
+
+                let labelElement = $('<label></label>');
+                labelElement.attr('id', FootprintData[i].class + 'Label');
+
+                let inputElement = $('<input>');
+                inputElement.attr({
+                    'id': FootprintData[i].class + 'Input',
+                    'class': 'radio-input',
+                    'type': 'radio',
+                    'name': 'typeRadio',
+                    'value': FootprintData[i].class
+                });
+
+                let spanElement = $('<span></span>');
+                spanElement.addClass('radio-tile');
+                let svgSpan = $('<span></span>');
+                svgSpan.addClass('radio-icon');
+                svgSpan.attr('id', FootprintData[i].class + 'Icon');
+
+                let textSpan = $('<span>' + FootprintData[i].classZH + '</span>');
+                textSpan.addClass('radio-label');
+                textSpan.attr('id', FootprintData[i].class);
+
+                spanElement.append(svgSpan, textSpan);
+                labelElement.append(inputElement, spanElement);
+                divElement.append(labelElement);
+
+                $('#classType').append(divElement);
+            }
+
             categories[currentCategory] = {
                 class: FootprintData[i].class,
                 footprint: 0,
@@ -201,6 +239,10 @@ function initCategory(jsonData){
             totalFP: 0
         });
     }
+
+    // 等按鈕建好再放照片跟 + 監聽器
+    svgConstructor(svgData);
+    typeListener();
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {
