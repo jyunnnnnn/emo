@@ -12,6 +12,7 @@ let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
+const kf = new KalmanFilter();
 
 // 初始化Google Map
 function initMap() {
@@ -93,7 +94,7 @@ function systemInit(){
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
 }
 //更新現在位置
-function updateCurrentCircle(position) {
+function updateCurrentCircle() {
     // 清除舊位置的圈圈
     if (circle) {circle.setMap(null);}
     // 在新當前位置上標記圈圈
