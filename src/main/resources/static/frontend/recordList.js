@@ -82,14 +82,12 @@ function showNewChart(nowRecords, type) {
     let chartBox = $('#chart');
     let chart = echarts.init(chartBox[0]);
 
-    let legendData = [];
     let seriesData = [];
     let nowFP = 0;
 
     if(type =="全部" || type == "init"){
         for(let [key, value] of Object.entries(nowCategories)){
             if(value.footprint != 0 && value.footprint != undefined) {
-                legendData.push(key);
                 seriesData.push({
                     name: key,
                     value: value.footprint,
@@ -121,7 +119,6 @@ function showNewChart(nowRecords, type) {
         }
         nowCategories[type].action.forEach(function(subcategory) {
             if(subcategory.totalFP != 0){
-                legendData.push(subcategory.type);
                 seriesData.push({
                     name: subcategory.type,
                     value: subcategory.totalFP,
@@ -137,78 +134,53 @@ function showNewChart(nowRecords, type) {
     if(type === "全部" || type === "init") type = "總";
     let option = {
         grid: {
-            left: '0%',
-            right: '0%',
-            top: '0%',
-            bottom: '0%',
-            containLabel: false
+            bottom: 0,
+            left: 'center'
+        },
+        title: {
+            text: [
+                type + '減碳量',
+                nowFP.toFixed(2) + 'g',
+                'Co2E'
+            ].join('\n'),
+            textStyle: {
+                fontFamily: "'cwTeXYen', 'Mandali', sans-serif",
+                textAlign: 'center',
+                fontSize: 25,
+                fontWeight: 'normal'
+            },
+            left: 'center',
+            top: '40%'
         },
         tooltip: {
             trigger: 'item'
         },
-        legend: {
-            top: '5%',
-            left: 'center',
-            fontFamily: "'Crimson Pro', serif",
-            data: legendData
-        },
-        graphic: [{
-            type: 'text',
-            left: 'center',
-            top: '38%',
-            style: {
-                text: type + "減碳量",
-                textAlign: 'center',
-                fill: '#000',
-                width: 30,
-                height: 30,
-                fontSize: 13,
-                color: "#4d4f5c",
-            }
-        }, {
-            type: 'text',
-            left: 'center',
-            top: '45%',
-            style: {
-                text: nowFP.toFixed(2, 10) + 'g',
-                textAlign: 'center',
-                fill: '#000',
-                width: 30,
-                height: 30,
-                fontSize: 23,
-            }
-        }, {
-            type: 'text',
-            left: 'center',
-            top: '55%',
-            style: {
-                text: 'Co2E',
-                textAlign: 'center',
-                fill: '#000',
-                width: 30,
-                height: 30,
-                fontSize: 18,
-            }
-        }],
         series: [
             {
+                center:['50%', '53%'],
                 name: '減碳量',
                 type: 'pie',
-                radius: ['40%', '70%'],
+                radius: ['55%', '75%'],
                 avoidLabelOverlap: false,
-                label: {
-                    show: false,
-                    position: 'center',
-                    fontFamily: "'Crimson Pro', serif"
-                },
                 itemStyle: {
                     borderRadius: 10,
                     borderColor: '#F8F9FD',
-                    borderWidth: 2
+                    borderWidth: 2,
                 },
-
+                label: {
+                    formatter: '{b}: {d}%',
+                    padding: [0, -40],
+                    fontSize: 15,
+                    fontFamily: "'cwTeXYen', 'Mandali', sans-serif"
+                },
                 labelLine: {
-                    show: false
+                    length: 10,
+                    length2: 60,
+                },
+                labelLayout: {
+                    verticalAlign: "bottom",
+                    dy: -5,
+                    hideOverlap: false
                 },
                 data: seriesData
             }
@@ -269,7 +241,8 @@ function showRecord() {
             let recordElement= $("<p>")
                 .css({
                     'display': 'inline-flex',
-                    'align-items': 'center'
+                    'align-items': 'center',
+                    'margin': '0px'
                 })
                 .hover(
                     function() {
@@ -413,7 +386,8 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 recordElement= $("<p>")
                     .css({
                         'display': 'inline-flex',
-                        'align-items': 'center'
+                        'align-items': 'center',
+                        'margin': '0px'
                     })
                     .hover(
                         function() {
@@ -429,7 +403,8 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 recordElement= $("<p>")
                     .css({
                         'display': 'inline-flex',
-                        'align-items': 'center'
+                        'align-items': 'center',
+                        'margin': '0px'
                     })
                     .hover(
                         function() {

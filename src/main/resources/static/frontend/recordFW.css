@@ -276,9 +276,9 @@
 #saveEditRecord,
 #deleteEditRecord{
     display: block;
-    width: 50px;
+    width: 70px;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 20px;
     background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
     color: white;
     margin: 8px auto;
