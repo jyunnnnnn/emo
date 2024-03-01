@@ -156,7 +156,7 @@ $('#saveRecord').on('click', function () {
 // 路線記錄儲存
 $('#saveTrafficRecord').on('click', function () {
     event.preventDefault();
-    let type = $('#trafficType option:selected');
+    let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
     let data_value = $('#kilometer').val();
 
     if(data_value <= 0) {

@@ -127,7 +127,6 @@ function loadSVG(){
 }
 function svgConstructor(svgData) {
     for(let [key, value] of Object.entries(categories)){
-        console.log(key, value);
         $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
         $('#' + value.class + 'Radio').on('change', function() {
             if (this.checked) {
@@ -136,7 +135,6 @@ function svgConstructor(svgData) {
                 $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
             }
         });
-        console.log($('#' + value.class + 'Icon'));
     }
 }
 
@@ -159,13 +157,14 @@ function loadFootprintData() {
         });
 }
 function FPConstructor(jsonData) {
+    console.log(jsonData);
     FootprintData = [];
     for(let [key,value] of Object.entries(jsonData)){
         let base = jsonData[key].base;
         let name = jsonData[key].name;
         if(key === "transportation"){
-            jsonData[key].content.forEach(({name: type, coefficient, baseline, unit}) => {
-                FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
+            jsonData[key].content.forEach(({name: type, index, coefficient, baseline, unit}) => {
+                FootprintData.push({ type, index,coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
             });
         } else {
             jsonData[key].content.forEach(({name: type, coefficient, baseline, option, unit, color}) => {
@@ -176,6 +175,7 @@ function FPConstructor(jsonData) {
     initCategory(jsonData);
 }
 function initCategory(jsonData){
+    console.log(FootprintData);
     $('#category').append($('<option>', {
         text: "全部",
         value: "all",
@@ -186,7 +186,7 @@ function initCategory(jsonData){
         let currentType = FootprintData[i].type;
 
         if (!categories[currentCategory]) {
-            if(FootprintData[i].classZH != "交通"){
+            if(currentCategory != "交通"){
                 // 建立類別按鈕
                 let divElement = $('<div></div>');
                 divElement.addClass('radio-inputs');
@@ -211,7 +211,7 @@ function initCategory(jsonData){
                 svgSpan.addClass('radio-icon');
                 svgSpan.attr('id', FootprintData[i].class + 'Icon');
 
-                let textSpan = $('<span>' + FootprintData[i].classZH + '</span>');
+                let textSpan = $('<span>' + currentCategory + '</span>');
                 textSpan.addClass('radio-label');
                 textSpan.attr('id', FootprintData[i].class);
 
@@ -232,6 +232,45 @@ function initCategory(jsonData){
                 text: currentCategory,
                 value: FootprintData[i].class
             }));
+        }
+
+        if(currentCategory === "交通"){
+            // 建立類別按鈕
+            let divElement = $('<div></div>');
+            divElement.addClass('radio-inputs');
+            divElement.attr('name', 'radio');
+            divElement.attr('id', FootprintData[i].index + 'Radio');
+            divElement.css({
+                'width': '50%'
+            });
+
+            let labelElement = $('<label></label>');
+            labelElement.attr('id', FootprintData[i].index + 'Label');
+
+            let inputElement = $('<input>');
+            inputElement.attr({
+                'id': FootprintData[i].index + 'Input',
+                'class': 'radio-input',
+                'type': 'radio',
+                'name': 'engine',
+                'value': FootprintData[i].index
+            });
+
+            let spanElement = $('<span></span>');
+            spanElement.addClass('radio-tile');
+            let svgSpan = $('<span></span>');
+            svgSpan.addClass('radio-icon');
+            svgSpan.attr('id', FootprintData[i].index + 'Icon');
+
+            let textSpan = $('<span>' + FootprintData[i].type + '</span>');
+            textSpan.addClass('radio-label');
+            textSpan.attr('id', FootprintData[i].index);
+
+            spanElement.append(svgSpan, textSpan);
+            labelElement.append(inputElement, spanElement);
+            divElement.append(labelElement);
+
+            $('#trafficClassType').append(divElement);
         }
         categories[currentCategory].action.push({
             type: currentType,

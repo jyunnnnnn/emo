@@ -88,21 +88,11 @@ function stopRecording() {
     $('#updateTrafficRecord').css("display", "none");
     $('#deleteTrafficRecord').css("display", "none");
 
-    let select = $('#trafficType');
-    let trafficDatas = FootprintData.filter(function(item) {
-        return item.class === "transportation";
-    });
-    select.empty();
-    select.append($('<option>', {
-        text: "請選擇一項行為",
-        id: "noAction",
-        selected: true,
-        disabled: true
-    }));
-    for(let trafficData of trafficDatas){
-        select.append($('<option>', {
-            text: trafficData.type
-        }));
+    let checked = $('input[name="engine"]:checked');
+    let checkedVal = $('input[name="engine"]:checked').val();
+    if(checkedVal != undefined){
+        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal + 'Icon']);
+        checked.prop('checked', false);
     }
 
     //清除距離

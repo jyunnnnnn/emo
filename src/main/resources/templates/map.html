@@ -236,24 +236,13 @@
         </button>
 
         <div class="recordHeading">路線記錄</div>
-        <form action="" class="recordForm">
+        <form action="" class="recordForm" style="display:flex; flex-wrap: wrap; justify-content:center; width: 240px;">
             <!-- 類別選項 -->
-            <div class="radio-inputs" name="radio">
-                <!-- 類別選項/交通 -->
-                <label id="trafficLabel">
-                    <input id="trafficRadio" class="radio-input" type="radio" name="engine" checked>
-                    <span class="radio-tile">
-                        <span class="radio-icon">
-                        </span>
-                        <span class="radio-label" id="traffic">交通</span>
-                    </span>
-                </label>
+            <div id = "trafficClassType" style="display: flex;flex-wrap: wrap;max-width:200px;">
             </div>
             <!-- 行為選項 -->
             <label id="trafficSubType">
                 <div id="trafficMenu" style="display: block;">
-                    <select class="recordForm-control" id="trafficType">
-                    </select>
                     <input id="kilometer" name="gram" class="input" type="number" disabled>
                 </div>
             </label>
