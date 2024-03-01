@@ -107,13 +107,14 @@ function setData(parsedData){
                              '<input type="text" id="unit'+i+'">'+
                          '</div><br>'+
                          '<div class="form-group">'+
-                             '<label>baseline</label>'+
-                             '<input type="text" id="baseline'+i+'">'+
-                         '</div><br>'+
-//                         ' <button class="save-button btn " id="button1">修改/新增</button>'+
+                              '<label>baseline</label>'+
+                              '<select name="types" id="baseline'+i+'">'+
+                              '</select>'+
+                          '</div> <br>'+
                          '</div>';
                 //初始化
                $('#manage-container').append(card);
+
                 $('#name'+i).val(parsedData[categories[i]].content[0].name);
                 $('#big').val(parsedData[categories[i]].content[0].option.大);
                 $('#mid').val(parsedData[categories[i]].content[0].option.中);
@@ -141,11 +142,11 @@ function setData(parsedData){
                         '<label>unit</label>'+
                         '<input type="text" id="unit'+i+'">'+
                     '</div><br>'+
-                    '<div class="form-group">'+
-                        '<label>baseline</label>'+
-                        '<input type="text" id="baseline'+i+'">'+
-                    '</div><br>'+
-//                    ' <button class="save-button btn " id="button1">修改/新增</button>'+
+                      '<div class="form-group">'+
+                          '<label>baseline</label>'+
+                          '<select name="types" id="baseline'+i+'">'+
+                          '</select>'+
+                      '</div> <br>'+
                     '</div>';
              $('#manage-container').append(card);
               $('#name'+i).val(parsedData[categories[i]].content[0].name);
@@ -153,8 +154,6 @@ function setData(parsedData){
               $('#unit'+i).val(parsedData[categories[i]].content[0].unit);
               $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
          }
-
-
 
         for(let j =0;j< parsedData[categories[i]].content.length;j++){
             //新增 content 的下拉選項
@@ -174,11 +173,15 @@ function setData(parsedData){
                            ' </div> <br>';
         }
         baseCard += ' </div>';
-//                ' <button class="save-button btn " id="button1">修改/新增</button>';
         $('#manage-container').append(baseCard);
         //初始化
         for(let m = 0;m< baseLength; m++){
             $('#'+baseKeys[m]).val(parsedData[categories[i]].base[baseKeys[m]]);
+        }
+        //根據base的種類新增類別的baseline選單
+        for(let m = 0;m< baseLength; m++){
+          let option = '`<option value="'+baseKeys[m]+'">'+baseKeys[m]+'</option>';
+            $('#baseline'+i).append(option);
         }
     }
 
