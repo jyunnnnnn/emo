@@ -1,4 +1,4 @@
-let parsedData;
+let svgData;
 let categories = [];//類別大屬性有哪些
 
 $(document).ready(function () {
@@ -16,9 +16,23 @@ $(document).ready(function () {
            let errorData = JSON.parse(xhr.responseText);
            let errorMessage = errorData.message;
            alert(errorMessage);
-       }
+        }
     });
-
+    $.ajax({
+           url: '/api/GetAllSvgJson',
+           method: 'GET',
+           success: function (data) {
+               // 處理成功時的邏輯
+               parsedData = JSON.parse(data);
+               //調用函式
+               setSvgData(parsedData);
+           },
+           error: function(xhr, status, error) {
+              let errorData = JSON.parse(xhr.responseText);
+              let errorMessage = errorData.message;
+              alert(errorMessage);
+          }
+    });
 //切換顯示的區塊
     $('#options').on('change', function() {
         let selectedOption = $(this).val();
@@ -27,6 +41,11 @@ $(document).ready(function () {
         $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
     });
 });
+
+function setSvgData(parsedData) {
+    svgData=parsedData;
+    console.log(svgData);
+}
 //重寫
 $(document).ready(function() {
   $('#addNewContent').click(function() {
