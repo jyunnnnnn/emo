@@ -5,7 +5,7 @@ let isRecording = false;//false=>開始  true=>結束
 
 function success(pos){
     distanceThreshold = 5; // 5公尺
-    // //console.log(pos,currentLocation);
+    // console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
     const point1 = new google.maps.LatLng(newLat, newLng);
@@ -14,7 +14,7 @@ function success(pos){
     const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
     // 只有當距離超過閾值時才更新位置和圓圈 (小於5公尺不更新)
     if (distance > distanceThreshold) {
-        kf.process(newLat, newLng, pos.timestamp);//平滑路線:) 也不知道有沒有用
+        kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
 
         const filteredState = kf.getState();
         currentLocation = {
