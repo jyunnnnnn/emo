@@ -4,27 +4,25 @@ let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
 
 function success(pos){
-    // distanceThreshold = 10; // 十公尺
+    distanceThreshold = 5; // 5公尺
     // //console.log(pos,currentLocation);
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
-    // const point1 = new google.maps.LatLng(newLat, newLng);
-    // const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
-    // //計算新位置和當前位置的距離 meter
-    // const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    // // 只有當距離超過閾值時才更新位置和圓圈 (小於10公尺不更新)
-    // if (distance > distanceThreshold) {
-    //     currentLocation = {
-    //         lat: newLat,
-    //         lng: newLng
-    //     };
-    //     updateCurrentCircle(pos);
-    // }
-    currentLocation = {
-        lat: newLat,
-        lng: newLng
-    };
-    updateCurrentCircle(pos);
+    const point1 = new google.maps.LatLng(newLat, newLng);
+    const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    //計算新位置和當前位置的距離 meter
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+    // 只有當距離超過閾值時才更新位置和圓圈 (小於5公尺不更新)
+    if (distance > distanceThreshold) {
+        kf.process(newLat, newLng, pos.timestamp);//平滑路線:) 也不知道有沒有用
+
+        const filteredState = kf.getState();
+        currentLocation = {
+            lat: filteredState.lat,
+            lng: filteredState.lng
+        };
+        updateCurrentCircle();
+    }
 }
 
 function error(err) {
