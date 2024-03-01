@@ -126,15 +126,30 @@ function loadSVG(){
     });
 }
 function svgConstructor(svgData) {
+    console.log(categories);
     for(let [key, value] of Object.entries(categories)){
-        $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
-        $('#' + value.class + 'Radio').on('change', function() {
-            if (this.checked) {
-                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
-            } else {
-                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+        if(value.class != "transportation"){
+            $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
+            $('#' + value.class + 'Radio').on('change', function() {
+                if (this.checked) {
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
+                } else {
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+                }
+            });
+        } else {
+            for(let [key, val] of Object.entries(value.action)){
+                $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
+                $('#' + val.index + 'Radio').on('change', function() {
+                    if (this.checked) {
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
+                    } else {
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Hover']);
+                    }
+                });
+                console.log(val.index);
             }
-        });
+        }
     }
 }
 
@@ -275,6 +290,7 @@ function initCategory(jsonData){
         categories[currentCategory].action.push({
             type: currentType,
             color: FootprintData[i].color,
+            index: FootprintData[i].index,
             totalFP: 0
         });
     }
