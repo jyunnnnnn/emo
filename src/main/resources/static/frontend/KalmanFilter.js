@@ -12,7 +12,7 @@ class KalmanFilter {
 
     process(lat_measurement, lng_measurement, TimeStamp_milliseconds, accuracy) {
         if (accuracy < this.minAccuracy) accuracy = this.minAccuracy;
-        console.log("accuracy "+accuracy)
+        console.log("accuracy "+accuracy);
         if (this.variance < 0) {
             // 如果變異數 < 0，則初始化對象，以目前值初始化
             this.TimeStamp_milliseconds = TimeStamp_milliseconds;
