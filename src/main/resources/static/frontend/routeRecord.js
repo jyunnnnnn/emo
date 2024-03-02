@@ -3,7 +3,7 @@ let recordedPositions = [];//路線紀錄(點)
 let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
 let distanceThreshold = -1; // 初始化地圖位置
-let accurayThreshold = 10000; //
+let accuracyThreshold = 10000; //
 
 function success(pos){
 
@@ -13,31 +13,24 @@ function success(pos){
     const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
     //計算新位置和當前位置的距離 meter
     const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    const accuray = pos.coords.accuracy;
+    const accuracy = pos.coords.accuracy;
     console.log(pos,currentLocation);
-    console.log(accuray); // accuracy 經緯度的水平誤差(平面距離)(m)
+    console.log(accuracy); // accuracy 經緯度的水平誤差(平面距離)(m)
     console.log(distance);
 
     // 只有當距離超過閾值時才更新位置和圓圈 (小於2公尺不更新)，且定位精準度不超過閾值
     if(distance > distanceThreshold) {
-        if (accuray < accurayThreshold) {
+        if (accuracy < accuracyThreshold) { // 超過精準度直接判掉當作異常資料(先這樣，我也不知道可不可以):))
             distanceThreshold = 2; // 2公尺 原本五公尺變成很少移動:(
-            accurayThreshold = 30; // 30m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設30，超過可能是出現飄移
+            accuracyThreshold = 30; // 30m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設30，超過可能是出現飄移
             currentLocation = {
                 lat: newLat,
-                lng: newLng
+                lng: newLng,
+                TimeStamp_milliseconds: pos.timestamp,
+                accuracy: accuracy
             };
-        }else{ // 精準度有問題時(可能發生飄移)，使用KF預估
-            kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
-            const filteredState = kf.getState();
-            console.log("接收經緯度 lat: " + newLat +", lng: "+ newLng);
-            currentLocation = {
-                lat: filteredState.lat,
-                lng: filteredState.lng
-            };
-            console.log("修正位置 lat: "+filteredState.lat+", lng: "+filteredState.lng);
+            updateCurrentCircle();
         }
-        updateCurrentCircle();
     }
 }
 
@@ -75,6 +68,22 @@ function startRecording() {
 }
 
 function stopRecording() {
+    recordedPositions.forEach(position => {
+        kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
+    });
+
+    let smoothedPosition = kf.getState();
+    console.log(smoothedPosition);var smoothedPath = new google.maps.Polyline({
+        path: recordedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+    smoothedPath.setMap(map);
+    console.log("紅線為修正後路線");
+
     // 修改按鈕文字和標誌位元
     $('#startRecording').text('路線記錄');
     isRecording = false;
@@ -91,7 +100,7 @@ function stopRecording() {
     // 清空位置紀錄
     recordedPositions = [];
     // 移除地圖上的線條
-    clearMapLines();
+    // clearMapLines();
 
     // 打開路線記錄懸浮窗
     $('#routeFW').css("display", "flex");
