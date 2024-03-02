@@ -68,11 +68,11 @@ function updateMarkerContent(newContent) {
     newContent.footprint = parseFloat(newContent.footprint, 10).toFixed(3) *1000/1000;
     let modifyContent=`
          <div>
-             <h6 style="padding:3px; margin:3px; font-size: 40px; font-family: 'Crimson Pro', serif; font-weight: bold;">${newContent.type}</h6>
-             <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">減少的碳足跡為:${newContent.footprint}gCO2E</p>
-             <p style="padding:3px; margin:3px; font-size: 30px; font-family: 'Crimson Pro', serif;">${newContent.time}</p>
-             <button id="editButton" type="button" style="position: absolute; right: 5px; bottom: 5px; background-color: #6c757d; color: #fff; padding: 7px; border: none; cursor: pointer; border-radius: 5px; font-size: 25px" onclick="recordModal()">編輯</button>
-         </div>`;
+              <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'cwTeXYen', 'Mandali', sans-serif; font-weight: bold;">${recordToAdd.type}</h6>
+              <p style="padding:3px; margin:3px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">減少的碳足跡為：${recordToAdd.footprint}g Co2E</p>
+              <p style="padding:3px; margin:3px; font-size: 15px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">${recordToAdd.time}</p>
+              <button id="editButton" type="button" style="position: absolute; right: 20px; bottom: 15px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;" onclick="recordModal()">編輯</button>
+          </div>`;
          //class="btn btn-secondary"
     if (currentMarker.infoWindow) {
         //console.log("更新infowindow成功");
