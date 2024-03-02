@@ -149,6 +149,7 @@ $('#saveRecord').on('click', function () {
        alert("請輸入正數");
        return;
     }else{
+        console.log(type.text())
         saveRecord(classType, type.text(), data_value);
         $('#recordFW').css("display", "none");
     }
@@ -158,13 +159,12 @@ $('#saveTrafficRecord').on('click', function () {
     event.preventDefault();
     let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
     let data_value = $('#kilometer').val();
-
     if(data_value <= 0) {
         alert("請輸入正數");
-    } else if(type.attr('id') == "noAction") {
+    } else if(!type) {
         alert("請選擇行為");
     } else {
-        saveRecord("交通", type.text(), data_value);
+        saveRecord("交通", type, data_value);
         $('#routeFW').css("display", "none");
     }
 });
