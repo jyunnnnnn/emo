@@ -2,24 +2,35 @@ let intervalId;//時間間隔
 let recordedPositions = [];//路線紀錄(點)
 let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
+let distanceThreshold = -1; // 初始化地圖位置
+let accurayThreshold = 10000; //
 
 function success(pos){
-    distanceThreshold = 5; // 5公尺
-    // console.log(pos,currentLocation);
+
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
     const point1 = new google.maps.LatLng(newLat, newLng);
     const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
     //計算新位置和當前位置的距離 meter
     const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    // 只有當距離超過閾值時才更新位置和圓圈 (小於5公尺不更新)
-    if (distance > distanceThreshold) {
-        kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
+    const accuray = pos.coords.accuracy;
+    console.log(pos,currentLocation);
+    console.log(accuray); // accuracy 經緯度的水平誤差(平面距離)(m)
+    console.log(distance);
 
-        const filteredState = kf.getState();
+    // 只有當距離超過閾值時才更新位置和圓圈 (小於5公尺不更新)，且定位精準度不超過閾值
+    if (distance > distanceThreshold  && accuray < accurayThreshold) {
+        distanceThreshold = 5; // 5公尺
+        accurayThreshold = 30; // 50m
+        // kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
+        // const filteredState = kf.getState();
+        // currentLocation = {
+        //     lat: filteredState.lat,
+        //     lng: filteredState.lng
+        // };
         currentLocation = {
-            lat: filteredState.lat,
-            lng: filteredState.lng
+            lat: newLat,
+            lng: newLng
         };
         updateCurrentCircle();
     }
@@ -33,9 +44,9 @@ function error(err) {
 
 options = {
     enableHighAccuracy: false,//低精準，較不耗能
-    timeout: 5000,//最長等待時間五秒
-    maximumAge: 10000,//緩存位置10秒
-    minimunDistance: 5, //移動超過5米觸發位置更新
+    timeout: Infinity,// 設備必須要在多少時間內回應位置資訊(ms)
+    maximumAge: 10000,// 緩存位置10秒
+    minimunDistance: 5, // 移動超過5米觸發位置更新
 };
 // 路線紀錄(開始/停止)
 function checkIsRecording() {
@@ -122,8 +133,8 @@ function recordLocation() {
             path: lineCoordinates,
             geodesic: true,
             strokeColor: '#0D5025',
-            strokeOpacity: 1.0,
-            strokeWeight: 2
+            strokeOpacity: 0.8, //透明度，沒幹嘛 想讓她好看一點而已
+            strokeWeight: 4
         });
 
         line.setMap(map);
