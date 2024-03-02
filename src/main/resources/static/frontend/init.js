@@ -184,8 +184,8 @@ function FPConstructor(jsonData) {
         let base = jsonData[key].base;
         let name = jsonData[key].name;
         if(key === "transportation"){
-            jsonData[key].content.forEach(({name: type, index, coefficient, baseline, unit}) => {
-                FootprintData.push({ type, index,coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
+            jsonData[key].content.forEach(({name: type, index, coefficient, baseline, unit, color}) => {
+                FootprintData.push({ type, index,coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name, color});
             });
         } else {
             jsonData[key].content.forEach(({name: type, coefficient, baseline, option, unit, color}) => {

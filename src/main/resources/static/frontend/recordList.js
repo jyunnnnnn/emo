@@ -92,7 +92,7 @@ function showNewChart(nowRecords, type) {
 
     let seriesData = [];
     let nowFP = 0;
-
+    
     if(type =="全部" || type == "init"){
         for(let [key, value] of Object.entries(nowCategories)){
             if(value.footprint != 0 && value.footprint != undefined) {
@@ -127,6 +127,7 @@ function showNewChart(nowRecords, type) {
         });
     }
 
+    nowFP = parseFloat(nowFP).toFixed(2);
     if(type === "全部" || type === "init") type = "總";
     let option = {
         grid: {

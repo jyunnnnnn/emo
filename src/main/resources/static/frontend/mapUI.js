@@ -305,28 +305,13 @@ function recordModal(){
         $('#updateTrafficRecord').css("display", "block");
         $('#deleteTrafficRecord').css("display", "block");
 
-        let select = $('#trafficType');
-        let trafficDatas = FootprintData.filter(function(item) {
-            return item.class === "transportation";
-        });
-        select.empty();
-        select.append($('<option>', {
-            text: "請選擇一項行為",
-            selected: true,
-            disabled: true
-        }));
-        for(let trafficData of trafficDatas){
-            if(trafficData.type == currentInfoWindowRecord.type){
-                select.append($('<option>', {
-                    text: trafficData.type,
-                    selected: true
-                }));
-            } else {
-                select.append($('<option>', {
-                    text: trafficData.type
-                }));
+        $('input[name="engine"]').each(function() {
+            if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.type) {
+                let type = $(this).val();
+                $(this).prop("checked", true);
+                $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
             }
-        }
+        });
 
         $('#kilometer').val(currentInfoWindowRecord.data_value);
     } else {
