@@ -74,7 +74,7 @@ function addMarker(recordToAdd) {
     recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
     let thisIcon;
     if (recordToAdd.classType === "交通") {
-        thisIcon = '/frontend/img/' + recordToAdd.type +'.ico';
+        thisIcon = '/frontend/img/' + recordToAdd.type +'.svg';
     } else if (recordToAdd.classType === "生活用品") {
         thisIcon = '/frontend/img/生活用品.svg';
     }

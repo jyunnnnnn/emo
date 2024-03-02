@@ -6,7 +6,7 @@ function updateRecord(event, updateFW){
     let data_value;
     if(updateFW === "traffic"){
         classType = "交通";
-        type = $('#trafficType option:selected').text();
+        type = $('input[name="engine"]:checked').next('.radio-tile').find('.radio-label').text();
         data_value = $('#kilometer').val();
     } else {
         classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
@@ -40,7 +40,8 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         modifyRecordToBackend(record);
         updateRecordInArray(newClassType, newType, newDataValue,footprint);//更新record[]
         updateMarkerContent(record);
-        document.getElementById('recordFW').style.display = 'none';
+        $('#recordFW').css('display', 'none');
+        $('#routeFW').css('display', 'none');
     }
     else {
         alert("請重新登入");
@@ -79,10 +80,10 @@ function updateMarkerContent(newContent) {
         //console.log("更新infowindow成功");
         let thisIcon;
         if (newContent.classType === "交通") {
-            thisIcon = '/frontend/img/traffic.ico';
-       } else if (newContent.classType === "生活用品") {
+            thisIcon = '/frontend/img/' + newContent.type +'.svg';
+        } else if (newContent.classType === "生活用品") {
             thisIcon = '/frontend/img/生活用品.svg';
-       } else{ alert(currentInfoWindowRecord.classType) }
+        } else{ alert(currentInfoWindowRecord.classType) }
         currentMarker.setIcon(thisIcon);
         currentMarker.infoWindow.setContent(modifyContent);
     }else {
