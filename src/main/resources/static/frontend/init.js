@@ -125,29 +125,38 @@ function loadSVG(){
         }
     });
 }
+let trafficChecked = null;
+let dailyChecked = null;
 function svgConstructor(svgData) {
     console.log(categories);
     for(let [key, value] of Object.entries(categories)){
         if(value.class != "transportation"){
             $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
-            $('#' + value.class + 'Radio').on('change', function() {
+            $('#' + value.class + 'Input').on('change', function() {
                 if (this.checked) {
-                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
-                } else {
+                    if(value.class != dailyChecked && dailyChecked != null){
+                        $('#' + dailyChecked + 'Icon').html(svgData.svgImages[value.class][dailyChecked + 'Icon']);
+                    }
                     $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+                    dailyChecked = value.class;
+                } else {
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
                 }
             });
         } else {
             for(let [key, val] of Object.entries(value.action)){
                 $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
-                $('#' + val.index + 'Radio').on('change', function() {
-                    if (this.checked) {
-                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
-                    } else {
+                $('#' + val.index + 'Input').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        if(val.index != trafficChecked && trafficChecked != null){
+                            $('#' + trafficChecked + 'Icon').html(svgData.svgImages[value.class][trafficChecked + 'Icon']);
+                        }
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Hover']);
+                        trafficChecked = val.index;
+                    } else {
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }
                 });
-                console.log(val.index);
             }
         }
     }

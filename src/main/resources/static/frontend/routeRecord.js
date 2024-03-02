@@ -91,7 +91,7 @@ function stopRecording() {
     let checked = $('input[name="engine"]:checked');
     let checkedVal = $('input[name="engine"]:checked').val();
     if(checkedVal != undefined){
-        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal + 'Icon']);
+        $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
         checked.prop('checked', false);
     }
 
