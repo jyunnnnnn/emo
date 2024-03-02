@@ -2,6 +2,9 @@
 function deleteMultiRecord(){
     let result = confirm("確定要刪除目前資料嗎？");
     if (result) {
+        $('#editRecord').css("display", "block");
+        $('#saveEditRecord').css("display", "none");
+        $('#deleteEditRecord').css("display", "none");
         let selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
         let selectedRecordIds = [];
         selectedCheckboxes.each(function() {
@@ -13,9 +16,15 @@ function deleteMultiRecord(){
         });
         if (selectedRecordIds.length > 0) {
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
-            let nowType=$("#category option:selected").text();
-            showNewChart(records,nowType);
-            showNewRecord(records,nowType);
+            let nowType = $("#category option:selected").text();
+
+            console.log(nowType);
+            let sortedRecords = records;
+            if (nowType != "全部") {
+                sortedRecords = sortedRecords.filter(record => record.classType === nowType);
+            }
+            showNewChart(sortedRecords, nowType);
+            showNewRecord(sortedRecords, nowType);
             alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');
