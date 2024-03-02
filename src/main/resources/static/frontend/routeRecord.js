@@ -18,20 +18,25 @@ function success(pos){
     console.log(accuray); // accuracy 經緯度的水平誤差(平面距離)(m)
     console.log(distance);
 
-    // 只有當距離超過閾值時才更新位置和圓圈 (小於5公尺不更新)，且定位精準度不超過閾值
-    if (distance > distanceThreshold  && accuray < accurayThreshold) {
-        distanceThreshold = 5; // 5公尺
-        accurayThreshold = 30; // 50m
-        // kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
-        // const filteredState = kf.getState();
-        // currentLocation = {
-        //     lat: filteredState.lat,
-        //     lng: filteredState.lng
-        // };
-        currentLocation = {
-            lat: newLat,
-            lng: newLng
-        };
+    // 只有當距離超過閾值時才更新位置和圓圈 (小於2公尺不更新)，且定位精準度不超過閾值
+    if(distance > distanceThreshold) {
+        if (accuray < accurayThreshold) {
+            distanceThreshold = 2; // 2公尺 原本五公尺變成很少移動:(
+            accurayThreshold = 30; // 30m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設30，超過可能是出現飄移
+            currentLocation = {
+                lat: newLat,
+                lng: newLng
+            };
+        }else{ // 精準度有問題時(可能發生飄移)，使用KF預估
+            kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
+            const filteredState = kf.getState();
+            console.log("接收經緯度 lat: " + newLat +", lng: "+ newLng);
+            currentLocation = {
+                lat: filteredState.lat,
+                lng: filteredState.lng
+            };
+            console.log("修正位置 lat: "+filteredState.lat+", lng: "+filteredState.lng);
+        }
         updateCurrentCircle();
     }
 }
@@ -133,7 +138,7 @@ function recordLocation() {
             path: lineCoordinates,
             geodesic: true,
             strokeColor: '#0D5025',
-            strokeOpacity: 0.8, //透明度，沒幹嘛 想讓她好看一點而已
+            strokeOpacity: 1,
             strokeWeight: 4
         });
 
