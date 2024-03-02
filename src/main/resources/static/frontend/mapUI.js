@@ -37,36 +37,38 @@ $('#openRecordModal').on('click', function() {
 
     let checked = $('input[name="typeRadio"]:checked');
     let checkedVal = $('input[name="typeRadio"]:checked').val();
-    if(checked){
-        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal]);
+    if(checkedVal != undefined){
+        $('#' + checkedVal + 'Icon').html(svgData.svgImages[checkedVal][checkedVal + 'Icon']);
         checked.prop('checked', false);
     }
 });
 // 監聽類別變化
-$('input[name="typeRadio"]').on('change', function() {
-    $('#initType').text("請先選擇行為");
-    $('#gram').attr("placeholder", "請先選擇行為");
+function typeListener(){
+    $('input[name="typeRadio"]').on('change', function() {
+        $('#initType').text("請先選擇行為");
+        $('#gram').attr("placeholder", "請先選擇行為");
 
-    let classType = $('input[name="typeRadio"]:checked').val();
-    if(classType != ''){
-        let select = $('#type');
-        selectDatas = FootprintData.filter(function(item) {
-            return item.class === classType;
-        });
-        select.empty();
-        select.append($('<option>', {
-            text: "請選擇一項行為",
-            id: "noAction",
-            selected: true,
-            disabled: true
-        }));
-        for(let selectData of selectDatas){
+        let classType = $('input[name="typeRadio"]:checked').val();
+        if(classType != ''){
+            let select = $('#type');
+            selectDatas = FootprintData.filter(function(item) {
+                return item.class === classType;
+            });
+            select.empty();
             select.append($('<option>', {
-                text: selectData.type
+                text: "請選擇一項行為",
+                id: "noAction",
+                selected: true,
+                disabled: true
             }));
+            for(let selectData of selectDatas){
+                select.append($('<option>', {
+                    text: selectData.type
+                }));
+            }
         }
-    }
-});
+    });
+}
 // 監聽行為變化
 $('#type').on('change', function(){
     $("#gram").prop("disabled", true);
@@ -147,6 +149,7 @@ $('#saveRecord').on('click', function () {
        alert("請輸入正數");
        return;
     }else{
+        console.log(type.text())
         saveRecord(classType, type.text(), data_value);
         $('#recordFW').css("display", "none");
     }
@@ -154,15 +157,14 @@ $('#saveRecord').on('click', function () {
 // 路線記錄儲存
 $('#saveTrafficRecord').on('click', function () {
     event.preventDefault();
-    let type = $('#trafficType option:selected');
+    let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
     let data_value = $('#kilometer').val();
-
     if(data_value <= 0) {
         alert("請輸入正數");
-    } else if(type.attr('id') == "noAction") {
+    } else if(!type) {
         alert("請選擇行為");
     } else {
-        saveRecord("交通", type.text(), data_value);
+        saveRecord("交通", type, data_value);
         $('#routeFW').css("display", "none");
     }
 });
@@ -188,46 +190,6 @@ $('#recordListButton').on('click', function () {
     }
     $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
-});
-// 點擊管理員按鈕
-$('#adminButton').on('click', function () {
-    // 顯示懸浮窗
-    $('#adminFW').css("display", "flex");
-    $('#adminFW').css("position", "fixed");
-    $('#editFP').css("display", "block");
-    $('#saveFP').css("display", "none");
-    $('#deleteFP').css("display", "none");
-});
-// 管理員編輯
-$('#editFP').on('click', function() {
-    event.preventDefault();
-    $('#editFP').css("display", "none");
-    $('#saveFP').css("display", "block");
-    $('#deleteFP').css("display", "block");
-    let checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'flex';
-    });
-    let inputs = document.querySelectorAll('.inputFP');
-    inputs.forEach(function(input, index) {
-        if (index % 2 != 0) {
-            input.disabled = false;
-        }
-    });
-});
-$('#saveFP').on('click', function() {
-    event.preventDefault();
-    $('#editFP').css("display", "block");
-    $('#saveFP').css("display", "none");
-    $('#deleteFP').css("display", "none");
-    let checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'none';
-    });
-    let inputs = document.querySelectorAll('.inputFP');
-    inputs.forEach(function(inputs) {
-        inputs.disabled = true;
-    });
 });
 
 // 點擊設定按鈕
@@ -343,28 +305,13 @@ function recordModal(){
         $('#updateTrafficRecord').css("display", "block");
         $('#deleteTrafficRecord').css("display", "block");
 
-        let select = $('#trafficType');
-        let trafficDatas = FootprintData.filter(function(item) {
-            return item.class === "transportation";
-        });
-        select.empty();
-        select.append($('<option>', {
-            text: "請選擇一項行為",
-            selected: true,
-            disabled: true
-        }));
-        for(let trafficData of trafficDatas){
-            if(trafficData.type == currentInfoWindowRecord.type){
-                select.append($('<option>', {
-                    text: trafficData.type,
-                    selected: true
-                }));
-            } else {
-                select.append($('<option>', {
-                    text: trafficData.type
-                }));
+        $('input[name="engine"]').each(function() {
+            if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.type) {
+                let type = $(this).val();
+                $(this).prop("checked", true);
+                $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
             }
-        }
+        });
 
         $('#kilometer').val(currentInfoWindowRecord.data_value);
     } else {
@@ -376,7 +323,9 @@ function recordModal(){
 
         $('input[name="typeRadio"]').each(function() {
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.classType) {
+                let classType = $(this).val();
                 $(this).prop("checked", true);
+                $('#' + classType + 'Icon').html(svgData.svgImages[classType][classType + 'Hover']);
             }
         });
 
