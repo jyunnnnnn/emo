@@ -116,7 +116,6 @@ function loadSVG(){
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
             loadFootprintData();//載入碳足跡計算
-            console.log(svgData);
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
@@ -128,7 +127,6 @@ function loadSVG(){
 let trafficChecked = null;
 let dailyChecked = null;
 function svgConstructor(svgData) {
-    console.log(categories);
     for(let [key, value] of Object.entries(categories)){
         if(value.class != "transportation"){
             $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
@@ -181,7 +179,6 @@ function loadFootprintData() {
         });
 }
 function FPConstructor(jsonData) {
-    console.log(jsonData);
     FootprintData = [];
     for(let [key,value] of Object.entries(jsonData)){
         let base = jsonData[key].base;
@@ -199,7 +196,6 @@ function FPConstructor(jsonData) {
     initCategory(jsonData);
 }
 function initCategory(jsonData){
-    console.log(FootprintData);
     $('#category').append($('<option>', {
         text: "全部",
         value: "all",

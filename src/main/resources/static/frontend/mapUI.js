@@ -191,46 +191,6 @@ $('#recordListButton').on('click', function () {
     $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
 });
-// 點擊管理員按鈕
-$('#adminButton').on('click', function () {
-    // 顯示懸浮窗
-    $('#adminFW').css("display", "flex");
-    $('#adminFW').css("position", "fixed");
-    $('#editFP').css("display", "block");
-    $('#saveFP').css("display", "none");
-    $('#deleteFP').css("display", "none");
-});
-// 管理員編輯
-$('#editFP').on('click', function() {
-    event.preventDefault();
-    $('#editFP').css("display", "none");
-    $('#saveFP').css("display", "block");
-    $('#deleteFP').css("display", "block");
-    let checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'flex';
-    });
-    let inputs = document.querySelectorAll('.inputFP');
-    inputs.forEach(function(input, index) {
-        if (index % 2 != 0) {
-            input.disabled = false;
-        }
-    });
-});
-$('#saveFP').on('click', function() {
-    event.preventDefault();
-    $('#editFP').css("display", "block");
-    $('#saveFP').css("display", "none");
-    $('#deleteFP').css("display", "none");
-    let checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'none';
-    });
-    let inputs = document.querySelectorAll('.inputFP');
-    inputs.forEach(function(inputs) {
-        inputs.disabled = true;
-    });
-});
 
 // 點擊設定按鈕
 $('#settingButton').on('click', function () {

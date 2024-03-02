@@ -1,19 +1,18 @@
-// 設定頁面顯示總減碳量(刪掉)
+// 顯示總減碳量
 let dateArray=[];
 let totalFP = 0;
-function showTotalFP(action){
+function showTotalFP(){
+    totalFP = 0;
     let thisRecords = records;
     let container = $('#totalFootprint');
     container.innerHTML = ""; // 清空容器內容
 
     if(thisRecords.length == 0){
         container.text("0g Co2E");
-    } else if(action == "init") {
+    } else {
         for (let i = 0; i < thisRecords.length; i++) {
             totalFP += parseFloat(thisRecords[i].footprint, 10);
         }
-    } else {
-        totalFP += parseFloat(action, 10);
     }
     container.text("總減碳量: " + totalFP.toFixed(2) + "g Co2E");
     $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2) + " g Co2E")
@@ -71,7 +70,16 @@ function showNewChart(nowRecords, type) {
             nowCategories[category].action.forEach(function(subcategory) {
                 if(found) return;
                 if(subcategory.type === nowRecords[i].type) {
+                    if(typeof nowRecords[i].footprint !== "number"){
+                        nowRecords[i].footprint = parseFloat(nowRecords[i].footprint).toFixed(2);
+                    }
+                    if(typeof subcategory.totalFP !== "number"){
+                        subcategory.totalFP = parseFloat(subcategory.totalFP);
+                    }
                     subcategory.totalFP += nowRecords[i].footprint;
+                    if(typeof parent.footprint !== "number"){
+                        parent.footprint = parseFloat(parent.footprint);
+                    }
                     parent.footprint += nowRecords[i].footprint;
                     found = true;
                 }
@@ -88,6 +96,9 @@ function showNewChart(nowRecords, type) {
     if(type =="全部" || type == "init"){
         for(let [key, value] of Object.entries(nowCategories)){
             if(value.footprint != 0 && value.footprint != undefined) {
+                if(typeof value.footprint !== "number"){
+                    value.footprint = parseFloat(value.footprint).toFixed(2);
+                }
                 seriesData.push({
                     name: key,
                     value: value.footprint,
@@ -99,29 +110,14 @@ function showNewChart(nowRecords, type) {
             }
         }
     } else {
-        if(nowCategories[type].footprint == 0 || nowCategories[type].footprint == undefined){
-            chartBox.css("display", "none");
-            let container = $('#listContent');
-            container.empty(); // 清空容器內容
-            container.css({
-                "overflowY": "scroll",
-                "maxHeight": "150px"
-            });
-            let recordDiv = $("<div>")
-                .css({
-                    'text-align': 'center',
-                    'justify-content': 'center',
-                    'font-size': '20px'
-                })
-                .text("沒有紀錄");
-            container.append(recordDiv);
-            return;
-        }
         nowCategories[type].action.forEach(function(subcategory) {
             if(subcategory.totalFP != 0){
+                if(typeof subcategory.totalFP !== "number"){
+                    subcategory.totalFP = parseFloat(subcategory.totalFP).toFixed(2);
+                }
                 seriesData.push({
                     name: subcategory.type,
-                    value: subcategory.totalFP,
+                    value: parseFloat(subcategory.totalFP).toFixed(2),
                     itemStyle: {
                         color: subcategory.color
                     }
@@ -140,7 +136,7 @@ function showNewChart(nowRecords, type) {
         title: {
             text: [
                 type + '減碳量',
-                nowFP.toFixed(2) + 'g',
+                nowFP + 'g',
                 'Co2E'
             ].join('\n'),
             textStyle: {
@@ -175,7 +171,7 @@ function showNewChart(nowRecords, type) {
                 },
                 labelLine: {
                     length: 10,
-                    length2: 60,
+                    length2: 30,
                 },
                 labelLayout: {
                     verticalAlign: "bottom",
@@ -263,7 +259,7 @@ function showRecord() {
                     'margin-right' : '5px'
                 });
             let footprintSpan = $("<span>")
-                .text(" (" + thisRecords[i].footprint + "g Co2E)");
+                .text(" (" + parseFloat(thisRecords[i].footprint).toFixed(2) + "g Co2E)");
 
             recordElement.append(timeSpan, typeSpan, footprintSpan);
             recordDiv.append(checkbox, icon, recordElement);
@@ -447,7 +443,7 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 })
                 .text(thisRecords[i].type + " ");
             let footprintSpan = $("<span>")
-                .text(" (" + thisRecords[i].footprint + "g Co2E)");
+                .text(" (" + parseFloat(thisRecords[i].footprint).toFixed(2) + "g Co2E)");
 
             recordElement.append(timeSpan, typeSpan, footprintSpan);
             recordDiv.append(checkbox, icon, recordElement);

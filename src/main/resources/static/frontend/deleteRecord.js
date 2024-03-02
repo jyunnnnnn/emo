@@ -15,6 +15,7 @@ function deleteMultiRecord(){
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
             let nowType=$("#category option:selected").text();
             showNewChart(records,nowType);
+            showNewRecord(records,nowType);
             alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');
@@ -40,7 +41,6 @@ function deleteSingleRecord(){
 //透過recordId刪資料
 function deleteRecord(recordId){
     let thisDelete = records.filter(item => item.recordId == recordId);
-    showTotalFP(-parseFloat(thisDelete[0].footprint,10));
     records = records.filter(item => item.recordId !== recordId);//更新系統內record[]
     $.ajax({
         type: 'DELETE',
@@ -65,4 +65,5 @@ function deleteRecord(recordId){
             markers.splice(index, 1);
         }
     }//刪mark
+    showTotalFP();
 }

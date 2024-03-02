@@ -27,7 +27,7 @@ function saveRecord(classType, type, data_value){
         uploadRecordToBackend(record);
         records.push(record);
         addMarker(record);
-        showTotalFP(record.footprint);
+        showTotalFP();
     }
 }
 // 將紀錄上傳到後端
@@ -58,7 +58,7 @@ function loadEcoRecords(userId) {
              for (let i = 0; i < thisRecords.length; i++) {
                     addMarker(thisRecords[i]);
              }
-            showTotalFP("init");
+            showTotalFP();
         },
         error: function(xhr, status, error) {
            let errorData = JSON.parse(xhr.responseText);
