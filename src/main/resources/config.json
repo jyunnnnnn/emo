@@ -69,6 +69,7 @@
         {
           "index": "bus",
           "name": "公車",
+          "color": "#ffc872",
           "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car"
@@ -76,6 +77,7 @@
         {
           "index": "MRT",
           "name": "捷運",
+          "color": "#30a0e0",
           "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car"
@@ -83,6 +85,7 @@
         {
           "index": "train",
           "name": "火車",
+          "color": "#006bbb",
           "coefficient": 60.0,
           "unit": "gCO2e/km",
           "baseline": "car"
@@ -90,6 +93,7 @@
         {
           "index": "HSR",
           "name": "高鐵",
+          "color": "#87e1c7",
           "coefficient": 32.0,
           "unit": "gCO2e/km",
           "baseline": "car"
