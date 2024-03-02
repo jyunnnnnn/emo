@@ -22,22 +22,15 @@ function success(pos){
     if(distance > distanceThreshold) {
         if (accuray < accurayThreshold) {
             distanceThreshold = 2; // 2公尺 原本五公尺變成很少移動:(
-            accurayThreshold = 30; // 30m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設30，超過可能是出現飄移
+            accurayThreshold = 300; // 30m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設30，超過可能是出現飄移
             currentLocation = {
                 lat: newLat,
-                lng: newLng
+                lng: newLng,
+                TimeStamp_milliseconds: pos.timestamp,
+                accuracy: accuray
             };
-        }else{ // 精準度有問題時(可能發生飄移)，使用KF預估
-            kf.process(newLat, newLng, pos.timestamp, pos.coords.accuracy);//平滑路線:) 也不知道有沒有用
-            const filteredState = kf.getState();
-            console.log("接收經緯度 lat: " + newLat +", lng: "+ newLng);
-            currentLocation = {
-                lat: filteredState.lat,
-                lng: filteredState.lng
-            };
-            console.log("修正位置 lat: "+filteredState.lat+", lng: "+filteredState.lng);
+            updateCurrentCircle();
         }
-        updateCurrentCircle();
     }
 }
 
@@ -75,6 +68,23 @@ function startRecording() {
 }
 
 function stopRecording() {
+    recordedPositions.forEach(position => {
+        kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
+    });
+
+    let smoothedPosition = kf.getState();
+    console.log(smoothedPosition);var smoothedPath = new google.maps.Polyline({
+        path: recordedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+    // 将平滑后的路径添加到地图上
+    smoothedPath.setMap(map);
+    console.log("紅線為修正後路線");
+
     // 修改按鈕文字和標誌位元
     $('#startRecording').text('路線記錄');
     isRecording = false;
