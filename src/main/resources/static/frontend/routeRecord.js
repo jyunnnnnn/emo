@@ -131,7 +131,12 @@ function stopRecording() {
 function recordLocation() {
     // 儲存記錄的位置
     recordedPositions.push(currentLocation);
-
+    //只有在路線紀錄時強制跑到中心
+    cL ={
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+    }
+    map.panTo(cL);
     // 在記錄的位置之間繪製線條
     if (recordedPositions.length >= 2) {
         //一段一段畫

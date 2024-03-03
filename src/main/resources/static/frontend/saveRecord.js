@@ -29,6 +29,12 @@ function saveRecord(classType, type, data_value){
         addMarker(record);
         showTotalFP();
     }
+    //按下save，強制跳到中心
+    cL ={
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+    }
+    map.panTo(cL);
 }
 // 將紀錄上傳到後端
 function uploadRecordToBackend(record) {

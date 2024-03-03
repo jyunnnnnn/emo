@@ -37,7 +37,7 @@ function initMap() {
                     center: cL,
                     zoom: 18,
                     minZoom: 5, // 設定最小縮放級別
-                    maxZoom: 50, // 設定最大縮放級別
+                    maxZoom: 20, // 設定最大縮放級別
                     mapTypeControl: false,
                     zoomControl: false,
                     scaleControl: false,
@@ -116,8 +116,6 @@ function updateCurrentCircle() {
             scale: 5
         }
     });
-    //跑到中心
-    map.panTo(cL);
 }
 //載入svg
 function loadSVG(){

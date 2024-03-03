@@ -1,7 +1,7 @@
 class KalmanFilter {
     constructor() {
         this.minAccuracy = 1;
-        this.Q_metres_per_second = 3; // 狀態預測誤差(m/s)，越小越依賴測量值 (3是別人提供的數值)
+        this.Q_metres_per_second = 0; // 狀態預測誤差(m/s)，越小越依賴測量值 (3是別人提供的走路時的數值，速度快要跟著變大)
         this.TimeStamp_milliseconds = 0; // 記錄位置獲取時間(ms)
         this.lat = 0;
         this.lng = 0;
@@ -22,20 +22,28 @@ class KalmanFilter {
         } else {
             // 否則套用卡爾曼濾波器方法
             const TimeInc_milliseconds = TimeStamp_milliseconds - this.TimeStamp_milliseconds;
+            // 試一下加入速度判斷設置Q，預測會不會好一點
+            const point1 = new google.maps.LatLng(lat_measurement, lng_measurement);
+            const point2 = new google.maps.LatLng(this.lat, this.lng);
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+            const speed = distance / (TimeInc_milliseconds / 1000);
+            if(speed >= 20) this.Q_metres_per_second = 20;
+            else if (speed >= 60) this.Q_metres_per_second = 60;
+            else this.Q_metres_per_second = 3;
             if (TimeInc_milliseconds > 0) {
                 // 隨時間過去，目前位置的不確定性增加
                 // 對上個位置做預測
                 this.lat += (TimeInc_milliseconds/ 1000) * this.Q_metres_per_second;
                 this.lng += (TimeInc_milliseconds/ 1000) * this.Q_metres_per_second;
                 // console.log("variance: "+this.variance);
-                this.variance += (TimeInc_milliseconds / 1000) * this.Q_metres_per_second;
+                this.variance += (TimeInc_milliseconds / 1000) * this.Q_metres_per_second* this.Q_metres_per_second;
                 // console.log("this.Q_metres_per_second: "+this.Q_metres_per_second);
                 this.TimeStamp_milliseconds = TimeStamp_milliseconds;
                 // console.log("variance: "+this.variance);
             }
 
             // Kalman增益係數 K = Covarariance * Inverse(Covariance + MeasurementVariance) K越大越相信測量值(0-1)
-            const K = this.variance / (this.variance + accuracy); // K為增益係數，測量值和當前狀態估計值的相對權重
+            const K = this.variance / (this.variance + (accuracy * accuracy)); // K為增益係數，測量值和當前狀態估計值的相對權重
             // console.log(K);
             // apply K 輸出=預測+K*(測量-預測)
             this.lat += K * (lat_measurement - this.lat);
