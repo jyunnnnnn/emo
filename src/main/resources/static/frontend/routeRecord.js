@@ -74,7 +74,7 @@ function stopRecording() {
         kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
         smoothedPositions.push(kf.getState());
     });
-    let oldDataString = JSON.stringify(recordedPositions); // 将原始数据转换为字符串
+    let oldDataString = JSON.stringify(recordedPositions);
     let newDataString = JSON.stringify(smoothedPositions);
     alert("舊資料"+oldDataString +"\n新資料"+newDataString);
     let smoothedPath = new google.maps.Polyline({

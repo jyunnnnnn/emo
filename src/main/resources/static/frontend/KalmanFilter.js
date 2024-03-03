@@ -24,8 +24,11 @@ class KalmanFilter {
             const TimeInc_milliseconds = TimeStamp_milliseconds - this.TimeStamp_milliseconds;
             if (TimeInc_milliseconds > 0) {
                 // 隨時間過去，目前位置的不確定性增加
+                // 對上個位置做預測
+                this.lat += (TimeInc_milliseconds/ 1000) * this.Q_metres_per_second;
+                this.lng += (TimeInc_milliseconds/ 1000) * this.Q_metres_per_second;
                 // console.log("variance: "+this.variance);
-                this.variance += (TimeInc_milliseconds / 1000) * this.Q_metres_per_second * this.Q_metres_per_second;
+                this.variance += (TimeInc_milliseconds / 1000) * this.Q_metres_per_second;
                 // console.log("this.Q_metres_per_second: "+this.Q_metres_per_second);
                 this.TimeStamp_milliseconds = TimeStamp_milliseconds;
                 // console.log("variance: "+this.variance);
@@ -35,12 +38,12 @@ class KalmanFilter {
             const K = this.variance / (this.variance + (accuracy * accuracy)); // K為增益係數，測量值和當前狀態估計值的相對權重
             // console.log(K);
             // apply K 輸出=預測+K*(測量-預測)
-            this.lat = this.lat + K * (lat_measurement - this.lat);
-            this.lng = this.lng + K * (lng_measurement - this.lng);
+            this.lat += K * (lat_measurement - this.lat);
+            this.lng += K * (lng_measurement - this.lng);
             // console.log("lat "+lat_measurement,"lng"+lng_measurement);
             // console.log("latt "+this.lat,"lngg "+this.lng);
             // 新的變異數為 (IdentityMatrix - K) * Covarariance
-            this.variance = (1 - K) * this.variance;
+            this.variance *= (1 - K);
         }
     }
 
