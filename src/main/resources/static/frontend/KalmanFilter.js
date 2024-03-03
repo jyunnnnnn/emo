@@ -35,7 +35,7 @@ class KalmanFilter {
             }
 
             // Kalman增益係數 K = Covarariance * Inverse(Covariance + MeasurementVariance) K越大越相信測量值(0-1)
-            const K = this.variance / (this.variance + (accuracy * accuracy)); // K為增益係數，測量值和當前狀態估計值的相對權重
+            const K = this.variance / (this.variance + accuracy); // K為增益係數，測量值和當前狀態估計值的相對權重
             // console.log(K);
             // apply K 輸出=預測+K*(測量-預測)
             this.lat += K * (lat_measurement - this.lat);

@@ -30,6 +30,8 @@ function success(pos){
                 accuracy: accuracy
             };
             updateCurrentCircle();
+        }else {
+            alert("精準度太低:)，我懷疑根本沒怎樣 accuracy: " + accuracy);
         }
     }
 }
@@ -43,8 +45,8 @@ function error(err) {
 options = {
     enableHighAccuracy: false,//低精準，較不耗能
     timeout: Infinity,// 設備必須要在多少時間內回應位置資訊(ms)
-    maximumAge: 10000,// 緩存位置10秒
-    minimunDistance: 5, // 移動超過5米觸發位置更新
+    maximumAge: 5000,// 緩存位置5秒
+    minimunDistance: 2, // 移動超過2米觸發位置更新
 };
 // 路線紀錄(開始/停止)
 function checkIsRecording() {
@@ -74,9 +76,9 @@ function stopRecording() {
         kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
         smoothedPositions.push(kf.getState());
     });
-    let oldDataString = JSON.stringify(recordedPositions);
-    let newDataString = JSON.stringify(smoothedPositions);
-    alert("舊資料"+oldDataString +"\n新資料"+newDataString);
+    // let oldDataString = JSON.stringify(recordedPositions);
+    // let newDataString = JSON.stringify(smoothedPositions);
+    alert("舊資料"+recordedPositions.length +"\n新資料"+smoothedPositions.length);
     let smoothedPath = new google.maps.Polyline({
         path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
