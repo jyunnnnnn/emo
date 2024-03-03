@@ -66,15 +66,17 @@ function startRecording() {
         recordLocation();
     }, 1000);
 }
-
+let smoothedPositions = [];
 function stopRecording() {
     //一次平滑所有資料
-    let smoothedPositions;
+
     recordedPositions.forEach(position => {
         kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
         smoothedPositions.push(kf.getState());
     });
-    alert("舊資料"+recordedPositions+"/n"+"新資料"+smoothedPositions);
+    let oldDataString = JSON.stringify(recordedPositions); // 将原始数据转换为字符串
+    let newDataString = JSON.stringify(smoothedPositions);
+    alert("舊資料"+oldDataString +"\n新資料"+newDataString);
     let smoothedPath = new google.maps.Polyline({
         path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
