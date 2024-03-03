@@ -1,7 +1,7 @@
 class KalmanFilter {
     constructor() {
         this.minAccuracy = 1;
-        this.Q_metres_per_second = 0.00001; // 狀態預測誤差(m/s)，越小越依賴測量值
+        this.Q_metres_per_second = 3; // 狀態預測誤差(m/s)，越小越依賴測量值 (3是別人提供的數值)
         this.TimeStamp_milliseconds = 0; // 記錄位置獲取時間(ms)
         this.lat = 0;
         this.lng = 0;
@@ -31,12 +31,12 @@ class KalmanFilter {
                 // console.log("variance: "+this.variance);
             }
 
-            // Kalman增益係數 K = Covarariance * Inverse(Covariance + MeasurementVariance)
-            const K = this.variance / (this.variance + (accuracy * accuracy)); // K為增益係數，測量值和當前狀態估計值的相對權重(後面數字越小越依賴測量值)
+            // Kalman增益係數 K = Covarariance * Inverse(Covariance + MeasurementVariance) K越大越相信測量值(0-1)
+            const K = this.variance / (this.variance + (accuracy * accuracy)); // K為增益係數，測量值和當前狀態估計值的相對權重
             // console.log(K);
-            // apply K
-            this.lat += K * (lat_measurement - this.lat);
-            this.lng += K * (lng_measurement - this.lng);
+            // apply K 輸出=預測+K*(測量-預測)
+            this.lat = this.lat + K * (lat_measurement - this.lat);
+            this.lng = this.lng + K * (lng_measurement - this.lng);
             // console.log("lat "+lat_measurement,"lng"+lng_measurement);
             // console.log("latt "+this.lat,"lngg "+this.lng);
             // 新的變異數為 (IdentityMatrix - K) * Covarariance

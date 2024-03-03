@@ -68,13 +68,15 @@ function startRecording() {
 }
 
 function stopRecording() {
+    //一次平滑所有資料
+    let smoothedPositions;
     recordedPositions.forEach(position => {
         kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
+        smoothedPositions.push(kf.getState());
     });
-
-    let smoothedPosition = kf.getState();
-    console.log(smoothedPosition);var smoothedPath = new google.maps.Polyline({
-        path: recordedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
+    alert("舊資料"+recordedPositions+"/n"+"新資料"+smoothedPositions);
+    let smoothedPath = new google.maps.Polyline({
+        path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
