@@ -76,10 +76,7 @@ function setData(parsedData){
         $('#options').append(category);
     }
     for(let i =0; i<categories.length; i++){
-    //讀取物件的第一個 content 元素的索引名稱
-    //    let indexNames = Object.keys(parsedData[categories[i]].content[0]);
-    //    console.log(indexNames); // ["option", "index", "name", "coefficient", "unit", "baseline"]
-         //新增整塊頁面
+     //新增整塊頁面
          let card ;
          if(categories[i] == "daily"){
            card = '<div id="'+categories[i]+'" class="content-block"><br>';
@@ -110,10 +107,11 @@ function setData(parsedData){
                              '<label>coefficient</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
                          '</div><br>'+
-                         '<div class="form-group">'+
-                             '<label>unit</label>'+
-                             '<input type="text" id="unit'+i+'">'+
-                         '</div><br>'+
+                          '<div class="form-group">'+
+                             '<label>units</label>'+
+                             '<select name="types" id="units'+i+'">'+
+                             '</select>'+
+                         '</div> <br>'+
                        '<div class="form-group">'+
                            '<label>baseline</label>'+
                            '<select name="types" id="baseline'+i+'">'+
@@ -145,10 +143,11 @@ function setData(parsedData){
                         '<label>coefficient</label>'+
                         '<input type="text" id="coefficient'+i+'">'+
                     '</div><br>'+
-                    '<div class="form-group">'+
-                        '<label>unit</label>'+
-                        '<input type="text" id="unit'+i+'">'+
-                    '</div><br>'+
+                          '<div class="form-group">'+
+                             '<label>units</label>'+
+                             '<select name="types" id="units'+i+'">'+
+                             '</select>'+
+                         '</div> <br>'+
                       '<div class="form-group">'+
                           '<label>baseline</label>'+
                           '<select name="types" id="baseline'+i+'">'+
@@ -182,9 +181,8 @@ function setData(parsedData){
                            ' </div> <br>';
         }
         baseCard += ' </div>';
-//                ' <button class="save-button btn " id="button1">修改/新增</button>';
         $('#manage-container').append(baseCard);
-        //初始化
+        //base初始化
         for(let m = 0;m< baseLength; m++){
             $('#'+baseKeys[m]).val(parsedData[categories[i]].base[baseKeys[m]]);
         }
@@ -192,6 +190,43 @@ function setData(parsedData){
         for(let m = 0;m< baseLength; m++){
           let option = '`<option value="'+baseKeys[m]+'">'+baseKeys[m]+'</option>';
             $('#baseline'+i).append(option);
+        }
+        //新增color區塊
+         let colorCard = '<div id="'+categories[i]+'-color" class="content-block d-none"><br>';
+          colorCard += '<div class="form-group">'+
+                       '<label>color</label>'+
+                             '<input type="text" id="color'+i+'">'+
+                        ' </div> <br> </div> ';
+         $('#manage-container').append(colorCard);
+         $('#color'+i).val(parsedData[categories[i]].color);
+        //新增units區塊
+        let newUnitId=[];
+        let units = parsedData[categories[i]].units;
+        let unitsLength = Object.keys(units).length;
+        let unitsKeys = Object.keys(units);
+        console.log("base 的長度為：" + unitsLength);
+        let unitsCard = '<div id="'+categories[i]+'-units" class="content-block d-none"><br>';
+        for(let m =0;m< unitsLength;m++){
+           newUnitId[m] = unitsKeys[m].replace(/\//g, '_'); //替換掉底線不然id讀不到
+           console.log("0",newUnitId[m]);
+           unitsCard += '<div class="form-group">'+
+                      '<label>'+unitsKeys[m]+'</label>'+
+                            '<input type="text" id="'+newUnitId[m]+'">'+
+                           ' </div> <br>';
+        }
+        unitsCard += ' </div>';
+        $('#manage-container').append(unitsCard);
+        //units初始化
+        for(let m = 0;m< unitsLength; m++){
+//            console.log("0",unitsKeys[m]);
+            console.log("1",parsedData[categories[i]].units);
+            console.log("2",parsedData[categories[i]].units[unitsKeys[m]]);
+            $('#'+newUnitId[m]).val(parsedData[categories[i]].units[unitsKeys[m]]);
+        }
+        //把units變成選項
+        for(let m = 0;m< unitsLength; m++){
+          let option = '`<option value="'+unitsKeys[m]+'">'+unitsKeys[m]+'</option>';
+            $('#units'+i).append(option);
         }
     }
 
@@ -217,7 +252,7 @@ function updateTableValues(selectedIndex) {
              targetNum = i;
              console.log(selectedIndex + " 屬於 'daily'");
              console.log("targetCategory", targetCategory);
-             console.log("targetnum", targetNum);
+             console.log("targetNum", targetNum);
          }
     }
 //     console.log("0",parsedData);
@@ -227,12 +262,15 @@ function updateTableValues(selectedIndex) {
         console.log("Index of selectedContent:", index);
         // 根據索引位置更新表格的值
          $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
-         $('#big').val(parsedData[targetCategory].content[index].option.大);
-         $('#mid').val(parsedData[targetCategory].content[index].option.中);
-         $('#small').val(parsedData[targetCategory].content[index].option.小);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
          $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
          $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
+         //只有daily才有的
+         if(targetCategory == "daily"){
+             $('#big').val(parsedData[targetCategory].content[index].option.大);
+             $('#mid').val(parsedData[targetCategory].content[index].option.中);
+             $('#small').val(parsedData[targetCategory].content[index].option.小);
+         }
     } else {
         console.log("selectedContent not found in parsedData.daily.content");
     }
