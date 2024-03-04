@@ -22,7 +22,7 @@ function success(pos){
     // 有些裝置不提供speed 訊息
     if(distance > distanceThreshold) {
         if (accuracy < accuracyThreshold) { // 超過精準度直接判掉當作異常資料(先這樣，我也不知道可不可以):))
-            distanceThreshold = 2; // 2公尺 原本五公尺變成很少移動:(
+            distanceThreshold = 5;
             // 50m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設50，超過可能是出現飄移
             // 缺點是，在gps信號不好時，位置就不會改變.......
             accuracyThreshold = 50;
@@ -84,16 +84,35 @@ function startRecording() {
 }
 
 function stopRecording() {
-    //一次平滑所有資料
+    //一次平滑所有資料(KF)
+    // const kf = new KalmanFilter();
     let smoothedPositions = [];
-    recordedPositions.forEach(position => {
-        kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
-        smoothedPositions.push(kf.getState());
-    });
+    // recordedPositions.forEach(position => {
+    //     kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
+    //     smoothedPositions.push(kf.getState());
+    // });
+    // let oldDataString = JSON.stringify(recordedPositions);
+    // let newDataString = JSON.stringify(smoothedPositions);
+    // console.log("舊資料"+oldDataString +"\n新資料"+newDataString);
+    // alert("舊資料"+recordedPositions.length +"\n新資料"+smoothedPositions.length);
+    // let smoothedPath = new google.maps.Polyline({
+    //     path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
+    //     geodesic: true,
+    //     strokeColor: '#FF0000',
+    //     strokeOpacity: 1.0,
+    //     strokeWeight: 2
+    // });
+    //
+    // smoothedPath.setMap(map);
+    // console.log("紅線為修正後路線");
+
+    // 用大葉大學的方法
+    const sm = new smoothTracking(recordedPositions);
+    sm.smoothData();
+    smoothedPositions = sm.getData();
     let oldDataString = JSON.stringify(recordedPositions);
     let newDataString = JSON.stringify(smoothedPositions);
-    console.log("舊資料"+oldDataString +"\n新資料"+newDataString);
-    alert("舊資料"+recordedPositions.length +"\n新資料"+smoothedPositions.length);
+    alert("舊資料"+oldDataString +"\n新資料"+newDataString);
     let smoothedPath = new google.maps.Polyline({
         path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
@@ -101,7 +120,6 @@ function stopRecording() {
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
-
     smoothedPath.setMap(map);
     console.log("紅線為修正後路線");
 

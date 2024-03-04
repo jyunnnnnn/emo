@@ -13,7 +13,7 @@ let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
-const kf = new KalmanFilter();
+
 
 // 初始化Google Map
 function initMap() {
