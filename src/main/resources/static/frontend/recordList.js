@@ -287,7 +287,6 @@ function showRecord() {
         dateArray[0] = datePart;
         dateArray[1] = formattedDate;
     }
-
     flatpickr("#startDate", {
         mode: "range", // 選擇模式
         dateFormat: "Y-m-d", // 日期格式
@@ -296,8 +295,16 @@ function showRecord() {
         maxDate: formattedDate,
         allowInput: false,
         onChange: function(selectedDates,dateStr){
-            dateArray = dateStr.split(' to ');
-            console.log(dateStr,dateArray);
+            if(dateStr.includes('to')){
+                dateArray = dateStr.split(' to ');
+                console.log(dateArray);
+            }
+            else{
+                dateArray[0] = dateStr;
+                dateArray[1] = dateStr;
+                console.log(dateStr,dateArray);
+            }
+            //console.log(dateStr,dateArray);
         }
     });
 }
