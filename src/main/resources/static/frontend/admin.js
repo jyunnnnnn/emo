@@ -70,7 +70,9 @@ function setData(parsedData){
     //新增所有大類別的option
     for(let i =0; i<categories.length; i++){
         let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
+        category += '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
         category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
+        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
         $('#options').append(category);
     }
     for(let i =0; i<categories.length; i++){
@@ -90,14 +92,20 @@ function setData(parsedData){
                              '<label>name</label>'+
                              '<input type="text" id="name'+i+'" >'+
                          '</div> <br>'+
-                         '<div class="inline">'+
-                             '<label>大</label>'+
-                             '<input type="text" id="big">'+
-                             '<label>中</label>'+
-                             '<input type="text" id="mid">'+
-                             '<label>小</label>'+
-                             '<input type="text" id="small">'+
-                         '</div><br>'+
+                          '<div class="option-set d-lg-flex">'+
+                              '<div class="form-group">'+
+                                  '<label>大</label>'+
+                                  '<input type="text" id="big">'+
+                              '</div><br>'+
+                              '<div class="form-group">'+
+                                  '<label>中</label>'+
+                                  '<input type="text" id="mid">'+
+                              '</div><br>'+
+                              '<div class="form-group">'+
+                                 '<label>小</label>'+
+                                  '<input type="text" id="small">'+
+                              '</div>'+
+                          '</div><br>'+
                          '<div class="form-group">'+
                              '<label>coefficient</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
@@ -106,11 +114,11 @@ function setData(parsedData){
                              '<label>unit</label>'+
                              '<input type="text" id="unit'+i+'">'+
                          '</div><br>'+
-                         '<div class="form-group">'+
-                             '<label>baseline</label>'+
-                             '<input type="text" id="baseline'+i+'">'+
-                         '</div><br>'+
-//                         ' <button class="save-button btn " id="button1">修改/新增</button>'+
+                       '<div class="form-group">'+
+                           '<label>baseline</label>'+
+                           '<select name="types" id="baseline'+i+'">'+
+                           '</select>'+
+                       '</div> <br>'+
                          '</div>';
                 //初始化
                $('#manage-container').append(card);
@@ -141,11 +149,11 @@ function setData(parsedData){
                         '<label>unit</label>'+
                         '<input type="text" id="unit'+i+'">'+
                     '</div><br>'+
-                    '<div class="form-group">'+
-                        '<label>baseline</label>'+
-                        '<input type="text" id="baseline'+i+'">'+
-                    '</div><br>'+
-//                    ' <button class="save-button btn " id="button1">修改/新增</button>'+
+                      '<div class="form-group">'+
+                          '<label>baseline</label>'+
+                          '<select name="types" id="baseline'+i+'">'+
+                          '</select>'+
+                      '</div> <br>'+
                     '</div>';
              $('#manage-container').append(card);
               $('#name'+i).val(parsedData[categories[i]].content[0].name);
@@ -179,6 +187,11 @@ function setData(parsedData){
         //初始化
         for(let m = 0;m< baseLength; m++){
             $('#'+baseKeys[m]).val(parsedData[categories[i]].base[baseKeys[m]]);
+        }
+        //把baseline變成選項
+        for(let m = 0;m< baseLength; m++){
+          let option = '`<option value="'+baseKeys[m]+'">'+baseKeys[m]+'</option>';
+            $('#baseline'+i).append(option);
         }
     }
 
@@ -224,4 +237,5 @@ function updateTableValues(selectedIndex) {
         console.log("selectedContent not found in parsedData.daily.content");
     }
 }
+
 
