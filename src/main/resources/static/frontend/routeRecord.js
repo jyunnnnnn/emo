@@ -3,7 +3,7 @@ let recordedPositions = [];//路線紀錄(點)
 let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
 let distanceThreshold = -1; // 初始化地圖位置
-let accuracyThreshold = 10000; //
+let accuracyThreshold = 100000; //
 
 function success(pos){
 
@@ -19,10 +19,13 @@ function success(pos){
     console.log(distance);
 
     // 只有當距離超過閾值時才更新位置和圓圈 (小於2公尺不更新)，且定位精準度不超過閾值
+    // 有些裝置不提供speed 訊息
     if(distance > distanceThreshold) {
         if (accuracy < accuracyThreshold) { // 超過精準度直接判掉當作異常資料(先這樣，我也不知道可不可以):))
             distanceThreshold = 2; // 2公尺 原本五公尺變成很少移動:(
-            accuracyThreshold = 30; // 30m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設30，超過可能是出現飄移
+            // 50m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設50，超過可能是出現飄移
+            // 缺點是，在gps信號不好時，位置就不會改變.......
+            accuracyThreshold = 50;
             currentLocation = {
                 lat: newLat,
                 lng: newLng,
@@ -31,7 +34,7 @@ function success(pos){
             };
             updateCurrentCircle();
         }else {
-            alert("精準度太低:)，我懷疑根本沒怎樣 accuracy: " + accuracy);
+            alert("精準度太低:)，accuracy: " + accuracy);
         }
     }
 }
@@ -43,10 +46,9 @@ function error(err) {
 }
 
 options = {
-    enableHighAccuracy: false,//低精準，較不耗能
+    enableHighAccuracy: true,//高精準，但耗能
     timeout: Infinity,// 設備必須要在多少時間內回應位置資訊(ms)
     maximumAge: 5000,// 緩存位置5秒
-    minimunDistance: 2, // 移動超過2米觸發位置更新
 };
 // 路線紀錄(開始/停止)
 function checkIsRecording() {
@@ -65,19 +67,32 @@ function startRecording() {
     // 每1秒記錄一次
     kilometer = 0;
     intervalId = setInterval(function () {
-        recordLocation();
+        // 減少記憶體浪費
+        lastPosition = recordedPositions.slice(-1)[0];
+        if(lastPosition) lp = lastPosition;
+        else {
+            lp = {
+                lat: null,
+                lng: null
+            };
+        }
+        console.log(lp , currentLocation.lat);
+        if(lp.lat != currentLocation.lat && lp.lng != currentLocation.lng) {
+            recordLocation();
+        }
     }, 1000);
 }
-let smoothedPositions = [];
+
 function stopRecording() {
     //一次平滑所有資料
-
+    let smoothedPositions = [];
     recordedPositions.forEach(position => {
         kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
         smoothedPositions.push(kf.getState());
     });
-    // let oldDataString = JSON.stringify(recordedPositions);
-    // let newDataString = JSON.stringify(smoothedPositions);
+    let oldDataString = JSON.stringify(recordedPositions);
+    let newDataString = JSON.stringify(smoothedPositions);
+    console.log("舊資料"+oldDataString +"\n新資料"+newDataString);
     alert("舊資料"+recordedPositions.length +"\n新資料"+smoothedPositions.length);
     let smoothedPath = new google.maps.Polyline({
         path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
@@ -105,6 +120,7 @@ function stopRecording() {
     clearInterval(intervalId);
     // 清空位置紀錄
     recordedPositions = [];
+    smoothedPositions = [];
     // 移除地圖上的線條
     // clearMapLines();
 
