@@ -15,7 +15,6 @@
 }
 
 #deleteAccount_matchVerifyCode{
-    font-family: 'Crimson Pro', serif;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -30,7 +29,6 @@
 }
 
 #newName{
-    font-family: 'Crimson Pro', serif;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -78,7 +76,6 @@
     display: block;
     font-weight: bold;
     font-size: 15px;
-    font-family: 'Crimson Pro', serif;
     background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
     color: white;
     margin: 8px auto;

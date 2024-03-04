@@ -9,6 +9,15 @@ import java.util.Map;
 public class RecordWrapper {
     private Map<String, Double> base;
     private String color;
+    private Map<String, String> units;
+
+    public Map<String, String> getUnits() {
+        return units;
+    }
+
+    public void setUnits(Map<String, String> units) {
+        this.units = units;
+    }
 
     public Map<String, Double> getBase() {
         return base;

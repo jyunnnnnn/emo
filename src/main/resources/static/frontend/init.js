@@ -4,7 +4,8 @@ let FootprintData = [];//各環保行為資訊 物件陣列
 let svgData;
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let User;//使用者 物件
-let currentLocation;//當前經緯度
+let currentLocation;//當前經緯度，時間，精確度
+let cL; // currentLocation的經緯
 let watchId; //當前位置ID
 let options;//地圖精準度 更新當前位置function用
 let circle; //當前位置標記 用於每5秒更新(清除、重劃)
@@ -12,6 +13,7 @@ let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
+
 
 // 初始化Google Map
 function initMap() {
@@ -21,15 +23,21 @@ function initMap() {
             function(position) {
                 currentLocation = {
                     lat: position.coords.latitude,
-                    lng: position.coords.longitude
+                    lng: position.coords.longitude,
+                    TimeStamp_milliseconds: position.timestamp,
+                    accuracy: position.coords.accuracy
                 };
                  console.log("抓取位置成功 開始建構地圖");
                 // 創建地圖
+                cL ={
+                    lat: currentLocation.lat,
+                    lng: currentLocation.lng,
+                }
                 map = new google.maps.Map(document.getElementById('map'), {
-                    center: currentLocation,
+                    center: cL,
                     zoom: 18,
                     minZoom: 5, // 設定最小縮放級別
-                    maxZoom: 50, // 設定最大縮放級別
+                    maxZoom: 20, // 設定最大縮放級別
                     mapTypeControl: false,
                     zoomControl: false,
                     scaleControl: false,
@@ -49,7 +57,7 @@ function initMap() {
                 console.log("獲取標記及訊息窗");
                 // 一開始 當前位置標記
                 circle = new google.maps.Marker({
-                    position: currentLocation,
+                    position: cL,
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
                         scale: 5
@@ -77,7 +85,6 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User = JSON.parse(localStorage.getItem('EmoAppUser'));
     loadEcoRecords(User.userId);//載入環保紀錄
-    loadFootprintData();//載入碳足跡計算
     loadSVG();//載入svg
     $('#user').text(User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
@@ -93,20 +100,22 @@ function systemInit(){
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
 }
 //更新現在位置
-function updateCurrentCircle(position) {
+function updateCurrentCircle() {
     // 清除舊位置的圈圈
     if (circle) {circle.setMap(null);}
     // 在新當前位置上標記圈圈
+    cL ={
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+    }
     circle = new google.maps.Marker({
-        position: currentLocation,
+        position: cL,
         map: map,
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 5
         }
     });
-    //跑到中心
-    map.panTo(currentLocation);
 }
 //載入svg
 function loadSVG(){
@@ -116,8 +125,7 @@ function loadSVG(){
         success: function (data) {
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
-            console.log(svgData);
-            svgConstructor(svgData);
+            loadFootprintData();//載入碳足跡計算
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
@@ -126,16 +134,39 @@ function loadSVG(){
         }
     });
 }
+let trafficChecked = null;
+let dailyChecked = null;
 function svgConstructor(svgData) {
     for(let [key, value] of Object.entries(categories)){
-        $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
-        $('#' + value.class + 'Radio').on('change', function() {
-            if (!this.checked) {
-                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
-            } else {
-                $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class]);
+        if(value.class != "transportation"){
+            $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
+            $('#' + value.class + 'Input').on('change', function() {
+                if (this.checked) {
+                    if(value.class != dailyChecked && dailyChecked != null){
+                        $('#' + dailyChecked + 'Icon').html(svgData.svgImages[value.class][dailyChecked + 'Icon']);
+                    }
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+                    dailyChecked = value.class;
+                } else {
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
+                }
+            });
+        } else {
+            for(let [key, val] of Object.entries(value.action)){
+                $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
+                $('#' + val.index + 'Input').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        if(val.index != trafficChecked && trafficChecked != null){
+                            $('#' + trafficChecked + 'Icon').html(svgData.svgImages[value.class][trafficChecked + 'Icon']);
+                        }
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Hover']);
+                        trafficChecked = val.index;
+                    } else {
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
+                    }
+                });
             }
-        });
+        }
     }
 }
 
@@ -149,7 +180,6 @@ function loadFootprintData() {
                 // 處理成功時的邏輯
                 const parsedData = JSON.parse(data);
                 FPConstructor(parsedData);//待改名
-                initCategory();
             },
             error: function(xhr, status, error) {
                let errorData = JSON.parse(xhr.responseText);
@@ -164,8 +194,8 @@ function FPConstructor(jsonData) {
         let base = jsonData[key].base;
         let name = jsonData[key].name;
         if(key === "transportation"){
-            jsonData[key].content.forEach(({name: type, coefficient, baseline, unit}) => {
-                FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name});
+            jsonData[key].content.forEach(({name: type, index, coefficient, baseline, unit, color}) => {
+                FootprintData.push({ type, index,coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name, color});
             });
         } else {
             jsonData[key].content.forEach(({name: type, coefficient, baseline, option, unit, color}) => {
@@ -186,6 +216,42 @@ function initCategory(jsonData){
         let currentType = FootprintData[i].type;
 
         if (!categories[currentCategory]) {
+            if(currentCategory != "交通"){
+                // 建立類別按鈕
+                let divElement = $('<div></div>');
+                divElement.addClass('radio-inputs');
+                divElement.attr('name', 'radio');
+                divElement.attr('id', FootprintData[i].class + 'Radio');
+
+                let labelElement = $('<label></label>');
+                labelElement.attr('id', FootprintData[i].class + 'Label');
+
+                let inputElement = $('<input>');
+                inputElement.attr({
+                    'id': FootprintData[i].class + 'Input',
+                    'class': 'radio-input',
+                    'type': 'radio',
+                    'name': 'typeRadio',
+                    'value': FootprintData[i].class
+                });
+
+                let spanElement = $('<span></span>');
+                spanElement.addClass('radio-tile');
+                let svgSpan = $('<span></span>');
+                svgSpan.addClass('radio-icon');
+                svgSpan.attr('id', FootprintData[i].class + 'Icon');
+
+                let textSpan = $('<span>' + currentCategory + '</span>');
+                textSpan.addClass('radio-label');
+                textSpan.attr('id', FootprintData[i].class);
+
+                spanElement.append(svgSpan, textSpan);
+                labelElement.append(inputElement, spanElement);
+                divElement.append(labelElement);
+
+                $('#classType').append(divElement);
+            }
+
             categories[currentCategory] = {
                 class: FootprintData[i].class,
                 footprint: 0,
@@ -197,12 +263,56 @@ function initCategory(jsonData){
                 value: FootprintData[i].class
             }));
         }
+
+        if(currentCategory === "交通"){
+            // 建立類別按鈕
+            let divElement = $('<div></div>');
+            divElement.addClass('radio-inputs');
+            divElement.attr('name', 'radio');
+            divElement.attr('id', FootprintData[i].index + 'Radio');
+            divElement.css({
+                'width': '50%'
+            });
+
+            let labelElement = $('<label></label>');
+            labelElement.attr('id', FootprintData[i].index + 'Label');
+
+            let inputElement = $('<input>');
+            inputElement.attr({
+                'id': FootprintData[i].index + 'Input',
+                'class': 'radio-input',
+                'type': 'radio',
+                'name': 'engine',
+                'value': FootprintData[i].index
+            });
+
+            let spanElement = $('<span></span>');
+            spanElement.addClass('radio-tile');
+            let svgSpan = $('<span></span>');
+            svgSpan.addClass('radio-icon');
+            svgSpan.attr('id', FootprintData[i].index + 'Icon');
+
+            let textSpan = $('<span>' + FootprintData[i].type + '</span>');
+            textSpan.addClass('radio-label');
+            textSpan.attr('id', FootprintData[i].index);
+
+            spanElement.append(svgSpan, textSpan);
+            labelElement.append(inputElement, spanElement);
+            divElement.append(labelElement);
+
+            $('#trafficClassType').append(divElement);
+        }
         categories[currentCategory].action.push({
             type: currentType,
             color: FootprintData[i].color,
+            index: FootprintData[i].index,
             totalFP: 0
         });
     }
+
+    // 等按鈕建好再放照片跟 + 監聽器
+    svgConstructor(svgData);
+    typeListener();
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {
