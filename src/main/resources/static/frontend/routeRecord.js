@@ -14,9 +14,9 @@ function success(pos){
     //計算新位置和當前位置的距離 meter
     const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
     const accuracy = pos.coords.accuracy;
-    console.log(pos,currentLocation);
-    console.log(accuracy); // accuracy 經緯度的水平誤差(平面距離)(m)
-    console.log(distance);
+//    console.log(pos,currentLocation);
+//    console.log(accuracy); // accuracy 經緯度的水平誤差(平面距離)(m)
+//    console.log(distance);
 
     // 只有當距離超過閾值時才更新位置和圓圈 (小於2公尺不更新)，且定位精準度不超過閾值
     // 有些裝置不提供speed 訊息
