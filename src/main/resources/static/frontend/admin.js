@@ -46,37 +46,6 @@ function setSvgData(parsedData) {
     svgData=parsedData;
     console.log(svgData);
 }
-//重寫
-$(document).ready(function() {
-  $('#addNewContent').click(function() {
-    let newContent = {
-      index: $('#index').val(),
-      name: $('#name').val(),
-      coefficient: $('#coefficient').val(),
-      unit: $('#unit').val(),
-      option: {
-          "大": $('#option1').val(),
-          "中": $('#option2').val(),
-          "小": $('#option3').val()
-      },
-      baseline: $('#baseline').val()
-
-    };
-    $.ajax({
-        type: 'PUT',
-        url: '/api/addNewContent?index='+ newContent.index, // 替換成適當的後端路由
-        contentType: 'application/json',
-        data: JSON.stringify(newContent),
-        success: function(response) {
-            console.log('新增成功:', response);
-        },
-        error: function(xhr, status, error) {
-            console.error('新增失敗:', error);
-        }
-    });
-    console.log(newContent);
-  });
-});
 //讀取設定檔的資料到頁面
 function setData(parsedData){
 //讀取大類別有哪些  ex.['daily', 'transportation']
@@ -85,18 +54,16 @@ function setData(parsedData){
             categories.push(category);
         }
     }
-
     //新增所有大類別的option
     for(let i =0; i<categories.length; i++){
         let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
+        category += '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
         category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
+        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
         $('#options').append(category);
     }
     for(let i =0; i<categories.length; i++){
-    //讀取物件的第一個 content 元素的索引名稱
-    //    let indexNames = Object.keys(parsedData[categories[i]].content[0]);
-    //    console.log(indexNames); // ["option", "index", "name", "coefficient", "unit", "baseline"]
-         //新增整塊頁面
+     //新增整塊頁面
          let card ;
          if(categories[i] == "daily"){
            card = '<div id="'+categories[i]+'" class="content-block"><br>';
@@ -109,27 +76,34 @@ function setData(parsedData){
                              '<label>name</label>'+
                              '<input type="text" id="name'+i+'" >'+
                          '</div> <br>'+
-                         '<div class="inline">'+
-                             '<label>大</label>'+
-                             '<input type="text" id="big">'+
-                             '<label>中</label>'+
-                             '<input type="text" id="mid">'+
-                             '<label>小</label>'+
-                             '<input type="text" id="small">'+
-                         '</div><br>'+
+                          '<div class="option-set d-lg-flex">'+
+                              '<div class="form-group">'+
+                                  '<label>大</label>'+
+                                  '<input type="text" id="big">'+
+                              '</div><br>'+
+                              '<div class="form-group">'+
+                                  '<label>中</label>'+
+                                  '<input type="text" id="mid">'+
+                              '</div><br>'+
+                              '<div class="form-group">'+
+                                 '<label>小</label>'+
+                                  '<input type="text" id="small">'+
+                              '</div>'+
+                          '</div><br>'+
                          '<div class="form-group">'+
                              '<label>coefficient</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
                          '</div><br>'+
-                         '<div class="form-group">'+
-                             '<label>unit</label>'+
-                             '<input type="text" id="unit'+i+'">'+
-                         '</div><br>'+
-                         '<div class="form-group">'+
-                              '<label>baseline</label>'+
-                              '<select name="types" id="baseline'+i+'">'+
-                              '</select>'+
-                          '</div> <br>'+
+                          '<div class="form-group">'+
+                             '<label>units</label>'+
+                             '<select name="types" id="units'+i+'">'+
+                             '</select>'+
+                         '</div> <br>'+
+                       '<div class="form-group">'+
+                           '<label>baseline</label>'+
+                           '<select name="types" id="baseline'+i+'">'+
+                           '</select>'+
+                       '</div> <br>'+
                          '</div>';
                 //初始化
                $('#manage-container').append(card);
@@ -157,10 +131,11 @@ function setData(parsedData){
                         '<label>coefficient</label>'+
                         '<input type="text" id="coefficient'+i+'">'+
                     '</div><br>'+
-                    '<div class="form-group">'+
-                        '<label>unit</label>'+
-                        '<input type="text" id="unit'+i+'">'+
-                    '</div><br>'+
+                          '<div class="form-group">'+
+                             '<label>units</label>'+
+                             '<select name="types" id="units'+i+'">'+
+                             '</select>'+
+                         '</div> <br>'+
                       '<div class="form-group">'+
                           '<label>baseline</label>'+
                           '<select name="types" id="baseline'+i+'">'+
@@ -193,14 +168,51 @@ function setData(parsedData){
         }
         baseCard += ' </div>';
         $('#manage-container').append(baseCard);
-        //初始化
+        //base初始化
         for(let m = 0;m< baseLength; m++){
             $('#'+baseKeys[m]).val(parsedData[categories[i]].base[baseKeys[m]]);
         }
-        //根據base的種類新增類別的baseline選單
+        //把baseline變成選項
         for(let m = 0;m< baseLength; m++){
           let option = '`<option value="'+baseKeys[m]+'">'+baseKeys[m]+'</option>';
             $('#baseline'+i).append(option);
+        }
+        //新增color區塊
+         let colorCard = '<div id="'+categories[i]+'-color" class="content-block d-none"><br>';
+          colorCard += '<div class="form-group">'+
+                       '<label>color</label>'+
+                             '<input type="text" id="color'+i+'">'+
+                        ' </div> <br> </div> ';
+         $('#manage-container').append(colorCard);
+         $('#color'+i).val(parsedData[categories[i]].color);
+        //新增units區塊
+        let newUnitId=[];
+        let units = parsedData[categories[i]].units;
+        let unitsLength = Object.keys(units).length;
+        let unitsKeys = Object.keys(units);
+        console.log("base 的長度為：" + unitsLength);
+        let unitsCard = '<div id="'+categories[i]+'-units" class="content-block d-none"><br>';
+        for(let m =0;m< unitsLength;m++){
+           newUnitId[m] = unitsKeys[m].replace(/\//g, '_'); //替換掉底線不然id讀不到
+           console.log("0",newUnitId[m]);
+           unitsCard += '<div class="form-group">'+
+                      '<label>'+unitsKeys[m]+'</label>'+
+                            '<input type="text" id="'+newUnitId[m]+'">'+
+                           ' </div> <br>';
+        }
+        unitsCard += ' </div>';
+        $('#manage-container').append(unitsCard);
+        //units初始化
+        for(let m = 0;m< unitsLength; m++){
+//            console.log("0",unitsKeys[m]);
+            console.log("1",parsedData[categories[i]].units);
+            console.log("2",parsedData[categories[i]].units[unitsKeys[m]]);
+            $('#'+newUnitId[m]).val(parsedData[categories[i]].units[unitsKeys[m]]);
+        }
+        //把units變成選項
+        for(let m = 0;m< unitsLength; m++){
+          let option = '`<option value="'+unitsKeys[m]+'">'+unitsKeys[m]+'</option>';
+            $('#units'+i).append(option);
         }
     }
 
@@ -226,7 +238,7 @@ function updateTableValues(selectedIndex) {
              targetNum = i;
              console.log(selectedIndex + " 屬於 'daily'");
              console.log("targetCategory", targetCategory);
-             console.log("targetnum", targetNum);
+             console.log("targetNum", targetNum);
          }
     }
 //     console.log("0",parsedData);
@@ -236,14 +248,18 @@ function updateTableValues(selectedIndex) {
         console.log("Index of selectedContent:", index);
         // 根據索引位置更新表格的值
          $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
-         $('#big').val(parsedData[targetCategory].content[index].option.大);
-         $('#mid').val(parsedData[targetCategory].content[index].option.中);
-         $('#small').val(parsedData[targetCategory].content[index].option.小);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
          $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
          $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
+         //只有daily才有的
+         if(targetCategory == "daily"){
+             $('#big').val(parsedData[targetCategory].content[index].option.大);
+             $('#mid').val(parsedData[targetCategory].content[index].option.中);
+             $('#small').val(parsedData[targetCategory].content[index].option.小);
+         }
     } else {
         console.log("selectedContent not found in parsedData.daily.content");
     }
 }
+
 

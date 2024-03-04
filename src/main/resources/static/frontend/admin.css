@@ -10,11 +10,20 @@ body {
   .manage-container {
     /* width: 50%; */
     height: auto;
-    background-color: #fff; /* 框的顏色 */
+    /* background-color: #fff;  */
     border-radius: 10px; /* 圓角 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影效果 */
-    padding: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
+    padding-top: 40px;
+    padding-left: 50px;
     /* text-align: center; */
+  }
+  .full-container{
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+  }
+  label{
+    margin-right: 10px;
+    margin-left: 10px;
   }
   select,input {
     /* width: 100%; */
@@ -47,3 +56,13 @@ body {
     border: none;
     transition: all 0.2s ease-in-out;
 }
+
+  /* rwd */
+  @media only screen and (max-width: 700px) {
+    .full-container{
+      box-shadow: none; /* 陰影效果 */
+    }
+    body{
+      background-color: #fff;
+    }
+  }
