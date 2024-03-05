@@ -56,7 +56,23 @@ body {
     border: none;
     transition: all 0.2s ease-in-out;
 }
-
+  .category-button{
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Crimson Pro', serif;
+    background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
+    color: rgb(255, 255, 255);
+    padding-block: 15px;
+    margin: 20px auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 20px;
+    box-shadow: rgba(152, 158, 161, 0.87) 0px 20px 10px -15px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+  }
   /* rwd */
   @media only screen and (max-width: 700px) {
     .full-container{

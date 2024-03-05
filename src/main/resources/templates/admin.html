@@ -22,15 +22,18 @@
         <div class="col-lg-1 col-0"></div>
         <div  class="manage-container col-lg-10 col-12 " id="manage-container">
             <h2 class="text-center" style="color: rgb(123, 125, 127);">Admin Management</h2>
-            <br>
+            <div class="d-flex">
+                <button class="category-button btn " id="basic-setting" onclick="toggleButtons()" disabled>一般數據設定</button>
+                <button class="category-button btn " id="svg-setting" onclick="toggleButtons()" >SVG 設定</button>
+            </div>
             <label>請選擇欲更動的類別</label>
-            <select name="options" id="options">
+<!--            <select name="options" id="options">-->
                 <!-- <option value=""> </option> -->
 <!--                <option value="daily">Daily</option>-->
 <!--                <option value="daily-base">Daily-base</option>-->
 <!--                <option value="traffic">Traffic</option>-->
 <!--                <option value="traffic-base">Traffic-base</option>-->
-            </select>
+<!--            </select>-->
             <!-- daily -->
 <!--            <div id="daily" class="content-block">-->
 <!--                <br>-->
