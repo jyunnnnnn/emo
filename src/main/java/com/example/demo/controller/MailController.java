@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/mail")
 public class MailController {
     private final MailService mailService;
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/footprint")
 public class FootprintController {
     private final FootprintService footprintService;
 

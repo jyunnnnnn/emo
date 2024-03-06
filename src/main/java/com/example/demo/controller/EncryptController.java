@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/encrypt")
 public class EncryptController {
     private final EncryptService encryptService;
     @Autowired
