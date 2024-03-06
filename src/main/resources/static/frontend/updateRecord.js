@@ -53,7 +53,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
 function modifyRecordToBackend(record) {
     $.ajax({
         type: 'PUT',
-        url: '/api/updateRecord',
+        url: '/eco/updateRecord',
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {

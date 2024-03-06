@@ -1,34 +1,22 @@
 package com.example.demo.controller;
 
-import com.example.demo.repository.UserRepository;
-import com.example.demo.entity.User;
+import com.example.demo.entity.UserInfo;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.minidev.json.JSONArray;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -38,8 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@DisplayName("User Controller Test")
-class UserControllerTest {
+@DisplayName("UserInfo Controller Test")
+class UserInfoControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,21 +37,21 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private User user = new User("test", "test", "test", "Test", "test");
+    private UserInfo userInfo = new UserInfo("test", "test", "test", "Test", "test");
 
 
     /*
         測試註冊帳號
      */
     @Test
-    @DisplayName("Register User Controller Test")
+    @DisplayName("Register UserInfo Controller Test")
     void registerUser() throws Exception {
         //測試成功註冊帳號
-        when(userService.createUser(any(User.class))).thenReturn(UserService.OK);
+        when(userService.createUser(any(UserInfo.class))).thenReturn(UserService.OK);
         mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
+                        .content(objectMapper.writeValueAsString(userInfo)))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
@@ -79,18 +67,18 @@ class UserControllerTest {
 
         //測試登入已存在的使用者
         when(userService.login(any(String.class), any(String.class))).thenReturn(UserService.OK);
-        when(userService.findUserDataFromUsername(any(String.class))).thenReturn(user);
+        when(userService.findUserDataFromUsername(any(String.class))).thenReturn(userInfo);
         mockMvc.perform(get("/api/login")
-                        .param("username", user.getUsername())
-                        .param("password", user.getPassword()))
+                        .param("username", userInfo.getUsername())
+                        .param("password", userInfo.getPassword()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //測試登入不存在使用者
         when(userService.login(any(String.class), any(String.class))).thenReturn(UserService.FAIL);
         when(userService.findUserDataFromUsername(any(String.class))).thenReturn(null);
         mockMvc.perform(get("/api/login")
-                        .param("username", user.getUsername())
-                        .param("password", user.getPassword()))
+                        .param("username", userInfo.getUsername())
+                        .param("password", userInfo.getPassword()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -106,16 +94,16 @@ class UserControllerTest {
                 .thenReturn(UserService.OK);
 
         mockMvc.perform(put("/api/update")
-                        .param("userMail", user.getEmail())
-                        .param("password", user.getPassword()))
+                        .param("userMail", userInfo.getEmail())
+                        .param("password", userInfo.getPassword()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //測試密碼修改失敗
         when(userService.updatePassword(any(String.class), any(String.class)))
                 .thenReturn(UserService.FAIL);
         mockMvc.perform(put("/api/update")
-                        .param("userMail", user.getEmail())
-                        .param("password", user.getPassword()))
+                        .param("userMail", userInfo.getEmail())
+                        .param("password", userInfo.getPassword()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -130,16 +118,16 @@ class UserControllerTest {
                 .thenReturn(UserService.OK);
 
         mockMvc.perform(put("/api/updateByUsername")
-                        .param("username", user.getUsername())
-                        .param("password", user.getPassword()))
+                        .param("username", userInfo.getUsername())
+                        .param("password", userInfo.getPassword()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
         when(userService.updatePasswordByUsername(any(String.class), any(String.class)))
                 .thenReturn(UserService.FAIL);
         mockMvc.perform(put("/api/updateByUsername")
-                        .param("username", user.getUsername())
-                        .param("password", user.getPassword()))
+                        .param("username", userInfo.getUsername())
+                        .param("password", userInfo.getPassword()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -154,14 +142,14 @@ class UserControllerTest {
         when(userService.isAccountExists(any(String.class)))
                 .thenReturn(UserService.USER_FOUND);
         mockMvc.perform(get("/api/accountExist")
-                        .param("userMail", user.getEmail()))
+                        .param("userMail", userInfo.getEmail()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
         when(userService.isAccountExists(any(String.class)))
                 .thenReturn(UserService.USER_NOT_FOUND);
         mockMvc.perform(get("/api/accountExist")
-                        .param("userMail", user.getEmail()))
+                        .param("userMail", userInfo.getEmail()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -176,7 +164,7 @@ class UserControllerTest {
         when(userService.deleteAccountByUserId(any(String.class)))
                 .thenReturn(null);
         mockMvc.perform(delete("/api/deleteUserAccount")
-                        .param("userId", user.getUserId()))
+                        .param("userId", userInfo.getUserId()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //帳號刪除過程失敗測試
@@ -184,7 +172,7 @@ class UserControllerTest {
                 .thenThrow(NullPointerException.class);
 
         mockMvc.perform(delete("/api/deleteUserAccount")
-                        .param("userId", user.getUserId()))
+                        .param("userId", userInfo.getUserId()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -197,16 +185,16 @@ class UserControllerTest {
     void chekcAccountExistByUsername() throws Exception {
         //帳號查詢成功
         when(userService.fetchOneUserByUsername(any(String.class)))
-                .thenReturn(user);
+                .thenReturn(userInfo);
         mockMvc.perform(get("/api/checkAccountExistByUsername")
-                        .param("username", user.getUsername()))
+                        .param("username", userInfo.getUsername()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //帳號查詢失敗
         when(userService.fetchOneUserByUsername(any(String.class)))
                 .thenReturn(null);
         mockMvc.perform(get("/api/checkAccountExistByUsername")
-                        .param("username", user.getUsername()))
+                        .param("username", userInfo.getUsername()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -219,16 +207,16 @@ class UserControllerTest {
     void fetchSpecificAccountByEmail() throws Exception {
         //使用者存在
         when(userService.findSpecificAccountByEmail(any(String.class)))
-                .thenReturn(user);
+                .thenReturn(userInfo);
         mockMvc.perform(get("/api/checkSpecificAccountByEmail")
-                        .param("userMail", user.getEmail()))
+                        .param("userMail", userInfo.getEmail()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //使用者不存在
         when(userService.findSpecificAccountByEmail(any(String.class)))
                 .thenReturn(null);
         mockMvc.perform(get("/api/checkSpecificAccountByEmail")
-                        .param("userMail", user.getEmail()))
+                        .param("userMail", userInfo.getEmail()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -243,7 +231,7 @@ class UserControllerTest {
         when(userService.checkPasswordChangable(any(String.class)))
                 .thenReturn(UserService.OK);
         mockMvc.perform(get("/api/passwordChangable")
-                        .param("username", user.getUsername()))
+                        .param("username", userInfo.getUsername()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
@@ -251,7 +239,7 @@ class UserControllerTest {
         when(userService.checkPasswordChangable(any(String.class)))
                 .thenReturn(UserService.FAIL);
         mockMvc.perform(get("/api/passwordChangable")
-                        .param("username", user.getUsername()))
+                        .param("username", userInfo.getUsername()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -266,7 +254,7 @@ class UserControllerTest {
         when(userService.allowChangePassword(any(String.class)))
                 .thenReturn(UserService.OK);
         mockMvc.perform(post("/api/allowChangePassword")
-                        .param("username", user.getUsername()))
+                        .param("username", userInfo.getUsername()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
@@ -274,7 +262,7 @@ class UserControllerTest {
         when(userService.allowChangePassword(any(String.class)))
                 .thenReturn(UserService.FAIL);
         mockMvc.perform(post("/api/allowChangePassword")
-                        .param("username", user.getUsername()))
+                        .param("username", userInfo.getUsername()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -289,16 +277,16 @@ class UserControllerTest {
         when(userService.updateNicknameByUsername(any(String.class), any(String.class)))
                 .thenReturn(UserService.OK);
         mockMvc.perform(put("/api/updateNickname")
-                        .param("username", user.getUsername())
-                        .param("nickname", user.getNickname()))
+                        .param("username", userInfo.getUsername())
+                        .param("nickname", userInfo.getNickname()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //修改暱稱失敗
         when(userService.updateNicknameByUsername(any(String.class), any(String.class)))
                 .thenReturn(UserService.FAIL);
         mockMvc.perform(put("/api/updateNickname")
-                        .param("username", user.getUsername())
-                        .param("nickname", user.getNickname()))
+                        .param("username", userInfo.getUsername())
+                        .param("nickname", userInfo.getNickname()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -310,15 +298,15 @@ class UserControllerTest {
     @DisplayName("Google Login Test")
     void googleLogin() throws Exception {
         //google登入成功
-        when(userService.googleLogin(any(String.class))).thenReturn(user);
+        when(userService.googleLogin(any(String.class))).thenReturn(userInfo);
         mockMvc.perform(post("/api/googleLogin")
-                        .content(String.valueOf(user)))
+                        .content(String.valueOf(userInfo)))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //google登入失敗
         when(userService.googleLogin(any(String.class))).thenReturn(null);
         mockMvc.perform(post("/api/googleLogin")
-                        .content(String.valueOf(user)))
+                        .content(String.valueOf(userInfo)))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }

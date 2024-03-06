@@ -86,7 +86,7 @@ class EcoRecordServiceTest {
     }
 
     @Test
-    @DisplayName("Get All Specific User Record Test")
+    @DisplayName("Get All Specific UserInfo Record Test")
         //抓取特定使用者的所有紀錄資訊
     void getSpecificUserRecordsTest() {
 

@@ -3,12 +3,12 @@ function isSendVerifyCode(){
     //檢查是否已經寄送過 沒有的話就寄送
     $.ajax({
         type: 'GET',
-        url: '/api/sendAgain?userMail=' + User.email,
+        url: '/mail/sendAgain?userMail=' + User.email,
         contentType: 'application/json',
         success: function (response) {
             $.ajax({
                 type: 'POST',
-                url: '/api/sendVerifyingCode?userMail=' + User.email,
+                url: '/mail/sendVerifyingCode?userMail=' + User.email,
                 contentType: 'application/json',
                 success: function (response) {
                     alert("驗證碼寄送成功");
@@ -28,13 +28,13 @@ function deleteAccount(){
     //檢查驗證碼是否正確
     $.ajax({
         type: 'GET',
-        url: '/api/matchVerifyingCode?userMail=' + User.email + "&userInput=" + inputCode,
+        url: '/mail/matchVerifyingCode?userMail=' + User.email + "&userInput=" + inputCode,
         contentType: 'application/json',
         success: function (response) {
             alert("驗證碼輸入正確");
             $.ajax({
                 type: 'DELETE',
-                url: `/api/deleteUserAccount?userId=${User.userId}`,
+                url: `/user/deleteUserAccount?userId=${User.userId}`,
                 contentType: 'application/string',
                 success: function(response) {
                     //console.log(response); // 成功刪除時的處理邏輯
@@ -45,11 +45,12 @@ function deleteAccount(){
             });
             alert("帳號刪除成功");
             localStorage.removeItem('EmoAppUser');
-            window.location.href= '/login';
+            localStorage.removeItem('username');
+            $('#logoutAccount').click();
             //刪除Emo_User
             $.ajax({
                 type: 'DELETE',
-                url: `/api/deleteSpecificUserRecord?userId=${User.userId}`,
+                url: `/eco/deleteSpecificUserRecord?userId=${User.userId}`,
                 contentType: 'application/string',
                 success: function(response) {
                     //console.log(response); // 成功刪除時的處理邏輯

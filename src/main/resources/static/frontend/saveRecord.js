@@ -40,7 +40,7 @@ function saveRecord(classType, type, data_value){
 function uploadRecordToBackend(record) {
     $.ajax({
         type: 'POST',
-        url: '/api/addRecord',
+        url: '/eco/addRecord',
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {
@@ -54,7 +54,7 @@ function uploadRecordToBackend(record) {
 //一開始把所有資料拉下來做成標籤 每次新增也要做出新標籤
 function loadEcoRecords(userId) {
     $.ajax({
-        url: '/api/getSpecificUserRecord?userId=' + userId,
+        url: '/eco/getSpecificUserRecord?userId=' + userId,
         method: 'GET',
         success: function (data) {
             // 處理成功時的邏輯

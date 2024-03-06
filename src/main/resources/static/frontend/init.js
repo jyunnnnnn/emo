@@ -17,6 +17,8 @@ let categories = {};
 
 // 初始化Google Map
 function initMap() {
+
+
     console.log("進入init");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -65,12 +67,24 @@ function initMap() {
                     map: map
                 });
                 console.log("map finish");
-                if (localStorage.getItem('EmoAppUser')==null) {
-                    alert("請重新登入");
-                    window.location.href = '/login';
-                }else {
-                    systemInit();
-                }
+
+               $.ajax({
+                   type:'GET',
+                   url:'/user/init?username='+localStorage.getItem("username")+"",
+                   success: function(response){
+                        console.log(response.user);
+                       let userData=response.user;
+                       localStorage.setItem("EmoAppUser",userData);
+
+                       console.log("獲取使用者資料成功");
+                       systemInit();
+                   },
+                   error: function(response){
+                       console.log("獲取使用者資料失敗");
+                   }
+               });
+
+
             },
             function(error){ console.error('Error getting geolocation:', error);}
         )
@@ -83,10 +97,10 @@ function initMap() {
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
     watchId = navigator.geolocation.watchPosition(success, error, options);
-    User = JSON.parse(localStorage.getItem('EmoAppUser'));
+    User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadEcoRecords(User.userId);//載入環保紀錄
     loadSVG();//載入svg
-    $('#user').text(User.nickname);
+    $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
     $('#deleteAccount_sendVerifyCode').click(isSendVerifyCode);
@@ -174,7 +188,7 @@ function svgConstructor(svgData) {
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
-            url: '/api/GetAllRecordJson',
+            url: '/config/GetAllRecordJson',
             method: 'GET',
             success: function (data) {
                 // 處理成功時的邏輯
@@ -341,7 +355,7 @@ function modifyNickname() {
             document.getElementById('renameFW').style.display = 'none';
             $.ajax({
                 type: 'PUT',
-                url: '/api/updateNickname?username=' + User.username +'&nickname='+ User.nickname,
+                url: '/user/updateNickname?username=' + User.username +'&nickname='+ User.nickname,
                 success: function(response) {
                     console.log(response); // 成功更新時的處理邏輯
                 },
@@ -369,9 +383,7 @@ function getFormattedDate(){
 }
 //登出
 function logoutAccount(){
-    alert("登出成功");
     localStorage.removeItem('EmoAppUser');
+    localStorage.removeItem("username");
     google.accounts.id.disableAutoSelect();
-    window.location.href= '/login';
-
 }

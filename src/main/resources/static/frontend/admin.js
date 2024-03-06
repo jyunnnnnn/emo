@@ -4,7 +4,7 @@ let categories = [];//類別大屬性有哪些
 
 $(document).ready(function () {
     $.ajax({
-        url: '/api/GetAllRecordJson',
+        url: '/config/GetAllRecordJson',
         method: 'GET',
         success: function (data) {
             // 處理成功時的邏輯
