@@ -15,6 +15,7 @@ body {
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
     padding-top: 40px;
     padding-left: 50px;
+    padding-right: 50px;
     /* text-align: center; */
   }
   .full-container{
@@ -73,6 +74,9 @@ body {
     border: none;
     transition: all 0.2s ease-in-out;
   }
+  .svg-input{
+    width: 80%;
+  }
   /* rwd */
   @media only screen and (max-width: 700px) {
     .full-container{
@@ -80,5 +84,8 @@ body {
     }
     body{
       background-color: #fff;
+    }
+    .svg-input{
+      width: 100%;
     }
   }

@@ -66,7 +66,7 @@ function setSvgData(svgData) {
             //console.log("svgIndex2",svgIndex2[j]);
             svgCard += '<div class="form-group">'+
                     '<label>'+svgIndex2[j]+'</label>'+
-                    '<input type="text" id="'+svgIndex2[j]+'" >'+
+                    '<input type="text" class="svg-input" id="'+svgIndex2[j]+'" >'+
                     '</div> <br>';
         }
         svgCard += '</div>';
