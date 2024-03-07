@@ -29,7 +29,7 @@ public class EcoRecord {
     private double trafficKM; // 路線距離
 
     //constructor
-    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId,List<DotOfLine> lineOnMap) {
+    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId,List<DotOfLine> lineOnMap,double trafficKM) {
         this.recordId = recordId; ;
         this.userId = userId;
         this.classType = classType;
@@ -40,6 +40,7 @@ public class EcoRecord {
         this.time = time;
         this.footprint = footprint;
         this.lineOnMap = lineOnMap;
+        this.trafficKM = trafficKM;
     }
 
     public String getRecordId() {
