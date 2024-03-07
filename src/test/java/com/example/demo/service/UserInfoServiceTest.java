@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.AESEncryption;
-import com.example.demo.entity.User;
+import com.example.demo.entity.UserInfo;
 import com.example.demo.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,8 +20,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-@DisplayName("User Service Layer Test")
-class UserServiceTest {
+@DisplayName("UserInfo Service Layer Test")
+class UserInfoServiceTest {
 
     @Spy
     private UserRepository repository;
@@ -32,39 +32,39 @@ class UserServiceTest {
     @Mock
     private Map<String, Boolean> passwordChangable;
 
-    private User testUser;
+    private UserInfo testUserInfo;
 
     @BeforeEach
     public void setUp() {
-        testUser = new User("test", "test001", "testUser@gmail.com", "testUserId");
+        testUserInfo = new UserInfo("test", "test001", "testUserInfo@gmail.com", "testUserId");
     }
 
     @Test
-    @DisplayName("Create New User Test")
+    @DisplayName("Create New UserInfo Test")
     void createUser() throws Exception {
         String targetUser = "test";
 
-        when(this.repository.findByUsername(anyString())).thenReturn(testUser);
+        when(this.repository.findByUsername(anyString())).thenReturn(testUserInfo);
 
         //測試已存在的使用者
-        int result = this.userService.createUser(testUser);
+        int result = this.userService.createUser(testUserInfo);
 
         //回傳已存在使用者常數
         assertEquals(result, userService.ACCOUNT_ALREADY_EXIST);
 
         //測試尚未註冊的使用者
         when(this.repository.findByUsername(anyString())).thenReturn(null);
-        result = this.userService.createUser(testUser);
+        result = this.userService.createUser(testUserInfo);
         assertEquals(result, userService.OK);
     }
 
     @Test
-    @DisplayName("Find User Data Using Username Test")
+    @DisplayName("Find UserInfo Data Using Username Test")
         //找尋特定使用者資訊
     void findUserDataFromUsername() {
         String target = "test";
-        when(this.repository.findByUsername(target)).thenReturn(testUser);
-        User result = userService.findUserDataFromUsername(target);
+        when(this.repository.findByUsername(target)).thenReturn(testUserInfo);
+        UserInfo result = userService.findUserDataFromUsername(target);
         assertEquals(result.getUsername(), target);
     }
 
@@ -75,7 +75,7 @@ class UserServiceTest {
         String targetPass = "test001";
         String targetPassFail = "test01";
         //成功登入
-        when(this.repository.findByUsername(target)).thenReturn(testUser);
+        when(this.repository.findByUsername(target)).thenReturn(testUserInfo);
         int result = this.userService.login(target, targetPass);
 
         assertEquals(result, this.userService.OK);
@@ -93,7 +93,7 @@ class UserServiceTest {
         //測試查詢帳號是否存在功能
     void isAccountExists() {
         String target = "test";
-        when(this.repository.findByUsername(target)).thenReturn(testUser);
+        when(this.repository.findByUsername(target)).thenReturn(testUserInfo);
         int result = this.userService.isAccountExists(target);
         //測試存在帳號
         assertEquals(result, this.userService.USER_FOUND);
@@ -106,14 +106,14 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Find User Using Email Test")
+    @DisplayName("Find UserInfo Using Email Test")
         //使用電子郵件查詢使用者資訊測試
     void findSpecificAccountByEmail() {
-        String targetEmail = "testUser@gmail.com";
-        when(this.repository.findByEmail(targetEmail)).thenReturn(testUser);
-        User result = this.userService.findSpecificAccountByEmail(targetEmail);
+        String targetEmail = "testUserInfo@gmail.com";
+        when(this.repository.findByEmail(targetEmail)).thenReturn(testUserInfo);
+        UserInfo result = this.userService.findSpecificAccountByEmail(targetEmail);
         //查到該電子郵件對應的使用者
-        assertEquals(result.getUserId(), testUser.getUserId());
+        assertEquals(result.getUserId(), testUserInfo.getUserId());
 
         //該電子郵件尚未被註冊
         when(this.repository.findByEmail(targetEmail)).thenReturn(null);
@@ -125,8 +125,8 @@ class UserServiceTest {
     @DisplayName("Email Exist Check Test")
         //查詢該電子郵件是否存在
     void isEmailExists() {
-        String targetEmail = "testUser@gmail.com";
-        when(this.repository.findByEmail(targetEmail)).thenReturn(testUser);
+        String targetEmail = "testUserInfo@gmail.com";
+        when(this.repository.findByEmail(targetEmail)).thenReturn(testUserInfo);
         int result = this.userService.isEmailExists(targetEmail);
         //查到該電子郵件對應的使用者
         assertEquals(result, this.userService.EXIST);
@@ -143,10 +143,10 @@ class UserServiceTest {
         //修改密碼功能測試
     void updatePassword() {
         String newPass = "test002";
-        String targetEmail = "testUser@gmail.com";
-        User newUser = testUser;
-        newUser.setPassword(newPass);
-        when(this.repository.findByEmail(targetEmail)).thenReturn(testUser);
+        String targetEmail = "testUserInfo@gmail.com";
+        UserInfo newUserInfo = testUserInfo;
+        newUserInfo.setPassword(newPass);
+        when(this.repository.findByEmail(targetEmail)).thenReturn(testUserInfo);
         int result = this.userService.updatePassword(targetEmail, newPass);
         //修改密碼成功
         assertEquals(result, this.userService.OK);
@@ -162,8 +162,8 @@ class UserServiceTest {
         //使用userId刪除特定帳號資訊
     void deleteAccountByUserId() {
         String target = "testUserId";
-        when(this.repository.deleteByUserId(target)).thenReturn(testUser);
-        User result = this.userService.deleteAccountByUserId(target);
+        when(this.repository.deleteByUserId(target)).thenReturn(testUserInfo);
+        UserInfo result = this.userService.deleteAccountByUserId(target);
         //刪除對象為目標對象
         assertEquals(result.getUserId(), target);
     }
@@ -174,7 +174,7 @@ class UserServiceTest {
     void updatePasswordByUsername() {
         String target = "test";
         String newPass = "test002";
-        when(this.repository.findByUsername(target)).thenReturn(testUser);
+        when(this.repository.findByUsername(target)).thenReturn(testUserInfo);
         when(this.repository.save(any())).thenReturn(null);
         int result = this.userService.updatePasswordByUsername(target, newPass);
         //修改密碼成功
@@ -202,11 +202,11 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Grant User to Change Password Test")
+    @DisplayName("Grant UserInfo to Change Password Test")
         //給予修改密碼權限測試
     void allowChangePassword() {
         String target = "test";
-        when(this.repository.findByUsername(target)).thenReturn(testUser);
+        when(this.repository.findByUsername(target)).thenReturn(testUserInfo);
         int result = this.userService.allowChangePassword(target);
         //成功賦予修改密碼權限
         assertEquals(result, this.userService.OK);
@@ -223,8 +223,8 @@ class UserServiceTest {
     void updateNicknameByUsername() {
         String target = "test";
         String newNickname = "testNewNickName";
-        when(this.repository.findByUsername(target)).thenReturn(testUser);
-        when(this.repository.save(testUser)).thenReturn(testUser);
+        when(this.repository.findByUsername(target)).thenReturn(testUserInfo);
+        when(this.repository.save(testUserInfo)).thenReturn(testUserInfo);
         int result = this.userService.updateNicknameByUsername(target, newNickname);
         //修改暱稱成功
         assertEquals(result, this.userService.OK);

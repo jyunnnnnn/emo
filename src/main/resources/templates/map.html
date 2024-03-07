@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,userInfo-scalable=no" id="viewport"
+          name="viewport">
     <title>EMO</title>
     <!--設定favicon-->
     <link rel="icon" href="/frontend/img/生活用品.svg" type="image/svg+xml">
@@ -23,7 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
 
     <!-- Bootstrap CSS -->
-<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
     <!-- Bootstrap Icons CSS
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.19.0/font/bootstrap-icons.css">-->
     <link rel="stylesheet" href="/frontend/boostrap.min.css">
@@ -55,6 +56,7 @@
             margin-right: auto;
             margin-left: auto;
         }
+
     </style>
 </head>
 <body>
@@ -63,32 +65,36 @@
     <div style="display:flex;" id="map"></div>
     <!-- 使用者帳號 -->
     <div class="showUser">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" id="userIcon" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle"
+             id="userIcon" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+            <path fill-rule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
         </svg>
         <div style="display: block; ">
-            <p id="user" style="line-height: 1;"> </p>
+            <p id="user" style="line-height: 1;"></p>
             <p id="totalFootprint" style="font-size: 12px; line-height: 1;"></p>
         </div>
     </div>
     <!-- 主按鈕區 -->
     <div id="recordBtns">
         <!-- 一般記錄鈕 -->
-        <button class="recordButton" id="openRecordModal"> 一般記錄 </button>
+        <button class="recordButton" id="openRecordModal"> 一般記錄</button>
         <!-- 路線記錄鈕 -->
-        <button class="recordButton" id="startRecording"> 路線記錄 </button>
+        <button class="recordButton" id="startRecording"> 路線記錄</button>
         <!-- 查看紀錄鈕 -->
-        <button class="recordButton" id="recordListButton"> 查看紀錄 </button>
+        <button class="recordButton" id="recordListButton"> 查看紀錄</button>
     </div>
     <div>
         <!-- admin -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" id="adminButton" viewBox="0 0 25 25" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" id="adminButton"
+             viewBox="0 0 25 25" style="display: none;">
             <path d="M22.3,16.7l1.4-1.4L20,11.6l-5.8,5.8c-0.5-0.3-1.1-0.4-1.7-0.4C10.6,17,9,18.6,9,20.5s1.6,3.5,3.5,3.5s3.5-1.6,3.5-3.5   c0-0.6-0.2-1.2-0.4-1.7l1.9-1.9l2.3,2.3l1.4-1.4l-2.3-2.3l1.1-1.1L22.3,16.7z M12.5,22c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5   s1.5,0.7,1.5,1.5S13.3,22,12.5,22z"/>
             <path d="M2,19c0-3.9,3.1-7,7-7c2,0,3.9,0.9,5.3,2.4l1.5-1.3c-0.9-1-1.9-1.8-3.1-2.3C14.1,9.7,15,7.9,15,6c0-3.3-2.7-6-6-6   S3,2.7,3,6c0,1.9,0.9,3.7,2.4,4.8C2.2,12.2,0,15.3,0,19v5h8v-2H2V19z M5,6c0-2.2,1.8-4,4-4s4,1.8,4,4s-1.8,4-4,4S5,8.2,5,6z"/>
         </svg>
         <!-- 設定按鈕 -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear-wide-connected" id="settingButton" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+             class="bi bi-gear-wide-connected" id="settingButton" viewBox="0 0 16 16">
             <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"/>
         </svg>
     </div>
@@ -101,8 +107,10 @@
         <button class="btn" id="closeSettingModal" style="top:10px; right:10px;">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -113,24 +121,31 @@
         <button class="setBtn" id="rename">
             <div class="setIcon">
                 <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none">
-                    <path d="M11.4001 18.1612L11.4001 18.1612L18.796 10.7653C17.7894 10.3464 16.5972 9.6582 15.4697 8.53068C14.342 7.40298 13.6537 6.21058 13.2348 5.2039L5.83882 12.5999L5.83879 12.5999C5.26166 13.1771 4.97307 13.4657 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L7.47918 20.5844C8.25351 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5343 19.0269 10.823 18.7383 11.4001 18.1612Z" fill="#1C274C"/>
-                    <path d="M20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178L14.3999 4.03882C14.4121 4.0755 14.4246 4.11268 14.4377 4.15035C14.7628 5.0875 15.3763 6.31601 16.5303 7.47002C17.6843 8.62403 18.9128 9.23749 19.85 9.56262C19.8875 9.57563 19.9245 9.58817 19.961 9.60026L20.8482 8.71306Z" fill="#1C274C"/>
+                    <path d="M11.4001 18.1612L11.4001 18.1612L18.796 10.7653C17.7894 10.3464 16.5972 9.6582 15.4697 8.53068C14.342 7.40298 13.6537 6.21058 13.2348 5.2039L5.83882 12.5999L5.83879 12.5999C5.26166 13.1771 4.97307 13.4657 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L7.47918 20.5844C8.25351 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5343 19.0269 10.823 18.7383 11.4001 18.1612Z"
+                          fill="#1C274C"/>
+                    <path d="M20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178L14.3999 4.03882C14.4121 4.0755 14.4246 4.11268 14.4377 4.15035C14.7628 5.0875 15.3763 6.31601 16.5303 7.47002C17.6843 8.62403 18.9128 9.23749 19.85 9.56262C19.8875 9.57563 19.9245 9.58817 19.961 9.60026L20.8482 8.71306Z"
+                          fill="#1C274C"/>
                 </svg>
             </div>
             <div class="setText">修改暱稱</div>
         </button>
-        <button class="setBtn" id="logoutAccount">
-            <div class="setIcon">
-                <svg viewBox="0 0 512 512">
-                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                </svg>
-            </div>
-            <div class="setText">登出</div>
-        </button>
+        <form method="post" action="/user/logout">
+            <button class="setBtn" id="logoutAccount">
+                <div class="setIcon">
+                    <svg viewBox="0 0 512 512">
+                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                    </svg>
+                </div>
+                <div class="setText">登出</div>
+            </button>
+        </form>
+
+
         <button class="setBtn" style="background-color: rgb(255, 69, 69);" id="deleteAccount">
             <div style="padding-left: 14px">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="white">
-                    <path d="M5 6.77273H9.2M19 6.77273H14.8M9.2 6.77273V5.5C9.2 4.94772 9.64772 4.5 10.2 4.5H13.8C14.3523 4.5 14.8 4.94772 14.8 5.5V6.77273M9.2 6.77273H14.8M6.4 8.59091V15.8636C6.4 17.5778 6.4 18.4349 6.94673 18.9675C7.49347 19.5 8.37342 19.5 10.1333 19.5H13.8667C15.6266 19.5 16.5065 19.5 17.0533 18.9675C17.6 18.4349 17.6 17.5778 17.6 15.8636V8.59091M9.2 10.4091V15.8636M12 10.4091V15.8636M14.8 10.4091V15.8636" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5 6.77273H9.2M19 6.77273H14.8M9.2 6.77273V5.5C9.2 4.94772 9.64772 4.5 10.2 4.5H13.8C14.3523 4.5 14.8 4.94772 14.8 5.5V6.77273M9.2 6.77273H14.8M6.4 8.59091V15.8636C6.4 17.5778 6.4 18.4349 6.94673 18.9675C7.49347 19.5 8.37342 19.5 10.1333 19.5H13.8667C15.6266 19.5 16.5065 19.5 17.0533 18.9675C17.6 18.4349 17.6 17.5778 17.6 15.8636V8.59091M9.2 10.4091V15.8636M12 10.4091V15.8636M14.8 10.4091V15.8636"
+                          stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
             <div class="setText">刪除帳號</div>
@@ -144,8 +159,10 @@
         <button class="btn" id="closeRenameModal" style="top:10px; right:10px;">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -154,7 +171,8 @@
         <!-- 驗證密碼-->
         <input id="newName" name="rename" class="input" type="text">
 
-        <button class="setBtn" id="renameBtn" style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 30px;">
+        <button class="setBtn" id="renameBtn"
+                style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 30px;">
             <div class="setText" style="right: 12%">確認修改</div>
         </button>
     </div>
@@ -166,8 +184,10 @@
         <button class="btn" id="closeDeleteModal" style="top:10px; right:10px;">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -176,11 +196,14 @@
         <div style="font-size: 15px; display: inline" id="deleteDataTime"></div>
         <div style="font-size: 15px; display: inline" id="deleteDataFP"></div>
         <!-- 驗證密碼-->
-        <input id="deleteAccount_matchVerifyCode" name="passwordAuth" class="input" type="text" placeholder="請輸入驗證碼">
-        <button class="setBtn" id="deleteAccount_sendVerifyCode" style="background-color: rgb(163, 166, 168); width: 220px; margin-top: 20px;">
+        <input id="deleteAccount_matchVerifyCode" name="passwordAuth" class="input" type="text"
+               placeholder="請輸入驗證碼">
+        <button class="setBtn" id="deleteAccount_sendVerifyCode"
+                style="background-color: rgb(163, 166, 168); width: 220px; margin-top: 20px;">
             <div class="setText" style="right: 12%; font-size: 18px;">發送驗證碼至信箱</div>
         </button>
-        <button class="setBtn" id="deleteAccount_delete" style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 10px;">
+        <button class="setBtn" id="deleteAccount_delete"
+                style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 10px;">
             <div class="setText" style="right: 12%">確認</div>
         </button>
     </div>
@@ -190,11 +213,13 @@
 <div id="recordFW" onclick="closeFW(event)">
     <div id="activityModal" class="recordContainer">
         <!-- 關閉 -->
-        <button class="btn"  id="closeRecordModal">
+        <button class="btn" id="closeRecordModal">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -202,7 +227,7 @@
         <div class="recordHeading" id="activityModalLabel">一般記錄</div>
         <form action="" class="recordForm">
             <!-- 類別選項 -->
-            <div id = "classType">
+            <div id="classType">
             </div>
 
             <label id="subType">
@@ -228,11 +253,13 @@
 <div id="routeFW" onclick="closeFW(event)">
     <div class="recordContainer">
         <!-- 關閉 -->
-        <button class="btn"  id="closeRouteModal">
+        <button class="btn" id="closeRouteModal">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -240,7 +267,7 @@
         <div class="recordHeading">路線記錄</div>
         <form action="" class="recordForm" style="display:flex; flex-wrap: wrap; justify-content:center; width: 240px;">
             <!-- 類別選項 -->
-            <div id = "trafficClassType" style="display: flex;flex-wrap: wrap;max-width:200px;">
+            <div id="trafficClassType" style="display: flex;flex-wrap: wrap;max-width:200px;">
             </div>
             <!-- 行為選項 -->
             <label id="trafficSubType">
@@ -260,11 +287,13 @@
 <div id="recordListFW" onclick="closeFW(event)">
     <div class="recordContainer" id="activityListModal">
         <!-- 關閉 -->
-        <button class="btn"  id="closeListModal">
+        <button class="btn" id="closeListModal">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -275,8 +304,10 @@
         </div>
         <div style="display: flex; justify-content: center;">
             <div style="flex:1; display: inline-flex; justify-content: center; align-items: center;">
-                <p style="margin-top:16px; align-items: center; font-size: 20px; color: rgb(123, 125, 127);">請選擇日期：</p>
-                <input type="text" id="startDate"  style="text-align: center; font-size: 15px; color: rgb(123, 125, 127); width: 280px; height: 23px;"/>
+                <p style="margin-top:16px; align-items: center; font-size: 20px; color: rgb(123, 125, 127);">
+                    請選擇日期：</p>
+                <input type="text" id="startDate"
+                       style="text-align: center; font-size: 15px; color: rgb(123, 125, 127); width: 280px; height: 23px;"/>
             </div>
         </div>
         <div id="typeSelect" style="margin-bottom: 10px; display: flex; justify-content: space-between;">
@@ -313,8 +344,10 @@
         <button class="btn" id="closeAuthBtn" style="top:10px; right:10px;">
             <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
-                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
-                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2" stroke-linecap="round"> </line>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
                 </g>
             </svg>
         </button>
@@ -322,7 +355,8 @@
         <div class="recordHeading" id="closeAuthModalLabel">要關閉視窗嗎？</div>
         <div style="font-size: 15px; display: inline">目前新增/更新的紀錄會遺失</div>
 
-        <button class="setBtn" id="closeRecord" style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 10px;">
+        <button class="setBtn" id="closeRecord"
+                style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 10px;">
             <div class="setText" style="right: 12%">關閉</div>
         </button>
     </div>
@@ -340,9 +374,8 @@
 <script src="/frontend/recordList.js"></script>
 
 
-
-
 <!-- 初始化地圖 -->
-<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&callback=initMap&libraries=geometry'}"></script>
+<script async defer
+        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&callback=initMap&libraries=geometry'}"></script>
 
 </html>

@@ -95,7 +95,7 @@ class EcoRecordRepositoryTest {
 
     //測試查詢特定使用者的所有紀錄
     @Test
-    @DisplayName("Find All Specific User Record Test")
+    @DisplayName("Find All Specific UserInfo Record Test")
     void getSpecificUserRecords() {
         //查詢所有test使用者之紀錄
         List<EcoRecord> result = this.recordRepository.findAllByUserId("test");
@@ -116,7 +116,7 @@ class EcoRecordRepositoryTest {
     }
 
     @Test
-    @DisplayName("Delete All Specific User Record Test")
+    @DisplayName("Delete All Specific UserInfo Record Test")
     void deleteSpecificUserRecord() {
         //刪除特定使用者測試
         //刪除使用者test2的紀錄

@@ -108,7 +108,7 @@ class EcoControllerTest {
         獲取特定使用者紀錄
      */
     @Test
-    @DisplayName("Get Specific User Record Test")
+    @DisplayName("Get Specific UserInfo Record Test")
     void getSpecificUserRecord() throws Exception {
         //成功獲取特定使用者紀錄
         when(ecoRecordService.getSpecificUserRecords(any(String.class))).thenReturn(testList);
@@ -217,7 +217,7 @@ class EcoControllerTest {
         刪除特定使用者紀錄
      */
     @Test
-    @DisplayName("Delete Specific User Record Test")
+    @DisplayName("Delete Specific UserInfo Record Test")
     void deleteSpecificUserRecord() throws Exception {
         //刪除特定使用者紀錄成功
         mockMvc.perform(delete("/api/deleteSpecificUserRecord")

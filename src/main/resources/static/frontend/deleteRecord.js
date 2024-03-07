@@ -53,7 +53,7 @@ function deleteRecord(recordId){
     records = records.filter(item => item.recordId !== recordId);//更新系統內record[]
     $.ajax({
         type: 'DELETE',
-        url: `/api/deleteOneRecord?recordId=${recordId}`,
+        url: `/eco/deleteOneRecord?recordId=${recordId}`,
         contentType: 'application/string',
         success: function(response) {
             //console.log(response); // 成功刪除時的處理邏輯

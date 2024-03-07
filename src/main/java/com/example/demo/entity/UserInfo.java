@@ -2,9 +2,13 @@ package com.example.demo.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 
 @Document(collection = "Emo_User")
-public class User {
+public class UserInfo {
     @Id
     private String username;//使用者帳號
 
@@ -17,12 +21,22 @@ public class User {
     private String email;//使用者信箱
     private String userId;//使用者ID
 
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    private String authority;
+
     //constructor
-    public User() {
+    public UserInfo() {
 
     }
 
-    public User(String username, String password, String nickname, String email, String userId) {
+    public UserInfo(String username, String password, String nickname, String email, String userId) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -31,7 +45,7 @@ public class User {
     }
 
     //constructor without nickname,default nickname is username
-    public User(String username, String password, String email, String userId) {
+    public UserInfo(String username, String password, String email, String userId) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -67,6 +81,7 @@ public class User {
     public String getUsername() {
         return username;
     }
+
 
     public String getPassword() {
         return password;

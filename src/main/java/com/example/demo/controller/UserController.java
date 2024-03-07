@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
+import com.example.demo.config.SecurityConfig;
+import com.example.demo.entity.UserInfo;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,12 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 public class UserController {
 
 
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 
 
     @Autowired
@@ -33,7 +36,7 @@ public class UserController {
 
     //註冊新帳號
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User request) throws Exception {
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserInfo request) throws Exception {
 
 
         int result = userService.createUser(request);
@@ -47,21 +50,15 @@ public class UserController {
     }
 
     //登入
-    @GetMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws JsonProcessingException {
-        int result = this.userService.login(username, password);
-        User userData = this.userService.findUserDataFromUsername(username);
+    @GetMapping("/init")
+    public ResponseEntity<?> loginUser(@RequestParam("username") String username) throws JsonProcessingException {
+        UserInfo userInfoData = this.userService.findUserDataFromUsername(username);
+        System.out.println(userInfoData);
         ObjectMapper objectMapper = new ObjectMapper();
-        String userDataJson = objectMapper.writeValueAsString(userData);
-        if (result == UserService.OK) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "登入成功!");
-            response.put("location", "/map");
-            response.put("user", userDataJson);
-            return ResponseEntity.ok(response);
-        }
-
-        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗"));
+        String userDataJson = objectMapper.writeValueAsString(userInfoData);
+        Map<String, String> response = new HashMap<>();
+        response.put("user", userDataJson);
+        return ResponseEntity.ok(response);
     }
 
     //修改密碼
@@ -113,7 +110,8 @@ public class UserController {
     //使用帳號檢查該使用者是否存在 並回傳該使用者資料
     @GetMapping("/checkAccountExistByUsername")
     public ResponseEntity<?> chekcAccountExistByUsername(@RequestParam("username") String username) {
-        User result = this.userService.fetchOneUserByUsername(username);
+        UserInfo result = this.userService.fetchOneUserByUsername(username);
+
 
 
         if (result == null) {
@@ -127,7 +125,7 @@ public class UserController {
     @GetMapping("/checkSpecificAccountByEmail")
     public ResponseEntity<?> fetchSpecificAccountByEmail(@RequestParam("userMail") String email) {
 
-        User result = this.userService.findSpecificAccountByEmail(email);
+        UserInfo result = this.userService.findSpecificAccountByEmail(email);
 
         if (result == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
@@ -169,7 +167,7 @@ public class UserController {
     @PostMapping("/googleLogin")
     public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws Exception {
         //抓取該google帳戶userId
-        User result = this.userService.googleLogin(googleInfo);
+        UserInfo result = this.userService.googleLogin(googleInfo);
 
 
         //google登入失敗

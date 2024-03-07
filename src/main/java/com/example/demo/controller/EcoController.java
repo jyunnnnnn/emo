@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/eco")
 public class EcoController {
     private final EcoRecordService ecoRecordService;
 

@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 
 //獲取、更新設定檔內容controller
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/config")
 public class ConfigController {
     private final ConfigService configService;
 
