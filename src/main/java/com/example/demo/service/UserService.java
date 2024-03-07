@@ -105,7 +105,7 @@ public class UserService {
     public int updatePassword(String email, String newPassword) {
         UserInfo result = this.repository.findByEmail(email);
         if (result != null) {
-            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), newPassword, result.getNickname(), email, result.getUserId());
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), newPassword, result.getNickname(), email, result.getUserId(), result.getAuthority());
             this.repository.save(updatedUserInfo);
             return OK;
         }
@@ -159,7 +159,7 @@ public class UserService {
         //檢查帳號是否存在
         UserInfo result = this.repository.findByUsername(username);
         if (result != null) {
-            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId());
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId(),result.getAuthority());
             this.repository.save(updatedUserInfo);
             return OK;
         }
@@ -191,9 +191,9 @@ public class UserService {
         String email = String.valueOf(jsonNode.get("email"));
         email = email.substring(1, email.length() - 1);
         String userId = String.valueOf(new Date().getTime());
+        String authority = String.valueOf(jsonNode.get("authority"));
 
-
-        UserInfo googleUserInfo = new UserInfo(username, password, nickname, email, userId);
+        UserInfo googleUserInfo = new UserInfo(username, password, nickname, email, userId,authority);
         //----------------提取使用者資訊----------------
 
         //建立使用者 or 使用者登入

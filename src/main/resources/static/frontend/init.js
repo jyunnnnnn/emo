@@ -148,43 +148,6 @@ function loadSVG(){
         }
     });
 }
-let trafficChecked = null;
-let dailyChecked = null;
-function svgConstructor(svgData) {
-    for(let [key, value] of Object.entries(categories)){
-        if(value.class != "transportation"){
-            $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
-            $('#' + value.class + 'Input').on('change', function() {
-                if (this.checked) {
-                    if(value.class != dailyChecked && dailyChecked != null){
-                        $('#' + dailyChecked + 'Icon').html(svgData.svgImages[value.class][dailyChecked + 'Icon']);
-                    }
-                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
-                    dailyChecked = value.class;
-                } else {
-                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
-                }
-            });
-        } else {
-            for(let [key, val] of Object.entries(value.action)){
-                $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
-                $('#' + val.index + 'Input').on('change', function() {
-                    if ($(this).is(':checked')) {
-                        if(val.index != trafficChecked && trafficChecked != null){
-                            $('#' + trafficChecked + 'Icon').html(svgData.svgImages[value.class][trafficChecked + 'Icon']);
-                        }
-                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Hover']);
-                        trafficChecked = val.index;
-                    } else {
-                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
-                    }
-                });
-            }
-        }
-    }
-}
-
-
 //載入碳足跡計算係數
 function loadFootprintData() {
     $.ajax({
@@ -327,6 +290,41 @@ function initCategory(jsonData){
     // 等按鈕建好再放照片跟 + 監聽器
     svgConstructor(svgData);
     typeListener();
+}
+let trafficChecked = null;
+let dailyChecked = null;
+function svgConstructor(svgData) {
+    for(let [key, value] of Object.entries(categories)){
+        if(value.class != "transportation"){
+            $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
+            $('#' + value.class + 'Input').on('change', function() {
+                if (this.checked) {
+                    if(value.class != dailyChecked && dailyChecked != null){
+                        $('#' + dailyChecked + 'Icon').html(svgData.svgImages[value.class][dailyChecked + 'Icon']);
+                    }
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Hover']);
+                    dailyChecked = value.class;
+                } else {
+                    $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
+                }
+            });
+        } else {
+            for(let [key, val] of Object.entries(value.action)){
+                $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
+                $('#' + val.index + 'Input').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        if(val.index != trafficChecked && trafficChecked != null){
+                            $('#' + trafficChecked + 'Icon').html(svgData.svgImages[value.class][trafficChecked + 'Icon']);
+                        }
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Hover']);
+                        trafficChecked = val.index;
+                    } else {
+                        $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
+                    }
+                });
+            }
+        }
+    }
 }
 // 計算footprint
 function calculateFootprint(type,data_value) {
