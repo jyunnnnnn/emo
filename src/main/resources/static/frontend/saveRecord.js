@@ -120,7 +120,9 @@ function addMarker(recordToAdd) {
             infoWindow.open(this.map, marker);
             currentInfoWindowRecord = recordToAdd;
             currentMarker = marker;
-            drawLine(currentInfoWindowRecord.lineOnMap);
+            if (currentInfoWindowRecord.classType=="交通"){
+             drawLine(currentInfoWindowRecord.lineOnMap);
+            }
        });
 
         // 監聽 infoWindow 關閉事件

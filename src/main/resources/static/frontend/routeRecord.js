@@ -25,7 +25,7 @@ function success(pos){
             distanceThreshold = 5;
             // 50m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設50，超過可能是出現飄移
             // 缺點是，在gps信號不好時，位置就不會改變.......
-            accuracyThreshold = 50;
+            accuracyThreshold = 500;//這邊要改回50
             currentLocation = {
                 lat: newLat,
                 lng: newLng,
@@ -60,6 +60,7 @@ function checkIsRecording() {
 }
 ////路線紀錄
 function startRecording() {
+    $("#routeDetail").text("參考來源");
     // 按下變成結束
     $('#startRecording').text('結束');
     isRecording = true;
@@ -143,7 +144,8 @@ function stopRecording() {
 
 
     // 打開路線記錄懸浮窗
-    $('#recordCalculate').text("0 gCo2E")
+    $('#recordCalculate').text("0 gCo2E");
+    $("#recordDetail").text("參考來源");
     $('#routeFW').css("display", "flex");
     $('#routeFW').css("position", "fixed");
     $('#kilometer').val(kilometer.toFixed(3));
@@ -151,13 +153,9 @@ function stopRecording() {
     $('#saveTrafficRecord').css("display", "block");
     $('#updateTrafficRecord').css("display", "none");
     $('#deleteTrafficRecord').css("display", "none");
-
     let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
     let data_value = $('#kilometer').val();
     let showExpectedFP = 0;
-    if (data_value > 0){
-        showExpectedFP = parseFloat(calculateFootprint(type, data_value)).toFixed(2);
-    }
     $('#routeCalculate').text(showExpectedFP + " gCo2E");
 
     let checked = $('input[name="engine"]:checked');

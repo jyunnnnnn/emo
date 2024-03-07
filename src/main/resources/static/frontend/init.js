@@ -321,6 +321,8 @@ function svgConstructor(svgData) {
                             showExpectedFP = parseFloat(calculateFootprint(type, data_value)).toFixed(2);
                         }
                         $('#routeCalculate').text(showExpectedFP + " gCo2E");
+                         let target = FootprintData.find(item => item.type === type);
+                         $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
                     } else {
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }
