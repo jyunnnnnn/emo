@@ -9,7 +9,9 @@ function saveRecord(classType, type, data_value){
         longitude: currentLocation.lng,
         footprint:null,
         time: getFormattedDate(),
-        recordId:null
+        recordId:null,
+        lineOnMap: recordedPositions,
+        trafficKM:kilometer
     }
     let now = new Date();
     record.recordId = now.getTime();
@@ -118,7 +120,13 @@ function addMarker(recordToAdd) {
             infoWindow.open(this.map, marker);
             currentInfoWindowRecord = recordToAdd;
             currentMarker = marker;
+            drawLine(currentInfoWindowRecord.lineOnMap);
        });
+
+        // 監聽 infoWindow 關閉事件
+        infoWindow.addListener('closeclick', function() {
+            clearMapLines(mapLines);
+        });
     }
 }
 
