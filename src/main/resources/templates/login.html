@@ -161,7 +161,6 @@ body {
                 transform:scale(1.5,1.5);
                 margin-left:15px;
             }
-
         }
 
 
@@ -174,7 +173,7 @@ body {
 <!--登入區塊-->
 <div class="container text-white" id="login-container">
     <!--    登入錯誤訊息顯示-->
-    <div class="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
 
     <div class="row">
         <div class="col-12 a">
@@ -194,8 +193,8 @@ body {
                            placeholder="Password" required>
                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
-                <br><br>
-
+                <br th:unless="${errorMessage}">
+                <div  style="text-align: center; font-weight: bold; color: #FA6958;" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
                 <button type="submit" class="form-control btn" id="login-button">登入</button>
 
