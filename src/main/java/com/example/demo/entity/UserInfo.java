@@ -35,13 +35,20 @@ public class UserInfo {
     public UserInfo() {
 
     }
-
     public UserInfo(String username, String password, String nickname, String email, String userId) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.userId = userId;
+    }
+    public UserInfo(String username, String password, String nickname, String email, String userId,String authority) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.userId = userId;
+        this.authority = authority;
     }
 
     //constructor without nickname,default nickname is username
