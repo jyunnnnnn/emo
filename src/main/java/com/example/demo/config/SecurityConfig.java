@@ -54,6 +54,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+
                 .exceptionHandling(handler ->
                         //權限不足導向
                         handler.accessDeniedHandler(new AccessDeniedHandler() {
@@ -107,6 +108,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         //url權限設定
                         auth.requestMatchers("/frontend/**").permitAll()
+                                //.requestMatchers("/eco/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/user/init").hasAuthority("NORMAL")
                                 .requestMatchers("/user/**").permitAll()
@@ -135,6 +137,7 @@ public class SecurityConfig {
                                 //登出成功後返回登入畫面
                                 .logoutSuccessUrl("/login")
                 )
+
         ;
         return http.build();
     }
