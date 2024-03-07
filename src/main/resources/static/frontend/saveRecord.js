@@ -90,8 +90,8 @@ function addMarker(recordToAdd) {
             lng: recordToAdd.longitude
         }//抓現在位置
         let marker = new google.maps.Marker({
+            map,
             position: currentLocation,
-            map: map,
             title: recordToAdd.type,
             icon: thisIcon,
             id:recordToAdd.recordId
