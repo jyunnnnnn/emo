@@ -19,6 +19,9 @@ public class MapController {
         model.addAttribute("apiKey", googleMapsApiKey);
         model.addAttribute("username", auth.getName());
         model.addAttribute("authority", auth.getAuthorities());
+        if (auth.isAuthenticated()) {
+            model.addAttribute("errorMessage", "");
+        }
         //System.out.println("API Key: " + googleMapsApiKey);
         return "map";
     }

@@ -85,6 +85,7 @@ public class SecurityConfig {
                                 .loginProcessingUrl("/user/login")
                                 .usernameParameter("username")
                                 .passwordParameter("password")
+                                .failureUrl("/login-error")
                                 //登入成功handler
                                 .successHandler(new AuthenticationSuccessHandler() {
                                     @Override
@@ -137,6 +138,7 @@ public class SecurityConfig {
                                 })
                                 //登出成功後返回登入畫面
                                 .logoutSuccessUrl("/login")
+
                 )
 
         ;

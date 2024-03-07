@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, userInfo-scalable=1">
@@ -165,6 +165,7 @@ body {
         }
 
 
+
     </style>
 
 
@@ -172,6 +173,9 @@ body {
 <body class="img js-fullheight">
 <!--登入區塊-->
 <div class="container text-white" id="login-container">
+    <!--    登入錯誤訊息顯示-->
+    <div class="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
     <div class="row">
         <div class="col-12 a">
             <form id="login-form" action="/user/login" method="post">
