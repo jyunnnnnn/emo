@@ -293,7 +293,7 @@ function svgConstructor(svgData) {
         if(value.class != "transportation"){
             $('#' + value.class + 'Icon').html(svgData.svgImages[value.class][value.class + 'Icon']);
             $('#' + value.class + 'Input').on('change', function() {
-                if (this.checked) {
+                if ($(this).is(':checked')) {
                     if(value.class != dailyChecked && dailyChecked != null){
                         $('#' + dailyChecked + 'Icon').html(svgData.svgImages[value.class][dailyChecked + 'Icon']);
                     }
@@ -313,6 +313,14 @@ function svgConstructor(svgData) {
                         }
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Hover']);
                         trafficChecked = val.index;
+
+                        let type = val.type;
+                        let data_value = $('#kilometer').val();
+                        let showExpectedFP = 0;
+                        if (data_value > 0){
+                            showExpectedFP = parseFloat(calculateFootprint(type, data_value)).toFixed(2);
+                        }
+                        $('#routeCalculate').text(showExpectedFP + " gCo2E");
                     } else {
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }
