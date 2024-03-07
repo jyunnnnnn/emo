@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.lang.reflect.*;
 
+import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
 import com.example.demo.service.EcoRecordService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,8 +51,19 @@ class EcoControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    private EcoRecord testRecord = new EcoRecord("test", "test", "test", 0.0, 0.0, 0.0, 0.0, "test", "test");
+    private EcoRecord testRecord = new EcoRecord(
+            "testUserId",
+            "testClassType",
+            "testType",
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            "testField1",
+            "testField2",
+            Arrays.asList(new DotOfLine(0.0, 1.0, 2.0,0.0), new DotOfLine(0.0, 3.0, 4.0,0.0)),
+            0.0
+    );
     private List<EcoRecord> testList = Arrays.asList(testRecord, testRecord);
 
     /*

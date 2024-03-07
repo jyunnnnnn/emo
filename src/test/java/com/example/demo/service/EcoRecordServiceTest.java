@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
 import com.example.demo.repository.RecordRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +40,22 @@ class EcoRecordServiceTest {
         //自創測試紀錄
         testList.clear();
         for (int i = 1; i <= 3; i++) {
-            EcoRecord tmp = new EcoRecord("test", "test", "test", i, i * 0.1, i * 0.2, 100.0, new Date().toString(), "test" + i);
+            EcoRecord tmp = tmp = new EcoRecord(
+                    "testUserId",
+                    "testClassType",
+                    "testType",
+                    i*5,
+                    i*0.1,
+                    i*0.2,
+                    i+5,
+                    "testField1",
+                    "testField2",
+                    Arrays.asList(
+                            new DotOfLine(1.0, 1.0, 2.0,1.0),
+                            new DotOfLine(1.0, 3.0, 4.0,1.0)
+                    ),
+                    0.0
+            );
             testList.add(tmp);
         }
 
