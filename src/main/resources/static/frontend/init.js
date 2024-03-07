@@ -1,4 +1,4 @@
-let map;//地圖
+//let map;//地圖
 let infoWindow;//圖標資訊窗
 let FootprintData = [];//各環保行為資訊 物件陣列
 let svgData;
@@ -14,15 +14,18 @@ let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
 
+async function initMap() {
+  //@ts-ignore
 
+
+
+}
 // 初始化Google Map
 function initMap() {
-
-
     console.log("進入init");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            function(position) {
+            async function(position) {
                 currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -31,43 +34,35 @@ function initMap() {
                 };
                  console.log("抓取位置成功 開始建構地圖");
                 // 創建地圖
+                const { Map } = await google.maps.importLibrary("maps");
                 cL ={
                     lat: currentLocation.lat,
                     lng: currentLocation.lng,
                 }
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: cL,
-                    zoom: 18,
-                    minZoom: 5, // 設定最小縮放級別
-                    maxZoom: 20, // 設定最大縮放級別
-                    mapTypeControl: false,
-                    zoomControl: false,
-                    scaleControl: false,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    fullscreenControl: false,
-                    styles: [
-                        {
-                            featureType: 'poi',
-                            elementType: 'labels',
-                            stylers: [
-                                { visibility: 'off' }
-                            ]
-                        }
-                    ]
-                });
+                map = new Map(document.getElementById("map"), {
+                        center: cL,
+                        zoom: 18,
+                        minZoom: 5, // 設定最小縮放級別
+                        maxZoom: 20, // 設定最大縮放級別
+                        mapTypeControl: false,
+                        zoomControl: false,
+                        scaleControl: false,
+                        streetViewControl: false,
+                        rotateControl: false,
+                        fullscreenControl: false,
+                        mapId: "92b0df6f653781da"
+                    });
                 console.log("獲取標記及訊息窗");
                 // 一開始 當前位置標記
                 circle = new google.maps.Marker({
+                    map,
                     position: cL,
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
                         scale: 5
-                    },
-                    map: map
+                    }
                 });
                 console.log("map finish");
-
                $.ajax({
                    type:'GET',
                    url:'/user/init?username='+localStorage.getItem("username")+"",
@@ -123,8 +118,8 @@ function updateCurrentCircle() {
         lng: currentLocation.lng,
     }
     circle = new google.maps.Marker({
+        map,
         position: cL,
-        map: map,
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 5

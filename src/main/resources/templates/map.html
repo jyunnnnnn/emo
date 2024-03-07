@@ -375,7 +375,6 @@
 
 
 <!-- 初始化地圖 -->
-<script async defer
-        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&callback=initMap&libraries=geometry'}"></script>
+<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=geometry'}"></script>
 
 </html>
