@@ -115,7 +115,7 @@ public class SecurityConfig {
                                 .requestMatchers("/admin").hasAuthority("ADMIN")
                                 .requestMatchers("/api/**").hasAuthority("ADMIN")
                                 .requestMatchers("/config/**").hasAuthority("ADMIN")
-                                .requestMatchers("/index").permitAll()
+
                                 .anyRequest().authenticated()
                 )
                 .logout(auth ->
