@@ -34,7 +34,7 @@ function success(pos){
             };
             updateCurrentCircle();
         }else {
-            alert("精準度太低:)，accuracy: " + accuracy);
+            // alert("精準度太低:)，accuracy: " + accuracy);
         }
     }
 }
@@ -64,8 +64,12 @@ function startRecording() {
     $('#startRecording').text('結束');
     isRecording = true;
 
-    // 每1秒記錄一次
+    recordedPositions = []; // 清空上一個路線紀錄
+    mapLines =[];
+    //清除上一次距離
     kilometer = 0;
+
+    // 每1秒記錄一次
     intervalId = setInterval(function () {
         // 減少記憶體浪費
         lastPosition = recordedPositions.slice(-1)[0];
@@ -76,7 +80,7 @@ function startRecording() {
                 lng: null
             };
         }
-        console.log(lp , currentLocation.lat);
+        // console.log(lp , currentLocation.lat);
         if(lp.lat != currentLocation.lat && lp.lng != currentLocation.lng) {
             recordLocation();
         }
@@ -86,7 +90,7 @@ function startRecording() {
 function stopRecording() {
     //一次平滑所有資料(KF)
     // const kf = new KalmanFilter();
-    let smoothedPositions = [];
+    // let smoothedPositions = [];
     // recordedPositions.forEach(position => {
     //     kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
     //     smoothedPositions.push(kf.getState());
@@ -107,21 +111,21 @@ function stopRecording() {
     // console.log("紅線為修正後路線");
 
     // 用大葉大學的方法
-    const sm = new smoothTracking(recordedPositions);
-    sm.smoothData();
-    smoothedPositions = sm.getData();
-    let oldDataString = JSON.stringify(recordedPositions);
-    let newDataString = JSON.stringify(smoothedPositions);
-    alert("舊資料"+oldDataString +"\n新資料"+newDataString);
-    let smoothedPath = new google.maps.Polyline({
-        path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-    });
-    smoothedPath.setMap(map);
-    console.log("紅線為修正後路線");
+    // const sm = new smoothTracking(recordedPositions);
+    // sm.smoothData();
+    // smoothedPositions = sm.getData();
+    // let oldDataString = JSON.stringify(recordedPositions);
+    // let newDataString = JSON.stringify(smoothedPositions);
+    // alert("舊資料"+oldDataString +"\n新資料"+newDataString);
+    // let smoothedPath = new google.maps.Polyline({
+    //     path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
+    //     geodesic: true,
+    //     strokeColor: '#FF0000',
+    //     strokeOpacity: 1.0,
+    //     strokeWeight: 2
+    // });
+    // smoothedPath.setMap(map);
+    // console.log("紅線為修正後路線");
 
     // 修改按鈕文字和標誌位元
     $('#startRecording').text('路線記錄');
@@ -136,11 +140,7 @@ function stopRecording() {
     console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
-    // 清空位置紀錄
-    recordedPositions = [];
-    smoothedPositions = [];
-    // 移除地圖上的線條
-    // clearMapLines();
+
 
     // 打開路線記錄懸浮窗
     $('#routeFW').css("display", "flex");
@@ -157,9 +157,11 @@ function stopRecording() {
         $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
         checked.prop('checked', false);
     }
-
-    //清除距離
-    kilometer = 0;
+    // 清空位置紀錄
+    recordedPositions = []; // 放在開始記錄清，以免存資料不同步
+    // smoothedPositions = [];
+    // 移除地圖上的線條
+    clearMapLines(mapLines);
 }
 
 function recordLocation() {
@@ -193,10 +195,24 @@ function recordLocation() {
     }
 }
 
+//地圖路線一次重畫
+function drawLine(tracking){
+    //console.log(tracking);
+    let path = new google.maps.Polyline({
+        path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
+        geodesic: true,
+        strokeColor: '#0D5025',
+        strokeOpacity: 1,
+        strokeWeight: 4
+    });
+    path.setMap(map);
+    mapLines.push(path);
+}
+
 //清線
-function clearMapLines() {
-    for (let i = 0; i < mapLines.length; i++) {
-        mapLines[i].setMap(null);
+function clearMapLines(line) {
+    for (let i = 0; i < line.length; i++) {
+        line[i].setMap(null);
     }
     mapLines = [];
 }

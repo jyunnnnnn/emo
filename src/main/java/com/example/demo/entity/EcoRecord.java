@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import java.util.List;
+
 //紀錄物件
 @Document(collection = "Emo_Record")
 public class EcoRecord {
@@ -22,8 +24,12 @@ public class EcoRecord {
 
     private double footprint;//碳足跡
 
+    private List<DotOfLine> lineOnMap; // 路線
+
+    private double trafficKM; // 路線距離
+
     //constructor
-    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId) {
+    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId,List<DotOfLine> lineOnMap) {
         this.recordId = recordId; ;
         this.userId = userId;
         this.classType = classType;
@@ -33,7 +39,7 @@ public class EcoRecord {
         this.longitude = longitude;
         this.time = time;
         this.footprint = footprint;
-
+        this.lineOnMap = lineOnMap;
     }
 
     public String getRecordId() {
@@ -103,6 +109,22 @@ public class EcoRecord {
     }
 
     public double getFootprint() {return footprint;}
+
+    public List<DotOfLine> getLineOnMap(){
+        return lineOnMap;
+    }
+
+    public void setLineOnMap(List<DotOfLine> lineOnMap) {
+        this.lineOnMap = lineOnMap;
+    }
+
+    public double getTrafficKM() {
+        return trafficKM;
+    }
+
+    public void setTrafficKM(double trafficKM) {
+        this.trafficKM = trafficKM;
+    }
 
     public String toString(){
         return "{" + '\n'+
