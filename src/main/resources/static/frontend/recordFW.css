@@ -122,6 +122,55 @@
     font-weight: 600;
 }
 
+/* 小問號 */
+.questionMark {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    padding-left: 8px;
+}
+.detail {
+    width: 150px;
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.detail::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.questionMark:hover .detail {
+    top: -40px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+svg:hover span,
+svg:hover .detail {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.questionMark:hover .detail,
+.questionMark:hover .detail::before {
+    background: linear-gradient(320deg, rgb(255, 255, 255), rgb(255, 255, 255));
+    color: #000000;
+}
+
 /* 懸浮窗 */
 #recordFW,
 #routeFW,

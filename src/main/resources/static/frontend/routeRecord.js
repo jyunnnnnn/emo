@@ -143,6 +143,7 @@ function stopRecording() {
     // clearMapLines();
 
     // 打開路線記錄懸浮窗
+    $('#recordCalculate').text("0 gCo2E")
     $('#routeFW').css("display", "flex");
     $('#routeFW').css("position", "fixed");
     $('#kilometer').val(kilometer.toFixed(3));
@@ -150,6 +151,14 @@ function stopRecording() {
     $('#saveTrafficRecord').css("display", "block");
     $('#updateTrafficRecord').css("display", "none");
     $('#deleteTrafficRecord').css("display", "none");
+
+    let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
+    let data_value = $('#kilometer').val();
+    let showExpectedFP = 0;
+    if (data_value > 0){
+        showExpectedFP = parseFloat(calculateFootprint(type, data_value)).toFixed(2);
+    }
+    $('#routeCalculate').text(showExpectedFP + " gCo2E");
 
     let checked = $('input[name="engine"]:checked');
     let checkedVal = $('input[name="engine"]:checked').val();

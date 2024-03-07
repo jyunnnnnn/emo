@@ -1,6 +1,7 @@
 let selectDatas;
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
+    $('#recordCalculate').text("0 gCo2E")
     $('#recordFW').css("display", "flex");
     $('#saveRecord').css("display", "block");
     $('#updateRecord').css("display", "none");
@@ -132,6 +133,23 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
         let value = match ? match[0] : "";
         $("#gram").val(value);
     }
+
+    let type = $('#type option:selected');
+    let data_value = $('#gram').val();
+    let showExpectedFP = 0;
+    if (data_value > 0){
+        showExpectedFP = parseFloat(calculateFootprint(type.text(), data_value)).toFixed(2);
+    }
+    $('#recordCalculate').text(showExpectedFP  + " gCo2E");
+});
+$('#gram').on('input', function(event) {
+    let type = $('#type option:selected');
+    let data_value = $('#gram').val();
+    let showExpectedFP = 0;
+    if (data_value > 0){
+        showExpectedFP = parseFloat(calculateFootprint(type.text(), data_value)).toFixed(2);
+    }
+    $('#recordCalculate').text(showExpectedFP + " gCo2E");
 });
 // 一般記錄儲存
 $('#saveRecord').on('click', function () {
@@ -305,15 +323,17 @@ function recordModal(){
         $('#updateTrafficRecord').css("display", "block");
         $('#deleteTrafficRecord').css("display", "block");
 
+        let type;
         $('input[name="engine"]').each(function() {
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.type) {
-                let type = $(this).val();
+                type = $(this).val();
                 $(this).prop("checked", true);
                 $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
             }
         });
 
         $('#kilometer').val(currentInfoWindowRecord.data_value);
+        $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
     } else {
         $('#recordFW').css("display", "flex");
         $('#recordFW').css("position", "fixed");
@@ -390,5 +410,6 @@ function recordModal(){
 
         $('#gram').val(currentInfoWindowRecord.data_value);
         $('#gram').prop("disabled", false);
+        $('#recordCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
     }
 }
