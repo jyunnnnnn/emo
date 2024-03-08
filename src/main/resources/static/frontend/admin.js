@@ -1,6 +1,7 @@
 let parsedData;
 let svgData;
 let categories = [];//類別大屬性有哪些
+let isAdd = true;
 
 $(document).ready(function () {
     $.ajax({
@@ -35,6 +36,62 @@ $(document).ready(function () {
               alert(errorMessage);
           }
     });
+    $("#add").click(function() {
+    //  切換按鈕顯示的新增或修改
+        if(isAdd){
+            $(this).text("修改項目");
+            //切換成新增模式 清空輸入
+            //console.log()
+            for(let i =0; i<categories.length; i++){
+            //大類別清空
+                if(categories[i] == "daily"){
+                    $('#big').val("");
+                    $('#mid').val("");
+                    $('#small').val("");
+                }
+                $('#name'+i).val("");
+                $('#coefficient'+i).val("");
+                //index選單改成輸入框
+                $('#types'+i).addClass("d-none");
+                let inputCard =  '<input type="text" id="newTypes'+i+'" >';
+                $('#types'+i).parent().append(inputCard);
+//              //base原本的消失
+//                 $('#'+categories[i]+"-base").addClass("d-none");
+//              //改成輸入框
+//                inputCard = '<div class="form-group">'+
+//                              '<label>base名稱</label>'+
+//                              '<input type="text" id="'+categories[i]+'-baseName">'+
+//                              ' </div> <br>';
+//                inputCard += '<div class="form-group">'+
+//                              '<label>數值</label>'+
+//                              '<input type="text" id="'+categories[i]+'-baseNumber">'+
+//                              '</div> <br>';
+            }
+        }else{
+            $(this).text("新增項目");
+             //切換成修改模式
+                for(let i =0; i<categories.length; i++){
+                //恢復原本預設數據
+                    if(categories[i] == "daily"){
+                        $('#big').val(parsedData[categories[i]].content[0].option.大);
+                        $('#mid').val(parsedData[categories[i]].content[0].option.中);
+                        $('#small').val(parsedData[categories[i]].content[0].option.小);
+                    }
+                    $('#name'+i).val(parsedData[categories[i]].content[0].name);
+                    $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
+                    $('#unit'+i).val(parsedData[categories[i]].content[0].unit);
+                    $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
+                    //index選單改回選單
+                    $('#newTypes'+i).remove();
+                    $('#types'+i).removeClass("d-none");
+//                    let inputCard =  '<input type="text" id="newTypes'+i+'" >';
+//                    $('#types'+i).parent().append(inputCard);
+                }
+        }
+        isAdd = !isAdd;
+
+    });
+
 });
 //讀取svg設定檔的資料到頁面
 function setSvgData(svgData) {
@@ -42,7 +99,7 @@ function setSvgData(svgData) {
     let optionCard = '<select name="options" id="svg-options" class="d-none"></select>';
     $('#manage-container').append(optionCard);
     const svgIndex = Object.keys(svgData.svgImages);
-    console.log("svgIndex", svgIndex);
+    //console.log("svgIndex", svgIndex);
     //新增所有svg大類別的option
     for(let i =0; i<svgIndex.length; i++){
         let svgIndexCard = '`<option value="svg-'+svgIndex[i]+'">'+svgIndex[i]+'</option>';
@@ -73,7 +130,7 @@ function setSvgData(svgData) {
         $('#manage-container').append(svgCard);
         //初始化
         for(let j =0;j< svgCategoryLength; j++){
-            console.log("svg值",svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
+            //console.log("svg值",svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
             $('#'+svgIndex2[j]).val(svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
         }
      }
@@ -93,7 +150,12 @@ function setData(parsedData){
     //切換顯示的區塊
     $('#basic-options').on('change', function() {
         let selectedOption = $(this).val();
-
+        //unit color不需要新增 禁用add按鈕
+        if (selectedOption.includes("unit") || selectedOption.includes("color")) {
+            $('#add').prop('disabled', true);
+        } else {
+            $('#add').prop('disabled', false);
+        }
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
         $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
     });
@@ -150,7 +212,6 @@ function setData(parsedData){
                          '</div>';
                 //初始化
                $('#manage-container').append(card);
-
                 $('#name'+i).val(parsedData[categories[i]].content[0].name);
                 $('#big').val(parsedData[categories[i]].content[0].option.大);
                 $('#mid').val(parsedData[categories[i]].content[0].option.中);
@@ -329,4 +390,8 @@ function toggleButtons() {
     }
     buttonDisabled = !buttonDisabled;
 }
+
+//function addNew(parsedData, svgData){
+//
+//}
 
