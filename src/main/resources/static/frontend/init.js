@@ -68,7 +68,7 @@ function initMap() {
                    type:'GET',
                    url:'/user/init?username='+localStorage.getItem("username")+"",
                    success: function(response){
-                        console.log(response.user);
+                        //console.log(response.user);
                        let userData=response.user;
                        localStorage.setItem("EmoAppUser",userData);
 

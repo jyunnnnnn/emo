@@ -10,20 +10,22 @@ function saveRecord(classType, type, data_value){
         footprint:null,
         time: getFormattedDate(),
         recordId:null,
-        lineOnMap: recordedPositions,
-        trafficKM:kilometer
+        lineOnMap: null,
     }
     let now = new Date();
     record.recordId = now.getTime();
     record.classType = classType;
     record.type = type;
     record.data_value = data_value;
-    console.log(record);
+    //console.log(record);
     record.footprint = calculateFootprint(type,data_value);
+    if(record.classType=="交通"){
+        record.lineOnMap=recordedPositions;
+    }
     if(Object.values(record).includes(null)){
        alert("請重新登入");
        window.location.href = '/login';
-       console.log(record);
+       //console.log(record);
        return;
     }else{
         uploadRecordToBackend(record);

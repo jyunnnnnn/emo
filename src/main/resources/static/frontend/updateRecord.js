@@ -35,8 +35,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         footprint:footprint,
         time: currentInfoWindowRecord.time,
         recordId:currentInfoWindowRecord.recordId,
-        lineOnMap: recordedPositions,
-        trafficKM:kilometer
+        lineOnMap: currentInfoWindowRecord.lineOnMap,
     };
     if(record.userId) {
         modifyRecordToBackend(record);

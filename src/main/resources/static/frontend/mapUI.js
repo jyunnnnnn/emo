@@ -122,7 +122,6 @@ $('#type').on('change', function(){
     label.append(input, span);
     gram.append(label);
      let target = FootprintData.find(item => item.type === selected);
-        console.log(target);
         $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
 });
 // 監聽克數變化
@@ -145,9 +144,6 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
         showExpectedFP = parseFloat(calculateFootprint(type.text(), data_value)).toFixed(2);
     }
     $('#recordCalculate').text(showExpectedFP  + " gCo2E");
-//    let target = FootprintData.find(item => item.type === type.text());
-//    console.log(target);
-//    $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
 });
 $('#gram').on('input', function(event) {
     let type = $('#type option:selected');
@@ -158,7 +154,6 @@ $('#gram').on('input', function(event) {
     }
     $('#recordCalculate').text(showExpectedFP + " gCo2E");
     let target = FootprintData.find(item => item.type === type.text());
-    console.log(target);
     $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
 });
 // 一般記錄儲存
@@ -177,7 +172,6 @@ $('#saveRecord').on('click', function () {
        alert("請輸入正數");
        return;
     }else{
-        console.log(type.text())
         saveRecord(classType, type.text(), data_value);
         $('#recordFW').css("display", "none");
     }
@@ -342,9 +336,7 @@ function recordModal(){
                 $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
             }
         });
-        console.log(type);
         let target = FootprintData.find(item => item.index === type);
-        console.log(target);
         $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
         $('#kilometer').val(currentInfoWindowRecord.data_value);
         $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");

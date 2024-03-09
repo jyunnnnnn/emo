@@ -61,8 +61,10 @@ class EcoControllerTest {
             0.0,
             "testField1",
             "testField2",
-            Arrays.asList(new DotOfLine(0.0, 1.0, 2.0,0.0), new DotOfLine(0.0, 3.0, 4.0,0.0)),
-            0.0
+            Arrays.asList(
+                    new DotOfLine(1.0, 1.0, 2.0,1.0),
+                    new DotOfLine(1.0, 3.0, 4.0,1.0)
+            )
     );
     private List<EcoRecord> testList = Arrays.asList(testRecord, testRecord);
 
