@@ -10,7 +10,7 @@ function saveRecord(classType, type, data_value){
         footprint:null,
         time: getFormattedDate(),
         recordId:null,
-        lineOnMap: null,
+        lineOnMap: []
     }
     let now = new Date();
     record.recordId = now.getTime();

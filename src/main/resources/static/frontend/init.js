@@ -325,7 +325,7 @@ function svgConstructor(svgData) {
                         }
                         $('#routeCalculate').text(showExpectedFP + " gCo2E");
                          let target = FootprintData.find(item => item.type === type);
-                         $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
+                         $("#routeDetail").text("減碳量計算公式為:'當前克數'x("+target.type+"的排放係數'"+target.coefficient+"'-基準'"+target.baseline+"'的排放係數'"+target.baseCoefficient+"')");
                     } else {
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }
