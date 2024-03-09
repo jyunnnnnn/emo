@@ -1,6 +1,5 @@
 let intervalId;//時間間隔
-let recordedPositions = [];//路線紀錄(點)
-let mapLines = [];//一次紀錄的路線線段
+
 let isRecording = false;//false=>開始  true=>結束
 let distanceThreshold = -1; // 初始化地圖位置
 let accuracyThreshold = 100000; //

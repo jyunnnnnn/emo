@@ -13,7 +13,8 @@ let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
-
+let recordedPositions = [];//路線紀錄(點)
+let mapLines = [];//一次紀錄的路線線段
 async function initMap() {
   //@ts-ignore
 

@@ -326,6 +326,7 @@ $('#saveEditRecord').on('click', function() {
 // 修改懸浮視窗變成歷史紀錄
 function recordModal(){
     // 顯示懸浮窗
+    $("#recordDetail").text();
     if(currentInfoWindowRecord.classType === "交通"){
         $('#routeFW').css("display", "flex");
         $('#routeFW').css("position", "fixed");
@@ -341,8 +342,10 @@ function recordModal(){
                 $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
             }
         });
-        let target = FootprintData.find(item => item.type === type);
-        $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
+        console.log(type);
+        let target = FootprintData.find(item => item.index === type);
+        console.log(target);
+        $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
         $('#kilometer').val(currentInfoWindowRecord.data_value);
         $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
     } else {
@@ -372,6 +375,7 @@ function recordModal(){
         }));
 
         let options;
+        let targer;
         for(let selectData of selectDatas){
             if(selectData.type == currentInfoWindowRecord.type){
                 select.append($('<option>', {
@@ -379,6 +383,7 @@ function recordModal(){
                     selected: true
                 }));
                 options = selectData.option;
+                target=selectData;
             } else {
                 select.append($('<option>', {
                     text: selectData.type
@@ -422,5 +427,7 @@ function recordModal(){
         $('#gram').val(currentInfoWindowRecord.data_value);
         $('#gram').prop("disabled", false);
         $('#recordCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
+        $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
+
     }
 }
