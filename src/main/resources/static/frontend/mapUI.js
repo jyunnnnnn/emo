@@ -334,17 +334,24 @@ function recordModal(){
         $('#updateTrafficRecord').css("display", "block");
         $('#deleteTrafficRecord').css("display", "block");
 
+        let checked = $('input[name="engine"]:checked');
+        let checkedVal = $('input[name="engine"]:checked').val();
+        if(checkedVal != undefined){
+            $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
+            checked.prop('checked', false);
+        }
+
         let type;
         $('input[name="engine"]').each(function() {
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.type) {
                 type = $(this).val();
                 $(this).prop("checked", true);
-                $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
+                let changeEvent = new Event('change');
+                $(this).trigger('change');
             }
         });
-        console.log(type);
+
         let target = FootprintData.find(item => item.index === type);
-        console.log(target);
         $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
         $('#kilometer').val(currentInfoWindowRecord.data_value);
         $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
@@ -359,7 +366,8 @@ function recordModal(){
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.classType) {
                 let classType = $(this).val();
                 $(this).prop("checked", true);
-                $('#' + classType + 'Icon').html(svgData.svgImages[classType][classType + 'Hover']);
+                let changeEvent = new Event('change');
+                $(this).trigger('change');
             }
         });
 

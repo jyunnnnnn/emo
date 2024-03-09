@@ -308,6 +308,8 @@ function svgConstructor(svgData) {
             for(let [key, val] of Object.entries(value.action)){
                 $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                 $('#' + val.index + 'Input').on('change', function() {
+                    console.log(val.index);
+                    console.log($(this).is(':checked'));
                     if ($(this).is(':checked')) {
                         if(val.index != trafficChecked && trafficChecked != null){
                             $('#' + trafficChecked + 'Icon').html(svgData.svgImages[value.class][trafficChecked + 'Icon']);

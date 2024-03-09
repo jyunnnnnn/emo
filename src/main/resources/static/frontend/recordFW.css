@@ -154,7 +154,7 @@
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 .questionMark:hover .detail {
-    top: -40px;
+    top: -110px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -166,7 +166,7 @@ svg:hover .detail {
 }
 
 .questionMark:hover .detail,
-.questionMark:hover .detail::before {
+.questionMark:hover {
     background: linear-gradient(320deg, rgb(255, 255, 255), rgb(255, 255, 255));
     color: #000000;
 }
