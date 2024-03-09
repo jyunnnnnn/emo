@@ -18,7 +18,7 @@ function deleteMultiRecord(){
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
             let nowType = $("#category option:selected").text();
 
-            console.log(nowType);
+            //console.log(nowType);
             let sortedRecords = records;
             if (nowType != "全部") {
                 sortedRecords = sortedRecords.filter(record => record.classType === nowType);
@@ -29,7 +29,7 @@ function deleteMultiRecord(){
         } else {
             alert('沒有選中任何記錄');
         }
-        console.log(records);
+        //console.log(records);
     } else{
         console.log("取消刪除");
     }    
@@ -42,7 +42,7 @@ function deleteSingleRecord(){
         deleteRecord(currentInfoWindowRecord.recordId);
         $('#recordFW').css("display", "none");
         $('#routeFW').css("display", "none");
-        console.log(records);
+        //console.log(records);
     } else{
         console.log("取消刪除");
     }

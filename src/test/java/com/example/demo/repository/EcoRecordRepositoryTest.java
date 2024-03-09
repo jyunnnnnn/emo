@@ -44,8 +44,7 @@ class EcoRecordRepositoryTest {
                     Arrays.asList(
                             new DotOfLine(1.0, 1.0, 2.0,1.0),
                             new DotOfLine(1.0, 3.0, 4.0,1.0)
-                    ),
-                    0.0
+                    )
             );
             testList.add(tmp);
             this.recordRepository.save(tmp);

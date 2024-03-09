@@ -1,5 +1,4 @@
 let intervalId;//時間間隔
-
 let isRecording = false;//false=>開始  true=>結束
 let distanceThreshold = -1; // 初始化地圖位置
 let accuracyThreshold = 100000; //
@@ -137,7 +136,7 @@ function stopRecording() {
     //存kilometer
 
     //console.log(mapLines);
-    console.log("kilometer: "+kilometer.toFixed(3)+" KM");
+    //console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
 
@@ -164,7 +163,6 @@ function stopRecording() {
         checked.prop('checked', false);
     }
     // 清空位置紀錄
-    recordedPositions = []; // 放在開始記錄清，以免存資料不同步
     // smoothedPositions = [];
     // 移除地圖上的線條
     clearMapLines(mapLines);

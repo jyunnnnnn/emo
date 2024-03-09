@@ -297,12 +297,12 @@ function showRecord() {
         onChange: function(selectedDates,dateStr){
             if(dateStr.includes('to')){
                 dateArray = dateStr.split(' to ');
-                console.log(dateArray);
+                //console.log(dateArray);
             }
             else{
                 dateArray[0] = dateStr;
                 dateArray[1] = dateStr;
-                console.log(dateStr,dateArray);
+                //console.log(dateStr,dateArray);
             }
             //console.log(dateStr,dateArray);
         }
