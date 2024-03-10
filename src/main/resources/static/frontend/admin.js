@@ -59,18 +59,31 @@ $(document).ready(function () {
                 $('#types'+i).addClass("d-none");
                 let inputCard =  '<input type="text" id="newTypes'+i+'" >';
                 $('#types'+i).parent().append(inputCard);
-//              //base原本的消失
-//                 $('#'+categories[i]+"-base").addClass("d-none");
-//              //改成輸入框
-//                inputCard = '<div class="form-group">'+
-//                              '<label>base名稱</label>'+
-//                              '<input type="text" id="'+categories[i]+'-baseName">'+
-//                              ' </div> <br>';
-//                inputCard += '<div class="form-group">'+
-//                              '<label>數值</label>'+
-//                              '<input type="text" id="'+categories[i]+'-baseNumber">'+
-//                              '</div> <br>';
+                //base原本的消失
+                $('.base-group2').addClass("d-none");
+                //改成輸入框
+                inputCard = '<div class="addBase-group2"><div class="addBase-group">'+
+                          '<label>base名稱</label>'+
+                          '<input type="text" id="'+categories[i]+'-baseName">'+
+                          ' </div> <br>';
+                inputCard += '<div class="addBase-group">'+
+                          '<label>數值</label>'+
+                          '<input type="text" id="'+categories[i]+'-baseNumber">'+
+                          '</div> <br></div>';
+                $('#'+categories[i]+"-base").append(inputCard);
             }
+            //svg原本的消失
+            $('.svg-group').addClass("d-none");
+            //改成輸入框
+            let svgInputCard = '<div class="addSvg-group"><div class="form-group">'+
+                   '<label>SVG名稱</label>'+
+                   '<input type="text" id="svgName">'+
+                   ' </div> <br>';
+            svgInputCard += '<div class="form-group">'+
+                   '<label>SVG</label>'+
+                   '<input type="text" id="svgContent">'+
+                   '</div> <br></div>';
+            $('.svg-block').append(svgInputCard);
         }else{
             $(this).text("新增項目");
              //切換成修改模式
@@ -90,12 +103,16 @@ $(document).ready(function () {
                     //index選單改回選單
                     $('#newTypes'+i).remove();
                     $('#types'+i).removeClass("d-none");
-//                    let inputCard =  '<input type="text" id="newTypes'+i+'" >';
-//                    $('#types'+i).parent().append(inputCard);
+                    //恢復base
+                    $('.base-group2').removeClass("d-none");
+                    $('.addBase-group2').remove();
                 }
+                //恢復svg
+                $('.svg-group').removeClass("d-none");
+                $('.addSvg-group').remove();
         }
-        isAdd = !isAdd;
 
+        isAdd = !isAdd;
     });
 
 });
@@ -105,7 +122,6 @@ function setSvgData(svgData) {
     let optionCard = '<select name="options" id="svg-options" class="d-none"></select>';
     $('#manage-container').append(optionCard);
     const svgIndex = Object.keys(svgData.svgImages);
-    //console.log("svgIndex", svgIndex);
     //新增所有svg大類別的option
     for(let i =0; i<svgIndex.length; i++){
         let svgIndexCard = '`<option value="svg-'+svgIndex[i]+'">'+svgIndex[i]+'</option>';
@@ -121,24 +137,29 @@ function setSvgData(svgData) {
     for(let i =0; i<svgIndex.length; i++){
      //新增整塊頁面
         let svgCategoryLength = Object.keys(svgData.svgImages[svgIndex[i]]).length;
-        //console.log("4",svgCategoryLength);
         let svgIndex2 = Object.keys(svgData.svgImages[svgIndex[i]]);
         let svgCard = "";
-        svgCard = '<div id="svg-'+svgIndex[i]+'" class="svg-block d-none"><br>';
+        svgCard = '<div id="svg-'+svgIndex[i]+'" class="svg-block d-none"><br><div class="svg-group">';
+
         for(let j =0;j< svgCategoryLength; j++){
             //console.log("svgIndex2",svgIndex2[j]);
-            svgCard += '<div class="form-group">'+
-                    '<label>'+svgIndex2[j]+'</label>'+
-                    '<input type="text" class="svg-input" id="'+svgIndex2[j]+'" >'+
+            svgCard += '<div class="form-group"> '+svgData.svgImages[svgIndex[i]][svgIndex2[j]]+
+                    ' <label>'+svgIndex2[j]+'</label>'+
+                     //多一個+i因為和svg裡面的id如果一樣會衝突
+                    '<input type="text" class="svg-input" id="'+svgIndex2[j]+i+'" >'+
                     '</div> <br>';
         }
-        svgCard += '</div>';
+        svgCard += '</div></div>';
         $('#manage-container').append(svgCard);
         //初始化
+        //$('#dailyIcon').val(svgData.svgImages.daily.dailyIcon);
         for(let j =0;j< svgCategoryLength; j++){
-            //console.log("svg值",svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
-            $('#'+svgIndex2[j]).val(svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
+//            console.log("j",j);
+//             console.log("svgIndex2",svgIndex2[j]);
+//            console.log("svg值",svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
+            $('#'+svgIndex2[j]+i).val(svgData.svgImages[svgIndex[i]][svgIndex2[j]]);
         }
+
      }
 
 }
@@ -269,14 +290,14 @@ function setData(parsedData){
         let baseLength = Object.keys(base).length;
         let baseKeys = Object.keys(base);
         //console.log("base 的長度為：" + baseLength);
-        let baseCard = '<div id="'+categories[i]+'-base" class="basic-block d-none"><br>';
+        let baseCard = '<div id="'+categories[i]+'-base" class="basic-block d-none"><br><div class="base-group2">';
         for(let m =0;m< baseLength;m++){
-           baseCard += '<div class="form-group">'+
+           baseCard += '<div class="base-group">'+
                       '<label>'+baseKeys[m]+'</label>'+
                             '<input type="text" id="'+baseKeys[m]+'">'+
-                           ' </div> <br>';
+                           ' </div><br> ';
         }
-        baseCard += ' </div>';
+        baseCard += ' </div></div>';
         $('#manage-container').append(baseCard);
         //base初始化
         for(let m = 0;m< baseLength; m++){
@@ -403,7 +424,8 @@ function saveData(parsedData, svgData){
          method: 'GET',
          success: function (data) {
              parsedData = JSON.parse(data);
-             createBasicObject(parsedData)
+              console.log("p",parsedData);
+             createBasicObject(parsedData);
          },
          error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
@@ -477,8 +499,8 @@ function createBasicObject(parsedData){
             }
         };
         console.log("sendBasicData",sendBasicData);
-    }
 }
+
 //function createSvgObject(svgData){
 //
 //}
