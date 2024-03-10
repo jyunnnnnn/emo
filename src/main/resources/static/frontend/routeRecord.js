@@ -64,7 +64,6 @@ function startRecording() {
     isRecording = true;
 
     recordedPositions = []; // 清空上一個路線紀錄
-    mapLines =[];
     //清除上一次距離
     kilometer = 0;
 
@@ -130,12 +129,7 @@ function stopRecording() {
     $('#startRecording').text('路線記錄');
     isRecording = false;
 
-    //這裡存一下recordedPositions 要顯示十一次重畫
-    //或在clearMapLines 存mapLines資料
-    //好像?抓mapLines就可以直接出現線條(還未確定，等資料庫可新增這筆在測試)
-    //存kilometer
 
-    //console.log(mapLines);
     //console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
@@ -166,6 +160,7 @@ function stopRecording() {
     // smoothedPositions = [];
     // 移除地圖上的線條
     clearMapLines(mapLines);
+    mapLines = [];
 }
 
 function recordLocation() {
@@ -199,9 +194,10 @@ function recordLocation() {
     }
 }
 
-//地圖路線一次重畫
-function drawLine(tracking){
+//畫路線圖
+function drawLine(cRecord){
     //console.log(tracking);
+    let tracking = cRecord.lineOnMap;
     let path = new google.maps.Polyline({
         path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
@@ -210,7 +206,15 @@ function drawLine(tracking){
         strokeWeight: 4
     });
     path.setMap(map);
-    mapLines.push(path);
+    let tmp ={
+        id: cRecord.recordId,
+        line:path
+    }
+    const existingIndex = mapLineWithId.findIndex(item => item.id === tmp.id);
+    if (existingIndex === -1) {
+        mapLineWithId.push(tmp);
+        //console.log(mapLineWithId);
+    }
 }
 
 //清線
@@ -218,5 +222,4 @@ function clearMapLines(line) {
     for (let i = 0; i < line.length; i++) {
         line[i].setMap(null);
     }
-    mapLines = [];
 }

@@ -101,7 +101,6 @@ function addMarker(recordToAdd) {
             id:recordToAdd.recordId
         });
 
-       //小改
        let infoWindowContent = `
            <div>
                <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'cwTeXYen', 'Mandali', sans-serif; font-weight: bold;">${recordToAdd.type}</h6>
@@ -123,13 +122,21 @@ function addMarker(recordToAdd) {
             currentInfoWindowRecord = recordToAdd;
             currentMarker = marker;
             if (currentInfoWindowRecord.classType=="交通"){
-             drawLine(currentInfoWindowRecord.lineOnMap);
+                //避免重複畫線
+                const existingIndex = mapLineWithId.findIndex(item => item.id === currentInfoWindowRecord.recordId);
+                if (existingIndex === -1) {
+                    drawLine(currentInfoWindowRecord);
+                }
             }
        });
 
         // 監聽 infoWindow 關閉事件
         infoWindow.addListener('closeclick', function() {
-            clearMapLines(mapLines);
+            const lineIndex = mapLineWithId.findIndex(item => item.id === currentInfoWindowRecord.recordId);
+            if (lineIndex !== -1) {
+                clearMapLines([mapLineWithId[lineIndex].line]);
+                mapLineWithId.splice(lineIndex, 1);
+            }
         });
     }
 }

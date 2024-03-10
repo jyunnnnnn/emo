@@ -63,11 +63,19 @@ function deleteRecord(recordId){
         }
     });//刪除資料庫裡的record
     let markerToDelete = markers.find(function(marker) {
-        return marker.id === recordId;
-    });//在Markers裡找指定Marker
+        return marker.id === recordId; //在Markers裡找指定Marker
+    });
+
     if (markerToDelete) {
         markerToDelete.infoWindow.close();
         markerToDelete.setMap(null);
+
+        //刪除時刪掉打開的路線
+        const lineIndex = mapLineWithId.findIndex(item => item.id === recordId);
+        if (lineIndex !== -1) {
+            clearMapLines([mapLineWithId[lineIndex].line]);
+            mapLineWithId.splice(lineIndex, 1);
+        }
         // 在 markers 移除
         let index = markers.indexOf(markerToDelete);
         if (index > -1) {
