@@ -76,6 +76,30 @@ body {
     border: none;
     transition: all 0.2s ease-in-out;
   }
+
+    .setBtn {
+        /* width: 100%; */
+        width: 80px;
+        font-weight: bold;
+        font-size: 15px;
+        background: rgb(183, 188, 189);
+        color: white;
+        padding-top: 10px;
+        padding-block: 8px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        /* box-shadow: rgba(152, 158, 161, 0.87) 0px 20px 10px -15px; */
+        border: none;
+        /* transition: all 0.2s ease-in-out; */
+    }
+    .setBtn:hover{
+        background: rgb(100, 100, 100);
+    }
+    .setBtn svg{
+         transform: scale(1.5)!important;
+         margin-top: 3px!important;
+         margin-bottom: 0px!important;
+    }
   .svg-input{
     width: 80%;
   }
@@ -90,6 +114,7 @@ body {
     margin-right: 10px;
     margin-bottom: 10px;
   }
+
   /* rwd */
   @media only screen and (max-width: 700px) {
     .full-container{
