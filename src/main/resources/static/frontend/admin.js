@@ -8,7 +8,9 @@ let sendBasicData = []; //  要傳送的一般物件
 let sendSvgData = [];   //  要傳送的svg物件
 let sendBase = [];   //  要傳送的base物件
 
+
 $(document).ready(function () {
+//    $('#save').click(saveData());
     $.ajax({
         url: '/config/GetAllRecordJson',
         method: 'GET',
@@ -18,7 +20,6 @@ $(document).ready(function () {
             console.log("parsed Data",parsedData);
             //調用函式
             setData(parsedData);
-            saveData(parsedData, svgData);
         },
         error: function(xhr, status, error) {
            let errorData = JSON.parse(xhr.responseText);
@@ -44,38 +45,10 @@ $(document).ready(function () {
     });
     $("#add").click(function() {
     //  切換按鈕顯示的新增或修改
-        console.log("isADd",isAdd);
+//        console.log("isADd",isAdd);
         if(isAdd){
             $(this).text("修改項目");
-            //切換成新增模式 清空輸入
-            //console.log()
-//            for(let i =0; i<categories.length; i++){
-//            //大類別清空
-//                if(categories[i] == "daily"){
-//                    $('#big').val("");
-//                    $('#mid').val("");
-//                    $('#small').val("");
-//                }
-//                $('#name'+i).val("");
-//                $('#coefficient'+i).val("");
-//                //index選單改成輸入框
-//                $('#types'+i).addClass("d-none");
-//                let inputCard =  '<input type="text" id="newTypes'+i+'" >';
-//                $('#types'+i).parent().append(inputCard);
-//                //base原本的消失
-//                $('.base-group2').addClass("d-none");
-//                //改成輸入框
-//                inputCard = '<div class="addBase-group2"><div class="addBase-group">'+
-//                          '<label>base名稱</label>'+
-//                          '<input type="text" id="'+categories[i]+'-baseName">'+
-//                          ' </div> <br>';
-//                inputCard += '<div class="addBase-group">'+
-//                          '<label>數值</label>'+
-//                          '<input type="text" id="'+categories[i]+'-baseNumber">'+
-//                          '</div> <br></div>';
-//                $('#'+categories[i]+"-base").append(inputCard);
-//            }
-            console.log("isSvgSetting", isSvgSetting);
+//            console.log("isSvgSetting", isSvgSetting);
             if(isSvgSetting){
                 //svg原本的消失
                 $('.svg-group').addClass("d-none");
@@ -199,6 +172,7 @@ function setSvgData(svgData) {
 //讀取一般設定檔的資料到頁面
 function setData(parsedData){
 //讀取大類別有哪些  ex.['daily', 'transportation']
+    abc = parsedData;
     for (let category in parsedData) {
         if (parsedData.hasOwnProperty(category) && typeof parsedData[category] === "object" && parsedData[category].hasOwnProperty('content')) {
             categories.push(category);
@@ -436,7 +410,7 @@ function toggleButtons() {
         $('#basic-options').removeClass('d-none');
         $('#svg-options').addClass('d-none');
         $('.svg-block').addClass('d-none'); //隱藏所有svg區塊
-//        //新增svg的區塊隱藏
+      //新增svg的區塊隱藏
         $('.addSvg-group').remove();
         $('#daily').removeClass('d-none');//恢復顯示第一個
         $('#basic-options').val('daily');
@@ -459,7 +433,7 @@ function toggleButtons() {
              //index選單改回選單
              $('#newTypes'+i).remove();
              $('#types'+i).removeClass("d-none");
-//                 //恢復base
+           //恢復base
              $('.base-group2').removeClass("d-none");
              $('.addBase-group2').remove();
          }
@@ -492,42 +466,63 @@ function toggleButtons() {
     isSvgSetting = !isSvgSetting;
 }
 
-function saveData(parsedData, svgData){
+function saveData(){
     if(!isSvgSetting){//是一般設定
-        $.ajax({
-         url: '/config/GetAllRecordJson',
-         method: 'GET',
-         success: function (data) {
-             parsedData = JSON.parse(data);
-              console.log("p",parsedData);
-             createBasicObject(parsedData);
-         },
-         error: function(xhr, status, error) {
-            let errorData = JSON.parse(xhr.responseText);
-            let errorMessage = errorData.message;
-            alert(errorMessage);
-         }
-        });
+        createBasicObject(parsedData);  //創立要傳送的物件
+        if(selectedOption.includes("base")){    //傳送新增的base物件
+            console.log("傳送base");
+            console.log("sendBase",sendBase);
+            $.ajax({
+                type: 'PUT',
+                url: '',
+                contentType: '',
+                data: JSON.stringify(sendBase),
+                success: function(response) {
+                    //console.log(response); // 成功更新時的處理邏輯
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // 更新失敗時的處理邏輯
+                }
+            });
+        }else{  //傳送修改或新增的一般物件
+            console.log("傳送一般物件");
+            console.log("sendBasicData",sendBasicData);
+            $.ajax({
+                type: 'PUT',
+                url: '',
+                contentType: '',
+                data: JSON.stringify(sendBasicData),
+                success: function(response) {
+                    //console.log(response); // 成功更新時的處理邏輯
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // 更新失敗時的處理邏輯
+                }
+            });
+        }
     }else{
-        $.ajax({
-            url: '/api/GetAllSvgJson',
-            method: 'GET',
-            success: function (data) {
-                svgData = JSON.parse(data);
-                createSvgObject(svgData);
-            },
-            error: function(xhr, status, error) {
-               let errorData = JSON.parse(xhr.responseText);
-               let errorMessage = errorData.message;
-               alert(errorMessage);
-           }
-        });
+          createSvgObject(svgData);//創立要傳送的svg物件
+          console.log("傳送svg物件");
+          console.log("sendSvgData",sendSvgData);
+          //傳送新增或修改的svg物件
+          $.ajax({
+              type: 'PUT',
+              url: '',
+              contentType: '',
+              data: JSON.stringify(sendSvgData),
+              success: function(response) {
+                    //console.log(response); // 成功更新時的處理邏輯
+              },
+              error: function(xhr, status, error) {
+                  console.error(error); // 更新失敗時的處理邏輯
+              }
+          });
     }
 }
 
 function createBasicObject(parsedData){
         selectedOption = $('#basic-options').val();
-        console.log("selectedOption", selectedOption); //ex daily, daily-base
+//        console.log("selectedOption", selectedOption); //ex daily, daily-base
 //        console.log("selectedIndex", selectedIndex);
         const basicCategory = Object.keys(parsedData);
         let targetCategory;
@@ -548,7 +543,7 @@ function createBasicObject(parsedData){
                 "name": parsedData[targetCategory].name
             }
         };
-         console.log("sendBase",sendBase);
+//         console.log("sendBase",sendBase);
 //        console.log("targetCategory", targetCategory);
 //        console.log("targetNum", targetNum);
         let content;
@@ -584,7 +579,7 @@ function createBasicObject(parsedData){
                 "name": parsedData[targetCategory].name
             }
         };
-        console.log("sendBasicData",sendBasicData);
+//        console.log("sendBasicData",sendBasicData);
 }
 
 function createSvgObject(svgData){
@@ -616,7 +611,7 @@ function createSvgObject(svgData){
            console.log("svgIndex2[i]",svgIndex2);
         //把該類別全部加進來
         for(let i =0;i<svgIndex2.length ;i++){ //該類別有幾個svg
-            console.log("svgIndex2[i]",svgIndex2[i]);
+//            console.log("svgIndex2[i]",svgIndex2[i]);
             sendSvgData.svgImages[svgCategory][svgIndex2[i]] = $('#'+svgIndex2[i]+indexForID).val();
         }
     }else{
@@ -628,5 +623,5 @@ function createSvgObject(svgData){
             }
         }
     }
-    console.log("sendSvgData",sendSvgData);
+//    console.log("sendSvgData",sendSvgData);
 }

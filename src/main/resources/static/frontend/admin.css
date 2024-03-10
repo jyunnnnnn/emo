@@ -82,8 +82,8 @@ body {
         width: 80px;
         font-weight: bold;
         font-size: 15px;
-        background: rgb(183, 188, 189);
-        color: white;
+       /* background: rgb(183, 188, 189);*/
+        color: rgb(123, 125, 127);
         padding-top: 10px;
         padding-block: 8px;
         margin-bottom: 10px;
@@ -93,12 +93,17 @@ body {
         /* transition: all 0.2s ease-in-out; */
     }
     .setBtn:hover{
-        background: rgb(100, 100, 100);
+        transform: scale(1.5);
+        /*color: rgb(100, 100, 100);*/
     }
     .setBtn svg{
          transform: scale(1.5)!important;
          margin-top: 3px!important;
          margin-bottom: 0px!important;
+    }
+    .logout-btn{
+        background: white;
+        border: none;
     }
   .svg-input{
     width: 80%;

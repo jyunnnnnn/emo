@@ -23,7 +23,11 @@ $(document).ready(function () {
         $('#login-container').removeClass('d-none');
         $('#forgetPassword-container').addClass('d-none');
     });
-
+    // 切換到首頁
+    $('#back-to-index').click(function (e) {
+        e.preventDefault();
+        window.location.href = 'index';
+    });
     //按下忘記密碼切換到忘記密碼的選單
     $('#no-account').click(function (e) {
         e.preventDefault();
