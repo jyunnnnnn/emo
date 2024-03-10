@@ -25,8 +25,10 @@
 
 
   <style>
+  @import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
         body {
-            font-family: 'Crimson Pro', serif;
+            font-family: 'cwTeXYen', 'Mandali', sans-serif;
             background-image: url(frontend/img/bg4.png);
             background-size: cover;
             /* background-repeat: no-repeat; */
@@ -197,6 +199,7 @@
             padding: 10px;
             cursor: pointer;
             position: relative;
+            font-weight: bolder; /* 更加粗的字体 */
         }
 
         .arrow {
@@ -217,8 +220,12 @@
         .answer {
             display: none;
             padding: 10px;
+            background: rgba(143, 188, 143, 0.614);
+            border-radius: 20px;
         }
-
+        .top{
+          font-size:140px;
+        }
 
         /* rwd */
         @media only screen and (max-width: 700px) {
@@ -241,6 +248,12 @@
             /* .carousel-item {
                 display: inline- !important;
             } */
+            .transparent-box{
+              margin: 20px;
+            }
+            .top{
+              font-size:100px;
+            }
         }
 
 </style>
@@ -285,7 +298,7 @@
 </header>
 <section id = "home">
   <!-- <h3 style="color:red;font-size:147px;">&nbsp</h3> -->
-  <h3 style="font-size:140px;"class="d-block">&nbsp</h3>
+  <h3 class="d-block top">&nbsp</h3>
   <div class=" animate__animated animate__slideInDown container">
     <div class = "row ">
       <div class="col-lg-5 col-11 text-white introduction text-center ">
@@ -458,9 +471,9 @@
       </div>
     </div>
   </div>
-  <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
 </section>
 <section  id="qa">
+  <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
   <h3 style="color:red;font-size:50px;"class="d-none d-lg-block">&nbsp</h3>
   <div class="container ">
     <div class="row">
@@ -542,7 +555,6 @@
           window.location.href = 'login';
       });
     });
-
     document.addEventListener("DOMContentLoaded", function () {
         // 監聽滾動事件
         window.addEventListener("scroll", function () {
