@@ -192,6 +192,8 @@ function setData(parsedData){
         }
         if (selectedOption.includes("unit")) {
             $('#save').prop('disabled', true);
+        }else{
+            $('#save').prop('disabled', false);
         }
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
         $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
