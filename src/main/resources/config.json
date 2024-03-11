@@ -3,6 +3,7 @@
     "daily": {
       "color": "#9ED368",
       "base": {
+
         "paper": 0.242,
         "plastic": 1.95
       },
@@ -22,7 +23,8 @@
           "color": "#4FC0E8",
           "coefficient": 0.0,
           "unit": "gCO2e",
-          "baseline": "plastic"
+          "baseline": "plastic",
+          "?": "比較對象為塑膠免洗杯 計算公式為:克數X(環保杯之排放係數-塑膠免洗杯之排放係數)"
         },
         {
           "option": {
