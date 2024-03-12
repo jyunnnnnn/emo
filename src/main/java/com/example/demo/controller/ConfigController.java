@@ -26,6 +26,7 @@ public class ConfigController {
         return ResponseEntity.ok(this.configService.getAllRecordJson());
     }
 
+
     //測試用
     @GetMapping("/test")
     public ResponseEntity<?> test() throws FileNotFoundException {

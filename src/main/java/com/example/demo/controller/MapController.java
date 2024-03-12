@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.MyUserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,11 +17,15 @@ public class MapController {
     @GetMapping("/map")
     public String showMap(Model model) {
         auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities() + ": " + auth.getName());
+
         model.addAttribute("apiKey", googleMapsApiKey);
-        model.addAttribute("username", auth.getName());
-        model.addAttribute("authority", auth.getAuthorities());
+
         if (auth.isAuthenticated()) {
             model.addAttribute("errorMessage", "");
+        } else {
+            model.addAttribute("errorMessage", "登入失敗，請檢查帳號密碼");
+            return "login";
         }
         //System.out.println("API Key: " + googleMapsApiKey);
         return "map";

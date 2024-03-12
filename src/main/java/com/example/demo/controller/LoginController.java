@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.MyUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
@@ -12,16 +13,14 @@ import org.springframework.ui.Model;
 
 @Controller
 public class LoginController {
+
+
     private Authentication auth;
 
     @GetMapping("/login")
     public String showLogin(HttpServletRequest request, Model model) {
         auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getPrincipal());
-        //檢查是否已登入
-        if (!auth.getPrincipal().equals("anonymousUser")) {
-            return "map";
-        }
+         //檢查是否已登入
         return "login";
     }
 
