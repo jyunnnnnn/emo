@@ -159,7 +159,7 @@ public class UserService {
         //檢查帳號是否存在
         UserInfo result = this.repository.findByUsername(username);
         if (result != null) {
-            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId(),result.getAuthority());
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId(), result.getAuthority());
             this.repository.save(updatedUserInfo);
             return OK;
         }
@@ -184,27 +184,24 @@ public class UserService {
         String username = String.valueOf(jsonNode.get("email"));
         username = "@Google-" + username.substring(1, username.indexOf('@'));
 
-        String password = String.valueOf(jsonNode.get("sub"));
-        password = new AESEncryption().encrypt(password.substring(1, password.length() - 1));
+
+        String password = SecurityConfig.passwordEncoder().encode("dummy");
+
         String nickname = String.valueOf(jsonNode.get("name"));
         nickname = nickname.substring(1, nickname.length() - 1);
         String email = String.valueOf(jsonNode.get("email"));
         email = email.substring(1, email.length() - 1);
         String userId = String.valueOf(new Date().getTime());
-        String authority = String.valueOf(jsonNode.get("authority"));
 
-        UserInfo googleUserInfo = new UserInfo(username, password, nickname, email, userId,authority);
+        UserInfo googleUserInfo = new UserInfo(username, password, nickname, email, userId, Authority.NORMAL.name());
         //----------------提取使用者資訊----------------
 
-        //建立使用者 or 使用者登入
-        int result = createUser(googleUserInfo);
-
-        if (result == OK) {//該google帳戶不存在，註冊帳戶
+        if (repository.findByUsername(username) == null) {
+            repository.save(googleUserInfo);
             return googleUserInfo;
-        } else if (result == ACCOUNT_ALREADY_EXIST) {//該帳戶已存在
-            return fetchOneUserByUsername(username);
-        }
+        } else
+            return repository.findByUsername(username);
 
-        return null;
+
     }
 }
