@@ -2,13 +2,14 @@ package com.example.demo.entity;
 
 //每個紀錄都會有的資訊
 public class Record {
-    public Record(String index, String name, double coefficient, String unit, String baseline, String color) {
+    public Record(String index, String name, double coefficient, String unit, String baseline, String color,String description) {
         this.index = index;
         this.name = name;
         this.coefficient = coefficient;
         this.unit = unit;
         this.baseline = baseline;
         this.color = color;
+        this.description=description;
     }
 
     //減碳紀錄索引
@@ -23,6 +24,7 @@ public class Record {
     private String baseline;
     //每個行為有自己的顏色
     private String color;
+    private String description;
 
     public String getIndex() {
         return index;
@@ -60,6 +62,14 @@ public class Record {
         return baseline;
     }
 
+    public String getColor() {return color;}
+
+    public String getDescription() {return description;}
+
+    public void setColor(String color) {this.color = color;}
+
+    public void setDescription(String description) {this.description = description;}
+
     @Override
     public String toString() {
         return "Record{" +
@@ -68,6 +78,7 @@ public class Record {
                 ", coefficient=" + coefficient +
                 ", unit='" + unit + '\'' +
                 ", baseline='" + baseline + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 

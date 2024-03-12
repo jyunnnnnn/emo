@@ -3,7 +3,6 @@
     "daily": {
       "color": "#9ED368",
       "base": {
-
         "paper": 0.242,
         "plastic": 1.95
       },
@@ -24,7 +23,7 @@
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "plastic",
-          "?": "比較對象為塑膠免洗杯 計算公式為:克數X(環保杯之排放係數-塑膠免洗杯之排放係數)"
+          "description": "比較對象為塑膠免洗杯 計算公式為:當前克數X(塑膠免洗杯之排放係數[1.95]-環保杯之排放係數[0])"
         },
         {
           "option": {
@@ -37,7 +36,8 @@
           "color": "#FFCD54",
           "coefficient": 0.0,
           "unit": "gCO2e",
-          "baseline": "paper"
+          "baseline": "paper",
+          "description": "比較對象為紙餐具 計算公式為:當前克數X(紙餐具之排放係數[0.242]-環保餐具之排放係數[0])"
         },
         {
           "option": {
@@ -50,7 +50,8 @@
           "color": "#FA6E51",
           "coefficient": 0.0,
           "unit": "gCO2e",
-          "baseline": "plastic"
+          "baseline": "plastic",
+          "description": "比較對象為塑膠袋 計算公式為:當前克數X(塑膠袋之排放係數[1.95]-環保袋之排放係數[0])"
         }
       ],
       "name": "生活用品"
@@ -74,7 +75,8 @@
           "color": "#ffc872",
           "coefficient": 40.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-公車之排放係數[40])"
         },
         {
           "index": "MRT",
@@ -82,7 +84,8 @@
           "color": "#30a0e0",
           "coefficient": 40.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-捷運之排放係數[40])"
         },
         {
           "index": "train",
@@ -90,7 +93,8 @@
           "color": "#006bbb",
           "coefficient": 60.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-火車之排放係數[60])"
         },
         {
           "index": "HSR",
@@ -98,7 +102,8 @@
           "color": "#87e1c7",
           "coefficient": 32.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-高鐵之排放係數[32])"
         }
       ],
       "name": "交通"

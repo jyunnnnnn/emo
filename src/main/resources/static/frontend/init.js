@@ -172,6 +172,7 @@ function FPConstructor(jsonData) {
         }
     }
     initCategory(jsonData);
+    console.log(jsonData);
 }
 function initCategory(jsonData){
     $('#category').append($('<option>', {
