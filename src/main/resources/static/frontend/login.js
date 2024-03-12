@@ -23,7 +23,11 @@ $(document).ready(function () {
         $('#login-container').removeClass('d-none');
         $('#forgetPassword-container').addClass('d-none');
     });
-
+    // 切換到首頁
+    $('#back-to-index').click(function (e) {
+        e.preventDefault();
+        window.location.href = 'index';
+    });
     //按下忘記密碼切換到忘記密碼的選單
     $('#no-account').click(function (e) {
         e.preventDefault();
@@ -374,9 +378,10 @@ function handleCallback(response) {
         data: JSON.stringify(profile),
         success: function (response) {
                 let userData = response.user;
+                console.log(userData)
+                localStorage.setItem("username",response.username);
                 localStorage.setItem('EmoAppUser', userData);
-                alert(response.message);
-                window.location.href = response.location;
+                window.location.href=response.location;
         },
         error: function (response) {
             console.log("使用google帳號登入失敗");
