@@ -14,6 +14,7 @@ let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
 let recordedPositions = [];//路線紀錄(點)
+let testFixPoints=[]; // 路線修正後的點點
 let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
 let mapLineWithId = []; // 顯示路線，刪除時用[{id,line}]
 // 初始化Google Map
