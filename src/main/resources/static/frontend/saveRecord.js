@@ -126,6 +126,8 @@ function addMarker(recordToAdd) {
                 const existingIndex = mapLineWithId.findIndex(item => item.id === currentInfoWindowRecord.recordId);
                 if (existingIndex === -1) {
                     drawLine(currentInfoWindowRecord);
+                    // 修正 還未顯示
+                    processAllPoints(currentInfoWindowRecord.lineOnMap);
                 }
             }
        });
