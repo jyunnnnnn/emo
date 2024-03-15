@@ -10,7 +10,12 @@ let sendBase = [];   //  要傳送的base物件
 
 
 $(document).ready(function () {
-//    $('#save').click(saveData());
+    $("#basic-setting, #svg-setting").click(function() {
+        toggleButtons();
+    });
+    $("#save").click(function() {
+        saveData();
+    });
     $.ajax({
         url: '/config/GetAllRecordJson',
         method: 'GET',
@@ -212,14 +217,18 @@ function setData(parsedData){
          if(categories[i] == "daily"){
            card = '<div id="'+categories[i]+'" class="basic-block"><br>';
             card +='<div class="form-group">'+
-                             '<label>index</label>'+
+                             '<label>項目索引</label>'+
                              '<select name="types" id="types'+i+'">'+
                              '</select>'+
                          '</div> <br>'+
                          '<div class="form-group">'+
-                             '<label>name</label>'+
+                             '<label>項目名稱</label>'+
                              '<input type="text" id="name'+i+'" >'+
                          '</div> <br>'+
+                        '<div class="form-group">'+
+                          '<label>標籤顏色</label>'+
+                          '<input type="color" id="color'+i+'" >'+
+                        '</div> <br>'+
                           '<div class="option-set d-lg-flex">'+
                               '<div class="form-group">'+
                                   '<label>大</label>'+
@@ -235,63 +244,63 @@ function setData(parsedData){
                               '</div>'+
                           '</div><br>'+
                          '<div class="form-group">'+
-                             '<label>coefficient</label>'+
+                             '<label>係數</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
                          '</div><br>'+
                           '<div class="form-group">'+
-                             '<label>units</label>'+
+                             '<label>計算單位</label>'+
                              '<select name="types" id="units'+i+'">'+
                              '</select>'+
                          '</div> <br>'+
                        '<div class="form-group">'+
-                           '<label>baseline</label>'+
+                           '<label>材質基準</label>'+
                            '<select name="types" id="baseline'+i+'">'+
                            '</select>'+
                        '</div> <br>'+
                          '</div>';
                 //初始化
-               $('#manage-container').append(card);
-                $('#name'+i).val(parsedData[categories[i]].content[0].name);
+                $('#manage-container').append(card);
                 $('#big').val(parsedData[categories[i]].content[0].option.大);
                 $('#mid').val(parsedData[categories[i]].content[0].option.中);
                 $('#small').val(parsedData[categories[i]].content[0].option.小);
-                $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
-                $('#units'+i).val(parsedData[categories[i]].content[0].unit);
-                $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
+
          }else{
             card = '<div id="'+categories[i]+'" class="basic-block d-none"><br>';
             card +='<div class="form-group">'+
-                        '<label>index</label>'+
+                        '<label>項目索引</label>'+
                         '<select name="types" id="types'+i+'">'+
                         '</select>'+
                     '</div> <br>'+
                     '<div class="form-group">'+
-                        '<label>name</label>'+
+                        '<label>項目名稱</label>'+
                         '<input type="text" id="name'+i+'" >'+
                     '</div> <br>'+
-
                     '<div class="form-group">'+
-                        '<label>coefficient</label>'+
+                      '<label>標籤顏色</label>'+
+                      '<input type="color" id="color'+i+'" >'+
+                    '</div> <br>'+
+                    '<div class="form-group">'+
+                        '<label>係數</label>'+
                         '<input type="text" id="coefficient'+i+'">'+
                     '</div><br>'+
                           '<div class="form-group">'+
-                             '<label>units</label>'+
+                             '<label>計算單位</label>'+
                              '<select name="types" id="units'+i+'">'+
                              '</select>'+
                          '</div> <br>'+
                       '<div class="form-group">'+
-                          '<label>baseline</label>'+
+                          '<label>材質基準</label>'+
                           '<select name="types" id="baseline'+i+'">'+
                           '</select>'+
                       '</div> <br>'+
                     '</div>';
              $('#manage-container').append(card);
-              $('#name'+i).val(parsedData[categories[i]].content[0].name);
-              $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
-              $('#units'+i).val(parsedData[categories[i]].content[0].unit);
-              $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
          }
-
+        $('#name'+i).val(parsedData[categories[i]].content[0].name);
+        $('#color'+i).val(parsedData[categories[i]].content[0].color);
+        $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
+        $('#units'+i).val(parsedData[categories[i]].content[0].unit);
+        $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
         for(let j =0;j< parsedData[categories[i]].content.length;j++){
             //新增 content 的下拉選項
             let option = '`<option value="'+parsedData[categories[i]].content[j].index+'">'+parsedData[categories[i]].content[j].index+'</option>';
@@ -301,7 +310,7 @@ function setData(parsedData){
         let base = parsedData[categories[i]].base;
         let baseLength = Object.keys(base).length;
         let baseKeys = Object.keys(base);
-        //console.log("base 的長度為：" + baseLength);
+
         let baseCard = '<div id="'+categories[i]+'-base" class="basic-block d-none"><br><div class="base-group2">';
         for(let m =0;m< baseLength;m++){
            baseCard += '<div class="base-group">'+
@@ -324,10 +333,10 @@ function setData(parsedData){
          let colorCard = '<div id="'+categories[i]+'-color" class="basic-block d-none"><br>';
           colorCard += '<div class="form-group">'+
                        '<label>color</label>'+
-                             '<input type="text" id="color'+i+'">'+
+                             '<input type="color" id="'+categories[i]+'-colorInput">'+
                         ' </div> <br> </div> ';
          $('#manage-container').append(colorCard);
-         $('#color'+i).val(parsedData[categories[i]].color);
+         $('#'+categories[i]+'-colorInput').val(parsedData[categories[i]].color);
         //新增units區塊
         let newUnitId=[];
         let units = parsedData[categories[i]].units;
@@ -390,6 +399,7 @@ function updateTableValues(selectedIndex) {
         //console.log("Index of selectedContent:", index);
         // 根據索引位置更新表格的值
          $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
+         $('#color'+targetNum).val(parsedData[targetCategory].content[index].color);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
          $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
          $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
