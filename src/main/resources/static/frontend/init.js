@@ -569,11 +569,11 @@ function svgConstructor(svgData) {
             for(let [key, val] of Object.entries(value.action)){
                 $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                 $('#' + val.index + 'Input').on('change', function() {
-//                    if(val.index =="MRT"||val.index=="HSR"){
-//                         directionsDraw();
-//                    }else{
-//                        directionsDisplay.setMap(null);
-//                    }
+                    if(val.index =="MRT"||val.index=="HSR"){
+                         directionsDraw(recordedPositions);
+                    }else{
+                        directionsDisplay.setMap(null);
+                    }
                     //console.log(val.index);
                     console.log($(this).is(':checked'));
                     if ($(this).is(':checked')) {
@@ -659,12 +659,12 @@ function logoutAccount(){
     localStorage.removeItem("username");
     google.accounts.id.disableAutoSelect();
 }
-function directionsDraw(){
+function directionsDraw(rec){
     let request = {
-        origin: {lat:recordedPositions[0].lat,
-                lng:recordedPositions[0].lng},
-        destination: {lat:recordedPositions[recordedPositions.length-1].lat,
-                      lng:recordedPositions[recordedPositions.length-1].lng},
+        origin: {lat:rec[0].lat,
+                lng:rec[0].lng},
+        destination: {lat:rec[rec.length-1].lat,
+                      lng:rec[rec.length-1].lng},
         travelMode: 'TRANSIT'
       };
     directionsService.route(request, function(response) {

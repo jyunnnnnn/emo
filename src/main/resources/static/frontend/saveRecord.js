@@ -118,11 +118,15 @@ function addMarker(recordToAdd) {
 
         // 監聽 marker click 事件
        marker.addListener('click', e => {
+            clearMapLines
             infoWindow.open(this.map, marker);
             currentInfoWindowRecord = recordToAdd;
             currentMarker = marker;
-            if (currentInfoWindowRecord.classType=="交通"){
-                //避免重複畫線
+            if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+               directionsDraw(currentInfoWindowRecord.lineOnMap);
+            }
+            else{
+                 //避免重複畫線
                 const existingIndex = mapLineWithId.findIndex(item => item.id === currentInfoWindowRecord.recordId);
                 if (existingIndex === -1) {
                     drawLine(currentInfoWindowRecord);
@@ -151,6 +155,7 @@ function addMarker(recordToAdd) {
                 clearMapLines([mapLineWithId[lineIndex].line]);
                 mapLineWithId.splice(lineIndex, 1);
             }
+            directionsDisplay.setMap(null);
         });
     }
 }
