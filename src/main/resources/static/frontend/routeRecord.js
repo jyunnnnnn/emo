@@ -130,6 +130,7 @@ function stopRecording() {
         checked.prop('checked', false);
     }
     // 清空位置紀錄
+
     // smoothedPositions = [];
     // 移除地圖上的線條
     clearMapLines(mapLines);
@@ -174,7 +175,7 @@ function drawLine(cRecord){
     let path = new google.maps.Polyline({
         path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
-        strokeColor: '#0D5025',
+        strokeColor: '#FFFFFF',
         strokeOpacity: 1,
         strokeWeight: 4
     });
@@ -196,3 +197,4 @@ function clearMapLines(line) {
         line[i].setMap(null);
     }
 }
+

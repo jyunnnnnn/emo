@@ -17,6 +17,8 @@ let recordedPositions = [];//路線紀錄(點)
 let testFixPoints=[]; // 路線修正後的點點
 let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
 let mapLineWithId = []; // 顯示路線，刪除時用[{id,line}]
+let directionsService;
+let directionsDisplay;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -318,6 +320,10 @@ function initMap() {
                     });
                 console.log("獲取標記及訊息窗");
                 // 一開始 當前位置標記
+                directionsService = new google.maps.DirectionsService();
+                directionsDisplay = new google.maps.DirectionsRenderer({
+                        map: map
+                 });
                 circle = new google.maps.Marker({
                     map,
                     position: cL,
@@ -352,6 +358,7 @@ function initMap() {
         alert("瀏覽器不支持地理位置功能");
     }
 }
+
 
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
@@ -572,7 +579,12 @@ function svgConstructor(svgData) {
             for(let [key, val] of Object.entries(value.action)){
                 $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                 $('#' + val.index + 'Input').on('change', function() {
-                    console.log(val.index);
+                    if(val.index =="MRT"||val.index=="HSR"){
+                         directionsDraw();
+                    }else{
+                        directionsDisplay.setMap(null);
+                    }
+                    //console.log(val.index);
                     console.log($(this).is(':checked'));
                     if ($(this).is(':checked')) {
                         if(val.index != trafficChecked && trafficChecked != null){
@@ -656,4 +668,17 @@ function logoutAccount(){
     localStorage.removeItem('EmoAppUser');
     localStorage.removeItem("username");
     google.accounts.id.disableAutoSelect();
+}
+function directionsDraw(){
+    let request = {
+        origin: {lat:recordedPositions[0].lat,
+                lng:recordedPositions[0].lng},
+        destination: {lat:recordedPositions[recordedPositions.length-1].lat,
+                      lng:recordedPositions[recordedPositions.length-1].lng},
+        travelMode: 'TRANSIT'
+      };
+    directionsService.route(request, function(response) {
+        console.log(response)
+        directionsDisplay.setDirections(response);
+    });
 }
