@@ -11,6 +11,7 @@ public class AdminController {
 
     private Authentication auth;
 
+    //url : /admin
     @GetMapping("/admin")
     public String adminPage() {
         auth = SecurityContextHolder.getContext().getAuthentication();
