@@ -27,8 +27,6 @@ function success(pos){
             currentLocation = {
                 lat: newLat,
                 lng: newLng,
-                TimeStamp_milliseconds: pos.timestamp,
-                accuracy: accuracy
             };
             updateCurrentCircle();
         }else {
@@ -135,17 +133,15 @@ function stopRecording() {
     // 移除地圖上的線條
     clearMapLines(mapLines);
     mapLines = [];
+    // 修正路線
+    processAllPoints(recordedPositions);
 }
 
 function recordLocation() {
     // 儲存記錄的位置
     recordedPositions.push(currentLocation);
     //只有在路線紀錄時強制跑到中心
-    cL ={
-        lat: currentLocation.lat,
-        lng: currentLocation.lng,
-    }
-    map.panTo(cL);
+    map.panTo(currentLocation);
     // 在記錄的位置之間繪製線條
     if (recordedPositions.length >= 2) {
         //一段一段畫

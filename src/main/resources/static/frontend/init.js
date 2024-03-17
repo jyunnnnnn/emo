@@ -4,7 +4,7 @@ let FootprintData = [];//各環保行為資訊 物件陣列
 let svgData;
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let User;//使用者 物件
-let currentLocation;//當前經緯度，時間，精確度
+let currentLocation;//當前經緯度
 let cL; // currentLocation的經緯
 let watchId; //當前位置ID
 let options;//地圖精準度 更新當前位置function用
@@ -28,18 +28,12 @@ function initMap() {
                 currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
-                    TimeStamp_milliseconds: position.timestamp,
-                    accuracy: position.coords.accuracy
                 };
                  console.log("抓取位置成功 開始建構地圖");
                 // 創建地圖
                 const { Map } = await google.maps.importLibrary("maps");
-                cL ={
-                    lat: currentLocation.lat,
-                    lng: currentLocation.lng,
-                }
                 map = new Map(document.getElementById("map"), {
-                        center: cL,
+                        center: currentLocation,
                         zoom: 18,
                         minZoom: 5, // 設定最小縮放級別
                         maxZoom: 20, // 設定最大縮放級別
@@ -384,13 +378,9 @@ function updateCurrentCircle() {
     // 清除舊位置的圈圈
     if (circle) {circle.setMap(null);}
     // 在新當前位置上標記圈圈
-    cL ={
-        lat: currentLocation.lat,
-        lng: currentLocation.lng,
-    }
     circle = new google.maps.Marker({
         map,
-        position: cL,
+        position: currentLocation,
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 5
@@ -579,11 +569,11 @@ function svgConstructor(svgData) {
             for(let [key, val] of Object.entries(value.action)){
                 $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                 $('#' + val.index + 'Input').on('change', function() {
-                    if(val.index =="MRT"||val.index=="HSR"){
-                         directionsDraw();
-                    }else{
-                        directionsDisplay.setMap(null);
-                    }
+//                    if(val.index =="MRT"||val.index=="HSR"){
+//                         directionsDraw();
+//                    }else{
+//                        directionsDisplay.setMap(null);
+//                    }
                     //console.log(val.index);
                     console.log($(this).is(':checked'));
                     if ($(this).is(':checked')) {

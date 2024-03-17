@@ -127,19 +127,19 @@ function addMarker(recordToAdd) {
                 if (existingIndex === -1) {
                     drawLine(currentInfoWindowRecord);
                     // 修正 (第一次會延遲，用了promise沒審麼用，先這樣)
-                    processAllPoints(currentInfoWindowRecord.lineOnMap);
+                    // processAllPoints(currentInfoWindowRecord.lineOnMap);
                     //我先放這裡 先不call drawLine區別一下顏色
-                    console.log(testFixPoints);
-                    console.log(currentInfoWindowRecord.lineOnMap)
-                    let smoothedPath = new google.maps.Polyline({
-                        path: testFixPoints.map(position => ({ lat: position.location.latitude, lng: position.location.longitude })),
-                        geodesic: true,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2
-                    });
-                    smoothedPath.setMap(map);
-                    testFixPoints =[];
+                    // console.log(testFixPoints);
+                    // console.log(currentInfoWindowRecord.lineOnMap)
+                    // let smoothedPath = new google.maps.Polyline({
+                    //     path: testFixPoints.map(position => ({ lat: position.location.latitude, lng: position.location.longitude })),
+                    //     geodesic: true,
+                    //     strokeColor: '#FF0000',
+                    //     strokeOpacity: 1.0,
+                    //     strokeWeight: 2
+                    // });
+                    // smoothedPath.setMap(map);
+                    // testFixPoints =[];
                 }
             }
        });
