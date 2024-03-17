@@ -60,10 +60,11 @@ public class UserController {
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號已存在"));
     }
 
-    //登入
+    //登入後初始化map頁面使用者資訊
     @GetMapping("/init")
     public ResponseEntity<?> loginUser(@RequestParam("username") String username) throws JsonProcessingException {
         UserInfo userInfoData = this.userService.findUserDataFromUsername(username);
+        userInfoData.setPassword("不給你看");
         System.out.println(userInfoData);
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(userInfoData);

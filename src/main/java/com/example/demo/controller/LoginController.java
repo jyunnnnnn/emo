@@ -19,7 +19,6 @@ public class LoginController {
 
     @GetMapping("/login")
     public String showLogin(HttpServletRequest request, Model model) {
-
          //檢查是否已登入
         return "login";
     }
