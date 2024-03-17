@@ -17,13 +17,15 @@ public class LoginController {
 
     private Authentication auth;
 
+
+    //url : login page redirect
     @GetMapping("/login")
     public String showLogin(HttpServletRequest request, Model model) {
-
-         //檢查是否已登入
+        //檢查是否已登入
         return "login";
     }
 
+    //login fail redirection
     @GetMapping("/login-error")
     public String loginFail(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);

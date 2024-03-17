@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
@@ -62,8 +63,8 @@ class EcoControllerTest {
             "testField1",
             "testField2",
             Arrays.asList(
-                    new DotOfLine(1.0, 1.0, 2.0,1.0),
-                    new DotOfLine(1.0, 3.0, 4.0,1.0)
+                    new DotOfLine(1.0, 1.0, 2.0, 1.0),
+                    new DotOfLine(1.0, 3.0, 4.0, 1.0)
             )
     );
     private List<EcoRecord> testList = Arrays.asList(testRecord, testRecord);
@@ -73,10 +74,11 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Add Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void addRecord() throws Exception {
         //新增過程成功
         when(ecoRecordService.addRecord(any(EcoRecord.class))).thenReturn(testRecord);
-        mockMvc.perform(post("/api/addRecord")
+        mockMvc.perform(post("/eco/addRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testRecord)))
@@ -84,7 +86,7 @@ class EcoControllerTest {
                 .andDo(MockMvcResultHandlers.print());
         //新增記錄失敗
         when(ecoRecordService.addRecord(any(EcoRecord.class))).thenThrow(NullPointerException.class);
-        mockMvc.perform(post("/api/addRecord")
+        mockMvc.perform(post("/eco/addRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testRecord)))
@@ -97,10 +99,11 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Update Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void updateRecord() throws Exception {
         //更新紀錄成功
         when(ecoRecordService.updateRecord(any(EcoRecord.class))).thenReturn(testRecord);
-        mockMvc.perform(put("/api/updateRecord")
+        mockMvc.perform(put("/eco/updateRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testRecord)))
@@ -109,7 +112,7 @@ class EcoControllerTest {
 
         //更新紀錄失敗
         when(ecoRecordService.updateRecord(any(EcoRecord.class))).thenThrow(NullPointerException.class);
-        mockMvc.perform(put("/api/updateRecord")
+        mockMvc.perform(put("/eco/updateRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testRecord)))
@@ -123,10 +126,11 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Get Specific UserInfo Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void getSpecificUserRecord() throws Exception {
         //成功獲取特定使用者紀錄
         when(ecoRecordService.getSpecificUserRecords(any(String.class))).thenReturn(testList);
-        MvcResult result = mockMvc.perform(get("/api/getSpecificUserRecord")
+        MvcResult result = mockMvc.perform(get("/eco/getSpecificUserRecord")
                         .param("userId", testRecord.getUserId()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
@@ -144,7 +148,7 @@ class EcoControllerTest {
 
         //獲取使用者紀錄失敗
         when(ecoRecordService.getSpecificUserRecords(any(String.class))).thenThrow(NullPointerException.class);
-        mockMvc.perform(get("/api/getSpecificUserRecord")
+        mockMvc.perform(get("/eco/getSpecificUserRecord")
                         .param("userId", testRecord.getUserId()))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
@@ -157,11 +161,12 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Get All Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void getAllRecords() throws Exception {
         //回傳所有紀錄成功
         when(ecoRecordService.getAllRecords()).thenReturn(testList);
         MvcResult result =
-                mockMvc.perform(get("/api/getAllRecords"))
+                mockMvc.perform(get("/eco/getAllRecords"))
                         .andExpect(status().isOk())
                         .andDo(MockMvcResultHandlers.print())
                         .andReturn();
@@ -175,7 +180,7 @@ class EcoControllerTest {
 
         //回傳記錄失敗
         when(ecoRecordService.getAllRecords()).thenThrow(NullPointerException.class);
-        mockMvc.perform(get("/api/getAllRecords"))
+        mockMvc.perform(get("/eco/getAllRecords"))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -185,16 +190,17 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Delete One Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void deleteOneRecord() throws Exception {
         //刪除記錄成功
-        mockMvc.perform(delete("/api/deleteOneRecord")
+        mockMvc.perform(delete("/eco/deleteOneRecord")
                         .param("recordId", testRecord.getRecordId()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
         //刪除記錄過程出現問題
         doThrow(NullPointerException.class).when(ecoRecordService).deleteOneRecord(any(String.class));
-        mockMvc.perform(delete("/api/deleteOneRecord")
+        mockMvc.perform(delete("/eco/deleteOneRecord")
                         .param("recordId", testRecord.getRecordId()))
 
                 .andExpect(status().isBadRequest())
@@ -206,12 +212,13 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Delete amount of Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void deleteMulRecord() throws Exception {
         //刪除多筆紀錄成功
         List<String> test = new ArrayList<>();
         test.add("test");
         test.add("test");
-        mockMvc.perform(delete("/api/deleteMulRecord")
+        mockMvc.perform(delete("/eco/deleteMulRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(test)))
@@ -219,7 +226,7 @@ class EcoControllerTest {
                 .andDo(MockMvcResultHandlers.print());
         //刪除多筆紀錄過程出現問題
         doThrow(NullPointerException.class).when(ecoRecordService).deleteOneRecord(any(String.class));
-        mockMvc.perform(delete("/api/deleteMulRecord")
+        mockMvc.perform(delete("/eco/deleteMulRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(test)))
@@ -232,15 +239,16 @@ class EcoControllerTest {
      */
     @Test
     @DisplayName("Delete Specific UserInfo Record Test")
+    @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void deleteSpecificUserRecord() throws Exception {
         //刪除特定使用者紀錄成功
-        mockMvc.perform(delete("/api/deleteSpecificUserRecord")
+        mockMvc.perform(delete("/eco/deleteSpecificUserRecord")
                         .param("userId", testRecord.getUserId()))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //刪除特定使用者記錄過程出現錯誤
         doThrow(NullPointerException.class).when(ecoRecordService).deleteSpecificUserRecord(any(String.class));
-        mockMvc.perform(delete("/api/deleteSpecificUserRecord")
+        mockMvc.perform(delete("/eco/deleteSpecificUserRecord")
                         .param("userId", testRecord.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Fail"))

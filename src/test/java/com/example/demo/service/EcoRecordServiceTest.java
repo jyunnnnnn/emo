@@ -106,7 +106,7 @@ class EcoRecordServiceTest {
         //抓取特定使用者的所有紀錄資訊
     void getSpecificUserRecordsTest() {
 
-        String targetUser = "test";
+        String targetUser = "testUserId";
         when(recordRepository.findAllByUserId(targetUser)).thenReturn(testList);
 
         List<EcoRecord> result = this.ecoRecordService.getSpecificUserRecords(targetUser);
