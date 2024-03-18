@@ -17,7 +17,6 @@ let recordedPositions = [];//路線紀錄(點)
 let testFixPoints=[]; // 路線修正後的點點
 let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
 let mapLineWithId = []; // 顯示路線，刪除時用[{id,line}]
-let directionsService;
 let directionsDisplay;
 // 初始化Google Map
 function initMap() {
@@ -314,10 +313,6 @@ function initMap() {
                     });
                 console.log("獲取標記及訊息窗");
                 // 一開始 當前位置標記
-                directionsService = new google.maps.DirectionsService();
-                directionsDisplay = new google.maps.DirectionsRenderer({
-                        map: map
-                 });
                 circle = new google.maps.Marker({
                     map,
                     position: cL,
@@ -569,13 +564,6 @@ function svgConstructor(svgData) {
             for(let [key, val] of Object.entries(value.action)){
                 $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                 $('#' + val.index + 'Input').on('change', function() {
-                    if(val.index =="MRT"||val.index=="HSR"){
-                         directionsDraw(recordedPositions);
-                    }else{
-                        directionsDisplay.setMap(null);
-                    }
-                    //console.log(val.index);
-                    console.log($(this).is(':checked'));
                     if ($(this).is(':checked')) {
                         if(val.index != trafficChecked && trafficChecked != null){
                             $('#' + trafficChecked + 'Icon').html(svgData.svgImages[value.class][trafficChecked + 'Icon']);
@@ -660,15 +648,26 @@ function logoutAccount(){
     google.accounts.id.disableAutoSelect();
 }
 function directionsDraw(rec){
+    let directionsService = new google.maps.DirectionsService();
     let request = {
         origin: {lat:rec[0].lat,
                 lng:rec[0].lng},
         destination: {lat:rec[rec.length-1].lat,
                       lng:rec[rec.length-1].lng},
-        travelMode: 'TRANSIT'
-      };
+        travelMode: 'TRANSIT',
+        transitOptions: {
+            modes: ['SUBWAY']
+        },
+    };
     directionsService.route(request, function(response) {
-        console.log(response)
-        directionsDisplay.setDirections(response);
+        directionsDisplay = new google.maps.DirectionsRenderer({
+            map: map,
+            directions: response,
+        });
     });
+}
+function removeDirections() {
+    if (directionsDisplay) {
+        directionsDisplay.setMap(null);
+    }
 }

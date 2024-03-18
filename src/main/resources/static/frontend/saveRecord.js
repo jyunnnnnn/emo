@@ -155,7 +155,8 @@ function addMarker(recordToAdd) {
                 clearMapLines([mapLineWithId[lineIndex].line]);
                 mapLineWithId.splice(lineIndex, 1);
             }
-            directionsDisplay.setMap(null);
+            removeDirections();
+            //directionsDisplay.setMap(null);
         });
     }
 }
