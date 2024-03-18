@@ -69,13 +69,9 @@ function deleteRecord(recordId){
     if (markerToDelete) {
         markerToDelete.infoWindow.close();
         markerToDelete.setMap(null);
-        removeDirections();
         //刪除時刪掉打開的路線
-        const lineIndex = mapLineWithId.findIndex(item => item.id === recordId);
-        if (lineIndex !== -1) {
-            clearMapLines([mapLineWithId[lineIndex].line]);
-            mapLineWithId.splice(lineIndex, 1);
-        }
+        removeDirections();
+        clearMapLines();
         // 在 markers 移除
         let index = markers.indexOf(markerToDelete);
         if (index > -1) {

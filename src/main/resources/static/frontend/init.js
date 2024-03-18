@@ -16,7 +16,6 @@ let categories = {};
 let recordedPositions = [];//路線紀錄(點)
 let testFixPoints=[]; // 路線修正後的點點
 let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
-let mapLineWithId = []; // 顯示路線，刪除時用[{id,line}]
 let directionsDisplay;
 // 初始化Google Map
 function initMap() {

@@ -131,8 +131,7 @@ function stopRecording() {
 
     // smoothedPositions = [];
     // 移除地圖上的線條
-    clearMapLines(mapLines);
-    mapLines = [];
+    clearMapLines();
     // 修正路線
     processAllPoints(recordedPositions);
 }
@@ -176,21 +175,14 @@ function drawLine(cRecord){
         strokeWeight: 4
     });
     path.setMap(map);
-    let tmp ={
-        id: cRecord.recordId,
-        line:path
-    }
-    const existingIndex = mapLineWithId.findIndex(item => item.id === tmp.id);
-    if (existingIndex === -1) {
-        mapLineWithId.push(tmp);
-        //console.log(mapLineWithId);
-    }
+    mapLines.push(path);
 }
 
 //清線
-function clearMapLines(line) {
-    for (let i = 0; i < line.length; i++) {
-        line[i].setMap(null);
+function clearMapLines() {
+    for (let i = 0; i < mapLines.length; i++) {
+        mapLines[i].setMap(null);
     }
+    mapLines=[];
 }
 

@@ -115,48 +115,56 @@ function addMarker(recordToAdd) {
 
        marker.infoWindow = infoWindow;
        markers.push(marker);
+       // 幫current初始化
+       currentInfoWindowRecord = recordToAdd;
+       currentMarker = marker;
 
         // 監聽 marker click 事件
        marker.addListener('click', e => {
-            clearMapLines
-            infoWindow.open(this.map, marker);
-            currentInfoWindowRecord = recordToAdd;
-            currentMarker = marker;
-            if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+            //關閉上一個打開的infoWindow，及清除路線
+           if (currentMarker.infoWindow) {
+               currentMarker.infoWindow.close();
+           }
+           if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+               removeDirections();
+           }
+           else if(currentInfoWindowRecord.classType=="交通"){
+               clearMapLines();
+           }
+
+           infoWindow.open(this.map, marker);
+           currentInfoWindowRecord = recordToAdd;
+           currentMarker = marker;
+           if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
                directionsDraw(currentInfoWindowRecord.lineOnMap);
-            }
-            else{
-                 //避免重複畫線
-                const existingIndex = mapLineWithId.findIndex(item => item.id === currentInfoWindowRecord.recordId);
-                if (existingIndex === -1) {
-                    drawLine(currentInfoWindowRecord);
-                    // 修正 (第一次會延遲，用了promise沒審麼用，先這樣)
-                    // processAllPoints(currentInfoWindowRecord.lineOnMap);
-                    //我先放這裡 先不call drawLine區別一下顏色
-                    // console.log(testFixPoints);
-                    // console.log(currentInfoWindowRecord.lineOnMap)
-                    // let smoothedPath = new google.maps.Polyline({
-                    //     path: testFixPoints.map(position => ({ lat: position.location.latitude, lng: position.location.longitude })),
-                    //     geodesic: true,
-                    //     strokeColor: '#FF0000',
-                    //     strokeOpacity: 1.0,
-                    //     strokeWeight: 2
-                    // });
-                    // smoothedPath.setMap(map);
-                    // testFixPoints =[];
-                }
-            }
+           }
+           else if(currentInfoWindowRecord.classType=="交通"){
+               drawLine(currentInfoWindowRecord);
+               // 修正 (第一次會延遲，用了promise沒審麼用，先這樣)
+               // processAllPoints(currentInfoWindowRecord.lineOnMap);
+               //我先放這裡 先不call drawLine區別一下顏色
+               // console.log(testFixPoints);
+               // console.log(currentInfoWindowRecord.lineOnMap)
+               // let smoothedPath = new google.maps.Polyline({
+               //     path: testFixPoints.map(position => ({ lat: position.location.latitude, lng: position.location.longitude })),
+               //     geodesic: true,
+               //     strokeColor: '#FF0000',
+               //     strokeOpacity: 1.0,
+               //     strokeWeight: 2
+               // });
+               // smoothedPath.setMap(map);
+               // testFixPoints =[];
+           }
        });
 
         // 監聽 infoWindow 關閉事件
         infoWindow.addListener('closeclick', function() {
-            const lineIndex = mapLineWithId.findIndex(item => item.id === currentInfoWindowRecord.recordId);
-            if (lineIndex !== -1) {
-                clearMapLines([mapLineWithId[lineIndex].line]);
-                mapLineWithId.splice(lineIndex, 1);
+            if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+                removeDirections();
             }
-            removeDirections();
-            //directionsDisplay.setMap(null);
+            else if(currentInfoWindowRecord.classType=="交通"){
+                clearMapLines();
+            }
         });
     }
 }
