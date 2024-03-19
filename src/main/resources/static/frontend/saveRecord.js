@@ -105,9 +105,9 @@ function addMarker(recordToAdd) {
            <div>
                <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'cwTeXYen', 'Mandali', sans-serif; font-weight: bold;">${recordToAdd.type}</h6>
                <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px;padding-top: 14px;  padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">
-                <p style="font-size: 20px;">減少的碳足跡為：</p>
-                <p style="font-size: 25px; font-weight: bold; padding-right: 5px;">${recordToAdd.footprint}</p>
-                <p style="font-size: 20px;"> g Co2E</p>
+                <p style="font-size: 16px;">減少的碳足跡為：</p>
+                <p style="font-size: 20px; font-weight: bold; padding-right: 5px; padding-bottom: 3px;">${recordToAdd.footprint}</p>
+                <p style="font-size: 10px;"> g Co2E</p>
                </div>
                <p style="color: #ffffff; background-color: #166a29; border-radius: 20px; padding-left: 10px; padding-right: 10px;  margin:3px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;"></p>
                <p style="padding:3px; margin:3px; font-size: 15px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">${recordToAdd.time}</p>
@@ -115,7 +115,8 @@ function addMarker(recordToAdd) {
            </div>`;
            //class="btn btn-secondary"
        let infoWindow = new google.maps.InfoWindow({
-           content: infoWindowContent
+           content: infoWindowContent,
+           maxWidth: '350px'
        });
 
        marker.infoWindow = infoWindow;
