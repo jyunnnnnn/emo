@@ -130,7 +130,7 @@ $(document).ready(function () {
 //讀取svg設定檔的資料到頁面
 function setSvgData(svgData) {
     //新增svg類別的選項
-    let optionCard = '<select name="options" id="svg-options" class="d-none"></select>';
+    let optionCard = ' <select name="options" id="svg-options" class="d-none"></select>';
     $('#manage-container').append(optionCard);
     const svgIndex = Object.keys(svgData.svgImages);//ex: daily transportation recordList
     //新增所有svg大類別的option
@@ -463,6 +463,7 @@ function toggleButtons() {
     //選單切換
         $('#basic-options').addClass('d-none');
         $('#svg-options').removeClass('d-none');
+        $('.svgView').removeClass('d-none');
         $('.basic-block').addClass('d-none'); //隱藏所有一般區塊
         //恢復顯示第一個
         $('#svg-daily').removeClass('d-none');

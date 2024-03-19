@@ -119,7 +119,29 @@ body {
     margin-right: 10px;
     margin-bottom: 10px;
   }
+.svgView {
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
 
+a {
+  color: #664d03;
+  padding: 5px;
+  /* border: #664d03; */
+  background-color: #fff3cd;
+  border-radius: 10px;
+  /* font-weight: 900; */
+  /* text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff; */
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+  /* color: rgb(100, 95, 95); */
+  transform: translateY(-5px) scale(1.3);
+  text-decoration: underline;
+}
   /* rwd */
   @media only screen and (max-width: 700px) {
     .full-container{
