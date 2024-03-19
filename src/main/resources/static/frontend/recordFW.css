@@ -1,11 +1,12 @@
 #settingButton{
+    color: rgb(255, 255, 255);
     position: fixed;
     top: 6%;
     right: 9%;
-    transform:scale(1.5);
+    transform: scale(2);
 }
-#settingButton:hover{
-    color:  rgb(103, 103, 103);
+#settingButton:hover path {
+    fill: rgb(122, 121, 121);
 }
 
 #listContent p:hover {
@@ -13,14 +14,14 @@
 }
 
 .showUser{
-    transform:scale(1.5);
+    transform:scale(2);
     display:flex;
     align-items:center;
     justify-content: center;
     position: fixed;
     top: 6%;
     left: 10%;
-    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;
+    color: white;
 }
 
 #userIcon {
@@ -523,9 +524,12 @@ svg:hover .detail {
         padding:5px;
     }
 
-    #settingButton,
+    #settingButton{
+        top: 4%;
+    }
     .showUser{
         top: 4%;
+        left: 15%;
     }
     .recordContainer {
         transform: scale(0.8);
