@@ -38,14 +38,6 @@ function showNowRecordInFoWindow(nowRecord){
     // 找所有marker
     for (let i = 0; i < markers.length; i++) {
         if (markers[i].getPosition().equals(centerPosition)) {
-            //關閉上一個打開的infoWindow，及清除路線
-            if (currentMarker.infoWindow) {
-                currentMarker.infoWindow.close();
-            }
-            if(currentInfoWindowRecord.classType=="交通"){
-                clearMapLines();
-                removeDirections();
-            }
             currentInfoWindowRecord = nowRecord;
             currentMarker=markers[i];
             markers[i].infoWindow.open(map,markers[i]);
@@ -221,6 +213,14 @@ function showNewChart(nowRecords, type) {
 
 // 查看歷史紀錄
 function showRecord() {
+    //關閉上一個打開的infoWindow，及清除路線
+    if (currentMarker.infoWindow) {
+        currentMarker.infoWindow.close();
+    }
+    if(currentInfoWindowRecord.classType=="交通"){
+        clearMapLines();
+        removeDirections();
+    }
     //列表顯示環保紀錄
     let thisRecords = records;
     let container = $('#listContent');

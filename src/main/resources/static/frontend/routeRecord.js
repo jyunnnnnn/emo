@@ -62,6 +62,12 @@ function startRecording() {
     isRecording = true;
 
     recordedPositions = []; // 清空上一個路線紀錄
+    if (currentMarker.infoWindow) {
+        currentMarker.infoWindow.close();
+        removeDirections();
+        clearMapLines();
+    }
+
     //清除上一次距離
     kilometer = 0;
 
