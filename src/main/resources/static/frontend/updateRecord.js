@@ -72,7 +72,11 @@ function updateMarkerContent(newContent) {
     let modifyContent=`
          <div>
               <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'cwTeXYen', 'Mandali', sans-serif; font-weight: bold;">${newContent.type}</h6>
-              <p style="padding:3px; margin:3px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">減少的碳足跡為：${newContent.footprint}g Co2E</p>
+              <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px;padding-top: 14px;  padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">
+                <p style="font-size: 20px;">減少的碳足跡為：</p>
+                <p style="font-size: 25px; font-weight: bold; padding-right: 5px;">${newContent.footprint}</p>
+                <p style="font-size: 20px;">g Co2E</p>
+               </div>
               <p style="padding:3px; margin:3px; font-size: 15px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">${newContent.time}</p>
               <button id="editButton" type="button" style="position: absolute; right: 20px; bottom: 15px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;" onclick="recordModal()">編輯</button>
           </div>`;
