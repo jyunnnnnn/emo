@@ -20,6 +20,18 @@ function updateRecord(event, updateFW){
     } else {
         alert("請輸入正數")
     }
+    // 清掉原本的線
+    if(currentInfoWindowRecord.classType=="交通"){
+        removeDirections();
+        clearMapLines();
+    }
+    // 畫新的
+    if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+        directionsDraw(currentInfoWindowRecord.lineOnMap);
+    }
+    else if(currentInfoWindowRecord.classType=="交通"){
+        drawLine(currentInfoWindowRecord);
+    }
 }
 // 更新紀錄的函數
 function updateRecordToBackend(newClassType, newType, newDataValue) {
