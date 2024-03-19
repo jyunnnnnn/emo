@@ -14,8 +14,8 @@ function showTotalFP(){
             totalFP += parseFloat(thisRecords[i].footprint, 10);
         }
     }
-    container.text("總減碳量: " + totalFP.toFixed(2) + "g Co2E");
-    $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2) + " g Co2E")
+    container.text("總減碳量: " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "g Co2E");
+    $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " g Co2E")
 }
 //點擊列表中的record
 function recordClick(recordId){
@@ -127,7 +127,7 @@ function showNewChart(nowRecords, type) {
         });
     }
 
-    nowFP = parseFloat(nowFP).toFixed(2);
+    nowFP = parseFloat(nowFP).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     if(type === "全部" || type === "init") type = "總";
     let option = {
         grid: {
@@ -143,7 +143,7 @@ function showNewChart(nowRecords, type) {
             textStyle: {
                 fontFamily: "'cwTeXYen', 'Mandali', sans-serif",
                 textAlign: 'center',
-                fontSize: 25,
+                fontSize: 23,
                 fontWeight: 'normal'
             },
             left: 'center',
@@ -193,7 +193,6 @@ function showNewChart(nowRecords, type) {
                     length2: 45
                 },
                 labelLayout: {
-                    dy: -10,
                     hideOverlap: true
                 },
                 data: seriesData
