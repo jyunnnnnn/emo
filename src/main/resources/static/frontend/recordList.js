@@ -38,9 +38,24 @@ function showNowRecordInFoWindow(nowRecord){
     // 找所有marker
     for (let i = 0; i < markers.length; i++) {
         if (markers[i].getPosition().equals(centerPosition)) {
+            //關閉上一個打開的infoWindow，及清除路線
+            if (currentMarker.infoWindow) {
+                currentMarker.infoWindow.close();
+            }
+            if(currentInfoWindowRecord.classType=="交通"){
+                clearMapLines();
+                removeDirections();
+            }
             currentInfoWindowRecord = nowRecord;
             currentMarker=markers[i];
             markers[i].infoWindow.open(map,markers[i]);
+            // 從紀錄列表點開也要呈現路線
+            if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+                directionsDraw(currentInfoWindowRecord.lineOnMap);
+            }
+            else if(currentInfoWindowRecord.classType=="交通"){
+                drawLine(currentInfoWindowRecord);
+            }
             //console.log("InFoWindow OK")
             break;
         }
