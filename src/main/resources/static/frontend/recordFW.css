@@ -526,10 +526,12 @@ svg:hover .detail {
 
     #settingButton{
         top: 4%;
+        transform:scale(1.2);
     }
     .showUser{
         top: 4%;
-        left: 15%;
+        left: 12%;
+        transform:scale(1.2);
     }
     .recordContainer {
         transform: scale(0.8);
