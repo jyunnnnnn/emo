@@ -18,7 +18,7 @@ function deleteMultiRecord(){
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
             let nowType = $("#category option:selected").text();
 
-            console.log(nowType);
+            //console.log(nowType);
             let sortedRecords = records;
             if (nowType != "全部") {
                 sortedRecords = sortedRecords.filter(record => record.classType === nowType);
@@ -29,7 +29,7 @@ function deleteMultiRecord(){
         } else {
             alert('沒有選中任何記錄');
         }
-        console.log(records);
+        //console.log(records);
     } else{
         console.log("取消刪除");
     }    
@@ -42,7 +42,7 @@ function deleteSingleRecord(){
         deleteRecord(currentInfoWindowRecord.recordId);
         $('#recordFW').css("display", "none");
         $('#routeFW').css("display", "none");
-        console.log(records);
+        //console.log(records);
     } else{
         console.log("取消刪除");
     }
@@ -63,11 +63,15 @@ function deleteRecord(recordId){
         }
     });//刪除資料庫裡的record
     let markerToDelete = markers.find(function(marker) {
-        return marker.id === recordId;
-    });//在Markers裡找指定Marker
+        return marker.id === recordId; //在Markers裡找指定Marker
+    });
+
     if (markerToDelete) {
         markerToDelete.infoWindow.close();
         markerToDelete.setMap(null);
+        //刪除時刪掉打開的路線
+        removeDirections();
+        clearMapLines();
         // 在 markers 移除
         let index = markers.indexOf(markerToDelete);
         if (index > -1) {

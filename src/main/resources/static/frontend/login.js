@@ -378,9 +378,10 @@ function handleCallback(response) {
         data: JSON.stringify(profile),
         success: function (response) {
                 let userData = response.user;
+                console.log(userData)
+                localStorage.setItem("username",response.username);
                 localStorage.setItem('EmoAppUser', userData);
-                alert(response.message);
-                window.location.href = response.location;
+                window.location.href=response.location;
         },
         error: function (response) {
             console.log("使用google帳號登入失敗");

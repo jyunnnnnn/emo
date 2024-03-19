@@ -1,6 +1,4 @@
 let intervalId;//時間間隔
-let recordedPositions = [];//路線紀錄(點)
-let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
 let distanceThreshold = -1; // 初始化地圖位置
 let accuracyThreshold = 100000; //
@@ -29,8 +27,6 @@ function success(pos){
             currentLocation = {
                 lat: newLat,
                 lng: newLng,
-                TimeStamp_milliseconds: pos.timestamp,
-                accuracy: accuracy
             };
             updateCurrentCircle();
         }else {
@@ -66,7 +62,6 @@ function startRecording() {
     isRecording = true;
 
     recordedPositions = []; // 清空上一個路線紀錄
-    mapLines =[];
     //清除上一次距離
     kilometer = 0;
 
@@ -89,35 +84,8 @@ function startRecording() {
 }
 
 function stopRecording() {
-    //一次平滑所有資料(KF)
-    // const kf = new KalmanFilter();
-    // let smoothedPositions = [];
-    // recordedPositions.forEach(position => {
-    //     kf.process(position.lat, position.lng, position.timestamp, position.accuracy);
-    //     smoothedPositions.push(kf.getState());
-    // });
-    // let oldDataString = JSON.stringify(recordedPositions);
-    // let newDataString = JSON.stringify(smoothedPositions);
-    // console.log("舊資料"+oldDataString +"\n新資料"+newDataString);
-    // alert("舊資料"+recordedPositions.length +"\n新資料"+smoothedPositions.length);
-    // let smoothedPath = new google.maps.Polyline({
-    //     path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
-    //     geodesic: true,
-    //     strokeColor: '#FF0000',
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    // });
-    //
-    // smoothedPath.setMap(map);
-    // console.log("紅線為修正後路線");
 
-    // 用大葉大學的方法
-    // const sm = new smoothTracking(recordedPositions);
-    // sm.smoothData();
-    // smoothedPositions = sm.getData();
-    // let oldDataString = JSON.stringify(recordedPositions);
-    // let newDataString = JSON.stringify(smoothedPositions);
-    // alert("舊資料"+oldDataString +"\n新資料"+newDataString);
+
     // let smoothedPath = new google.maps.Polyline({
     //     path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
     //     geodesic: true,
@@ -132,13 +100,8 @@ function stopRecording() {
     $('#startRecording').text('路線記錄');
     isRecording = false;
 
-    //這裡存一下recordedPositions 要顯示十一次重畫
-    //或在clearMapLines 存mapLines資料
-    //好像?抓mapLines就可以直接出現線條(還未確定，等資料庫可新增這筆在測試)
-    //存kilometer
 
-    //console.log(mapLines);
-    console.log("kilometer: "+kilometer.toFixed(3)+" KM");
+    //console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
 
@@ -165,21 +128,19 @@ function stopRecording() {
         checked.prop('checked', false);
     }
     // 清空位置紀錄
-    recordedPositions = []; // 放在開始記錄清，以免存資料不同步
+
     // smoothedPositions = [];
     // 移除地圖上的線條
-    clearMapLines(mapLines);
+    clearMapLines();
+    // 修正路線
+    processAllPoints(recordedPositions);
 }
 
 function recordLocation() {
     // 儲存記錄的位置
     recordedPositions.push(currentLocation);
     //只有在路線紀錄時強制跑到中心
-    cL ={
-        lat: currentLocation.lat,
-        lng: currentLocation.lng,
-    }
-    map.panTo(cL);
+    map.panTo(currentLocation);
     // 在記錄的位置之間繪製線條
     if (recordedPositions.length >= 2) {
         //一段一段畫
@@ -202,13 +163,14 @@ function recordLocation() {
     }
 }
 
-//地圖路線一次重畫
-function drawLine(tracking){
+//畫路線圖
+function drawLine(cRecord){
     //console.log(tracking);
+    let tracking = cRecord.lineOnMap;
     let path = new google.maps.Polyline({
         path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
-        strokeColor: '#0D5025',
+        strokeColor: '#FFFFFF',
         strokeOpacity: 1,
         strokeWeight: 4
     });
@@ -217,9 +179,10 @@ function drawLine(tracking){
 }
 
 //清線
-function clearMapLines(line) {
-    for (let i = 0; i < line.length; i++) {
-        line[i].setMap(null);
+function clearMapLines() {
+    for (let i = 0; i < mapLines.length; i++) {
+        mapLines[i].setMap(null);
     }
-    mapLines = [];
+    mapLines=[];
 }
+

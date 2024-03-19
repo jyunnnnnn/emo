@@ -10,20 +10,22 @@ function saveRecord(classType, type, data_value){
         footprint:null,
         time: getFormattedDate(),
         recordId:null,
-        lineOnMap: recordedPositions,
-        trafficKM:kilometer
+        lineOnMap: []
     }
     let now = new Date();
     record.recordId = now.getTime();
     record.classType = classType;
     record.type = type;
     record.data_value = data_value;
-    console.log(record);
+    //console.log(record);
     record.footprint = calculateFootprint(type,data_value);
+    if(record.classType=="交通"){
+        record.lineOnMap=recordedPositions;
+    }
     if(Object.values(record).includes(null)){
        alert("請重新登入");
        window.location.href = '/login';
-       console.log(record);
+       //console.log(record);
        return;
     }else{
         uploadRecordToBackend(record);
@@ -99,35 +101,58 @@ function addMarker(recordToAdd) {
             id:recordToAdd.recordId
         });
 
-       //小改
        let infoWindowContent = `
            <div>
                <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'cwTeXYen', 'Mandali', sans-serif; font-weight: bold;">${recordToAdd.type}</h6>
-               <p style="padding:3px; margin:3px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">減少的碳足跡為：${recordToAdd.footprint}g Co2E</p>
+               <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px;padding-top: 14px;  padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">
+                <p style="font-size: 16px;">減少的碳足跡為：</p>
+                <p style="font-size: 20px; font-weight: bold; padding-right: 5px; padding-bottom: 3px;">${recordToAdd.footprint}</p>
+                <p style="font-size: 10px;"> g Co2E</p>
+               </div>
+               <p style="color: #ffffff; background-color: #166a29; border-radius: 20px; padding-left: 10px; padding-right: 10px;  margin:3px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;"></p>
                <p style="padding:3px; margin:3px; font-size: 15px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">${recordToAdd.time}</p>
                <button id="editButton" type="button" style="position: absolute; right: 20px; bottom: 15px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;" onclick="recordModal()">編輯</button>
            </div>`;
            //class="btn btn-secondary"
        let infoWindow = new google.maps.InfoWindow({
-           content: infoWindowContent
+           content: infoWindowContent,
+           maxWidth: '350px'
        });
 
        marker.infoWindow = infoWindow;
        markers.push(marker);
+       // 幫current初始化
+       currentInfoWindowRecord = recordToAdd;
+       currentMarker = marker;
 
         // 監聽 marker click 事件
        marker.addListener('click', e => {
-            infoWindow.open(this.map, marker);
-            currentInfoWindowRecord = recordToAdd;
-            currentMarker = marker;
-            if (currentInfoWindowRecord.classType=="交通"){
-             drawLine(currentInfoWindowRecord.lineOnMap);
-            }
+            //關閉上一個打開的infoWindow，及清除路線
+           if (currentMarker.infoWindow) {
+               currentMarker.infoWindow.close();
+           }
+           if(currentInfoWindowRecord.classType=="交通"){
+               removeDirections();
+               clearMapLines();
+           }
+
+           infoWindow.open(this.map, marker);
+           currentInfoWindowRecord = recordToAdd;
+           currentMarker = marker;
+           if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
+               directionsDraw(currentInfoWindowRecord.lineOnMap);
+           }
+           else if(currentInfoWindowRecord.classType=="交通"){
+               drawLine(currentInfoWindowRecord);
+           }
        });
 
         // 監聽 infoWindow 關閉事件
         infoWindow.addListener('closeclick', function() {
-            clearMapLines(mapLines);
+            if(currentInfoWindowRecord.classType=="交通"){
+                removeDirections();
+                clearMapLines();
+            }
         });
     }
 }

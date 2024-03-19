@@ -51,10 +51,9 @@ class EcoRecordServiceTest {
                     "testField1",
                     "testField2",
                     Arrays.asList(
-                            new DotOfLine(1.0, 1.0, 2.0,1.0),
-                            new DotOfLine(1.0, 3.0, 4.0,1.0)
-                    ),
-                    0.0
+                            new DotOfLine(1.0, 1.0),
+                            new DotOfLine(1.0, 3.0)
+                    )
             );
             testList.add(tmp);
         }
@@ -107,7 +106,7 @@ class EcoRecordServiceTest {
         //抓取特定使用者的所有紀錄資訊
     void getSpecificUserRecordsTest() {
 
-        String targetUser = "test";
+        String targetUser = "testUserId";
         when(recordRepository.findAllByUserId(targetUser)).thenReturn(testList);
 
         List<EcoRecord> result = this.ecoRecordService.getSpecificUserRecords(targetUser);

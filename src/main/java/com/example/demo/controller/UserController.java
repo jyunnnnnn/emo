@@ -4,11 +4,18 @@ import com.example.demo.config.SecurityConfig;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @RestController
 @RequestMapping("/user")
@@ -25,6 +34,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationManager authenticationManagerBean;
 
     @Autowired
     public UserController(UserService userService) {
@@ -49,10 +60,11 @@ public class UserController {
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號已存在"));
     }
 
-    //登入
+    //登入後初始化map頁面使用者資訊
     @GetMapping("/init")
     public ResponseEntity<?> loginUser(@RequestParam("username") String username) throws JsonProcessingException {
         UserInfo userInfoData = this.userService.findUserDataFromUsername(username);
+        userInfoData.setPassword("不給你看");
         System.out.println(userInfoData);
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(userInfoData);
@@ -113,7 +125,6 @@ public class UserController {
         UserInfo result = this.userService.fetchOneUserByUsername(username);
 
 
-
         if (result == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
         }
@@ -165,26 +176,31 @@ public class UserController {
 
     //Google登入
     @PostMapping("/googleLogin")
-    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws Exception {
+    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo, HttpServletRequest req) throws Exception {
         //抓取該google帳戶userId
         UserInfo result = this.userService.googleLogin(googleInfo);
-
-
-        //google登入失敗
-        if (result == null)
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用google帳號登入失敗"));
 
 
         //轉換json字串
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(result);
 
+        System.out.println(userDataJson);
+
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(result.getUsername(),"dummy");
+
+        Authentication auth = authenticationManagerBean.authenticate(authReq);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+        HttpSession session = req.getSession(true);
+        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
+
 
         //登入成功
         Map<String, String> response = new HashMap<>();
         response.put("message", "登入成功!");
-        response.put("location", "/map");
-        response.put("user", userDataJson);
+        response.put("location", "map");
+        response.put("username", result.getUsername());
         return ResponseEntity.ok(response);
     }
 }

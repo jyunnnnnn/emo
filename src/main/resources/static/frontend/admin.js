@@ -200,6 +200,10 @@ function setData(parsedData){
         }else{
             $('#save').prop('disabled', false);
         }
+
+
+
+
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
         $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
     });
@@ -479,8 +483,11 @@ function toggleButtons() {
 }
 
 function saveData(){
-    if(!isSvgSetting){//是一般設定
+
+
+    if(!isSvgSetting){//是一般設定(環保項目新增、修改)
         createBasicObject(parsedData);  //創立要傳送的物件
+
         if(selectedOption.includes("base")){    //傳送新增的base物件
             console.log("傳送base");
             console.log("sendBase",sendBase);
@@ -512,15 +519,15 @@ function saveData(){
                 }
             });
         }
-    }else{
+    }else{//svg相關設定
           createSvgObject(svgData);//創立要傳送的svg物件
           console.log("傳送svg物件");
           console.log("sendSvgData",sendSvgData);
           //傳送新增或修改的svg物件
           $.ajax({
               type: 'PUT',
-              url: '',
-              contentType: '',
+              url: '/api/updateSvg',
+              contentType: 'application/json',
               data: JSON.stringify(sendSvgData),
               success: function(response) {
                     //console.log(response); // 成功更新時的處理邏輯

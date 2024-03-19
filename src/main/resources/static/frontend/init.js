@@ -4,7 +4,7 @@ let FootprintData = [];//各環保行為資訊 物件陣列
 let svgData;
 let records = [];//進入系統時把該用戶的環保紀錄存進去 //改名
 let User;//使用者 物件
-let currentLocation;//當前經緯度，時間，精確度
+let currentLocation;//當前經緯度
 let cL; // currentLocation的經緯
 let watchId; //當前位置ID
 let options;//地圖精準度 更新當前位置function用
@@ -13,13 +13,10 @@ let currentInfoWindowRecord; // 目前 infoWindow 的內容
 let currentMarker;//目前Marker
 let markers =[];//所有marker
 let categories = {};
-
-async function initMap() {
-  //@ts-ignore
-
-
-
-}
+let recordedPositions = [];//路線紀錄(點)
+let testFixPoints=[]; // 路線修正後的點點
+let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
+let directionsDisplay;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -29,18 +26,12 @@ function initMap() {
                 currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
-                    TimeStamp_milliseconds: position.timestamp,
-                    accuracy: position.coords.accuracy
                 };
                  console.log("抓取位置成功 開始建構地圖");
                 // 創建地圖
                 const { Map } = await google.maps.importLibrary("maps");
-                cL ={
-                    lat: currentLocation.lat,
-                    lng: currentLocation.lng,
-                }
                 map = new Map(document.getElementById("map"), {
-                        center: cL,
+                        center: currentLocation,
                         zoom: 18,
                         minZoom: 5, // 設定最小縮放級別
                         maxZoom: 20, // 設定最大縮放級別
@@ -50,7 +41,274 @@ function initMap() {
                         streetViewControl: false,
                         rotateControl: false,
                         fullscreenControl: false,
-                        mapId: "92b0df6f653781da"
+                        //mapId: "92b0df6f653781da",
+                        styles: [
+                              {
+                                 featureType: 'poi',
+                                 elementType: 'labels',
+                                 stylers: [
+                                    { visibility: 'off' }
+                                 ]
+                              },
+                              {
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#1d2c4d"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#8ec3b9"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "elementType": "labels.text.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#1a3646"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "administrative.country",
+                                 "elementType": "geometry.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#4b6878"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "administrative.land_parcel",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#64779e"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "administrative.province",
+                                 "elementType": "geometry.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#4b6878"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "landscape.man_made",
+                                 "elementType": "geometry.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#334e87"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "landscape.natural",
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#023e58"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "landscape.natural.landcover",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#27539b"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "landscape.natural.terrain",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#1d2e49"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "poi",
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#283d6a"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "poi",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#6f9ba5"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "poi",
+                                 "elementType": "labels.text.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#1d2c4d"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "poi.park",
+                                 "elementType": "geometry.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#023e58"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "poi.park",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#3C7680"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road",
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#304a7d"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#98a5be"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road",
+                                 "elementType": "labels.text.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#1d2c4d"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road.highway",
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#2c6675"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road.highway",
+                                 "elementType": "geometry.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#255763"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road.highway",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#b0d5ce"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "road.highway",
+                                 "elementType": "labels.text.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#023e58"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "transit",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#98a5be"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "transit",
+                                 "elementType": "labels.text.stroke",
+                                 "stylers": [
+                                   {
+                                     "color": "#1d2c4d"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "transit.line",
+                                 "elementType": "geometry.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#283d6a"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "transit.station",
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#3a4762"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "water",
+                                 "elementType": "geometry",
+                                 "stylers": [
+                                   {
+                                     "color": "#0e1626"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "water",
+                                 "elementType": "geometry.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#4d6193"
+                                   }
+                                 ]
+                               },
+                               {
+                                 "featureType": "water",
+                                 "elementType": "labels.text.fill",
+                                 "stylers": [
+                                   {
+                                     "color": "#4e6d70"
+                                   }
+                                 ]
+                               }
+                        ],
                     });
                 console.log("獲取標記及訊息窗");
                 // 一開始 當前位置標記
@@ -67,7 +325,7 @@ function initMap() {
                    type:'GET',
                    url:'/user/init?username='+localStorage.getItem("username")+"",
                    success: function(response){
-                        console.log(response.user);
+                        //console.log(response.user);
                        let userData=response.user;
                        localStorage.setItem("EmoAppUser",userData);
 
@@ -88,6 +346,7 @@ function initMap() {
         alert("瀏覽器不支持地理位置功能");
     }
 }
+
 
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
@@ -113,13 +372,9 @@ function updateCurrentCircle() {
     // 清除舊位置的圈圈
     if (circle) {circle.setMap(null);}
     // 在新當前位置上標記圈圈
-    cL ={
-        lat: currentLocation.lat,
-        lng: currentLocation.lng,
-    }
     circle = new google.maps.Marker({
         map,
-        position: cL,
+        position: currentLocation,
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 5
@@ -176,6 +431,7 @@ function FPConstructor(jsonData) {
         }
     }
     initCategory(jsonData);
+    console.log(jsonData);
 }
 function initCategory(jsonData){
     $('#category').append($('<option>', {
@@ -322,7 +578,7 @@ function svgConstructor(svgData) {
                         }
                         $('#routeCalculate').text(showExpectedFP + " gCo2E");
                          let target = FootprintData.find(item => item.type === type);
-                         $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
+                         $("#routeDetail").text("減碳量計算公式為:'當前克數'x("+target.type+"的排放係數'"+target.coefficient+"'-基準'"+target.baseline+"'的排放係數'"+target.baseCoefficient+"')");
                     } else {
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }
@@ -389,4 +645,28 @@ function logoutAccount(){
     localStorage.removeItem('EmoAppUser');
     localStorage.removeItem("username");
     google.accounts.id.disableAutoSelect();
+}
+function directionsDraw(rec){
+    let directionsService = new google.maps.DirectionsService();
+    let request = {
+        origin: {lat:rec[0].lat,
+                lng:rec[0].lng},
+        destination: {lat:rec[rec.length-1].lat,
+                      lng:rec[rec.length-1].lng},
+        travelMode: 'TRANSIT',
+        transitOptions: {
+            modes: ['SUBWAY']
+        },
+    };
+    directionsService.route(request, function(response) {
+        directionsDisplay = new google.maps.DirectionsRenderer({
+            map: map,
+            directions: response,
+        });
+    });
+}
+function removeDirections() {
+    if (directionsDisplay) {
+        directionsDisplay.setMap(null);
+    }
 }

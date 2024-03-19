@@ -122,7 +122,6 @@ $('#type').on('change', function(){
     label.append(input, span);
     gram.append(label);
      let target = FootprintData.find(item => item.type === selected);
-        console.log(target);
         $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
 });
 // 監聽克數變化
@@ -145,9 +144,6 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
         showExpectedFP = parseFloat(calculateFootprint(type.text(), data_value)).toFixed(2);
     }
     $('#recordCalculate').text(showExpectedFP  + " gCo2E");
-//    let target = FootprintData.find(item => item.type === type.text());
-//    console.log(target);
-//    $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
 });
 $('#gram').on('input', function(event) {
     let type = $('#type option:selected');
@@ -158,7 +154,6 @@ $('#gram').on('input', function(event) {
     }
     $('#recordCalculate').text(showExpectedFP + " gCo2E");
     let target = FootprintData.find(item => item.type === type.text());
-    console.log(target);
     $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
 });
 // 一般記錄儲存
@@ -177,7 +172,6 @@ $('#saveRecord').on('click', function () {
        alert("請輸入正數");
        return;
     }else{
-        console.log(type.text())
         saveRecord(classType, type.text(), data_value);
         $('#recordFW').css("display", "none");
     }
@@ -326,6 +320,7 @@ $('#saveEditRecord').on('click', function() {
 // 修改懸浮視窗變成歷史紀錄
 function recordModal(){
     // 顯示懸浮窗
+    $("#recordDetail").text();
     if(currentInfoWindowRecord.classType === "交通"){
         $('#routeFW').css("display", "flex");
         $('#routeFW').css("position", "fixed");
@@ -333,16 +328,25 @@ function recordModal(){
         $('#updateTrafficRecord').css("display", "block");
         $('#deleteTrafficRecord').css("display", "block");
 
+        let checked = $('input[name="engine"]:checked');
+        let checkedVal = $('input[name="engine"]:checked').val();
+        if(checkedVal != undefined){
+            $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
+            checked.prop('checked', false);
+        }
+
         let type;
         $('input[name="engine"]').each(function() {
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.type) {
                 type = $(this).val();
                 $(this).prop("checked", true);
-                $('#' + type + 'Icon').html(svgData.svgImages.transportation[type + 'Hover']);
+                let changeEvent = new Event('change');
+                $(this).trigger('change');
             }
         });
-        let target = FootprintData.find(item => item.type === type);
-        $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
+
+        let target = FootprintData.find(item => item.index === type);
+        $("#routeDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
         $('#kilometer').val(currentInfoWindowRecord.data_value);
         $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
     } else {
@@ -356,7 +360,8 @@ function recordModal(){
             if ($(this).next('.radio-tile').find('.radio-label').text() === currentInfoWindowRecord.classType) {
                 let classType = $(this).val();
                 $(this).prop("checked", true);
-                $('#' + classType + 'Icon').html(svgData.svgImages[classType][classType + 'Hover']);
+                let changeEvent = new Event('change');
+                $(this).trigger('change');
             }
         });
 
@@ -372,6 +377,7 @@ function recordModal(){
         }));
 
         let options;
+        let targer;
         for(let selectData of selectDatas){
             if(selectData.type == currentInfoWindowRecord.type){
                 select.append($('<option>', {
@@ -379,6 +385,7 @@ function recordModal(){
                     selected: true
                 }));
                 options = selectData.option;
+                target=selectData;
             } else {
                 select.append($('<option>', {
                     text: selectData.type
@@ -422,5 +429,7 @@ function recordModal(){
         $('#gram').val(currentInfoWindowRecord.data_value);
         $('#gram').prop("disabled", false);
         $('#recordCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
+        $("#recordDetail").text("減碳量計算公式為'克數'x("+target.type+"x其排放係數'"+target.coefficient+"'減去基準'"+target.baseline+"'x其排放係數'"+target.baseCoefficient+"')");
+
     }
 }

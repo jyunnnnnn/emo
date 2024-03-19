@@ -14,6 +14,10 @@ public class MyUserDetails implements UserDetails {
         this.userInfo = userInfo;
     }
 
+    public String getAuthority() {
+        return userInfo.getAuthority();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(userInfo.getAuthority()));
