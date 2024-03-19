@@ -150,6 +150,7 @@ function showNewChart(nowRecords, type) {
             top: '40%'
         },
         tooltip: {
+            formatter: '{b}: {c} gCo2E',
             trigger: 'item'
         },
         series: [
@@ -165,18 +166,34 @@ function showNewChart(nowRecords, type) {
                     borderWidth: 2,
                 },
                 label: {
-                    formatter: '{b}: {d}%',
-                    padding: [0, -40],
-                    fontSize: 15,
+                    formatter: '{b|{b}}\n{per|{d}%}',
+                    backgroundColor: '#F8F9FD',
+                    borderColor: '#8C8D8E',
+                    borderRadius: 4,
+                    padding:[-5,3,8],
+                    rich: {
+                        b: {
+                            color: '#4C5058',
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            align: 'center',
+                            lineHeight: 33
+                        },
+                        per: {
+                            padding:[-5,0],
+                            color: '#4C5058',
+                            align: 'center',
+                            borderRadius: 4
+                        }
+                    },
                     fontFamily: "'cwTeXYen', 'Mandali', sans-serif"
                 },
                 labelLine: {
-                    length: 10,
-                    length2: 30,
+                    length1: 5,
+                    length2: 45
                 },
                 labelLayout: {
-                    verticalAlign: "bottom",
-                    dy: -5,
+                    dy: -10,
                     hideOverlap: true
                 },
                 data: seriesData
