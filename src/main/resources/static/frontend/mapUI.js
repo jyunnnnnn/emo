@@ -359,7 +359,7 @@ function recordModal(){
         });
 
         let target = FootprintData.find(item => item.index === type);
-        $("#routeDetail").text(questionMark[target.type]);
+        $("#routeDetail").html(questionMark[target.type]);
         $('#kilometer').val(currentInfoWindowRecord.data_value);
         $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
     } else {
