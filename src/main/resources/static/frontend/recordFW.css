@@ -534,7 +534,4 @@ svg:hover .detail {
         left: 12%;
         transform:scale(1.2);
     }
-    .recordContainer {
-        transform: scale(0.8);
-    }
 }
