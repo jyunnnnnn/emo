@@ -188,44 +188,49 @@ function setData(parsedData){
     //新增一般類別的選項
     let optionCard = '<select name="options" id="basic-options"></select>';
     $('#manage-container').append(optionCard);
+    //新增所有大類別的option
+    for(let i =0; i<categories.length; i++){
+        let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
+//        category += '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
+//        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
+//        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
+        $('#basic-options').append(category);
+    }
+    optionCard = '<select name="options2" id="basic-options2"></select>';
+    $('#manage-container').append(optionCard);
+//    for(let i =0; i<categories.length; i++){
+        let category = '`<option value="content">content</option>';
+        category += '`<option value="color">color</option>';
+        category += '`<option value="base">base</option>';
+        category += '`<option value="units">units</option>';
+        $('#basic-options2').append(category);
+//    }
     //切換顯示的區塊
-    $('#basic-options').on('change', function() {
-        selectedOption = $(this).val();
+    //在這裡組合兩個選項的值 上面改成不帶類別名的選項
+    $('#basic-options2, #basic-options').on('change', function() {
+        selectedOption = $('#basic-options').val();//ex. daily transportaion
+        selectedOption2 = $('#basic-options2').val();// ex. content color
+        console.log("sel", selectedOption);
+        console.log("sel2", selectedOption2);
         //unit color不需要新增 禁用add按鈕
-        if (selectedOption.includes("unit") || selectedOption.includes("color")) {
+        if (selectedOption2.includes("unit") || selectedOption2.includes("color")) {
             $('#add').prop('disabled', true);
         } else {
             $('#add').prop('disabled', false);
         }
-        if (selectedOption.includes("unit")) {
+        if (selectedOption2.includes("unit")) {
             $('#save').prop('disabled', true);
         }else{
             $('#save').prop('disabled', false);
         }
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
-        $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
+        $('#' + selectedOption+'-'+selectedOption2).removeClass('d-none'); // 顯示所選擇的區塊
     });
-    //新增所有大類別的option
-    for(let i =0; i<categories.length; i++){
-        let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
-        category += '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
-        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
-        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
-        $('#basic-options').append(category);
-    }
-//    optionCard = '<select name="options" id="basic-options2"></select>';
-//    $('#manage-container').append(optionCard);
-//    for(let i =0; i<categories.length; i++){
-//        let category = '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
-//        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
-//        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
-//        $('#basic-options2').append(category);
-//    }
     for(let i =0; i<categories.length; i++){
      //新增整塊頁面
          let card ;
          if(categories[i] == "daily"){
-           card = '<div id="'+categories[i]+'" class="basic-block"><br>';
+           card = '<div id="'+categories[i]+'-content" class="basic-block"><br>';
             card +='<div class="form-group">'+
                              '<label>項目索引</label>'+
                              '<select name="types" id="types'+i+'">'+
@@ -279,7 +284,7 @@ function setData(parsedData){
                 $('#small').val(parsedData[categories[i]].content[0].option.小);
 
          }else{
-            card = '<div id="'+categories[i]+'" class="basic-block d-none"><br>';
+            card = '<div id="'+categories[i]+'-content" class="basic-block d-none"><br>';
             card +='<div class="form-group">'+
                         '<label>項目索引</label>'+
                         '<select name="types" id="types'+i+'">'+
@@ -440,13 +445,15 @@ function toggleButtons() {
     if (isSvgSetting) {
         //選單切換
         $('#basic-options').removeClass('d-none');
+        $('#basic-options2').removeClass('d-none');
         $('#svg-options').addClass('d-none');
         $('.svgView').addClass('d-none');
         $('.svg-block').addClass('d-none'); //隱藏所有svg區塊
       //新增svg的區塊隱藏
         $('.addSvg-group').remove();
-        $('#daily').removeClass('d-none');//恢復顯示第一個
+        $('#daily-content').removeClass('d-none');//恢復顯示第一個
         $('#basic-options').val('daily');
+        $('#basic-options2').val('content');
         document.getElementById('svg-setting').disabled = false;
         document.getElementById('basic-setting').disabled = true;
         //恢復預設值 輸入框
@@ -480,6 +487,7 @@ function toggleButtons() {
     //按下svg button
     //選單切換
         $('#basic-options').addClass('d-none');
+        $('#basic-options2').addClass('d-none');
         $('#svg-options').removeClass('d-none');
         $('.svgView').removeClass('d-none');
         $('.basic-block').addClass('d-none'); //隱藏所有一般區塊
@@ -559,8 +567,9 @@ function saveData(){
 }
 
 function createBasicObject(parsedData){
-        selectedOption = $('#basic-options').val();
-//        console.log("selectedOption", selectedOption); //ex daily, daily-base
+        selectedOption = $('#basic-options').val();//ex. daily transportaion
+        selectedOption2 = $('#basic-options2').val();// ex. content color
+//        console.log("selectedOption", selectedOption);
 //        console.log("selectedIndex", selectedIndex);
         const basicCategory = Object.keys(parsedData);
         let targetCategory;
@@ -574,7 +583,7 @@ function createBasicObject(parsedData){
         let baseName = $('#'+targetCategory+'-baseName').val();
         let baseNumber = $('#'+targetCategory+'-baseNumber').val();;
         sendBase = {
-            "環保類別":{
+            [targetCategory]:{
                 "base":{
                    [baseName]: baseNumber
                 },
@@ -612,7 +621,7 @@ function createBasicObject(parsedData){
             };
          }
         sendBasicData = {
-            "環保類別":{
+            [targetCategory]:{
                 "base":parsedData[targetCategory].base,
                 "color": parsedData[targetCategory].color,
                 "content": content ,
