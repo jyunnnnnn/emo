@@ -527,8 +527,8 @@ function saveData(){
             console.log("sendBasicData",sendBasicData);
             $.ajax({
                 type: 'PUT',
-                url: '',
-                contentType: '',
+                url: '/config/updateRecord',
+                contentType: 'application/json',
                 data: JSON.stringify(sendBasicData),
                 success: function(response) {
                     //console.log(response); // 成功更新時的處理邏輯
@@ -611,14 +611,26 @@ function createBasicObject(parsedData){
                 "baseline": $('#baseline'+targetNum).val()
             };
          }
-        sendBasicData = {
-            "環保類別":{
-                "base":parsedData[targetCategory].base,
-                "color": parsedData[targetCategory].color,
-                "content": content ,
-                "name": parsedData[targetCategory].name
-            }
-        };
+         if(selectedOption.includes("daily")){
+             sendBasicData = {
+                         "daily":{
+                             "base":parsedData[targetCategory].base,
+                             "color": parsedData[targetCategory].color,
+                             "content": content ,
+                             "name": parsedData[targetCategory].name
+                         }
+             };
+         }else{
+            sendBasicData = {
+                 "transportation":{
+                     "base":parsedData[targetCategory].base,
+                     "color": parsedData[targetCategory].color,
+                     "content": content ,
+                     "name": parsedData[targetCategory].name
+                 }
+            };
+         }
+
 //        console.log("sendBasicData",sendBasicData);
 }
 

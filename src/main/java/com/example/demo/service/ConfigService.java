@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.RecordItem;
+import com.example.demo.entity.updateRecordRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,7 @@ public class ConfigService {
 
         //遍歷目標項目是否存在
         for (RecordItem element : content) {
+
             if (element.getIndex() == newItem.getIndex()) {//將目標項目從List中移除
                 content.remove(element);
                 break;
@@ -67,6 +69,29 @@ public class ConfigService {
         updateConfiguration(newJsonStr);
 
         return OK;
+    }
+
+    public void updateRecordClass(String categoryName, updateRecordRequest req) {
+        //更新設定檔內容物件
+        Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
+        RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
+        t2.setColor(req.getColor());
+        t2.setBase(req.getBase());
+        t2.setName(req.getName());
+        List<RecordItem> contents = t2.getContent();
+        for (int i = 0; i < contents.size(); i++) {
+            if (contents.get(i).getIndex().equals(req.getContent().getIndex())) {
+                contents.set(i, req.getContent());
+                break;
+            }
+        }
+        t2.setContent(contents);
+        t1.replace(categoryName, t2);
+        record.setRecordCategory(t1);
+        //修改設定檔文件
+        String newJsonStr = gson.toJson(record);
+        System.out.println(newJsonStr);
+        updateConfiguration(newJsonStr);
     }
 
     public String test() {
