@@ -10,7 +10,7 @@ function updateRecord(event, updateFW){
         data_value = $('#kilometer').val();
     } else {
         classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
-        type =  $('#type option:selected').text();
+        type = $('#type').find('.item.is-selected').text();
         data_value = $('#gram').val();
     }
 
@@ -90,7 +90,7 @@ function updateMarkerContent(newContent) {
                 <p style="font-size: 10px;">g Co2E</p>
                </div>
               <p style="padding:3px; margin:3px; font-size: 15px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">${newContent.time}</p>
-              <button id="editButton" type="button" style="position: absolute; right: 20px; bottom: 15px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;" onclick="recordModal()">編輯</button>
+              <button id="editButton" type="button" style="position: absolute; right: 3px; bottom: 0px; background-color: #6c757d; color: #fff; padding: 6px; border: none; cursor: pointer; border-radius: 5px; font-size: 20px; font-family: 'cwTeXYen', 'Mandali', sans-serif;" onclick="recordModal()">編輯</button>
           </div>`;
          //class="btn btn-secondary"
     if (currentMarker.infoWindow) {

@@ -149,7 +149,7 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
         $("#gram").val(value);
     }
 
-    let type = $('#type option:selected');
+    let type = $('#type').find('.item.is-selected');
     let data_value = $('#gram').val();
     let showExpectedFP = 0;
     if (data_value > 0){
@@ -158,7 +158,7 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
     $('#recordCalculate').text(showExpectedFP  + " gCo2E");
 });
 $('#gram').on('input', function(event) {
-    let type = $('#type option:selected');
+    let type = $('#type').find('.item.is-selected');
     let data_value = $('#gram').val();
     let showExpectedFP = 0;
     if (data_value > 0){
@@ -172,12 +172,13 @@ $('#gram').on('input', function(event) {
 $('#saveRecord').on('click', function () {
     event.preventDefault();
     let classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
-    let type = $('#type option:selected');
+    let type = $('#type').find('.item.is-selected');
+    console.log(type.text());
     let data_value = $('#gram').val();
     if(!classType){
         alert("請選擇類別");
         return;
-    }else if(type.attr('id') == "noAction"){
+    }else if(type.text() == ""){
         alert("請選擇行為");
         return;
     }else if(data_value <= 0){
@@ -381,29 +382,44 @@ function recordModal(){
         selectDatas = FootprintData.filter(function(item) {
             return item.classZH === currentInfoWindowRecord.classType;
         });
+        $('#select').attr('class', 'ts-select');
         select.empty();
-        select.append($('<option>', {
-            text: "請選擇一項行為",
-            selected: true,
-            disabled: true
-        }));
 
         let options;
-        let targer;
+        let target;
         for(let selectData of selectDatas){
             if(selectData.type == currentInfoWindowRecord.type){
-                select.append($('<option>', {
-                    text: selectData.type,
-                    selected: true
-                }));
-                options = selectData.option;
-                target=selectData;
-            } else {
-                select.append($('<option>', {
+                $('#selectedType').text(selectData.type);
+                let button = $('<button>', {
+                    class: "item is-selected",
+                    type: "button",
                     text: selectData.type
-                }));
+                });
+                button.on('click', function() {
+                    typeChange($(this).text());
+                    select.find('.item').removeClass('is-selected').addClass('item');
+                    $(this).addClass('is-selected');
+                    $('#selectedType').text($(this).text());
+                });
+                select.append(button);
+                options = selectData.option;
+                target = selectData;
+            } else {
+                let button = $('<button>', {
+                    class: "item",
+                    type: "button",
+                    text: selectData.type
+                });
+                button.on('click', function() {
+                    typeChange($(this).text());
+                    select.find('.item').removeClass('is-selected').addClass('item');
+                    $(this).addClass('is-selected');
+                    $('#selectedType').text($(this).text());
+                });
+                select.append(button);
             }
         }
+
 
         let gram = $('#gramRadios');
         gram.empty();
