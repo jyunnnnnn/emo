@@ -17,6 +17,7 @@ let recordedPositions = [];//路線紀錄(點)
 let testFixPoints=[]; // 路線修正後的點點
 let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
 let directionsDisplay;
+let questionMark = {};
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -407,6 +408,7 @@ function loadFootprintData() {
                 // 處理成功時的邏輯
                 const parsedData = JSON.parse(data);
                 FPConstructor(parsedData);//待改名
+                questionMarkConstructor(parsedData);
             },
             error: function(xhr, status, error) {
                let errorData = JSON.parse(xhr.responseText);
@@ -431,7 +433,15 @@ function FPConstructor(jsonData) {
         }
     }
     initCategory(jsonData);
-    console.log(jsonData);
+}
+// 載入小問號
+function questionMarkConstructor(jsonData) {
+    questionMark = {};
+    for(let [key,value] of Object.entries(jsonData)){
+        for(let [num,detail] of Object.entries(value.content)){
+            questionMark[detail.name] = detail.description;
+        }
+    }
 }
 function initCategory(jsonData){
     $('#category').append($('<option>', {
@@ -578,7 +588,7 @@ function svgConstructor(svgData) {
                         }
                         $('#routeCalculate').text(showExpectedFP + " gCo2E");
                          let target = FootprintData.find(item => item.type === type);
-                         $("#routeDetail").text("減碳量計算公式為:'當前克數'x("+target.type+"的排放係數'"+target.coefficient+"'-基準'"+target.baseline+"'的排放係數'"+target.baseCoefficient+"')");
+                         $("#routeDetail").html(questionMark[target.type]);
                     } else {
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }

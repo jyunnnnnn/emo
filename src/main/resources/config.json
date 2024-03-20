@@ -23,7 +23,7 @@
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "plastic",
-          "description": "比較對象為塑膠免洗杯 計算公式為:當前克數X(塑膠免洗杯之排放係數[1.95]-環保杯之排放係數[0])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為塑膠免洗杯\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前克數×排放係數(塑膠免洗杯[1.95]-環保杯[0])\n</span>"
         },
         {
           "option": {
@@ -37,7 +37,7 @@
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "paper",
-          "description": "比較對象為紙餐具 計算公式為:當前克數X(紙餐具之排放係數[0.242]-環保餐具之排放係數[0])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為紙餐具\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前克數×排放係數(紙餐具[0.242]-環保餐具[0])\n</span>"
         },
         {
           "option": {
@@ -51,7 +51,7 @@
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "plastic",
-          "description": "比較對象為塑膠袋 計算公式為:當前克數X(塑膠袋之排放係數[1.95]-環保袋之排放係數[0])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為塑膠袋\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前克數×排放係數(塑膠袋[1.95]-環保袋[0])\n</span>"
         }
       ],
       "name": "生活用品"
@@ -76,7 +76,7 @@
           "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-公車之排放係數[40])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-公車[40])\n</span>"
         },
         {
           "index": "MRT",
@@ -85,7 +85,7 @@
           "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-捷運之排放係數[40])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-捷運[40])\n</span>"
         },
         {
           "index": "train",
@@ -94,7 +94,7 @@
           "coefficient": 60.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-火車之排放係數[60])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-火車[60])\n</span>"
         },
         {
           "index": "HSR",
@@ -103,7 +103,7 @@
           "coefficient": 32.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "description": "比較對象為開車 計算公式為:當前公里數X(開車之排放係數[110]-高鐵之排放係數[32])"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-高鐵[32])\n</span>"
         }
       ],
       "name": "交通"

@@ -14,7 +14,7 @@ function showTotalFP(){
             totalFP += parseFloat(thisRecords[i].footprint, 10);
         }
     }
-    container.text("總減碳量: " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "g Co2E");
+    container.text("總減碳量：" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " g Co2E");
     $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " g Co2E")
 }
 //點擊列表中的record

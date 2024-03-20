@@ -132,11 +132,11 @@
     padding-left: 8px;
 }
 .detail {
-    width: 150px;
+    top: -50px;
+    width: 300px;
     text-align: center;
     display: inline-block;
     position: absolute;
-    top: 0;
     font-size: 14px;
     padding: 5px 8px;
     border-radius: 5px;
@@ -155,7 +155,8 @@
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 .questionMark:hover .detail {
-    top: -110px;
+    margin-right: 150px;
+    top: -50px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
