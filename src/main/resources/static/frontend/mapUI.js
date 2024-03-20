@@ -22,13 +22,8 @@ $('#openRecordModal').on('click', function() {
     $('#deleteRecord').css("display", "none");
 
     // 初始化行為選單
-    $('#type').empty();
-    $('#type').append($('<option>', {
-        disabled: true,
-        selected: true,
-        id: "noType",
-        text: "請先選擇類別"
-    }));
+    $('#select').attr('class', 'ts-select is-disabled');
+    $('#selectedType').text("請先選擇類別");
     // 初始化克數按鈕
     $('#gramRadios').empty();
     let label = $('<label>', {
@@ -60,8 +55,8 @@ $('#openRecordModal').on('click', function() {
 // 監聽類別變化
 function typeListener(){
     $('input[name="typeRadio"]').on('change', function() {
-        $('#initType').text("請先選擇行為");
         $('#gram').attr("placeholder", "請先選擇行為");
+        $('#gramRadios').find('span.name').text('請先選擇行為');
 
         let classType = $('input[name="typeRadio"]:checked').val();
         if(classType != ''){
@@ -69,29 +64,33 @@ function typeListener(){
             selectDatas = FootprintData.filter(function(item) {
                 return item.class === classType;
             });
+            $('#selectedType').text("請選擇一項行為");
+            $('#select').attr('class', 'ts-select');
             select.empty();
-            select.append($('<option>', {
-                text: "請選擇一項行為",
-                id: "noAction",
-                selected: true,
-                disabled: true
-            }));
             for(let selectData of selectDatas){
-                select.append($('<option>', {
+                let button = $('<button>', {
+                    class: "item",
+                    type: "button",
                     text: selectData.type
-                }));
+                });
+                button.on('click', function() {
+                    typeChange($(this).text());
+                    select.find('.item').removeClass('is-selected').addClass('item');
+                    $(this).addClass('is-selected');
+                    $('#selectedType').text($(this).text());
+                });
+                select.append(button);
             }
         }
     });
 }
 // 監聽行為變化
-$('#type').on('change', function(){
+function typeChange(selected){
     $("#gram").prop("disabled", true);
     $("#gram").val("");
     let gram = $('#gramRadios');
     $('#gram').attr("placeholder", "請選擇克數");
     gram.empty();
-    let selected = $('#type option:selected').text();
     let item;
     for(let selectData of selectDatas){
         if(selectData.type === selected){
@@ -136,7 +135,7 @@ $('#type').on('change', function(){
     gram.append(label);
     let target = FootprintData.find(item => item.type === selected);
     $("#recordDetail").html(questionMark[target.type]);
-});
+}
 // 監聽克數變化
 $('#gramRadios').on('change', 'input[type="radio"]', function() {
     let text = $(this).siblings('.name').text();

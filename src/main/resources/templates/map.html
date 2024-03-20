@@ -16,10 +16,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- 圓餅圖 -->
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <!-- 下拉式選單 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <!-- 載入字型 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
 
@@ -227,18 +229,19 @@
             <div id="classType">
             </div>
 
-            <label id="subType">
-                <div id="menu" style="display: block;">
-                    <!-- 行為選項 -->
-                    <select class="recordForm-control" id="type">
-                    </select>
-
-                    <!-- 克數選項 -->
-                    <div class="gram-inputs" id="gramRadios">
-                    </div>
-                    <input id="gram" name="gram" class="input" type="number">
+            <!-- 行為選項 -->
+            <div class="ts-select is-disabled" data-dropdown="select" id="select" style="width: 300px">
+                <div class="content" id="selectedType">
                 </div>
-            </label>
+            </div>
+            <div class="ts-dropdown is-bottom-right" style="width: 300px" data-name="select" data-position="bottom-start" id="type">
+            </div>
+
+            <!-- 克數選項 -->
+            <div class="gram-inputs" id="gramRadios">
+            </div>
+            <input id="gram" name="gram" class="input" type="number">
+
             <!-- 碳足跡及小問號 -->
             <div style="display: flex;justify-content: center; margin-top:5px; font-size:15px;">
                 <div>計算減碳量：</div>
