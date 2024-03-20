@@ -77,6 +77,7 @@ $(document).ready(function () {
                     }
                     $('#name'+i).val("");
                     $('#coefficient'+i).val("");
+                    $('#description'+i).val("");
                     //index選單改成輸入框
                     $('#types'+i).addClass("d-none");
                     let inputCard =  '<input type="text" id="newTypes'+i+'" >';
@@ -107,6 +108,7 @@ $(document).ready(function () {
                     }
                     $('#index'+i).val(parsedData[categories[i]].content[0].index);
                     $('#name'+i).val(parsedData[categories[i]].content[0].name);
+                    $('#description'+i).val(parsedData[categories[i]].content[0].description);
                     $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
                     $('#units'+i).val(parsedData[categories[i]].content[0].unit);
                     //console.log("unit", parsedData[categories[i]].content[0].unit);
@@ -200,10 +202,6 @@ function setData(parsedData){
         }else{
             $('#save').prop('disabled', false);
         }
-
-
-
-
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
         $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
     });
@@ -215,6 +213,14 @@ function setData(parsedData){
         category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
         $('#basic-options').append(category);
     }
+//    optionCard = '<select name="options" id="basic-options2"></select>';
+//    $('#manage-container').append(optionCard);
+//    for(let i =0; i<categories.length; i++){
+//        let category = '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
+//        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
+//        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
+//        $('#basic-options2').append(category);
+//    }
     for(let i =0; i<categories.length; i++){
      //新增整塊頁面
          let card ;
@@ -247,6 +253,10 @@ function setData(parsedData){
                                   '<input type="text" id="small">'+
                               '</div>'+
                           '</div><br>'+
+                           '<div class="form-group">'+
+                               '<label >描述</label>'+
+                               '<input type="text" class="description" id="description'+i+'">'+
+                           '</div><br>'+
                          '<div class="form-group">'+
                              '<label>係數</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
@@ -283,6 +293,10 @@ function setData(parsedData){
                       '<label>標籤顏色</label>'+
                       '<input type="color" id="color'+i+'" >'+
                     '</div> <br>'+
+                   '<div class="form-group">'+
+                       '<label >描述</label>'+
+                       '<input type="text" class="description" id="description'+i+'">'+
+                   '</div><br>'+
                     '<div class="form-group">'+
                         '<label>係數</label>'+
                         '<input type="text" id="coefficient'+i+'">'+
@@ -302,6 +316,7 @@ function setData(parsedData){
          }
         $('#name'+i).val(parsedData[categories[i]].content[0].name);
         $('#color'+i).val(parsedData[categories[i]].content[0].color);
+        $('#description'+i).val(parsedData[categories[i]].content[0].description);
         $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
         $('#units'+i).val(parsedData[categories[i]].content[0].unit);
         $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
@@ -404,6 +419,7 @@ function updateTableValues(selectedIndex) {
         // 根據索引位置更新表格的值
          $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
          $('#color'+targetNum).val(parsedData[targetCategory].content[index].color);
+         $('#description'+targetNum).val(parsedData[targetCategory].content[index].description);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
          $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
          $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
@@ -425,6 +441,7 @@ function toggleButtons() {
         //選單切換
         $('#basic-options').removeClass('d-none');
         $('#svg-options').addClass('d-none');
+        $('.svgView').addClass('d-none');
         $('.svg-block').addClass('d-none'); //隱藏所有svg區塊
       //新增svg的區塊隱藏
         $('.addSvg-group').remove();
@@ -442,6 +459,7 @@ function toggleButtons() {
              }
              $('#index'+i).val(parsedData[categories[i]].content[0].index);
              $('#name'+i).val(parsedData[categories[i]].content[0].name);
+             $('#description'+i).val(parsedData[categories[i]].content[0].description);
              $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
              $('#units'+i).val(parsedData[categories[i]].content[0].unit);
              //console.log("unit", parsedData[categories[i]].content[0].unit);
@@ -577,6 +595,7 @@ function createBasicObject(parsedData){
                 "index": $('#types'+targetNum).val(),
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
+                "description": $('#description'+targetNum).val(),
                 "coefficient": $('#coefficient'+targetNum).val(),
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
@@ -586,6 +605,7 @@ function createBasicObject(parsedData){
                 "index": $('#types'+targetNum).val(),
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
+                "description": $('#description'+targetNum).val(),
                 "coefficient": $('#coefficient'+targetNum).val(),
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
