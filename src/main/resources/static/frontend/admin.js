@@ -6,7 +6,8 @@ let selectedIndex;  //選擇的index名稱 ex daily的cup tableware
 let selectedOption; //選擇顯示的是哪個區塊 ex: daily, daily-base
 let sendBasicData = []; //  要傳送的一般物件
 let sendSvgData = [];   //  要傳送的svg物件
-let sendBase = [];   //  要傳送的base物件
+let sendBase = [];   //  要傳送的新增的base物件
+let sendColor = [];   //  要傳送的新增的color物件
 
 
 $(document).ready(function () {
@@ -188,44 +189,47 @@ function setData(parsedData){
     //新增一般類別的選項
     let optionCard = '<select name="options" id="basic-options"></select>';
     $('#manage-container').append(optionCard);
+    //新增所有大類別的option
+    for(let i =0; i<categories.length; i++){
+        let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
+//        category += '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
+//        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
+//        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
+        $('#basic-options').append(category);
+    }
+    optionCard = '<select name="options2" id="basic-options2"></select>';
+    $('#manage-container').append(optionCard);
+//    for(let i =0; i<categories.length; i++){
+        let category = '`<option value="content">content</option>';
+        category += '`<option value="color">color</option>';
+        category += '`<option value="base">base</option>';
+        category += '`<option value="units">units</option>';
+        $('#basic-options2').append(category);
+//    }
     //切換顯示的區塊
-    $('#basic-options').on('change', function() {
-        selectedOption = $(this).val();
+    //在這裡組合兩個選項的值 上面改成不帶類別名的選項
+    $('#basic-options2, #basic-options').on('change', function() {
+        selectedOption = $('#basic-options').val();//ex. daily transportaion
+        selectedOption2 = $('#basic-options2').val();// ex. content color
         //unit color不需要新增 禁用add按鈕
-        if (selectedOption.includes("unit") || selectedOption.includes("color")) {
+        if (selectedOption2.includes("unit") || selectedOption2.includes("color")) {
             $('#add').prop('disabled', true);
         } else {
             $('#add').prop('disabled', false);
         }
-        if (selectedOption.includes("unit")) {
+        if (selectedOption2.includes("unit")) {
             $('#save').prop('disabled', true);
         }else{
             $('#save').prop('disabled', false);
         }
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
-        $('#' + selectedOption).removeClass('d-none'); // 顯示所選擇的區塊
+        $('#' + selectedOption+'-'+selectedOption2).removeClass('d-none'); // 顯示所選擇的區塊
     });
-    //新增所有大類別的option
-    for(let i =0; i<categories.length; i++){
-        let category = '`<option value="'+categories[i]+'">'+categories[i]+'</option>';
-        category += '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
-        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
-        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
-        $('#basic-options').append(category);
-    }
-//    optionCard = '<select name="options" id="basic-options2"></select>';
-//    $('#manage-container').append(optionCard);
-//    for(let i =0; i<categories.length; i++){
-//        let category = '`<option value="'+categories[i]+'-color">'+categories[i]+'-color</option>';
-//        category += '`<option value="'+categories[i]+'-base">'+categories[i]+'-base</option>';
-//        category += '`<option value="'+categories[i]+'-units">'+categories[i]+'-units</option>';
-//        $('#basic-options2').append(category);
-//    }
     for(let i =0; i<categories.length; i++){
      //新增整塊頁面
          let card ;
          if(categories[i] == "daily"){
-           card = '<div id="'+categories[i]+'" class="basic-block"><br>';
+           card = '<div id="'+categories[i]+'-content" class="basic-block"><br>';
             card +='<div class="form-group">'+
                              '<label>項目索引</label>'+
                              '<select name="types" id="types'+i+'">'+
@@ -267,7 +271,7 @@ function setData(parsedData){
                              '</select>'+
                          '</div> <br>'+
                        '<div class="form-group">'+
-                           '<label>材質基準</label>'+
+                           '<label>基準</label>'+
                            '<select name="types" id="baseline'+i+'">'+
                            '</select>'+
                        '</div> <br>'+
@@ -279,7 +283,7 @@ function setData(parsedData){
                 $('#small').val(parsedData[categories[i]].content[0].option.小);
 
          }else{
-            card = '<div id="'+categories[i]+'" class="basic-block d-none"><br>';
+            card = '<div id="'+categories[i]+'-content" class="basic-block d-none"><br>';
             card +='<div class="form-group">'+
                         '<label>項目索引</label>'+
                         '<select name="types" id="types'+i+'">'+
@@ -307,7 +311,7 @@ function setData(parsedData){
                              '</select>'+
                          '</div> <br>'+
                       '<div class="form-group">'+
-                          '<label>材質基準</label>'+
+                          '<label>基準</label>'+
                           '<select name="types" id="baseline'+i+'">'+
                           '</select>'+
                       '</div> <br>'+
@@ -440,13 +444,15 @@ function toggleButtons() {
     if (isSvgSetting) {
         //選單切換
         $('#basic-options').removeClass('d-none');
+        $('#basic-options2').removeClass('d-none');
         $('#svg-options').addClass('d-none');
         $('.svgView').addClass('d-none');
         $('.svg-block').addClass('d-none'); //隱藏所有svg區塊
       //新增svg的區塊隱藏
         $('.addSvg-group').remove();
-        $('#daily').removeClass('d-none');//恢復顯示第一個
+        $('#daily-content').removeClass('d-none');//恢復顯示第一個
         $('#basic-options').val('daily');
+        $('#basic-options2').val('content');
         document.getElementById('svg-setting').disabled = false;
         document.getElementById('basic-setting').disabled = true;
         //恢復預設值 輸入框
@@ -480,6 +486,7 @@ function toggleButtons() {
     //按下svg button
     //選單切換
         $('#basic-options').addClass('d-none');
+        $('#basic-options2').addClass('d-none');
         $('#svg-options').removeClass('d-none');
         $('.svgView').removeClass('d-none');
         $('.basic-block').addClass('d-none'); //隱藏所有一般區塊
@@ -500,14 +507,12 @@ function toggleButtons() {
     }
     isSvgSetting = !isSvgSetting;
 }
-
+//按下儲存變更
 function saveData(){
-
-
     if(!isSvgSetting){//是一般設定(環保項目新增、修改)
         createBasicObject(parsedData);  //創立要傳送的物件
 
-        if(selectedOption.includes("base")){    //傳送新增的base物件
+        if(selectedOption2.includes("base")){    //傳送新增或修改的base物件
             console.log("傳送base");
             console.log("sendBase",sendBase);
             $.ajax({
@@ -515,6 +520,21 @@ function saveData(){
                 url: '',
                 contentType: '',
                 data: JSON.stringify(sendBase),
+                success: function(response) {
+                    //console.log(response); // 成功更新時的處理邏輯
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // 更新失敗時的處理邏輯
+                }
+            });
+        }else if(selectedOption2.includes("color")){//傳送修改的color物件
+            console.log("傳送color");
+            console.log("sendColor",sendColor);
+            $.ajax({
+                type: 'PUT',
+                url: '',
+                contentType: '',
+                data: JSON.stringify(sendColor),
                 success: function(response) {
                     //console.log(response); // 成功更新時的處理邏輯
                 },
@@ -559,8 +579,9 @@ function saveData(){
 }
 
 function createBasicObject(parsedData){
-        selectedOption = $('#basic-options').val();
-//        console.log("selectedOption", selectedOption); //ex daily, daily-base
+        selectedOption = $('#basic-options').val();//ex. daily transportaion
+        selectedOption2 = $('#basic-options2').val();// ex. content color
+//        console.log("selectedOption", selectedOption);
 //        console.log("selectedIndex", selectedIndex);
         const basicCategory = Object.keys(parsedData);
         let targetCategory;
@@ -571,21 +592,54 @@ function createBasicObject(parsedData){
                  targetNum = i;
             }
         }
-        let baseName = $('#'+targetCategory+'-baseName').val();
-        let baseNumber = $('#'+targetCategory+'-baseNumber').val();;
         sendBase = {
-            "環保類別":{
-                "base":{
-                   [baseName]: baseNumber
-                },
+            [targetCategory]:{
+                "base": {},//要設{}不能設定null
                 "name": parsedData[targetCategory].name
             }
         };
+        //是base修改數據
+        if(selectedOption2.includes("base") && isAdd){
+            let base = parsedData[targetCategory].base;
+           // let baseLength = Object.keys(base).length;
+            let baseKeys = Object.keys(base);
+            for(let i=0; i<baseKeys.length; i++){
+                let currentBase = baseKeys[i];
+                sendBase[targetCategory].base[currentBase] = $('#'+baseKeys[i]).val();
+//                     console.log("currentBase",currentBase);
+//                    console.log("targetCategory", targetCategory);
+//                    console.log("targetNum", baseKeys[i]);
+            }
+//            console.log("修改base", sendBase);
+        }else{
+        //base新增
+            let baseName = $('#'+targetCategory+'-baseName').val();
+            let baseNumber = $('#'+targetCategory+'-baseNumber').val();
+            sendBase = {
+                [targetCategory]:{
+                    "base":{
+                       [baseName]: baseNumber
+                    },
+                    "name": parsedData[targetCategory].name
+                }
+            };
+            console.log("新增base", sendBase);
+        }
+        //修改顏色
+        if(selectedOption2.includes("color")){
+            sendColor =  {
+                [targetCategory]:{
+                    "color": $('#'+targetCategory+'-colorInput').val(),
+                    "name": parsedData[targetCategory].name
+                }
+            };
+//            console.log("修改color", sendColor);
+        }
 //         console.log("sendBase",sendBase);
 //        console.log("targetCategory", targetCategory);
 //        console.log("targetNum", targetNum);
         let content;
-         if (selectedOption.includes("daily")) {//是daily發生改變
+         if (selectedOption.includes("daily") && selectedOption2.includes("content")) {//是daily-content發生改變
              content= {
                 "option":{
                   "大": $('#big').val(),
@@ -611,25 +665,15 @@ function createBasicObject(parsedData){
                 "baseline": $('#baseline'+targetNum).val()
             };
          }
-         if(selectedOption.includes("daily")){
-             sendBasicData = {
-                         "daily":{
-                             "base":parsedData[targetCategory].base,
-                             "color": parsedData[targetCategory].color,
-                             "content": content ,
-                             "name": parsedData[targetCategory].name
-                         }
-             };
-         }else{
-            sendBasicData = {
-                 "transportation":{
-                     "base":parsedData[targetCategory].base,
-                     "color": parsedData[targetCategory].color,
-                     "content": content ,
-                     "name": parsedData[targetCategory].name
-                 }
-            };
-         }
+
+        sendBasicData = {
+            [targetCategory]:{
+                "base":parsedData[targetCategory].base,
+                "color": parsedData[targetCategory].color,
+                "content": content ,
+                "name": parsedData[targetCategory].name
+            }
+        };
 
 //        console.log("sendBasicData",sendBasicData);
 }
@@ -649,18 +693,18 @@ function createSvgObject(svgData){
                 }
             }
         }
-        console.log("修改");
+//        console.log("修改");
          const svgIndex = Object.keys(svgData.svgImages);//ex: daily transportation recordList
          for(let i =0;i <svgIndex.length; i++){
             if(svgCategory == svgIndex[i]){
                 indexForID = i;
-                console.log("svgCategory",svgCategory);
-                console.log("indexForID",indexForID);
+//                console.log("svgCategory",svgCategory);
+//                console.log("indexForID",indexForID);
                 break;
             }
          }
          let svgIndex2 = Object.keys(svgData.svgImages[svgCategory]);//dailyIcon dailyHover
-           console.log("svgIndex2[i]",svgIndex2);
+//           console.log("svgIndex2[i]",svgIndex2);
         //把該類別全部加進來
         for(let i =0;i<svgIndex2.length ;i++){ //該類別有幾個svg
 //            console.log("svgIndex2[i]",svgIndex2[i]);
