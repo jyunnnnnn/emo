@@ -639,14 +639,20 @@ function createBasicObject(parsedData){
 //        console.log("targetCategory", targetCategory);
 //        console.log("targetNum", targetNum);
         let content;
+        let index;
          if (selectedOption.includes("daily") && selectedOption2.includes("content")) {//是daily-content發生改變
+             if(isAdd){ //修改
+                index =  $('#types'+targetNum).val();
+             }else{
+                 index = $('#newTypes'+targetNum).val();
+             }
              content= {
                 "option":{
                   "大": $('#big').val(),
                   "中": $('#mid').val(),
                   "小": $('#small').val()
                 },
-                "index": $('#types'+targetNum).val(),
+                "index": index,
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
                 "description": $('#description'+targetNum).val(),
@@ -654,9 +660,14 @@ function createBasicObject(parsedData){
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
             };
-         } else {
+         } else {      //修改
+              if(isAdd){
+                 index = $('#types'+targetNum).val();
+              }else{
+                 index = $('#newTypes'+targetNum).val();
+              }
              content = {
-                "index": $('#types'+targetNum).val(),
+                "index": index,
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
                 "description": $('#description'+targetNum).val(),
