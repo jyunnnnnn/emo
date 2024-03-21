@@ -77,9 +77,6 @@ public class ConfigService {
         //更新設定檔內容物件
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
         RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
-        t2.setColor(req.getColor());
-        t2.setBase(req.getBase());
-        t2.setName(req.getName());
         List<RecordItem> contents = t2.getContent();
         for (int i = 0; i < contents.size(); i++) {
             if (contents.get(i).getIndex().equals(req.getContent().getIndex())) {
@@ -87,6 +84,7 @@ public class ConfigService {
                 break;
             }
         }
+        //更新該類別的content
         t2.setContent(contents);
         t1.replace(categoryName, t2);
         record.setRecordCategory(t1);
@@ -112,7 +110,7 @@ public class ConfigService {
     }
 
     //更新大類別基準
-    public void updateRecordClassBase(String categoryName, UpdateRecordClassBaseRequest req){
+    public void updateRecordClassBase(String categoryName, UpdateRecordClassBaseRequest req) {
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
         RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
 

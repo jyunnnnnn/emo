@@ -34,6 +34,7 @@ public class ConfigController {
     public ResponseEntity<?> updateRecord(@RequestBody Map<String, updateRecordRequest> item) {
         //獲得欲修改的類別名稱(EX:daily,transportation)
         String className = (String) item.keySet().toArray()[0];
+        System.out.println(item.get(className));
         this.configService.updateRecordClass(className, item.get(className));
         return ResponseEntity.ok(Collections.singletonMap("message", "Update　Success"));
     }

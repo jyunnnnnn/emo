@@ -1,11 +1,11 @@
 {
   "RecordCategory": {
     "daily": {
+      "color": "#9ED368",
       "base": {
-        "paper": 0.24,
+        "paper": 0.242,
         "plastic": 1.95
       },
-      "color": "#9ED368",
       "units": {
         "gCO2e": "克碳排放量",
         "kgCO2e": "千克碳排放量"
@@ -13,97 +13,97 @@
       "content": [
         {
           "option": {
-            "小": 5.0,
-            "中": 10.0,
-            "大": 15.0
+            "小": 5,
+            "中": 10,
+            "大": 15
           },
           "index": "cup",
           "name": "環保杯",
+          "color": "#4FC0E8",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "plastic",
-          "color": "#4FC0E8",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為塑膠免洗杯\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前克數×排放係數(塑膠免洗杯[1.95]-環保杯[0])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為塑膠免洗杯\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前克數×排放係數(塑膠免洗杯[1.95]-環保杯[0])\n</span>"
         },
         {
           "option": {
-            "小": 15.0,
-            "中": 20.0,
-            "大": 25.0
+            "小": 15,
+            "中": 20,
+            "大": 25
           },
           "index": "tableware",
           "name": "環保餐具",
+          "color": "#FFCD54",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "paper",
-          "color": "#FFCD54",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為紙餐具\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前克數×排放係數(紙餐具[0.242]-環保餐具[0])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為紙餐具\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前克數×排放係數(紙餐具[0.242]-環保餐具[0])\n</span>"
         },
         {
           "option": {
-            "小": 2.0,
-            "中": 5.0,
-            "大": 10.0
+            "小": 2,
+            "中": 5,
+            "大": 10
           },
           "index": "bag",
           "name": "環保袋",
+          "color": "#FA6E51",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "plastic",
-          "color": "#FA6E51",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為塑膠袋\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前克數×排放係數(塑膠袋[1.95]-環保袋[0])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為塑膠袋\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前克數×排放係數(塑膠袋[1.95]-環保袋[0])\n</span>"
         }
       ],
       "name": "生活用品"
     },
     "transportation": {
+      "color": "#5D9BEB",
       "base": {
         "car": 110.0,
         "scooter": 100.0
       },
-      "color": "#5D9BEB",
       "units": {
-        "gCO2e/km": "克碳排放量每公里",
-        "kgCO2e/km": "千克碳排放量每公里",
-        "gCO2e/m": "克碳排放量每公尺",
-        "kgCO2e/m": "千克碳排放量每公尺"
+        "gCO2e/km":"克碳排放量每公里",
+        "kgCO2e/km":"千克碳排放量每公里",
+        "gCO2e/m":"克碳排放量每公尺",
+        "kgCO2e/m":"千克碳排放量每公尺"
       },
       "content": [
         {
           "index": "bus",
           "name": "公車",
+          "color": "#ffc872",
           "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "color": "#ffc872",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為開車\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前公里數×排放係數(開車[110]-公車[40])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-公車[40])\n</span>"
         },
         {
           "index": "MRT",
           "name": "捷運",
+          "color": "#30a0e0",
           "coefficient": 40.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "color": "#30a0e0",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為開車\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前公里數×排放係數(開車[110]-捷運[40])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-捷運[40])\n</span>"
         },
         {
           "index": "train",
           "name": "火車",
+          "color": "#006bbb",
           "coefficient": 60.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "color": "#006bbb",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為開車\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前公里數×排放係數(開車[110]-火車[60])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-火車[60])\n</span>"
         },
         {
           "index": "HSR",
           "name": "高鐵",
+          "color": "#87e1c7",
           "coefficient": 32.0,
           "unit": "gCO2e/km",
           "baseline": "car",
-          "color": "#87e1c7",
-          "description": "\u003cspan style\u003d\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\"\u003e\n比較對象為開車\n\u003c/span\u003e\n\u003cspan style\u003d\"font-weight: bold; font-size: 15px; margin-left: 5px;\"\u003e計算公式如下\n\u003c/span\u003e\n\u003cspan style\u003d\"display: block; text-align: center;\"\u003e\n當前公里數×排放係數(開車[110]-高鐵[32])\n\u003c/span\u003e"
+          "description": "<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n比較對象為開車\n</span>\n<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">計算公式如下\n</span>\n<span style=\"display: block; text-align: center;\">\n當前公里數×排放係數(開車[110]-高鐵[32])\n</span>"
         }
       ],
       "name": "交通"
