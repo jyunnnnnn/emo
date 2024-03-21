@@ -42,13 +42,15 @@ public class RecordWrapper {
     public void setName(String name) {
         this.name = name;
     }
-    public void getColor() {
-        this.color = color;
-    }
-    public void setColor(String color) {
-        this.name = name;
+
+
+    public String getColor() {
+        return color;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     private List<RecordItem> content;
     private String name;

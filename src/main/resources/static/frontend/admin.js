@@ -517,8 +517,8 @@ function saveData(){
             console.log("sendBase",sendBase);
             $.ajax({
                 type: 'PUT',
-                url: '',
-                contentType: '',
+                url: '/config/updateRecordClassBase',
+                contentType: 'application/json',
                 data: JSON.stringify(sendBase),
                 success: function(response) {
                     //console.log(response); // 成功更新時的處理邏輯
@@ -532,8 +532,8 @@ function saveData(){
             console.log("sendColor",sendColor);
             $.ajax({
                 type: 'PUT',
-                url: '',
-                contentType: '',
+                url: '/config/updateRecordClassColor',
+                contentType: 'application/json',
                 data: JSON.stringify(sendColor),
                 success: function(response) {
                     //console.log(response); // 成功更新時的處理邏輯
