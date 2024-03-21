@@ -78,11 +78,18 @@ public class ConfigService {
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
         RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
         List<RecordItem> contents = t2.getContent();
+        //flag:true 新增 flag:false 更新
+        boolean flag = true;
         for (int i = 0; i < contents.size(); i++) {
             if (contents.get(i).getIndex().equals(req.getContent().getIndex())) {
                 contents.set(i, req.getContent());
+                flag = false;
                 break;
             }
+        }
+
+        if (flag) {
+            contents.add(req.getContent());
         }
         //更新該類別的content
         t2.setContent(contents);
@@ -113,9 +120,12 @@ public class ConfigService {
     public void updateRecordClassBase(String categoryName, UpdateRecordClassBaseRequest req) {
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
         RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
+        Map<String, Double> newBase = t2.getBase();
+        for (String key : req.getBase().keySet()) {
+            newBase.put(key, req.getBase().get(key));
+        }
 
-        //設定新顏色
-        t2.setBase(req.getBase());
+        t2.setBase(newBase);
         //取代原本的顏色
         t1.replace(categoryName, t2);
 
