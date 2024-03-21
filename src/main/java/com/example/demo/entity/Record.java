@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 //每個紀錄都會有的資訊
 public class Record {
     public Record(String index, String name, double coefficient, String unit, String baseline, String color,String description) {
@@ -11,20 +13,31 @@ public class Record {
         this.color = color;
         this.description=description;
     }
+    public Record() {
 
+    }
     //減碳紀錄索引
+    @JsonProperty("index")
     private String index;
     //減碳紀錄名稱
+    @JsonProperty("name")
     private String name;
     //係數
+    @JsonProperty("coefficient")
     private double coefficient;
     //單位
+    @JsonProperty("unit")
     private String unit;
     //每個減碳紀錄都有其對應的基準
+    @JsonProperty("baseline")
     private String baseline;
     //每個行為有自己的顏色
+    @JsonProperty("color")
     private String color;
+    @JsonProperty("description")
     private String description;
+
+
 
     public String getIndex() {
         return index;
