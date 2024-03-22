@@ -80,8 +80,10 @@ function addMarker(recordToAdd) {
     recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
     let thisIcon;
     if (recordToAdd.classType === "交通") {
+        //thisIcon= svgData.svgImages.marker[recordToAdd.type];
         thisIcon = '/frontend/img/' + recordToAdd.type +'.svg';
     } else if (recordToAdd.classType === "生活用品") {
+        //thisIcon= svgData.svgImages.marker[recordToAdd.classType];
         thisIcon = '/frontend/img/生活用品.svg';
     }
     if (map) {
