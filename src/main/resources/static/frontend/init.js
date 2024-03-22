@@ -609,6 +609,7 @@ function calculateFootprint(type,data_value) {
     // console.log(nowCoefficient,typeof(nowCoefficient),baseCoefficient,typeof(baseCoefficient),footprint);
     return footprint;
 }
+
 // 改暱稱
 function modifyNickname() {
     if (User) {

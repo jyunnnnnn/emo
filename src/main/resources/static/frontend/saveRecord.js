@@ -78,14 +78,17 @@ function loadEcoRecords(userId) {
 function addMarker(recordToAdd) {
     recordToAdd.footprint = parseFloat(recordToAdd.footprint,10).toFixed(3) *1000/1000;
     recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
-    let thisIcon;
+    let template;
     if (recordToAdd.classType === "交通") {
-        //thisIcon= svgData.svgImages.marker[recordToAdd.type];
-        thisIcon = '/frontend/img/' + recordToAdd.type +'.svg';
-    } else if (recordToAdd.classType === "生活用品") {
-        //thisIcon= svgData.svgImages.marker[recordToAdd.classType];
-        thisIcon = '/frontend/img/生活用品.svg';
+        template = svgData.svgImages.marker[recordToAdd.type];
+    }else if (recordToAdd.classType === "生活用品") {
+        template = svgData.svgImages.marker[recordToAdd.classType];
     }
+    let thisIcon = {
+        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(template),
+        scaledSize: new google.maps.Size(50, 50),
+        optimized: false
+    };
     if (map) {
         let currentLocation = {
             lat: recordToAdd.latitude,
