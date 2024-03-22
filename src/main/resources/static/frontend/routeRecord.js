@@ -56,12 +56,8 @@ function checkIsRecording() {
 }
 ////路線紀錄
 function startRecording() {
-    $("#routeDetail").html("<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
-        "                        選擇行為以獲得基準值\n" +
-        "                        </span>\n" +
-        "                        <span style=\"display: block; text-align: center;\">\n" +
-        "                        選擇行為以獲得計算公式\n" +
-        "                        </span>");
+    $("#routeCompare").text("選擇行為以獲得基準值");
+    $("#routeFormula").text("選擇行為以獲得計算公式");
     // 按下變成結束
     $('#startRecording').text('結束');
     isRecording = true;

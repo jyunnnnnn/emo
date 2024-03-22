@@ -95,12 +95,17 @@ function updateMarkerContent(newContent) {
          //class="btn btn-secondary"
     if (currentMarker.infoWindow) {
         //console.log("更新infowindow成功");
-        let thisIcon;
+        let template;
         if (newContent.classType === "交通") {
-            thisIcon = '/frontend/img/' + newContent.type +'.svg';
-        } else if (newContent.classType === "生活用品") {
-            thisIcon = '/frontend/img/生活用品.svg';
-        } else{ alert(currentInfoWindowRecord.classType) }
+            template = svgData.svgImages.marker[newContent.type];
+        }else if (newContent.classType === "生活用品") {
+            template = svgData.svgImages.marker[newContent.classType];
+        }
+        let thisIcon = {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(template),
+            scaledSize: new google.maps.Size(50, 50),
+            optimized: false
+        };
         currentMarker.setIcon(thisIcon);
         currentMarker.infoWindow.setContent(modifyContent);
     }else {

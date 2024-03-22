@@ -588,7 +588,9 @@ function svgConstructor(svgData) {
                         }
                         $('#routeCalculate').text(showExpectedFP + " gCo2E");
                          let target = FootprintData.find(item => item.type === type);
-                         $("#routeDetail").html(questionMark[target.type]);
+                         let description = questionMark[target.type].split(" ");
+                         $("#routeCompare").text(description[0]);
+                         $("#routeFormula").text(description[1]);
                     } else {
                         $('#' + val.index + 'Icon').html(svgData.svgImages[value.class][val.index + 'Icon']);
                     }

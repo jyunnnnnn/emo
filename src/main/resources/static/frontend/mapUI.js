@@ -10,12 +10,8 @@ $('#openRecordModal').on('click', function() {
         clearMapLines();
     }
     $('#recordCalculate').text("0 gCo2E");
-    $("#recordDetail").html("<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
-        "                        選擇行為以獲得基準值\n" +
-        "                        </span>\n" +
-        "                        <span style=\"display: block; text-align: center;\">\n" +
-        "                        選擇行為以獲得計算公式\n" +
-        "                        </span>");
+    $("#recordCompare").text("選擇行為以獲得基準值");
+    $("#recordFormula").text("選擇行為以獲得計算公式");
     $('#recordFW').css("display", "flex");
     $('#saveRecord').css("display", "block");
     $('#updateRecord').css("display", "none");
@@ -134,7 +130,10 @@ function typeChange(selected){
     label.append(input, span);
     gram.append(label);
     let target = FootprintData.find(item => item.type === selected);
-    $("#recordDetail").html(questionMark[target.type]);
+    let description = questionMark[target.type].split(" ");
+    $("#recordCompare").text(description[0]);
+    $("#recordFormula").text(description[1]);
+    console.log(description[0],description[1]);
 }
 // 監聽克數變化
 $('#gramRadios').on('change', 'input[type="radio"]', function() {
@@ -166,7 +165,9 @@ $('#gram').on('input', function(event) {
     }
     $('#recordCalculate').text(showExpectedFP + " gCo2E");
     let target = FootprintData.find(item => item.type === type.text());
-    $("#recordDetail").html(questionMark[target.type]);
+    let description = questionMark[target.type].split(" ");
+    $("#recordCompare").text(description[0]);
+    $("#recordFormula").text(description[1]);
 });
 // 一般記錄儲存
 $('#saveRecord').on('click', function () {
@@ -359,7 +360,9 @@ function recordModal(){
         });
 
         let target = FootprintData.find(item => item.index === type);
-        $("#routeDetail").html(questionMark[target.type]);
+        let description = questionMark[target.type].split(" ");
+        $("#routeCompare").text(description[0]);
+        $("#routeFormula").text(description[1]);
         $('#kilometer').val(currentInfoWindowRecord.data_value);
         $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
     } else {
@@ -457,6 +460,8 @@ function recordModal(){
         $('#gram').val(currentInfoWindowRecord.data_value);
         $('#gram').prop("disabled", false);
         $('#recordCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
-        $("#recordDetail").html(questionMark[target.type]);
+        let description = questionMark[target.type].split(" ");
+        $("#recordCompare").text(description[0]);
+        $("#recordFormula").text(description[1]);
     }
 }
