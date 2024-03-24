@@ -116,6 +116,15 @@
           "baseline": "car",
           "color": "#87e1c7",
           "description": "比較對象為開車 當前公里數×排放係數(開車[110]-高鐵[32])"
+        },
+        {
+          "index": "test",
+          "name": "test",
+          "coefficient": 0.0,
+          "unit": "gCO2e/km",
+          "baseline": "car",
+          "color": "#ffc872",
+          "description": "test"
         }
       ],
       "name": "交通"

@@ -24,6 +24,10 @@ $(document).ready(function () {
     //按鈕回復原本設定
       $('#add, #save').removeClass("d-none");
       $('#complete').addClass("d-none");
+      $('.base-group input[type="checkbox"]').addClass('d-none');
+      $('.base-group2').css('margin-left', '0');
+      $('.base-group input[type="checkbox"]').prop('checked', false);
+      checkDelete = 0;
     });
     $.ajax({
         url: '/config/GetAllRecordJson',
@@ -252,15 +256,18 @@ function setData(parsedData, svgData){
         //unit color不需要新增 禁用add按鈕
         if (selectedOption2.includes("unit")|| selectedOption2.includes("svg")) {
             $('#add').prop('disabled', true);
+             $('#delete').prop('disabled', true);
             $('#save').prop('disabled', true);
         }else if (selectedOption2.includes("color")) {
              $('#add').prop('disabled', true);
+             $('#delete').prop('disabled', true);
             if(!isAdd){
               $('#save').prop('disabled', true);
             }
         }else{
-             $('#add').prop('disabled', false);
+            $('#add').prop('disabled', false);
             $('#save').prop('disabled', false);
+            $('#delete').prop('disabled', false);
         }
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
         $('#' + selectedOption+'-'+selectedOption2).removeClass('d-none'); // 顯示所選擇的區塊
@@ -413,7 +420,7 @@ function setData(parsedData, svgData){
             let option = '`<option value="'+parsedData[categories[i]].content[j].index+'">'+parsedData[categories[i]].content[j].index+'</option>';
             $('#types'+i).append(option);
         }
-        //新增 base區塊
+        //新增base區塊
         let base = parsedData[categories[i]].base;
         let baseLength = Object.keys(base).length;
         let baseKeys = Object.keys(base);
@@ -421,7 +428,7 @@ function setData(parsedData, svgData){
         let baseCard = '<div id="'+categories[i]+'-base" class="basic-block d-none"><br><div class="base-group2">';
         for(let m =0;m< baseLength;m++){
            baseCard += '<div class="base-group">'+
-                      '<label>'+baseKeys[m]+'</label>'+
+                      '<input type="checkbox" class="d-none"><label>'+baseKeys[m]+'</label>'+
                             '<input type="text" id="'+baseKeys[m]+'">'+
                            ' </div><br> ';
         }
@@ -448,7 +455,7 @@ function setData(parsedData, svgData){
         //新增svg區塊
          let svgs = svgData.svgImages;
          let svgCategory = Object.keys(svgs); //daily transportation recordList marker
-         console.log("svgCategory:", svgCategory);
+//         console.log("svgCategory:", svgCategory);
         svgCard = '<div id="'+categories[i]+'-svg" class="basic-block d-none"><br>';
          if(categories[i] == "transportation"){
                //transportation只有recordList
@@ -493,7 +500,7 @@ function setData(parsedData, svgData){
                //讀出marker svg的值
                let markerSvg;
                svgKeys = Object.keys(svgData.svgImages.marker);
-               console.log("svgkey:", svgKeys);
+//               console.log("svgkey:", svgKeys);
                for(let j = 0; j<svgKeys.length; j++){
                     let checkName =  parsedData[categories[i]].name;
                     if(svgKeys[j] == checkName){ //marker裡面的生活用品
@@ -898,21 +905,16 @@ function createSvgObject(svgData){
                 }
             }
         }
-//        console.log("修改");
          const svgIndex = Object.keys(svgData.svgImages);//ex: daily transportation recordList
          for(let i =0;i <svgIndex.length; i++){
             if(svgCategory == svgIndex[i]){
                 indexForID = i;
-//                console.log("svgCategory",svgCategory);
-//                console.log("indexForID",indexForID);
                 break;
             }
          }
          let svgIndex2 = Object.keys(svgData.svgImages[svgCategory]);//dailyIcon dailyHover
-//           console.log("svgIndex2[i]",svgIndex2);
         //把該類別全部加進來
         for(let i =0;i<svgIndex2.length ;i++){ //該類別有幾個svg
-//            console.log("svgIndex2[i]",svgIndex2[i]);
             sendSvgData.svgImages[svgCategory][svgIndex2[i]] = $('#'+svgIndex2[i]+indexForID).val();
         }
     }else{
@@ -927,7 +929,8 @@ function createSvgObject(svgData){
 //    console.log("sendSvgData",sendSvgData);
 }
 
-let isDelete = true;
+//let isDelete = true;
+let checkDelete = 0;
 function deleteData(){
         selectedOption = $('#basic-options').val();//ex. daily transportaion
         selectedOption2 = $('#basic-options2').val();// ex. content color
@@ -946,13 +949,12 @@ function deleteData(){
             if(result){
                 let deleteIndex= $('#types'+targetNum).val();
                 //傳到後端
-                console.log("刪除此項目");
-                console.log("sendBase",sendBase);
+                console.log("要刪除的Index",deleteIndex);
                 $.ajax({
                     type: 'DELETE',
                     url: '',
                     contentType: 'application/json',
-                    data: JSON.stringify(sendBase),
+                    data: JSON.stringify(deleteIndex),
                     success: function(response) {
                         alert("刪除成功!");
                     },
@@ -961,12 +963,63 @@ function deleteData(){
                     }
                 });
             }
-            location.reload(); //重新載入頁面
+            //location.reload(); //重新載入頁面
         }else if(selectedOption2.includes("base")){ //刪除base
-            //改變按鈕配置
-            $('#add, #save').addClass("d-none");
-            $('#complete').removeClass("d-none");
-            //加上checkbox
+            if(checkDelete > 0){//第二次點擊按鈕 詢問刪除
+               let selectedBase = []; let checkNum = 0;
+                $(".base-group input[type='checkbox']").each(function() {
+                    if ($(this).prop("checked")) {
+                        checkNum += 1;
+                        let baseName = $(this).siblings('input[type="text"]').attr('id');
+                        selectedBase.push(baseName);
+                    }
+                });
+                let result;
+                if(checkNum > 0){
+                    result = confirm("確定要刪除所選項目嗎？");
+                }else{
+                    alert("請先選擇項目！")
+                    result = false;
+                }
+                if(result){//執行刪除
+                //創立物件
+                    let deleteBaseName = {
+                        "name":selectedBase
+                    };
+                //傳到後端
+                console.log("要刪除的base",deleteBaseName);
+                $.ajax({
+                    type: 'DELETE',
+                    url: '',
+                    contentType: 'application/json',
+                    data: JSON.stringify(deleteBaseName),
+                    success: function(response) {
+                        alert("刪除成功!");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error); // 更新失敗時的處理邏輯
+                    }
+                });
+                //畫面上更新
+
+                }
+                //回復設置
+               $('#add, #save').removeClass("d-none");
+               $('#complete').addClass("d-none");
+               $('.base-group input[type="checkbox"]').addClass('d-none');
+               $('.base-group2').css('margin-left', '0');
+               $('.base-group input[type="checkbox"]').prop('checked', false);
+               checkDelete = 0;
+            }else{
+                //改變按鈕配置
+                $('#add, #save').addClass("d-none");
+                $('#complete').removeClass("d-none");
+                //加上checkbox
+                $('.base-group input[type="checkbox"]').removeClass('d-none');
+                $('.base-group2').css({
+                    'margin-left': '10px'
+                });
+                checkDelete += 1;
+            }
         }
-        isDelete = !isDelete;
 }
