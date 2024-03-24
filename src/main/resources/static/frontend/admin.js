@@ -68,6 +68,7 @@ $(document).ready(function () {
         if(isAdd){
             $(this).text("修改項目");
             $('#save').text("新增");
+            $('#delete').prop('disabled', true);
             if(isSvgSetting){
                 //svg原本的消失
                 $('.svg-group').addClass("d-none");
@@ -125,6 +126,7 @@ $(document).ready(function () {
         }else{
             $(this).text("新增項目");
             $('#save').text("儲存變更");
+             $('#delete').prop('disabled', false);
              //切換成修改模式
                 for(let i =0; i<categories.length; i++){
                 //恢復原本預設數據
