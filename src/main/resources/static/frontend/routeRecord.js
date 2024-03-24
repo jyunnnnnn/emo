@@ -111,7 +111,13 @@ function stopRecording() {
     //console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
+    // 清空位置紀錄
 
+    // smoothedPositions = [];
+    // 移除地圖上的線條
+    clearMapLines();
+    // 修正路線
+    processAllPoints(recordedPositions);
 
     // 打開路線記錄懸浮窗
     $('#recordCalculate').text("0 gCo2E");
@@ -139,13 +145,6 @@ function stopRecording() {
         $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
         checked.prop('checked', false);
     }
-    // 清空位置紀錄
-
-    // smoothedPositions = [];
-    // 移除地圖上的線條
-    clearMapLines();
-    // 修正路線
-    processAllPoints(recordedPositions);
 }
 
 function recordLocation() {
@@ -163,7 +162,7 @@ function recordLocation() {
         let line = new google.maps.Polyline({
             path: lineCoordinates,
             geodesic: true,
-            strokeColor: '#0D5025',
+            strokeColor: '#FFFFFF',
             strokeOpacity: 1,
             strokeWeight: 4
         });
