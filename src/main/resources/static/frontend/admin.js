@@ -315,9 +315,14 @@ function setData(parsedData, svgData){
                       '<input type="color" id="color'+i+'" >'+
                     '</div> <br>'+
                    '<div class="form-group">'+
-                       '<label >描述</label>'+
+                       '<label >比較對象</label>'+
                        '<input type="text" class="description" id="description'+i+'">'+
                    '</div><br>'+
+                     '<div class="form-group">'+
+                         '<label>基準</label>'+
+                         '<select name="types" id="baseline'+i+'">'+
+                         '</select>'+
+                     '</div> <br>'+
                     '<div class="form-group">'+
                         '<label>係數</label>'+
                         '<input type="text" id="coefficient'+i+'">'+
@@ -327,11 +332,7 @@ function setData(parsedData, svgData){
                              '<select name="types" id="units'+i+'">'+
                              '</select>'+
                          '</div> <br>'+
-                      '<div class="form-group">'+
-                          '<label>基準</label>'+
-                          '<select name="types" id="baseline'+i+'">'+
-                          '</select>'+
-                      '</div> <br>'+
+
                     '</div>';
              let firstIndex = parsedData[categories[i]].content[0].index;
              let firstName = parsedData[categories[i]].content[0].name;
@@ -383,9 +384,14 @@ function setData(parsedData, svgData){
                               '</div>'+
                           '</div><br>'+
                            '<div class="form-group">'+
-                               '<label >描述</label>'+
+                               '<label >比較對象</label>'+
                                '<input type="text" class="description" id="description'+i+'">'+
                            '</div><br>'+
+                       '<div class="form-group">'+
+                           '<label>基準</label>'+
+                           '<select name="types" id="baseline'+i+'">'+
+                           '</select>'+
+                       '</div> <br>'+
                          '<div class="form-group">'+
                              '<label>係數</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
@@ -395,11 +401,7 @@ function setData(parsedData, svgData){
                              '<select name="types" id="units'+i+'">'+
                              '</select>'+
                          '</div> <br>'+
-                       '<div class="form-group">'+
-                           '<label>基準</label>'+
-                           '<select name="types" id="baseline'+i+'">'+
-                           '</select>'+
-                       '</div> <br>'+
+
                          '</div>';
                 //初始化
                 $('#manage-container').append(card);
@@ -413,7 +415,14 @@ function setData(parsedData, svgData){
         $('#name'+i).val(parsedData[categories[i]].content[0].name);
         $('#name'+i).attr('placeholder', '請輸入新項目的中文');
         $('#color'+i).val(parsedData[categories[i]].content[0].color);
-        $('#description'+i).val(parsedData[categories[i]].content[0].description);
+        //分割description字串
+        let str = parsedData[categories[i]].content[0].description;
+        let startIndex = str.indexOf("比較對象為") + "比較對象為".length;
+        let endIndex = str.indexOf(" ", startIndex);
+        let comparisonObject = str.substring(startIndex, endIndex);
+//        console.log(comparisonObject);
+        $('#description'+i).val(comparisonObject);
+        $('#description'+i).attr('placeholder', '比較對象不可與所選基準矛盾');
         $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
         $('#units'+i).val(parsedData[categories[i]].content[0].unit);
         $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
@@ -464,7 +473,7 @@ function setData(parsedData, svgData){
                //讀出recordList svg的值
                let recordListSvg;
                let svgKeys = Object.keys(svgData.svgImages.recordList);
-               console.log("svgkey:", svgKeys);
+//               console.log("svgkey:", svgKeys);
                for(let j = 0; j<svgKeys.length; j++){
                     let checkName =  parsedData[categories[i]].name;
                     if(svgKeys[j] == checkName){ //recordList裡面的交通
@@ -609,7 +618,13 @@ function updateTableValues(selectedIndex) {
         // 根據索引位置更新表格的值
          $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
          $('#color'+targetNum).val(parsedData[targetCategory].content[index].color);
-         $('#description'+targetNum).val(parsedData[targetCategory].content[index].description);
+         let str = parsedData[targetCategory].content[index].description;
+         let startIndex = str.indexOf("比較對象為") + "比較對象為".length;
+         let endIndex = str.indexOf(" ", startIndex);
+         let comparisonObject = str.substring(startIndex, endIndex);
+//         console.log(comparisonObject);
+         $('#description'+targetNum).val(comparisonObject);
+        // $('#description'+targetNum).val(parsedData[targetCategory].content[index].description);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
          $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
          $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
@@ -821,7 +836,7 @@ function createBasicObject(parsedData){
                     "name": parsedData[targetCategory].name
                 }
             };
-            console.log("新增base", sendBase);
+//            console.log("新增base", sendBase);
         }
         //修改顏色
         if(selectedOption2.includes("color")){
@@ -844,6 +859,11 @@ function createBasicObject(parsedData){
              svgObject={
                "recordList": $('#recordList'+targetNum).val()
              };
+             //組織description
+             let compare = $('#description'+targetNum).val();
+             let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
+             let newDescription = "比較對象為"+compare+" 當前克數×排放係數("+compare+"["+baseCoefficient+"]-"+$('#name'+targetNum).val()+"["+$('#coefficient'+targetNum).val()+"])";
+             console.log("des:", newDescription);
              content= {
                 "option":{
                   "大": $('#big').val(),
@@ -853,7 +873,7 @@ function createBasicObject(parsedData){
                 "index": index,
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
-                "description": $('#description'+targetNum).val(),
+                "description":newDescription,
                 "coefficient": $('#coefficient'+targetNum).val(),
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
@@ -870,11 +890,16 @@ function createBasicObject(parsedData){
                   "recordList": $('#recordList'+targetNum).val(),
                   "marker": $('#marker'+targetNum).val()
               };
+               //組織description
+               let compare = $('#description'+targetNum).val();
+               let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
+               let newDescription = "比較對象為"+compare+" 當前公里數×排放係數("+compare+"["+baseCoefficient+"]-"+$('#name'+targetNum).val()+"["+$('#coefficient'+targetNum).val()+"])";
+//               console.log("des:", newDescription);
              content = {
                 "index": index,
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
-                "description": $('#description'+targetNum).val(),
+                "description": newDescription,
                 "coefficient": $('#coefficient'+targetNum).val(),
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
