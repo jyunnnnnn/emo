@@ -672,9 +672,27 @@ function directionsDraw(rec){
         },
     };
     directionsService.route(request, function(response) {
+            // 移除步行部分，只保留乘坐大眾運輸工具的路線
+            let transitSteps = response.routes[0].legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
+
+            // 重新構建路線
+            let newRoute = {
+                request: request,
+                routes: [{
+                    legs: [{
+                        steps: transitSteps
+                    }]
+                }]
+            };
         directionsDisplay = new google.maps.DirectionsRenderer({
             map: map,
-            directions: response,
+            directions: newRoute,
+            suppressMarkers: true,
+              polylineOptions: {
+                strokeColor: '#FFFFFF',
+                strokeOpacity: 1,
+                strokeWeight: 4
+              }
         });
     });
 }

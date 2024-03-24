@@ -91,29 +91,13 @@ function startRecording() {
 }
 
 function stopRecording() {
-
-
-    // let smoothedPath = new google.maps.Polyline({
-    //     path: smoothedPositions.map(position => ({ lat: position.lat, lng: position.lng })),
-    //     geodesic: true,
-    //     strokeColor: '#FF0000',
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    // });
-    // smoothedPath.setMap(map);
-    // console.log("紅線為修正後路線");
-
     // 修改按鈕文字和標誌位元
     $('#startRecording').text('路線記錄');
     isRecording = false;
-
-
     //console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
     // 清空位置紀錄
-
-    // smoothedPositions = [];
     // 移除地圖上的線條
     clearMapLines();
     // 修正路線
