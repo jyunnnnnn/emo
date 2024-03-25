@@ -457,7 +457,7 @@ function setData(parsedData, svgData){
         //新增color區塊
          let colorCard = '<div id="'+categories[i]+'-color" class="basic-block d-none"><br>';
           colorCard += '<div class="form-group">'+
-                       '<label>color</label>'+
+                       '<label>標籤顏色</label>'+
                              '<input type="color" id="'+categories[i]+'-colorInput">'+
                         ' </div> <br> </div> ';
          $('#manage-container').append(colorCard);
