@@ -6,6 +6,7 @@ import com.example.demo.entity.UpdateRecordClassColorRequest;
 import com.example.demo.entity.updateRecordRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -28,6 +29,8 @@ public class ConfigService {
     private final FileReader configFile = new FileReader(jsonPath);
     ConfigurationWrapper record = gson.fromJson(configFile, ConfigurationWrapper.class);
 
+    @Autowired
+    private SvgConfigService svgConfigService;
 
     public ConfigService() throws FileNotFoundException {
     }
@@ -62,6 +65,8 @@ public class ConfigService {
         }
         content.add(newItem);
         t2.setContent(content);
+
+
         t1.replace(category, t2);
         record.setRecordCategory(t1);
         //修改設定檔文件
@@ -73,7 +78,7 @@ public class ConfigService {
 
 
     //更新大類別
-    public void updateRecordClass(String categoryName, updateRecordRequest req) {
+    public void updateRecordClass(String categoryName, updateRecordRequest req) throws FileNotFoundException {
         //更新設定檔內容物件
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
         RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
@@ -94,6 +99,10 @@ public class ConfigService {
         //更新該類別的content
         t2.setContent(contents);
         t1.replace(categoryName, t2);
+
+
+        this.svgConfigService.adminPageUpdateSvg(categoryName, req.getSvg(), t2.getName(), req.getContent().getIndex());
+
         record.setRecordCategory(t1);
         //修改設定檔文件
         String newJsonStr = gson.toJson(record);
@@ -123,6 +132,59 @@ public class ConfigService {
         Map<String, Double> newBase = t2.getBase();
         for (String key : req.getBase().keySet()) {
             newBase.put(key, req.getBase().get(key));
+        }
+
+        t2.setBase(newBase);
+        //取代原本的顏色
+        t1.replace(categoryName, t2);
+
+        record.setRecordCategory(t1);
+        //修改設定檔文件
+        String newJsonStr = gson.toJson(record);
+        updateConfiguration(newJsonStr);
+    }
+
+    //刪除特定紀錄項目
+    public void deleteRecordContent(String index) {
+
+        Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
+        String targetClassName = null;
+        for (String key : t1.keySet()) {
+            boolean flag = false;
+            RecordWrapper t2 = t1.get(key);
+            List<RecordItem> contents = t2.getContent();
+            for (int i = 0; i < contents.size(); i++) {
+                //找到目標
+                if (contents.get(i).getIndex().equals(index)) {
+                    targetClassName = key;
+                    contents.remove(i);
+                    t2.setContent(contents);
+                    //取代原本的顏色
+                    t1.replace(targetClassName, t2);
+
+                    record.setRecordCategory(t1);
+                    //修改設定檔文件
+                    String newJsonStr = gson.toJson(record);
+                    updateConfiguration(newJsonStr);
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+                break;
+        }
+
+
+    }
+
+    //刪除特定大類別的基準
+    public void deleteRecordBase(String categoryName, List<String> targets) {
+        Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
+        RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
+        Map<String, Double> newBase = t2.getBase();
+
+        for (String target : targets) {
+            newBase.remove(target);
         }
 
         t2.setBase(newBase);

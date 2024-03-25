@@ -3,9 +3,7 @@
     "daily": {
       "base": {
         "paper": 0.242,
-        "plastic": 1.95,
-        "basetest": 123.0,
-        "basetest2": 321.0
+        "plastic": 1.95
       },
       "color": "#9ED368",
       "units": {
@@ -15,17 +13,17 @@
       "content": [
         {
           "option": {
-            "小": 5.0,
+            "大": 15.0,
             "中": 10.0,
-            "大": 15.0
+            "小": 5.0
           },
           "index": "cup",
           "name": "環保杯",
           "coefficient": 0.0,
           "unit": "gCO2e",
-          "baseline": "plastic",
-          "color": "#4FC0E8",
-          "description": "比較對象為塑膠免洗杯 當前克數×排放係數(塑膠免洗杯[1.95]-環保杯[0])"
+          "baseline": "paper",
+          "color": "#4fc0e8",
+          "description": "比較對象為塑膠免洗杯 當前克數×排放係數(塑膠免洗杯[0.242]-環保杯[0])"
         },
         {
           "option": {
@@ -54,20 +52,6 @@
           "baseline": "plastic",
           "color": "#FA6E51",
           "description": "比較對象為塑膠袋 當前克數×排放係數(塑膠袋[1.95]-環保袋[0])"
-        },
-        {
-          "option": {
-            "大": 1.0,
-            "中": 2.0,
-            "小": 3.0
-          },
-          "index": "contentTest",
-          "name": "test",
-          "coefficient": 0.0,
-          "unit": "gCO2e",
-          "baseline": "paper",
-          "color": "#4fc0e8",
-          "description": "比較對象為 杯子 當前克數×排放係數(杯子[0.242]-環保杯[0])"
         }
       ],
       "name": "生活用品"
@@ -77,7 +61,7 @@
         "car": 110.0,
         "scooter": 100.0
       },
-      "color": "#5D9BEB",
+      "color": "#5d9beb",
       "units": {
         "gCO2e/km": "克碳排放量每公里",
         "kgCO2e/km": "千克碳排放量每公里",
@@ -120,15 +104,6 @@
           "baseline": "car",
           "color": "#87e1c7",
           "description": "比較對象為開車 當前公里數×排放係數(開車[110]-高鐵[32])"
-        },
-        {
-          "index": "test",
-          "name": "test",
-          "coefficient": 0.0,
-          "unit": "gCO2e/km",
-          "baseline": "car",
-          "color": "#ffc872",
-          "description": "test"
         }
       ],
       "name": "交通"

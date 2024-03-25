@@ -978,9 +978,8 @@ function deleteData(){
                 console.log("要刪除的Index",deleteIndex);
                 $.ajax({
                     type: 'DELETE',
-                    url: '',
+                    url: '/config/deleteRecordContent?index=' + deleteIndex,
                     contentType: 'application/json',
-                    data: JSON.stringify(deleteIndex),
                     success: function(response) {
                         alert("刪除成功!");
                     },
@@ -1008,15 +1007,19 @@ function deleteData(){
                     result = false;
                 }
                 if(result){//執行刪除
+                //欲刪除的base 所屬大類別名稱
+                let className = $("#basic-options :selected").text()
+                console.log("該base所屬類別名稱:" +className )
                 //創立物件
                     let deleteBaseName = {
-                        "name":selectedBase
+                            "name":selectedBase,
+                            "className":className
                     };
                 //傳到後端
                 console.log("要刪除的base",deleteBaseName);
                 $.ajax({
                     type: 'DELETE',
-                    url: '',
+                    url: '/config/deleteRecordBase',
                     contentType: 'application/json',
                     data: JSON.stringify(deleteBaseName),
                     success: function(response) {
