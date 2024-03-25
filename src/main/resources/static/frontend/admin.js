@@ -622,7 +622,6 @@ function updateTableValues(selectedIndex) {
          let startIndex = str.indexOf("比較對象為") + "比較對象為".length;
          let endIndex = str.indexOf(" ", startIndex);
          let comparisonObject = str.substring(startIndex, endIndex);
-//         console.log(comparisonObject);
          $('#description'+targetNum).val(comparisonObject);
         // $('#description'+targetNum).val(parsedData[targetCategory].content[index].description);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
