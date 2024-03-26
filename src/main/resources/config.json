@@ -24,16 +24,16 @@
         },
         {
           "option": {
-            "小": 15.0,
+            "大": 25.0,
             "中": 20.0,
-            "大": 25.0
+            "小": 15.0
           },
           "index": "tableware",
           "name": "環保餐具",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "paper",
-          "color": "#FFCD54",
+          "color": "#ffcd54",
           "description": "比較對象為紙餐具 當前克數×排放係數(紙餐具[0.242]-環保餐具[0])"
         },
         {
