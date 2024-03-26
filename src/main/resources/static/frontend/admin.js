@@ -256,11 +256,11 @@ function setData(parsedData, svgData){
         selectedOption = $('#basic-options').val();//ex. daily transportaion
         selectedOption2 = $('#basic-options2').val();// ex. content color
         //unit color不需要新增 禁用add按鈕
-        if (selectedOption2.includes("unit")|| selectedOption2.includes("svg")) {
+        if (selectedOption2.includes("unit")) {
             $('#add').prop('disabled', true);
              $('#delete').prop('disabled', true);
             $('#save').prop('disabled', true);
-        }else if (selectedOption2.includes("color")) {
+        }else if (selectedOption2.includes("color")|| selectedOption2.includes("svg")) {
              $('#add').prop('disabled', true);
              $('#delete').prop('disabled', true);
             if(!isAdd){

@@ -12,17 +12,19 @@
       },
       "content": [
         {
-          "option": {
+       "option": {
             "大": 15.0,
             "中": 10.0,
             "小": 5.0
           },
+
           "index": "cup",
           "name": "環保杯",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "paper",
           "color": "#4fc0e8",
+
           "description": "比較對象為塑膠免洗杯 當前克數×排放係數(塑膠免洗杯[0.242]-環保杯[0])"
         },
         {
