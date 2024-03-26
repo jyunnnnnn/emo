@@ -255,7 +255,7 @@ function setData(parsedData, svgData){
     $('#basic-options2, #basic-options').on('change', function() {
         selectedOption = $('#basic-options').val();//ex. daily transportaion
         selectedOption2 = $('#basic-options2').val();// ex. content color
-        //unit color不需要新增 禁用add按鈕
+//unit color不需要新增 禁用add按鈕
         if (selectedOption2.includes("unit")) {
             $('#add').prop('disabled', true);
              $('#delete').prop('disabled', true);
@@ -405,9 +405,11 @@ function setData(parsedData, svgData){
                          '</div>';
                 //初始化
                 $('#manage-container').append(card);
-                $('#big').val(parsedData[categories[i]].content[0].option.大);
-                $('#mid').val(parsedData[categories[i]].content[0].option.中);
-                $('#small').val(parsedData[categories[i]].content[0].option.小);
+                if (parsedData[categories[i]] && parsedData[categories[i]].content && parsedData[categories[i]].content[0] && parsedData[categories[i]].content[0].option) {
+                    $('#big').val(parsedData[categories[i]].content[0].option.大);
+                    $('#mid').val(parsedData[categories[i]].content[0].option.中);
+                    $('#small').val(parsedData[categories[i]].content[0].option.小);
+                }
                 $('#recordList'+i).val(svgData.svgImages.recordList.環保杯);
                 $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 20px height: 20px');
          }
@@ -521,11 +523,11 @@ function setData(parsedData, svgData){
                }
                svgCard += '<div class="icon-group">'+IconSvg+
                          '<label>Icon svg</label>'+
-                           '<input type="text" class="svg-input" id="'+categories[i]+'-Icon">'+
+                           '<input type="text" class="svg-input" id="'+categories[i]+'-icon">'+
                          '</div> <br>';
                svgCard += '<div class="icon-group">'+HoverSvg+
                          '<label>Hover svg</label>'+
-                           '<input type="text" class="svg-input" id="'+categories[i]+'-Hover">'+
+                           '<input type="text" class="svg-input" id="'+categories[i]+'-hover">'+
                          '</div> <br>';
                svgCard += '<div class="recordList-group">'+recordListSvg+
                           '<label>RecordList svg</label>'+
@@ -538,8 +540,8 @@ function setData(parsedData, svgData){
                svgCard += ' </div>';
                $('#manage-container').append(svgCard);
                //初始化
-               $('#'+categories[i]+'-Icon').val(IconSvg);
-               $('#'+categories[i]+'-Hover').val(HoverSvg);
+               $('#'+categories[i]+'-icon').val(IconSvg);
+               $('#'+categories[i]+'-hover').val(HoverSvg);
                $('#'+categories[i]+'-recordList').val(recordListSvg);
                $('#'+categories[i]+'-marker').val(markerSvg);
          }
@@ -756,6 +758,21 @@ function saveData(){
                     console.error(error); // 更新失敗時的處理邏輯
                 }
             });
+        }else if (selectedOption2.includes("svg")){
+            console.log("傳送類別的svg物件");
+            console.log("sendSvgData",sendSvgData);
+            $.ajax({
+                type: 'PUT',
+                url: '/config/updateRecord',
+                contentType: 'application/json',
+                data: JSON.stringify(sendSvgData),
+                success: function(response) {
+                    alert("儲存成功!");
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // 更新失敗時的處理邏輯
+                }
+            });
         }else{  //傳送修改或新增的一般物件
             console.log("傳送一般物件");
             console.log("sendBasicData",sendBasicData);
@@ -819,9 +836,6 @@ function createBasicObject(parsedData){
             for(let i=0; i<baseKeys.length; i++){
                 let currentBase = baseKeys[i];
                 sendBase[targetCategory].base[currentBase] = $('#'+baseKeys[i]).val();
-//                     console.log("currentBase",currentBase);
-//                    console.log("targetCategory", targetCategory);
-//                    console.log("targetNum", baseKeys[i]);
             }
         }else{
         //base新增
@@ -835,7 +849,6 @@ function createBasicObject(parsedData){
                     "name": parsedData[targetCategory].name
                 }
             };
-//            console.log("新增base", sendBase);
         }
         //修改顏色
         if(selectedOption2.includes("color")){
@@ -855,9 +868,12 @@ function createBasicObject(parsedData){
              }else{
                  index = $('#newTypes'+targetNum).val();
              }
-             svgObject={
-               "recordList": $('#recordList'+targetNum).val()
-             };
+            svgObject={
+               "icon": $('#icon'+targetNum).val(),
+               "hover": $('#hover'+targetNum).val(),
+               "recordList": $('#recordList'+targetNum).val(),
+               "marker": $('#marker'+targetNum).val()
+            };
              //組織description
              let compare = $('#description'+targetNum).val();
              let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
@@ -883,12 +899,9 @@ function createBasicObject(parsedData){
               }else{
                  index = $('#newTypes'+targetNum).val();
               }
-              svgObject={
-                  "icon": $('#icon'+targetNum).val(),
-                  "hover": $('#hover'+targetNum).val(),
-                  "recordList": $('#recordList'+targetNum).val(),
-                  "marker": $('#marker'+targetNum).val()
-              };
+               svgObject={
+                 "recordList": $('#recordList'+targetNum).val()
+               };
                //組織description
                let compare = $('#description'+targetNum).val();
                let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
@@ -904,7 +917,6 @@ function createBasicObject(parsedData){
                 "baseline": $('#baseline'+targetNum).val()
             };
          }
-
         sendBasicData = {
             [targetCategory]:{
                 "base":parsedData[targetCategory].base,
@@ -914,6 +926,23 @@ function createBasicObject(parsedData){
                 "name": parsedData[targetCategory].name
             }
         };
+        //大類別的svg
+         if(selectedOption2.includes("svg")&&selectedOption.includes("transportation")){
+            sendSvgData = {
+               [targetCategory]:{
+                   "recordList": $('#'+targetCategory+'-recordList').val()
+               }
+            };
+         }else{
+            sendSvgData = {
+               [targetCategory]:{
+                   "icon": $('#'+targetCategory+'-icon').val(),
+                   "hover": $('#'+targetCategory+'-hover').val(),
+                   "recordList": $('#'+targetCategory+'-recordList').val(),
+                   "marker": $('#'+targetCategory+'-marker').val()
+               }
+            };
+         }
 }
 
 function createSvgObject(svgData){
