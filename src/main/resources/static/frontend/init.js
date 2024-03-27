@@ -231,7 +231,6 @@ function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
-    loadEcoRecords(User.userId);//載入環保紀錄
     loadSVG();//載入svg
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
@@ -272,6 +271,7 @@ function loadSVG(){
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
             loadFootprintData();//載入碳足跡計算
+            loadEcoRecords(User.userId);//載入環保紀錄
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
