@@ -2,7 +2,7 @@ let selectDatas;
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
     //關閉上一個打開的infoWindow，及清除路線
-    if (currentMarker.infoWindow) {
+    if (currentMarker.infoWindow !=undefined) {
         currentMarker.infoWindow.close();
     }
     if(currentInfoWindowRecord.classType=="交通"){

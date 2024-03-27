@@ -227,7 +227,7 @@ function showNewChart(nowRecords, type) {
 // 查看歷史紀錄
 function showRecord() {
     //關閉上一個打開的infoWindow，及清除路線
-    if (currentMarker.infoWindow) {
+    if (currentMarker.infoWindow !=undefined) {
         currentMarker.infoWindow.close();
     }
     if(currentInfoWindowRecord.classType=="交通"){

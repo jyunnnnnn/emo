@@ -245,6 +245,9 @@ function systemInit(){
     $('#renameBtn').click(modifyNickname);
     $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
+    // 幫current初始化
+    currentInfoWindowRecord = undefined;
+    currentMarker = undefined;
 }
 //更新現在位置
 function updateCurrentCircle() {
