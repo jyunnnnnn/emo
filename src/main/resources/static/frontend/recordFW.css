@@ -21,7 +21,6 @@
     position: fixed;
     top: 6%;
     left: 10%;
-    color: white;
 }
 
 #userIcon {
@@ -32,6 +31,15 @@
     font-size:18px;
     margin:0px;
 }
+
+#user{
+    color: black;
+}
+
+#totalFootprint{
+    color: white;
+}
+
 
 .gm-ui-hover-effect{
     position: fixed;
