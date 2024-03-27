@@ -10,9 +10,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "main" ,"master"]
+    branches: [ "main" ,"master","mastertest"]
   pull_request:
-    branches: [ "main" ,"master"]
+    branches: [ "main" ,"master","mastertest"]
 
 jobs:
   BUILD-AND-TEST:
