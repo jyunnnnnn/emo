@@ -570,7 +570,7 @@ function directionsDraw(rec){
             directions: newRoute,
             suppressMarkers: true,
               polylineOptions: {
-                strokeColor: '#FFFFFF',
+                strokeColor: '#166a29',
                 strokeOpacity: 1,
                 strokeWeight: 4
               }

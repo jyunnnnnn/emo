@@ -2,13 +2,15 @@ let selectDatas;
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
     //關閉上一個打開的infoWindow，及清除路線
-    if (currentMarker.infoWindow !=undefined) {
+    if (typeof currentMarker !='undefined') {
         currentMarker.infoWindow.close();
+        if(currentInfoWindowRecord.classType=="交通"){
+            removeDirections();
+            clearMapLines();
+        }
     }
-    if(currentInfoWindowRecord.classType=="交通"){
-        removeDirections();
-        clearMapLines();
-    }
+
+
     $('#recordCalculate').text("0 gCo2E");
     $("#recordCompare").text("選擇行為以獲得基準值");
     $("#recordFormula").text("選擇行為以獲得計算公式");

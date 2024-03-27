@@ -63,7 +63,7 @@ function startRecording() {
     isRecording = true;
 
     recordedPositions = []; // 清空上一個路線紀錄
-    if (currentMarker.infoWindow) {
+    if (typeof currentMarker!='undefined') {
         currentMarker.infoWindow.close();
         removeDirections();
         clearMapLines();
@@ -146,7 +146,7 @@ function recordLocation() {
         let line = new google.maps.Polyline({
             path: lineCoordinates,
             geodesic: true,
-            strokeColor: '#FFFFFF',
+            strokeColor: '#166a29',
             strokeOpacity: 1,
             strokeWeight: 4
         });
@@ -165,7 +165,7 @@ function drawLine(cRecord){
     let path = new google.maps.Polyline({
         path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,
-        strokeColor: '#FFFFFF',
+        strokeColor: '#166a29',
         strokeOpacity: 1,
         strokeWeight: 4
     });

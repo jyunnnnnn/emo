@@ -129,12 +129,12 @@ function addMarker(recordToAdd) {
         // 監聽 marker click 事件
        marker.addListener('click', e => {
             //關閉上一個打開的infoWindow，及清除路線
-           if (currentMarker.infoWindow !=undefined) {
+           if (typeof currentMarker!=undefined) {
                currentMarker.infoWindow.close();
-           }
-           if(currentInfoWindowRecord.classType=="交通"){
-               removeDirections();
-               clearMapLines();
+               if(currentInfoWindowRecord.classType=="交通"){
+                   removeDirections();
+                   clearMapLines();
+               }
            }
 
            infoWindow.open(this.map, marker);

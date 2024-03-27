@@ -227,13 +227,14 @@ function showNewChart(nowRecords, type) {
 // 查看歷史紀錄
 function showRecord() {
     //關閉上一個打開的infoWindow，及清除路線
-    if (currentMarker.infoWindow !=undefined) {
+    if (typeof currentMarker !='undefined') {
         currentMarker.infoWindow.close();
+        if(currentInfoWindowRecord.classType=="交通"){
+            clearMapLines();
+            removeDirections();
+        }
     }
-    if(currentInfoWindowRecord.classType=="交通"){
-        clearMapLines();
-        removeDirections();
-    }
+
     //列表顯示環保紀錄
     let thisRecords = records;
     let container = $('#listContent');
