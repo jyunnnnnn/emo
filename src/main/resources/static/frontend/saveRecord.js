@@ -79,6 +79,8 @@ function addMarker(recordToAdd) {
     recordToAdd.footprint = parseFloat(recordToAdd.footprint,10).toFixed(3) *1000/1000;
     recordToAdd.recordId = parseInt(recordToAdd.recordId,10);
     let template;
+    console.log(svgData)
+    console.log(svgData.svgImages)
     if (recordToAdd.classType === "交通") {
         template = svgData.svgImages.marker[recordToAdd.type];
     }else if (recordToAdd.classType === "生活用品") {
