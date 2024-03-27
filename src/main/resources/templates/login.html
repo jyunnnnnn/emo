@@ -28,6 +28,8 @@
     <!--    <link rel="stylesheet" href="/frontend/login.css">-->
 
     <style>
+
+    .a2a_svg, .a2a_count { border-radius: 99em !important; }
     body {
             font-family: 'Crimson Pro', serif;
             background-image: url(frontend/img/bg4.png);
@@ -165,6 +167,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </style>
 
 
@@ -178,8 +203,10 @@
     <div class="row">
         <div class="col-12 a">
             <form id="login-form" action="/user/login" method="post">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" id="back-to-index" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                     class="bi bi-arrow-left" id="back-to-index" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
                 </svg>
                 <h1 class="emo">EMO app</h1>
                 <!-- <h1 style="text-align: center">Login</h1> -->
@@ -197,7 +224,8 @@
                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <br th:unless="${errorMessage}">
-                <div  style="text-align: center; font-weight: bold; color: #FA6958;" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+                <div style="text-align: center; font-weight: bold; color: #FA6958;" th:if="${errorMessage}"
+                     th:text="${errorMessage}"></div>
 
                 <button type="submit" class="form-control btn" id="login-button">登入</button>
 
@@ -231,6 +259,18 @@
 
             </form>
 
+
+            <!-- 社群分享按鈕 BEGIN 參考官方文件設定https://www.addtoany.com/buttons/customize/-->
+            <!--            可使用css 的.a2a_svg, .a2a_count { border-radius: 99em !important; }調整icon邊緣弧度-->
+            <div class="a2a_kit a2a_kit_size_32 a2a_default_style"
+                 data-a2a-url="https://emoapp-test-b6a07cfc6992.herokuapp.com/" data-a2a-title="EMO APP">
+                <a class="a2a_button_facebook"></a>
+                <a class="a2a_button_threads"></a>
+                <a class="a2a_button_line"></a>
+                <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            </div>
+            <script async src="https://static.addtoany.com/menu/page.js"></script>
+            <!-- 社群分享按鈕 END -->
         </div>
     </div>
 </div>
@@ -341,14 +381,21 @@
                 <button type="submit" class="form-control btn btn-primary submit px-3" id="login-button2">確認並登入
                 </button>
             </form>
+
         </div>
+
+
     </form>
+
 </div>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
 </body>
+
 
 </html>

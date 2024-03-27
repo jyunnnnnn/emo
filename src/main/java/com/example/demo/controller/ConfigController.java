@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.DeleteRecordBaseRequest;
 import com.example.demo.entity.UpdateRecordClassBaseRequest;
 import com.example.demo.entity.UpdateRecordClassColorRequest;
 import com.example.demo.entity.updateRecordRequest;
@@ -30,15 +31,16 @@ public class ConfigController {
     }
 
 
+    //更新特定類別特定content
     @PutMapping("/updateRecord")
-    public ResponseEntity<?> updateRecord(@RequestBody Map<String, updateRecordRequest> item) {
+    public ResponseEntity<?> updateRecord(@RequestBody Map<String, updateRecordRequest> item) throws FileNotFoundException {
         //獲得欲修改的類別名稱(EX:daily,transportation)
         String className = (String) item.keySet().toArray()[0];
-        System.out.println(item.get(className));
         this.configService.updateRecordClass(className, item.get(className));
         return ResponseEntity.ok(Collections.singletonMap("message", "Update　Success"));
     }
 
+    //更新大類別的color
     @PutMapping("/updateRecordClassColor")
     public ResponseEntity<?> updateRecordClassColor(@RequestBody Map<String, UpdateRecordClassColorRequest> req) {
         //獲得欲修改的類別名稱(EX:daily,transportation)
@@ -48,6 +50,7 @@ public class ConfigController {
 
     }
 
+    //更新大類別基準
     @PutMapping("/updateRecordClassBase")
     public ResponseEntity<?> updateRecordClassBase(@RequestBody Map<String, UpdateRecordClassBaseRequest> req) {
         //獲得欲修改的類別名稱(EX:daily,transportation)
@@ -55,6 +58,20 @@ public class ConfigController {
         this.configService.updateRecordClassBase(className, req.get(className));
         return ResponseEntity.ok(Collections.singletonMap("message", "Update　Success"));
 
+    }
+
+    //刪除特定content
+    @DeleteMapping("/deleteRecordContent")
+    public ResponseEntity<?> deleteRecordContent(@RequestParam("index") String index) {
+        this.configService.deleteRecordContent(index);
+        return ResponseEntity.ok(Collections.singletonMap("message", "Update　Success"));
+    }
+
+    //刪除Base
+    @DeleteMapping("/deleteRecordBase")
+    public ResponseEntity<?> deleteRecordContent(@RequestBody DeleteRecordBaseRequest req) {
+        this.configService.deleteRecordBase(req.getClassName(), req.getTargets());
+        return ResponseEntity.ok(Collections.singletonMap("message", "Update　Success"));
     }
 
     //測試用

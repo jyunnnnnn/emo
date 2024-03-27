@@ -117,7 +117,7 @@ body {
     transform: scale(2);
     margin-left: 10px;
     margin-right: 10px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
   }
 .svgView {
   margin-left: 10px;
@@ -144,11 +144,37 @@ a:hover {
 }
 
 .description{
-    width: 80%;
+    width: 50%;
 }
 
 #basic-options2{
     margin-left: 10px;
+}
+.recordList-group .svg-input{
+    width: 70%;
+}
+.recordList-group svg{
+    transform: scale(2);
+}
+.icon-group .svg-input{
+    width: 70%;
+}
+.icon-group svg{
+    transform: scale(3.3);
+}
+.marker-group .svg-input{
+    width: 70%;
+}
+.marker-group svg{
+    transform: scale(1.3);
+        margin-right: 0px;
+       margin-left: 0px;
+}
+/*.icon-group span, .recordList-group span, .marker-group span{
+        margin-left: 10px;
+}*/
+.svg-margin{
+     margin-left: 10px;
 }
 
   /* rwd */
@@ -161,6 +187,6 @@ a:hover {
       background-color: #fff;
     }
     .svg-input{
-      width: 100%;
+      width: 100% !important;
     }
   }

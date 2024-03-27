@@ -17,6 +17,18 @@ $(document).ready(function () {
     $("#save").click(function() {
         saveData();
     });
+    $("#delete").click(function() {
+        deleteData();
+    });
+    $("#complete").click(function() {
+    //按鈕回復原本設定
+      $('#add, #save').removeClass("d-none");
+      $('#complete').addClass("d-none");
+      $('.base-group input[type="checkbox"]').addClass('d-none');
+      $('.base-group2').css('margin-left', '0');
+      $('.base-group input[type="checkbox"]').prop('checked', false);
+      checkDelete = 0;
+    });
     $.ajax({
         url: '/config/GetAllRecordJson',
         method: 'GET',
@@ -25,7 +37,7 @@ $(document).ready(function () {
             parsedData = JSON.parse(data);
             console.log("parsed Data",parsedData);
             //調用函式
-            setData(parsedData);
+
         },
         error: function(xhr, status, error) {
            let errorData = JSON.parse(xhr.responseText);
@@ -41,6 +53,7 @@ $(document).ready(function () {
                svgData = JSON.parse(data);
                console.log("SVG data", svgData);
                //調用函式
+                setData(parsedData, svgData);
                setSvgData(svgData);
            },
            error: function(xhr, status, error) {
@@ -54,7 +67,8 @@ $(document).ready(function () {
 //        console.log("isADd",isAdd);
         if(isAdd){
             $(this).text("修改項目");
-//            console.log("isSvgSetting", isSvgSetting);
+            $('#save').text("新增");
+            $('#delete').prop('disabled', true);
             if(isSvgSetting){
                 //svg原本的消失
                 $('.svg-group').addClass("d-none");
@@ -71,18 +85,30 @@ $(document).ready(function () {
             }else{
                 for(let i =0; i<categories.length; i++){
                 //大類別清空
-                    if(categories[i] == "daily"){
+                    if(categories[i] == "transportation"){
+                        $('#icon'+i).val("");
+                        $('#icon-svgDisplay'+i).html("");
+                        $('#hover'+i).val("");
+                        $('#hover-svgDisplay'+i).html("");
+                        $('#marker'+i).val("");
+                        $('#marker-svgDisplay'+i).html("");
+                    }else{
                         $('#big').val("");
                         $('#mid').val("");
                         $('#small').val("");
                     }
+                    $('#recordList'+i).val("");
+                    $('#recordList-svgDisplay'+i).html("");
                     $('#name'+i).val("");
                     $('#coefficient'+i).val("");
                     $('#description'+i).val("");
+//                    $('.icon-group span, .recordList-group span, .marker-group span').css('margin-left', '0');
+
                     //index選單改成輸入框
                     $('#types'+i).addClass("d-none");
                     let inputCard =  '<input type="text" id="newTypes'+i+'" >';
                     $('#types'+i).parent().append(inputCard);
+                    $('#newTypes'+i).attr('placeholder', '請輸入新項目的英文');
                     //base原本的消失
                     $('.base-group2').addClass("d-none");
                     //改成輸入框
@@ -99,20 +125,38 @@ $(document).ready(function () {
             }
         }else{
             $(this).text("新增項目");
+            $('#save').text("儲存變更");
+             $('#delete').prop('disabled', false);
              //切換成修改模式
                 for(let i =0; i<categories.length; i++){
                 //恢復原本預設數據
-                    if(categories[i] == "daily"){
+                    if(categories[i] == "transportation"){
+                        let firstIndex = parsedData[categories[i]].content[0].index;
+                        let firstName = parsedData[categories[i]].content[0].name;
+                        let temp = firstIndex +"Icon";
+                        $('#icon'+i).val(svgData.svgImages[categories[i]][temp]);
+                        $('#icon-svgDisplay'+i).html(svgData.svgImages[categories[i]][temp]);
+                        temp = firstIndex +"Hover";
+                        $('#hover'+i).val(svgData.svgImages[categories[i]][temp]);
+                        $('#hover-svgDisplay'+i).html(svgData.svgImages[categories[i]][temp]);
+                        $('#recordList'+i).val(svgData.svgImages.recordList[firstName]);
+                        $('#recordList-svgDisplay'+i).html(svgData.svgImages.recordList[firstName]);
+                        $('#marker'+i).val(svgData.svgImages.marker[firstName]);
+                        $('#marker-svgDisplay'+i).html(svgData.svgImages.marker[firstName]);
+                    }else{
                         $('#big').val(parsedData[categories[i]].content[0].option.大);
                         $('#mid').val(parsedData[categories[i]].content[0].option.中);
                         $('#small').val(parsedData[categories[i]].content[0].option.小);
+                        $('#recordList'+i).val(svgData.svgImages.recordList.環保杯);
+                        $('#recordList-svgDisplay'+i).html(svgData.svgImages.recordList.環保杯);
                     }
-                    $('#index'+i).val(parsedData[categories[i]].content[0].index);
+                    $('#types'+i).val(parsedData[categories[i]].content[0].index);
                     $('#name'+i).val(parsedData[categories[i]].content[0].name);
                     $('#description'+i).val(parsedData[categories[i]].content[0].description);
                     $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
                     $('#units'+i).val(parsedData[categories[i]].content[0].unit);
                     //console.log("unit", parsedData[categories[i]].content[0].unit);
+//                    $('.icon-group span, .recordList-group span, .marker-group span').css('margin-left', '10');
                     $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
                     //index選單改回選單
                     $('#newTypes'+i).remove();
@@ -178,9 +222,8 @@ function setSvgData(svgData) {
 
 }
 //讀取一般設定檔的資料到頁面
-function setData(parsedData){
+function setData(parsedData, svgData){
 //讀取大類別有哪些  ex.['daily', 'transportation']
-    abc = parsedData;
     for (let category in parsedData) {
         if (parsedData.hasOwnProperty(category) && typeof parsedData[category] === "object" && parsedData[category].hasOwnProperty('content')) {
             categories.push(category);
@@ -204,6 +247,7 @@ function setData(parsedData){
         category += '`<option value="color">color</option>';
         category += '`<option value="base">base</option>';
         category += '`<option value="units">units</option>';
+        category += '`<option value="svg">svg</option>';
         $('#basic-options2').append(category);
 //    }
     //切換顯示的區塊
@@ -211,16 +255,21 @@ function setData(parsedData){
     $('#basic-options2, #basic-options').on('change', function() {
         selectedOption = $('#basic-options').val();//ex. daily transportaion
         selectedOption2 = $('#basic-options2').val();// ex. content color
-        //unit color不需要新增 禁用add按鈕
-        if (selectedOption2.includes("unit") || selectedOption2.includes("color")) {
-            $('#add').prop('disabled', true);
-        } else {
-            $('#add').prop('disabled', false);
-        }
+//unit color不需要新增 禁用add按鈕
         if (selectedOption2.includes("unit")) {
+            $('#add').prop('disabled', true);
+             $('#delete').prop('disabled', true);
             $('#save').prop('disabled', true);
+        }else if (selectedOption2.includes("color")|| selectedOption2.includes("svg")) {
+             $('#add').prop('disabled', true);
+             $('#delete').prop('disabled', true);
+            if(!isAdd){
+              $('#save').prop('disabled', true);
+            }
         }else{
+            $('#add').prop('disabled', false);
             $('#save').prop('disabled', false);
+            $('#delete').prop('disabled', false);
         }
         $('.basic-block').addClass('d-none'); // 隱藏所有區塊
         $('#' + selectedOption+'-'+selectedOption2).removeClass('d-none'); // 顯示所選擇的區塊
@@ -228,8 +277,79 @@ function setData(parsedData){
     for(let i =0; i<categories.length; i++){
      //新增整塊頁面
          let card ;
-         if(categories[i] == "daily"){
-           card = '<div id="'+categories[i]+'-content" class="basic-block"><br>';
+         if(categories[i] == "transportation"){
+            card = '<div id="'+categories[i]+'-content" class="basic-block d-none"><br>';
+            card +='<div class="form-group">'+
+                        '<label>項目索引</label>'+
+                        '<select name="types" id="types'+i+'">'+
+                        '</select>'+
+                    '</div> <br>'+
+                    '<div class="form-group">'+
+                        '<label>項目名稱</label>'+
+                        '<input type="text" id="name'+i+'" >'+
+                    '</div> <br>'+
+                    //個別的svg
+                    //icon
+                     '<div class="svg-margin"><div class="icon-group"><span id=icon-svgDisplay'+i+'>'+svgData.svgImages[categories[i]].busIcon+
+                      '</span><label>Icon svg</label>'+
+                        '<input type="text" class="svg-input" id="icon'+i+'" >'+
+                      '</div> <br>'+
+                    //hover
+                     '<div class="icon-group"><span id=hover-svgDisplay'+i+'>'+svgData.svgImages[categories[i]].busHover+
+                      '</span><label>Hover svg</label>'+
+                        '<input type="text" class="svg-input" id="hover'+i+'" >'+
+                      '</div> <br>'+
+                      //recordlist
+                     '<div class="recordList-group"><span id=recordList-svgDisplay'+i+'>'+svgData.svgImages.recordList.公車+
+                      '</span><label>RecordList svg</label>'+
+                        '<input type="text" class="svg-input" id="recordList'+i+'" >'+
+                      '</div> <br>'+
+                    //marker
+                     '<div class="marker-group"><span id=marker-svgDisplay'+i+'>'+svgData.svgImages.marker.公車+
+                      '</span><label>Marker svg</label>'+
+                        '<input type="text" class="svg-input" id="marker'+i+'" >'+
+                      '</div> <br></div>'+
+
+                    '<div class="form-group">'+
+                      '<label>標籤顏色</label>'+
+                      '<input type="color" id="color'+i+'" >'+
+                    '</div> <br>'+
+                   '<div class="form-group">'+
+                       '<label >比較對象</label>'+
+                       '<input type="text" class="description" id="description'+i+'">'+
+                   '</div><br>'+
+                     '<div class="form-group">'+
+                         '<label>基準</label>'+
+                         '<select name="types" id="baseline'+i+'">'+
+                         '</select>'+
+                     '</div> <br>'+
+                    '<div class="form-group">'+
+                        '<label>係數</label>'+
+                        '<input type="text" id="coefficient'+i+'">'+
+                    '</div><br>'+
+                          '<div class="form-group">'+
+                             '<label>計算單位</label>'+
+                             '<select name="types" id="units'+i+'">'+
+                             '</select>'+
+                         '</div> <br>'+
+
+                    '</div>';
+             let firstIndex = parsedData[categories[i]].content[0].index;
+             let firstName = parsedData[categories[i]].content[0].name;
+             $('#manage-container').append(card);
+             let temp = firstIndex +"Icon";
+             $('#icon'+i).attr('placeholder', '此欄位長寬限制為width: 10px height: 10px');
+             $('#icon'+i).val(svgData.svgImages[categories[i]][temp]);
+             temp = firstIndex +"Hover";
+             $('#hover'+i).val(svgData.svgImages[categories[i]][temp]);
+             $('#hover'+i).attr('placeholder', '此欄位長寬限制為width: 10px height: 10px');
+             $('#recordList'+i).val(svgData.svgImages.recordList[firstName]);
+             $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 20px height: 20px');
+             $('#marker'+i).val(svgData.svgImages.marker[firstName]);
+             $('#marker'+i).attr('placeholder', '此欄位長寬限制為width: 50px height: 50px');
+         }else{
+           //daily
+            card = '<div id="'+categories[i]+'-content" class="basic-block"><br>';
             card +='<div class="form-group">'+
                              '<label>項目索引</label>'+
                              '<select name="types" id="types'+i+'">'+
@@ -239,6 +359,12 @@ function setData(parsedData){
                              '<label>項目名稱</label>'+
                              '<input type="text" id="name'+i+'" >'+
                          '</div> <br>'+
+                  //svg
+                         '<div class="svg-margin"><div class="recordList-group"><span id=recordList-svgDisplay'+i+'>'+svgData.svgImages.recordList.環保杯+
+                          '</span><label>RecordList svg</label>'+
+                            '<input type="text" class="svg-input" id="recordList'+i+'" >'+
+                          '</div> <br></div>'+
+
                         '<div class="form-group">'+
                           '<label>標籤顏色</label>'+
                           '<input type="color" id="color'+i+'" >'+
@@ -258,9 +384,14 @@ function setData(parsedData){
                               '</div>'+
                           '</div><br>'+
                            '<div class="form-group">'+
-                               '<label >描述</label>'+
+                               '<label >比較對象</label>'+
                                '<input type="text" class="description" id="description'+i+'">'+
                            '</div><br>'+
+                       '<div class="form-group">'+
+                           '<label>基準</label>'+
+                           '<select name="types" id="baseline'+i+'">'+
+                           '</select>'+
+                       '</div> <br>'+
                          '<div class="form-group">'+
                              '<label>係數</label>'+
                              '<input type="text" id="coefficient'+i+'">'+
@@ -270,57 +401,30 @@ function setData(parsedData){
                              '<select name="types" id="units'+i+'">'+
                              '</select>'+
                          '</div> <br>'+
-                       '<div class="form-group">'+
-                           '<label>基準</label>'+
-                           '<select name="types" id="baseline'+i+'">'+
-                           '</select>'+
-                       '</div> <br>'+
+
                          '</div>';
                 //初始化
                 $('#manage-container').append(card);
-                $('#big').val(parsedData[categories[i]].content[0].option.大);
-                $('#mid').val(parsedData[categories[i]].content[0].option.中);
-                $('#small').val(parsedData[categories[i]].content[0].option.小);
-
-         }else{
-            card = '<div id="'+categories[i]+'-content" class="basic-block d-none"><br>';
-            card +='<div class="form-group">'+
-                        '<label>項目索引</label>'+
-                        '<select name="types" id="types'+i+'">'+
-                        '</select>'+
-                    '</div> <br>'+
-                    '<div class="form-group">'+
-                        '<label>項目名稱</label>'+
-                        '<input type="text" id="name'+i+'" >'+
-                    '</div> <br>'+
-                    '<div class="form-group">'+
-                      '<label>標籤顏色</label>'+
-                      '<input type="color" id="color'+i+'" >'+
-                    '</div> <br>'+
-                   '<div class="form-group">'+
-                       '<label >描述</label>'+
-                       '<input type="text" class="description" id="description'+i+'">'+
-                   '</div><br>'+
-                    '<div class="form-group">'+
-                        '<label>係數</label>'+
-                        '<input type="text" id="coefficient'+i+'">'+
-                    '</div><br>'+
-                          '<div class="form-group">'+
-                             '<label>計算單位</label>'+
-                             '<select name="types" id="units'+i+'">'+
-                             '</select>'+
-                         '</div> <br>'+
-                      '<div class="form-group">'+
-                          '<label>基準</label>'+
-                          '<select name="types" id="baseline'+i+'">'+
-                          '</select>'+
-                      '</div> <br>'+
-                    '</div>';
-             $('#manage-container').append(card);
+                if (parsedData[categories[i]] && parsedData[categories[i]].content && parsedData[categories[i]].content[0] && parsedData[categories[i]].content[0].option) {
+                    $('#big').val(parsedData[categories[i]].content[0].option.大);
+                    $('#mid').val(parsedData[categories[i]].content[0].option.中);
+                    $('#small').val(parsedData[categories[i]].content[0].option.小);
+                }
+                $('#recordList'+i).val(svgData.svgImages.recordList.環保杯);
+                $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 20px height: 20px');
          }
+        //初始化
         $('#name'+i).val(parsedData[categories[i]].content[0].name);
+        $('#name'+i).attr('placeholder', '請輸入新項目的中文');
         $('#color'+i).val(parsedData[categories[i]].content[0].color);
-        $('#description'+i).val(parsedData[categories[i]].content[0].description);
+        //分割description字串
+        let str = parsedData[categories[i]].content[0].description;
+        let startIndex = str.indexOf("比較對象為") + "比較對象為".length;
+        let endIndex = str.indexOf(" ", startIndex);
+        let comparisonObject = str.substring(startIndex, endIndex);
+//        console.log(comparisonObject);
+        $('#description'+i).val(comparisonObject);
+        $('#description'+i).attr('placeholder', '比較對象不可與所選基準矛盾');
         $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
         $('#units'+i).val(parsedData[categories[i]].content[0].unit);
         $('#baseline'+i).val(parsedData[categories[i]].content[0].baseline);
@@ -329,7 +433,7 @@ function setData(parsedData){
             let option = '`<option value="'+parsedData[categories[i]].content[j].index+'">'+parsedData[categories[i]].content[j].index+'</option>';
             $('#types'+i).append(option);
         }
-        //新增 base區塊
+        //新增base區塊
         let base = parsedData[categories[i]].base;
         let baseLength = Object.keys(base).length;
         let baseKeys = Object.keys(base);
@@ -337,7 +441,7 @@ function setData(parsedData){
         let baseCard = '<div id="'+categories[i]+'-base" class="basic-block d-none"><br><div class="base-group2">';
         for(let m =0;m< baseLength;m++){
            baseCard += '<div class="base-group">'+
-                      '<label>'+baseKeys[m]+'</label>'+
+                      '<input type="checkbox" class="d-none"><label>'+baseKeys[m]+'</label>'+
                             '<input type="text" id="'+baseKeys[m]+'">'+
                            ' </div><br> ';
         }
@@ -355,17 +459,98 @@ function setData(parsedData){
         //新增color區塊
          let colorCard = '<div id="'+categories[i]+'-color" class="basic-block d-none"><br>';
           colorCard += '<div class="form-group">'+
-                       '<label>color</label>'+
+                       '<label>標籤顏色</label>'+
                              '<input type="color" id="'+categories[i]+'-colorInput">'+
                         ' </div> <br> </div> ';
          $('#manage-container').append(colorCard);
          $('#'+categories[i]+'-colorInput').val(parsedData[categories[i]].color);
+
+        //新增svg區塊
+         let svgs = svgData.svgImages;
+         let svgCategory = Object.keys(svgs); //daily transportation recordList marker
+//         console.log("svgCategory:", svgCategory);
+        svgCard = '<div id="'+categories[i]+'-svg" class="basic-block d-none"><br>';
+         if(categories[i] == "transportation"){
+               //transportation只有recordList
+               //讀出recordList svg的值
+               let recordListSvg;
+               let svgKeys = Object.keys(svgData.svgImages.recordList);
+//               console.log("svgkey:", svgKeys);
+               for(let j = 0; j<svgKeys.length; j++){
+                    let checkName =  parsedData[categories[i]].name;
+                    if(svgKeys[j] == checkName){ //recordList裡面的交通
+                        recordListSvg = svgData.svgImages.recordList[svgKeys[j]];
+                        break;
+                    }
+               }
+               svgCard += '<div class="recordList-group">'+recordListSvg+
+                          '<label>RecordList svg</label>'+
+                            '<input type="text" class="svg-input" id="'+categories[i]+'-recordList">'+
+                          '</div> <br>';
+               svgCard += ' </div>';
+               $('#manage-container').append(svgCard);
+               //初始化
+               $('#'+categories[i]+'-recordList').val(recordListSvg);
+         }else{
+          //daily...
+               //讀出Icon Hover svg的值
+               let icon = categories[i] + "Icon";
+               let hover =  categories[i] + "Hover";
+               let IconSvg = svgData.svgImages[categories[i]][icon];
+               let HoverSvg = svgData.svgImages[categories[i]][hover];
+//               console.log("icon:", icon);
+//               console.log("iconsvg:", IconSvg);
+               //讀出recordList svg的值
+               let recordListSvg;
+               let svgKeys = Object.keys(svgData.svgImages.recordList);
+               for(let j = 0; j<svgKeys.length; j++){
+                    let checkName =  parsedData[categories[i]].name;
+                    if(svgKeys[j] == checkName){ //recordList裡面的生活用品
+                        recordListSvg = svgData.svgImages.recordList[svgKeys[j]];
+                        break;
+                    }
+               }
+               //讀出marker svg的值
+               let markerSvg;
+               svgKeys = Object.keys(svgData.svgImages.marker);
+//               console.log("svgkey:", svgKeys);
+               for(let j = 0; j<svgKeys.length; j++){
+                    let checkName =  parsedData[categories[i]].name;
+                    if(svgKeys[j] == checkName){ //marker裡面的生活用品
+                        markerSvg = svgData.svgImages.marker[svgKeys[j]];
+                        break;
+                    }
+               }
+               svgCard += '<div class="icon-group">'+IconSvg+
+                         '<label>Icon svg</label>'+
+                           '<input type="text" class="svg-input" id="'+categories[i]+'-icon">'+
+                         '</div> <br>';
+               svgCard += '<div class="icon-group">'+HoverSvg+
+                         '<label>Hover svg</label>'+
+                           '<input type="text" class="svg-input" id="'+categories[i]+'-hover">'+
+                         '</div> <br>';
+               svgCard += '<div class="recordList-group">'+recordListSvg+
+                          '<label>RecordList svg</label>'+
+                            '<input type="text" class="svg-input" id="'+categories[i]+'-recordList">'+
+                          '</div> <br>';
+               svgCard += '<div class="marker-group">'+markerSvg+
+                         '<label>Marker svg</label>'+
+                           '<input type="text" class="svg-input" id="'+categories[i]+'-marker">'+
+                         '</div> <br>';
+               svgCard += ' </div>';
+               $('#manage-container').append(svgCard);
+               //初始化
+               $('#'+categories[i]+'-icon').val(IconSvg);
+               $('#'+categories[i]+'-hover').val(HoverSvg);
+               $('#'+categories[i]+'-recordList').val(recordListSvg);
+               $('#'+categories[i]+'-marker').val(markerSvg);
+         }
+
         //新增units區塊
         let newUnitId=[];
         let units = parsedData[categories[i]].units;
         let unitsLength = Object.keys(units).length;
         let unitsKeys = Object.keys(units);
-        //console.log("base 的長度為：" + unitsLength);
         let unitsCard = '<div id="'+categories[i]+'-units" class="basic-block d-none"><br>';
         for(let m =0;m< unitsLength;m++){
            newUnitId[m] = unitsKeys[m].replace(/\//g, '_'); //替換掉底線不然id讀不到
@@ -388,6 +573,18 @@ function setData(parsedData){
           let option = '`<option value="'+unitsKeys[m]+'">'+unitsKeys[m]+'</option>';
             $('#units'+i).append(option);
         }
+        //新增模式時的版面調整
+        $("#add").click(function() {
+            if(isAdd){
+                $('.svg-margin').css({
+                    'margin-left': '10px',
+                });
+            }else{
+                $('.svg-margin').css({
+                    'margin-left': '0px',
+                });
+            }
+        });
     }
 
     //所有types開頭都會觸發 在創立元素後使用
@@ -423,16 +620,35 @@ function updateTableValues(selectedIndex) {
         // 根據索引位置更新表格的值
          $('#name'+targetNum).val(parsedData[targetCategory].content[index].name);
          $('#color'+targetNum).val(parsedData[targetCategory].content[index].color);
-         $('#description'+targetNum).val(parsedData[targetCategory].content[index].description);
+         let str = parsedData[targetCategory].content[index].description;
+         let startIndex = str.indexOf("比較對象為") + "比較對象為".length;
+         let endIndex = str.indexOf(" ", startIndex);
+         let comparisonObject = str.substring(startIndex, endIndex);
+         $('#description'+targetNum).val(comparisonObject);
+        // $('#description'+targetNum).val(parsedData[targetCategory].content[index].description);
          $('#coefficient'+targetNum).val(parsedData[targetCategory].content[index].coefficient);
          $('#unit'+targetNum).val(parsedData[targetCategory].content[index].unit);
          $('#baseline'+targetNum).val(parsedData[targetCategory].content[index].baseline);
-         //只有daily才有的
-         if(targetCategory == "daily"){
+         let svgName = parsedData[targetCategory].content[index].name;
+         $('#recordList'+targetNum).val(svgData.svgImages.recordList[svgName]); //更新input框
+         $('#recordList-svgDisplay'+targetNum).html(svgData.svgImages.recordList[svgName]); //更新顯示的圖案
+         //只有transportation才有的
+         if(targetCategory == "transportation"){
+            let svgIconName = parsedData[targetCategory].content[index].index +"Icon";
+            $('#icon'+targetNum).val(svgData.svgImages[targetCategory][svgIconName]); //更新input框
+            $('#icon-svgDisplay'+targetNum).html(svgData.svgImages[targetCategory][svgIconName]); //更新顯示的圖案
+            let svgHoverName = parsedData[targetCategory].content[index].index +"Hover";
+            $('#hover'+targetNum).val(svgData.svgImages[targetCategory][svgHoverName]); //更新input框
+            $('#hover-svgDisplay'+targetNum).html(svgData.svgImages[targetCategory][svgHoverName]); //更新顯示的圖案
+            let svgMarkerName = parsedData[targetCategory].content[index].name;
+            $('#marker'+targetNum).val(svgData.svgImages.marker[svgMarkerName]); //更新input框
+            $('#marker-svgDisplay'+targetNum).html(svgData.svgImages.marker[svgMarkerName]); //更新顯示的圖案
+         }else{
              $('#big').val(parsedData[targetCategory].content[index].option.大);
              $('#mid').val(parsedData[targetCategory].content[index].option.中);
              $('#small').val(parsedData[targetCategory].content[index].option.小);
          }
+
     } else {
         console.log("selectedContent not found in parsedData.daily.content");
     }
@@ -521,7 +737,7 @@ function saveData(){
                 contentType: 'application/json',
                 data: JSON.stringify(sendBase),
                 success: function(response) {
-                    //console.log(response); // 成功更新時的處理邏輯
+                    alert("儲存成功!");
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // 更新失敗時的處理邏輯
@@ -536,7 +752,22 @@ function saveData(){
                 contentType: 'application/json',
                 data: JSON.stringify(sendColor),
                 success: function(response) {
-                    //console.log(response); // 成功更新時的處理邏輯
+                    alert("儲存成功!");
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // 更新失敗時的處理邏輯
+                }
+            });
+        }else if (selectedOption2.includes("svg")){
+            console.log("傳送類別的svg物件");
+            console.log("sendSvgData",sendSvgData);
+            $.ajax({
+                type: 'PUT',
+                url: '/api/adminUpdateSvg',
+                contentType: 'application/json',
+                data: JSON.stringify(sendSvgData),
+                success: function(response) {
+                    alert("儲存成功!");
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // 更新失敗時的處理邏輯
@@ -551,7 +782,7 @@ function saveData(){
                 contentType: 'application/json',
                 data: JSON.stringify(sendBasicData),
                 success: function(response) {
-                    //console.log(response); // 成功更新時的處理邏輯
+                    alert("儲存成功!");
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // 更新失敗時的處理邏輯
@@ -576,13 +807,12 @@ function saveData(){
               }
           });
     }
+    //location.reload(); //重新載入頁面
 }
 
 function createBasicObject(parsedData){
         selectedOption = $('#basic-options').val();//ex. daily transportaion
         selectedOption2 = $('#basic-options2').val();// ex. content color
-//        console.log("selectedOption", selectedOption);
-//        console.log("selectedIndex", selectedIndex);
         const basicCategory = Object.keys(parsedData);
         let targetCategory;
         let targetNum;
@@ -606,11 +836,7 @@ function createBasicObject(parsedData){
             for(let i=0; i<baseKeys.length; i++){
                 let currentBase = baseKeys[i];
                 sendBase[targetCategory].base[currentBase] = $('#'+baseKeys[i]).val();
-//                     console.log("currentBase",currentBase);
-//                    console.log("targetCategory", targetCategory);
-//                    console.log("targetNum", baseKeys[i]);
             }
-//            console.log("修改base", sendBase);
         }else{
         //base新增
             let baseName = $('#'+targetCategory+'-baseName').val();
@@ -623,7 +849,6 @@ function createBasicObject(parsedData){
                     "name": parsedData[targetCategory].name
                 }
             };
-            console.log("新增base", sendBase);
         }
         //修改顏色
         if(selectedOption2.includes("color")){
@@ -633,12 +858,9 @@ function createBasicObject(parsedData){
                     "name": parsedData[targetCategory].name
                 }
             };
-//            console.log("修改color", sendColor);
         }
-//         console.log("sendBase",sendBase);
-//        console.log("targetCategory", targetCategory);
-//        console.log("targetNum", targetNum);
         let content;
+        let svgObject;
         let index;
          if (selectedOption.includes("daily") && selectedOption2.includes("content")) {//是daily-content發生改變
              if(isAdd){ //修改
@@ -646,6 +868,14 @@ function createBasicObject(parsedData){
              }else{
                  index = $('#newTypes'+targetNum).val();
              }
+           svgObject={
+             "recordList": $('#recordList'+targetNum).val()
+           };
+             //組織description
+             let compare = $('#description'+targetNum).val();
+             let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
+             let newDescription = "比較對象為"+compare+" 當前克數×排放係數("+compare+"["+baseCoefficient+"]-"+$('#name'+targetNum).val()+"["+$('#coefficient'+targetNum).val()+"])";
+             console.log("des:", newDescription);
              content= {
                 "option":{
                   "大": $('#big').val(),
@@ -655,38 +885,64 @@ function createBasicObject(parsedData){
                 "index": index,
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
-                "description": $('#description'+targetNum).val(),
+                "description":newDescription,
                 "coefficient": $('#coefficient'+targetNum).val(),
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
             };
-         } else {      //修改
-              if(isAdd){
+         } else {  //ex. transportation
+              if(isAdd){ //修改
                  index = $('#types'+targetNum).val();
               }else{
                  index = $('#newTypes'+targetNum).val();
               }
+            svgObject={
+               "icon": $('#icon'+targetNum).val(),
+               "hover": $('#hover'+targetNum).val(),
+               "recordList": $('#recordList'+targetNum).val(),
+               "marker": $('#marker'+targetNum).val()
+            };
+               //組織description
+               let compare = $('#description'+targetNum).val();
+               let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
+               let newDescription = "比較對象為"+compare+" 當前公里數×排放係數("+compare+"["+baseCoefficient+"]-"+$('#name'+targetNum).val()+"["+$('#coefficient'+targetNum).val()+"])";
+//               console.log("des:", newDescription);
              content = {
                 "index": index,
                 "name": $('#name'+targetNum).val(),
                 "color": $('#color'+targetNum).val(),
-                "description": $('#description'+targetNum).val(),
+                "description": newDescription,
                 "coefficient": $('#coefficient'+targetNum).val(),
                 "unit": $('#units'+targetNum).val(),
                 "baseline": $('#baseline'+targetNum).val()
             };
          }
-
         sendBasicData = {
             [targetCategory]:{
                 "base":parsedData[targetCategory].base,
                 "color": parsedData[targetCategory].color,
                 "content": content ,
+                "svg": svgObject,
                 "name": parsedData[targetCategory].name
             }
         };
-
-//        console.log("sendBasicData",sendBasicData);
+        //大類別的svg
+         if(selectedOption2.includes("svg")&&selectedOption.includes("transportation")){
+            sendSvgData = {
+               [targetCategory]:{
+                   "recordList": $('#'+targetCategory+'-recordList').val()
+               }
+            };
+         }else{
+            sendSvgData = {
+               [targetCategory]:{
+                   "icon": $('#'+targetCategory+'-icon').val(),
+                   "hover": $('#'+targetCategory+'-hover').val(),
+                   "recordList": $('#'+targetCategory+'-recordList').val(),
+                   "marker": $('#'+targetCategory+'-marker').val()
+               }
+            };
+         }
 }
 
 function createSvgObject(svgData){
@@ -704,21 +960,16 @@ function createSvgObject(svgData){
                 }
             }
         }
-//        console.log("修改");
          const svgIndex = Object.keys(svgData.svgImages);//ex: daily transportation recordList
          for(let i =0;i <svgIndex.length; i++){
             if(svgCategory == svgIndex[i]){
                 indexForID = i;
-//                console.log("svgCategory",svgCategory);
-//                console.log("indexForID",indexForID);
                 break;
             }
          }
          let svgIndex2 = Object.keys(svgData.svgImages[svgCategory]);//dailyIcon dailyHover
-//           console.log("svgIndex2[i]",svgIndex2);
         //把該類別全部加進來
         for(let i =0;i<svgIndex2.length ;i++){ //該類別有幾個svg
-//            console.log("svgIndex2[i]",svgIndex2[i]);
             sendSvgData.svgImages[svgCategory][svgIndex2[i]] = $('#'+svgIndex2[i]+indexForID).val();
         }
     }else{
@@ -731,4 +982,102 @@ function createSvgObject(svgData){
         }
     }
 //    console.log("sendSvgData",sendSvgData);
+}
+
+//let isDelete = true;
+let checkDelete = 0;
+function deleteData(){
+        selectedOption = $('#basic-options').val();//ex. daily transportaion
+        selectedOption2 = $('#basic-options2').val();// ex. content color
+        const basicCategory = Object.keys(parsedData);
+        let targetCategory;
+        let targetNum;
+        for(let i =0;i < basicCategory.length; i++){
+            if(selectedOption.includes(basicCategory[i])){
+                 targetCategory = basicCategory[i];
+                 targetNum = i;
+            }
+        }
+        if(selectedOption2.includes("content")){
+        //在content下詢問是否刪除該content
+            let result = confirm("確定要刪除此項目嗎？");
+            if(result){
+                let deleteIndex= $('#types'+targetNum).val();
+                //傳到後端
+                console.log("要刪除的Index",deleteIndex);
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/config/deleteRecordContent?index=' + deleteIndex,
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert("刪除成功!");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error); // 更新失敗時的處理邏輯
+                    }
+                });
+            }
+            //location.reload(); //重新載入頁面
+        }else if(selectedOption2.includes("base")){ //刪除base
+            if(checkDelete > 0){//第二次點擊按鈕 詢問刪除
+               let selectedBase = []; let checkNum = 0;
+                $(".base-group input[type='checkbox']").each(function() {
+                    if ($(this).prop("checked")) {
+                        checkNum += 1;
+                        let baseName = $(this).siblings('input[type="text"]').attr('id');
+                        selectedBase.push(baseName);
+                    }
+                });
+                let result;
+                if(checkNum > 0){
+                    result = confirm("確定要刪除所選項目嗎？");
+                }else{
+                    alert("請先選擇項目！")
+                    result = false;
+                }
+                if(result){//執行刪除
+                //欲刪除的base 所屬大類別名稱
+                let className = $("#basic-options :selected").text()
+                console.log("該base所屬類別名稱:" +className )
+                //創立物件
+                    let deleteBaseName = {
+                            "name":selectedBase,
+                            "className":className
+                    };
+                //傳到後端
+                console.log("要刪除的base",deleteBaseName);
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/config/deleteRecordBase',
+                    contentType: 'application/json',
+                    data: JSON.stringify(deleteBaseName),
+                    success: function(response) {
+                        alert("刪除成功!");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error); // 更新失敗時的處理邏輯
+                    }
+                });
+                //畫面上更新
+
+                }
+                //回復設置
+               $('#add, #save').removeClass("d-none");
+               $('#complete').addClass("d-none");
+               $('.base-group input[type="checkbox"]').addClass('d-none');
+               $('.base-group2').css('margin-left', '0');
+               $('.base-group input[type="checkbox"]').prop('checked', false);
+               checkDelete = 0;
+            }else{
+                //改變按鈕配置
+                $('#add, #save').addClass("d-none");
+                $('#complete').removeClass("d-none");
+                //加上checkbox
+                $('.base-group input[type="checkbox"]').removeClass('d-none');
+                $('.base-group2').css({
+                    'margin-left': '10px'
+                });
+                checkDelete += 1;
+            }
+        }
 }

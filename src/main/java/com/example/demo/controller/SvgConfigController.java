@@ -37,4 +37,13 @@ public class SvgConfigController {
         SvgconfigService.updateSvg(className, request.get("svgImages").get(className));
         return ResponseEntity.ok(Collections.singletonMap("message", "update success"));
     }
+
+    @PutMapping("/adminUpdateSvg")
+    public ResponseEntity<?> adminUpdateSvg(@RequestBody Map<String, Map<String, String>> req) throws FileNotFoundException {
+        String className = (String) req.keySet().toArray()[0];
+
+        this.SvgconfigService.adminPageUpdateClassSvg(className, req.get(className));
+
+        return null;
+    }
 }
