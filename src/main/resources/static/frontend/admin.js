@@ -868,12 +868,9 @@ function createBasicObject(parsedData){
              }else{
                  index = $('#newTypes'+targetNum).val();
              }
-            svgObject={
-               "icon": $('#icon'+targetNum).val(),
-               "hover": $('#hover'+targetNum).val(),
-               "recordList": $('#recordList'+targetNum).val(),
-               "marker": $('#marker'+targetNum).val()
-            };
+           svgObject={
+             "recordList": $('#recordList'+targetNum).val()
+           };
              //組織description
              let compare = $('#description'+targetNum).val();
              let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
@@ -899,9 +896,12 @@ function createBasicObject(parsedData){
               }else{
                  index = $('#newTypes'+targetNum).val();
               }
-               svgObject={
-                 "recordList": $('#recordList'+targetNum).val()
-               };
+            svgObject={
+               "icon": $('#icon'+targetNum).val(),
+               "hover": $('#hover'+targetNum).val(),
+               "recordList": $('#recordList'+targetNum).val(),
+               "marker": $('#marker'+targetNum).val()
+            };
                //組織description
                let compare = $('#description'+targetNum).val();
                let baseCoefficient = parsedData[targetCategory].base[$('#baseline'+targetNum).val()];//base係數
