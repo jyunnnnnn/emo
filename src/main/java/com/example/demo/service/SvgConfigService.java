@@ -89,7 +89,10 @@ public class SvgConfigService {
 
         //根據類別呼叫對應的function
         if (categoryName == "daily") {
-            dailyClassHandler(newSvg, dictionary.get(index));
+            if (dictionary.containsKey(index))
+                dailyClassHandler(newSvg, dictionary.get(index));
+            else
+                dailyClassHandler(newSvg, index);
         } else if (categoryName == "transportation") {
             transportationClassHandler(newSvg, contentName, index);
         }
@@ -127,9 +130,11 @@ public class SvgConfigService {
         //設定檔原本內容
         Map<String, Map<String, String>> content = svgConfiguration.getSvgImages();
 
-        //修改recordList內容
-        content.get("recordList").put(dictionary.get(index), newSvg.get("recordList"));
-
+        if (dictionary.containsKey(index))
+            //修改recordList內容
+            content.get("recordList").put(dictionary.get(index), newSvg.get("recordList"));
+        else
+            content.get("recordList").put(index, newSvg.get("recordList"));
         String hover = index + "Hover";
         String icon = index + "Icon";
 
@@ -137,8 +142,11 @@ public class SvgConfigService {
         content.get("transportation").put(hover, newSvg.get("hover"));
         //修改transportation 該content的icon
         content.get("transportation").put(icon, newSvg.get("icon"));
-        content.get("marker").put(dictionary.get(index), newSvg.get("marker"));
 
+        if (dictionary.containsKey(index))
+            content.get("marker").put(dictionary.get(index), newSvg.get("marker"));
+        else
+            content.get("marker").put(index, newSvg.get("marker"));
         //寫入設定檔
         svgConfiguration.setSvgImages(content);
         String jsonStr = gson.toJson(svgConfiguration);
