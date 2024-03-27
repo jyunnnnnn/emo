@@ -275,6 +275,7 @@ svg:hover .detail {
     top: 20px;
     right: 30px;
     cursor: pointer;
+    z-index: 999;
 }
 .btn:active {
     transform: scale(0.95);
