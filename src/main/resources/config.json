@@ -12,47 +12,45 @@
       },
       "content": [
         {
-       "option": {
+          "option": {
             "大": 15.0,
             "中": 10.0,
             "小": 5.0
           },
-
           "index": "cup",
           "name": "環保杯",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "paper",
           "color": "#4fc0e8",
-
           "description": "比較對象為塑膠免洗杯 當前克數×排放係數(塑膠免洗杯[0.242]-環保杯[0])"
         },
         {
           "option": {
-            "小": 15.0,
+            "大": 25.0,
             "中": 20.0,
-            "大": 25.0
+            "小": 15.0
           },
           "index": "tableware",
           "name": "環保餐具",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "paper",
-          "color": "#FFCD54",
+          "color": "#ffcd54",
           "description": "比較對象為紙餐具 當前克數×排放係數(紙餐具[0.242]-環保餐具[0])"
         },
         {
           "option": {
-            "小": 2.0,
+            "大": 10.0,
             "中": 5.0,
-            "大": 10.0
+            "小": 2.0
           },
           "index": "bag",
           "name": "環保袋",
           "coefficient": 0.0,
           "unit": "gCO2e",
           "baseline": "plastic",
-          "color": "#FA6E51",
+          "color": "#fa6e51",
           "description": "比較對象為塑膠袋 當前克數×排放係數(塑膠袋[1.95]-環保袋[0])"
         }
       ],

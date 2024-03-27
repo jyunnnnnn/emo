@@ -763,7 +763,7 @@ function saveData(){
             console.log("sendSvgData",sendSvgData);
             $.ajax({
                 type: 'PUT',
-                url: '/config/updateRecord',
+                url: '/api/adminUpdateSvg',
                 contentType: 'application/json',
                 data: JSON.stringify(sendSvgData),
                 success: function(response) {

@@ -101,7 +101,7 @@ public class ConfigService {
         t1.replace(categoryName, t2);
 
 
-        this.svgConfigService.adminPageUpdateSvg(categoryName, req.getSvg(), t2.getName(), req.getContent().getIndex());
+        this.svgConfigService.adminPageUpdateContentSvg(categoryName, req.getSvg(), t2.getName(), req.getContent().getIndex());
 
         record.setRecordCategory(t1);
         //修改設定檔文件
