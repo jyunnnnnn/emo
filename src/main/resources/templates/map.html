@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="/frontend/boostrap.min.css">
     <link rel="stylesheet" href="/frontend/recordFW.css">
     <link rel="stylesheet" href="/frontend/setting.css">
+    <link rel="stylesheet" href="/frontend/recordNachievement.css">
     <style>
         @import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
         @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
@@ -85,7 +86,7 @@
         <!-- 路線記錄鈕 -->
         <button class="recordButton" id="startRecording"> 路線記錄</button>
         <!-- 查看紀錄鈕 -->
-        <button class="recordButton" id="recordListButton"> 查看紀錄</button>
+        <button class="recordButton" id="recordListButton"> 紀錄與成就</button>
     </div>
     <div>
         <!-- 設定按鈕 -->
@@ -329,12 +330,12 @@
     </div>
 </div>
 
-<!-- 懸浮窗：查看紀錄 -->
-<div id="recordListFW" onclick="closeFW(event)">
+<!-- 懸浮窗：紀錄與成就 -->
+<div id="historyFW" onclick="closeFW(event)">
     <div class="historyContainer">
         <!-- 關閉 -->
-        <button class="btn" id="closeListModal">
-            <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+        <button class="btn" id="closeHistoryModal" style="right: 5%; top:4%;">
+            <svg viewBox="0 0 20 20" height="20" width="20" xmlns="http://www.w3.org/2000/svg" class="icon">
                 <g>
                     <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
                           stroke-linecap="round"></line>
@@ -344,10 +345,24 @@
             </svg>
         </button>
 
-        <div class="historyHeading">歷史紀錄</div>
-        <div style="display:flex; justify-content: center;">
-            <div class="chart-box" id="chart" style="display: none; width: 480px; height: 320px;"></div>
+        <div class="historyHeading">摘要</div>
+        <!-- 圖表 -->
+        <div style="font-size: 20px; margin-left: 10px;">圖表</div>
+        <div class="historyChart">
+            <div style="margin-left: 20px; font-size: 20px;">
+                <div>總減碳量<span style="color: #28a745; display: inline-block; width: 100%;" id="recordFP"></span></div>
+                <div>已解鎖成就<span style="color: #28a745; display: inline-block; width: 100%;">0/10</span></div>
+            </div>
+            <div class="chart-box" id="chart" style="display: none; width: 250px; height: 250px;"></div>
         </div>
+        <!-- 歷史記錄 -->
+        <div class="historyTitle">
+            <div style="font-size: 20px; margin-left: 10px;">紀錄</div>
+            <div class="more" id="moreRecord">顯示更多</div>
+        </div>
+        <div id="newestRecord"></div>
+
+
         <div style="display: flex; justify-content: center;">
             <div style="flex:1; display: inline-flex; justify-content: center; align-items: center;">
                 <p style="margin-top:16px; align-items: center; font-size: 20px; color: rgb(123, 125, 127);">
@@ -374,12 +389,23 @@
                 </optgroup>
             </select>
         </div>
-        <div id="listContent" style="align-items: center; font-size: 15px;"></div>
         <div style="display: flex">
             <input id="editRecord" class="save-button" type="submit" value="編輯">
             <input id="saveEditRecord" class="save-button" type="submit" value="完成" style="display: none;">
             <input id="deleteEditRecord" class="save-button" type="submit" value="刪除" style="display: none;">
         </div>
+    </div>
+</div>
+<!-- 懸浮窗：紀錄 -->
+<div id="recordListFW" onclick="closeFW(event)">
+    <div class="historyContainer">
+        <!-- 返回 -->
+        <div class="recordListReturn" id="recordReturn">
+            〈摘要
+        </div>
+
+        <div class="historyHeading">紀錄</div>
+        <div id="listContent"></div>
     </div>
 </div>
 

@@ -16,6 +16,7 @@ function showTotalFP(){
     }
     container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
     $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+    $('#recordFP').text(totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 }
 // 點擊換樹單位
 $('#totalFootprint').click(function() {
@@ -160,19 +161,19 @@ function showNewChart(nowRecords, type) {
         },
         series: [
             {
-                center:['60%', '50%'],
+                center:['50%', '50%'],
                 name: '減碳量',
                 type: 'pie',
-                radius: ['45%', '75%'],
+                radius: ['35%', '65%'],
                 avoidLabelOverlap: false,
                 itemStyle: {
                     borderRadius: 10,
-                    borderColor: '#F8F9FD',
+                    borderColor: '#EBEDEFDD',
                     borderWidth: 2,
                 },
                 label: {
                     formatter: '{b|{b}}\n{per|{d}%}',
-                    backgroundColor: '#F8F9FD',
+                    backgroundColor: '#EBEDEFDD',
                     borderColor: '#8C8D8E',
                     borderRadius: 4,
                     padding:[-5,3,8],
@@ -212,7 +213,7 @@ function showNewChart(nowRecords, type) {
 // 查看歷史紀錄
 function showRecord() {
     //關閉上一個打開的infoWindow，及清除路線
-    if (typeof currentMarker !='undefined') {
+    if (typeof currentMarker != 'undefined') {
         currentMarker.infoWindow.close();
         if(currentInfoWindowRecord.classType=="交通"){
             clearMapLines();
@@ -224,10 +225,6 @@ function showRecord() {
     let thisRecords = records;
     let container = $('#listContent');
     container.empty();
-    container.css({
-        'overflow-y': 'scroll',
-        'max-height': '150px'
-    });
 
     if(thisRecords.length == 0){
         let recordDiv = $("<div>")
@@ -239,7 +236,7 @@ function showRecord() {
             .text("沒有紀錄");
         container.append(recordDiv);
     } else {
-        for (let i = 0; i < thisRecords.length; i++) {
+        for (let i = thisRecords.length-1; i >= 0; i--) {
             let icon = $('<svg>')
                 .html(svgData.svgImages.recordList[thisRecords[i].classType]);
             // 創建新的checkbox
@@ -257,45 +254,71 @@ function showRecord() {
                 .attr('id', 'check_' + thisRecords[i].recordId);
             checkbox.append(input).append(span);
 
-            // 創建新的<div>元素
+            // 每一筆紀錄的div
             let recordDiv = $("<div>")
                 .css({
                     'display': 'flex',
-                    'align-items': 'center'
-                });
-
-            // 創建新的 <p> 元素
-            let recordElement= $("<p>")
-                .css({
-                    'display': 'inline-flex',
                     'align-items': 'center',
-                    'margin': '0px'
+                    'background': 'rgba(235, 237, 239, 0.87)',
+                    'border-radius': '20px',
+                    'justify-content': 'center',
+                    'align-items': 'center',
+                    'height': '70px',
+                    'margin-bottom': '5px'
                 })
                 .hover(
-                    function() {
-                        $(this).css('background-color', categories[thisRecords[i].classType].color);
-                    },
-                    function() {
-                        $(this).css('background-color', '');
-                    }
+                function() {
+                    $(this).css('background-color', categories[thisRecords[i].classType].color);
+                },
+                function() {
+                    $(this).css('background-color', 'rgba(235, 237, 239, 0.87)');
+                }
                 );
 
-            let timeSpan = $("<span>")
-                .text(thisRecords[i].time);
-            let typeSpan = $("<span>")
+            // 紀錄項目及減碳量div
+            let recordElement = $("<div>")
+                .css({
+                    'width': '200px',
+                });
+            let typeDiv = $("<div>")
                 .text(thisRecords[i].type)
                 .css({
                     'font-size': '20px',
-                    'margin-left' : '5px',
-                    'margin-right' : '5px'
+                    'margin-left' : '5px'
                 });
-            let footprintSpan = $("<span>")
-                .text(" (" + parseFloat(thisRecords[i].footprint).toFixed(2) + " gCo2E)");
+            let footprintDiv = $("<div>")
+                .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                .css({
+                    'color': '#28a745',
+                    'font-size': '25px',
+                    'margin-left': '5px',
+                    'font-weight': 'bold'
+                });
+            recordElement.append(typeDiv, footprintDiv);
 
-            recordElement.append(timeSpan, typeSpan, footprintSpan);
-            recordDiv.append(checkbox, icon, recordElement);
+            // 時間div
+            let timeElement = $("<div>")
+                .css({
+                    'text-align': 'right',
+                    'align-self': 'flex-end',
+                    'margin-left': '20px',
+                    'margin-bottom': '5px',
+                    'font-size': '12px'
+                });
+            let time = thisRecords[i].time.split(" ");
+            let dateSpan = $("<div>")
+                .text(time[0]);
+            let timeSpan = $("<div>")
+                .text(time[1]);
+            timeElement.append(dateSpan, timeSpan);
+
+            recordDiv.append(icon, recordElement, timeElement);
             recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
             container.append(recordDiv);
+            if(i == thisRecords.length -1){
+                $('#newestRecord').empty();
+                $('#newestRecord').append(recordDiv.clone());
+            }
 
             (function(recordId) {
                 recordElement.on('click', function() {
@@ -388,10 +411,6 @@ function showNewRecord(sortedRecords, selectedCategory) {
     let thisRecords = sortedRecords;
     let container = $('#listContent');
     container.empty();
-    container.css({
-        'overflow-y': 'scroll',
-        'max-height': '150px'
-    });
 
     if(thisRecords.length == 0){
         let recordDiv = $("<div>")
@@ -467,7 +486,6 @@ function showNewRecord(sortedRecords, selectedCategory) {
             // 創建新的<div>元素
             let recordDiv = $("<div>")
                 .css({
-                    'display': 'flex',
                     'align-items': 'center'
                 });
 
@@ -481,7 +499,7 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 })
                 .text(thisRecords[i].type + " ");
             let footprintSpan = $("<span>")
-                .text(" (" + parseFloat(thisRecords[i].footprint).toFixed(2) + " gCo2E)");
+                .text(parseFloat(thisRecords[i].footprint).toFixed(2) + " gCo2E");
 
             recordElement.append(timeSpan, typeSpan, footprintSpan);
             recordDiv.append(checkbox, icon, recordElement);

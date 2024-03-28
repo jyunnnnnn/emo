@@ -9,7 +9,7 @@
     fill: rgb(122, 121, 121);
 }
 
-#listContent p:hover {
+#listContent div:hover {
     cursor: pointer; /* 讓游標在 hover 時變成手型 */
 }
 
@@ -182,7 +182,6 @@ svg:hover .detail {
 }
 
 /* 懸浮窗 */
-#recordFW,
 #routeFW,
 #closeAuthFW,
 #recordListFW{
@@ -511,7 +510,6 @@ svg:hover .detail {
 }
 
 @media only screen and (max-width: 1000px) {
-    #recordFW,
     #closeAuthFW,
     #recordListFW{
         display: none;

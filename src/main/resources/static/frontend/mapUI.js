@@ -210,8 +210,8 @@ $('#saveTrafficRecord').on('click', function () {
 // 查看按鈕
 $('#recordListButton').on('click', function () {
     // 顯示懸浮窗
-    $('#recordListFW').css("display", "flex");
-    $('#recordListFW').css("position", "fixed");
+    $('#historyFW').css("display", "flex");
+    $('#historyFW').css("position", "fixed");
     $('#editRecord').css("display", "block");
     $('#saveEditRecord').css("display", "none");
     $('#deleteEditRecord').css("display", "none");
@@ -228,6 +228,16 @@ $('#recordListButton').on('click', function () {
     }
     $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
+});
+$('#moreRecord').on('click', function (){
+    $('#recordListFW').css("display", "flex");
+    $('#recordListFW').css("position", "fixed");
+    $('#historyFW').css("display", "none");
+});
+$('#recordReturn').on('click', function (){
+    $('#historyFW').css("display", "flex");
+    $('#historyFW').css("position", "fixed");
+    $('#recordListFW').css("display", "none");
 });
 
 // 點擊設定按鈕
@@ -257,8 +267,11 @@ function closeFW(event){
     if (event.target.id === 'recordFW' || event.target.id === 'routeFW') {
         $('#closeAuthFW').css("display", "flex");
         $('#closeAuthFW').css("position", "fixed");
+    } else if(event.target.id === 'historyFW') {
+        $('#historyFW').css("display", "none");
     } else if(event.target.id === 'recordListFW') {
         $('#recordListFW').css("display", "none");
+        $('#historyFW').css("display", "flex");
     } else if(event.target.id === 'settingFW') {
         $('#settingFW').css("display", "none");
     } else if(event.target.id === 'deleteFW') {
@@ -290,8 +303,8 @@ $('#closeRecord').on('click', function () {
     $('#routeFW').css("display", "none");
 });
 // 關閉查看懸浮窗
-$('#closeListModal').on('click', function () {
-    $('#recordListFW').css("display", "none");
+$('#closeHistoryModal').on('click', function () {
+    $('#historyFW').css("display", "none");
 });
 // 關閉設定懸浮窗
 $('#closeSettingModal').on('click', function () {
