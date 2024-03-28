@@ -154,31 +154,16 @@ function showNewChart(nowRecords, type) {
             bottom: 0,
             left: 'center'
         },
-        title: {
-            text: [
-                type + '減碳量',
-                nowFP + 'g',
-                'Co2E'
-            ].join('\n'),
-            textStyle: {
-                fontFamily: "'cwTeXYen', 'Mandali', sans-serif",
-                textAlign: 'center',
-                fontSize: 23,
-                fontWeight: 'normal'
-            },
-            left: 'center',
-            top: '40%'
-        },
         tooltip: {
             formatter: '{b}: {c} gCo2E',
             trigger: 'item'
         },
         series: [
             {
-                center:['50%', '53%'],
+                center:['60%', '50%'],
                 name: '減碳量',
                 type: 'pie',
-                radius: ['55%', '75%'],
+                radius: ['45%', '75%'],
                 avoidLabelOverlap: false,
                 itemStyle: {
                     borderRadius: 10,
