@@ -14,7 +14,23 @@ function showTotalFP(){
             totalFP += parseFloat(thisRecords[i].footprint, 10);
         }
     }
-    container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
+
+    // 設定量級 0-1,000 灰 1,000-10,000 銅 10,000-100,000銀 100,000上 金
+    if(totalFP < 1000){ // 灰
+        $('#totalFootprint').css('background', 'darkgray');
+        container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
+    }else if(totalFP < 10000){ // 銅
+        $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(184, 115, 51) 0%, rgb(218, 165, 32) 100%)');
+        container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
+    }else if(totalFP < 100000){ // 銀
+        $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%)');
+        container.html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
+    }else{ // 金
+        $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%)');
+        container.html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
+    }
+
+
     $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
 }
 // 點擊換樹單位
@@ -25,7 +41,11 @@ $('#totalFootprint').click(function() {
 
     // 更改內容
     if (currentContent.indexOf("總減碳量") !== -1) {
-        $(this).html("相當於 <strong>"+(totalFP/500).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')+"</strong> 棵"+tree+"一個月減碳量");
+        if(totalFP>100000){
+            $(this).html("相當於 <strong>" + (totalFP / 6000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> 棵" + tree + "一年吸收碳量");
+        }else {
+            $(this).html("相當於 <strong>" + (totalFP / 500).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> 棵" + tree + "一個月吸收碳量");
+        }
     } else {
         $(this).html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
     }

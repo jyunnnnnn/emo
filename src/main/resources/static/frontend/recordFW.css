@@ -38,6 +38,8 @@
 
 #totalFootprint{
     color: white;
+    -webkit-user-select: none;
+    background: darkgray;
 }
 
 

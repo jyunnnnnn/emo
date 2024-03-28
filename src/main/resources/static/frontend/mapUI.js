@@ -335,6 +335,14 @@ $('#saveEditRecord').on('click', function() {
 
 // 修改懸浮視窗變成歷史紀錄
 function recordModal(){
+    //關閉上一個打開的infoWindow，及清除路線
+    if (typeof currentMarker !='undefined') {
+        currentMarker.infoWindow.close();
+        if(currentInfoWindowRecord.classType=="交通"){
+            removeDirections();
+            clearMapLines();
+        }
+    }
     // 顯示懸浮窗
     $("#recordDetail").html();
     if(currentInfoWindowRecord.classType === "交通"){
