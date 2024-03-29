@@ -213,8 +213,8 @@ public class UserController {
     @PutMapping("/updatePhoto")
     public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") MultipartFile photo) throws IOException {
 
-        BufferedImage photoByte=convertMultipartFileToImage(photo);
-        System.out.println(photo);
+        byte[] photoByte= photo.getBytes();
+        System.out.println(photoByte);
         int result = this.userService.updatePhoto(username, photoByte);
 
         if (result == UserService.OK)
@@ -222,17 +222,6 @@ public class UserController {
 
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改頭像失敗"));
     }
-    public BufferedImage convertMultipartFileToImage(MultipartFile file) throws IOException {
-        // 从 MultipartFile 对象中获取字节数组
-        byte[] bytes = file.getBytes();
-        // 创建 ByteArrayInputStream 以读取字节数组
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        // 读取字节数组并创建 BufferedImage 对象
-        BufferedImage image = ImageIO.read(bis);
-        // 关闭 ByteArrayInputStream
-        bis.close();
-        // 返回 BufferedImage 对象
-        return image;
-    }
+
 
 }

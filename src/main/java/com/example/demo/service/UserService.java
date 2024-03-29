@@ -204,7 +204,7 @@ public class UserService {
 
 
     }
-    public int updatePhoto(String username, BufferedImage photo){
+    public int updatePhoto(String username, byte[] photo){
         UserInfo result = this.repository.findByUsername(username);
         if (result != null) {
             UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), result.getNickname(), result.getEmail(), result.getUserId(), result.getAuthority(),photo);
