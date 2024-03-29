@@ -232,6 +232,7 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
+    loadUserPhoto(User.photo);
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -582,3 +583,66 @@ function removeDirections() {
         directionsDisplay.setMap(null);
     }
 }
+function uploadPhoto() {
+     const fileInput = document.querySelector('#fileInput');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert('Please select a file.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('username', User.username);
+        formData.append('photo', file);
+
+        // Send data to server using AJAX
+        $.ajax({
+            url: '/user/updatePhoto',
+            type: 'PUT',
+            data: formData,
+            processData: false,  // 不要将 FormData 转换为字符串
+            contentType: false,  // 不设置内容类型，让浏览器自动设置
+            success: function(response) {
+                alert(response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Failed to upload photo.');
+            }
+        });
+}
+function loadUserPhoto(imageData){
+    //console.log(imageData)
+    const imageElement = arrayBufferToImage(imageData);
+//
+    console.log(imageElement);
+    document.body.appendChild(imageElement);
+    $('#photoDisplay').attr('src', imageElement.src);
+}
+function arrayBufferToImage(arrayBuffer) {
+    // 创建 Uint8Array 并将 ArrayBuffer 分配给它
+    const uint8Array = new Uint8Array(arrayBuffer);
+    // 创建 Blob 对象
+    const blob = new Blob([uint8Array]);
+    // 创建 URL 对象
+    const url = URL.createObjectURL(blob);
+    // 创建图像元素
+    const image = new Image();
+    // 设置图像元素的 src 属性为 URL 对象的 URL
+    image.src = url;
+    // 返回图像元素
+    return image;
+}
+
+
+
+
+
+
+
+
+
+
+
+

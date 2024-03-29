@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.config.SecurityConfig;
-import com.example.demo.entity.AESEncryption;
 import com.example.demo.entity.Authority;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.repository.UserRepository;
@@ -10,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -203,5 +203,14 @@ public class UserService {
             return repository.findByUsername(username);
 
 
+    }
+    public int updatePhoto(String username, BufferedImage photo){
+        UserInfo result = this.repository.findByUsername(username);
+        if (result != null) {
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), result.getNickname(), result.getEmail(), result.getUserId(), result.getAuthority(),photo);
+            this.repository.save(updatedUserInfo);
+            return OK;
+        }
+        return FAIL;
     }
 }

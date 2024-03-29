@@ -2,8 +2,10 @@ package com.example.demo.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.types.Binary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 
@@ -30,6 +32,7 @@ public class UserInfo {
     }
 
     private String authority;
+    private byte[] photo;
 
     //constructor
     public UserInfo() {
@@ -50,6 +53,16 @@ public class UserInfo {
         this.userId = userId;
         this.authority = authority;
     }
+    public UserInfo(String username, String password, String nickname, String email, String userId,String authority,byte[] photo) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.userId = userId;
+        this.authority = authority;
+        this.photo = photo;
+    }
+
 
     //constructor without nickname,default nickname is username
     public UserInfo(String username, String password, String email, String userId) {
@@ -89,14 +102,23 @@ public class UserInfo {
         return username;
     }
 
+    public void setUsername(String username) {this.username = username;}
 
     public String getPassword() {
         return password;
     }
 
+    public byte[] getPhoto() {return photo;}
+
+    public void setPhoto(byte[] photo) {this.photo = photo;}
 
     public String toString() {
-        return "Username: " + username + "\n" + "Password: " + password + "\n" + "nickname: " + nickname + "\n" + "email: " + email + "\n" + "userId: " + userId;
+        return "Username: " + username + "\n" +
+                "Password: " + password + "\n" +
+                "nickname: " + nickname + "\n" +
+                "email: " + email + "\n" +
+                "userId: " + userId + "\n" +
+                "photo: " + photo + "\n" ;
     }
 
 }

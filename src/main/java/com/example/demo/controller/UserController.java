@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.config.SecurityConfig;
 import com.example.demo.entity.UserInfo;
+import com.example.demo.entity.UserPhoto;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.Binary;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -203,4 +210,29 @@ public class UserController {
         response.put("username", result.getUsername());
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/updatePhoto")
+    public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") MultipartFile photo) throws IOException {
+
+        BufferedImage photoByte=convertMultipartFileToImage(photo);
+        System.out.println(photo);
+        int result = this.userService.updatePhoto(username, photoByte);
+
+        if (result == UserService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改頭像成功"));
+
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改頭像失敗"));
+    }
+    public BufferedImage convertMultipartFileToImage(MultipartFile file) throws IOException {
+        // 从 MultipartFile 对象中获取字节数组
+        byte[] bytes = file.getBytes();
+        // 创建 ByteArrayInputStream 以读取字节数组
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        // 读取字节数组并创建 BufferedImage 对象
+        BufferedImage image = ImageIO.read(bis);
+        // 关闭 ByteArrayInputStream
+        bis.close();
+        // 返回 BufferedImage 对象
+        return image;
+    }
+
 }
