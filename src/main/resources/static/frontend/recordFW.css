@@ -346,7 +346,7 @@ svg:hover .detail {
     margin: 8px auto;
     border-radius: 20px;
     border: none;
-    transition: all 0.2s ease-in-out;
+    text-align: center;
 }
 #editRecord:hover,
 #saveEditRecord:hover,
