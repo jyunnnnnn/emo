@@ -612,8 +612,10 @@ function uploadPhoto() {
             contentType: false,  // 不設定內容類型，讓瀏覽器自動設定
             success: function(response) {
                 User.photo = croppedImageUrl;
+                $('#photoContainer').css("display","block");
                 $('#photoDisplay').attr('src', User.photo);
                 $('#originalPhoto').attr('src', User.photo);
+                $('#userPhoto').css("display","none");
                 alert(response.message);
             },
             error: function(xhr, status, error) {

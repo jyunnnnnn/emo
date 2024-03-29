@@ -44,6 +44,7 @@ public class UserInfo {
         this.nickname = nickname;
         this.email = email;
         this.userId = userId;
+        this.photo=null;
     }
     public UserInfo(String username, String password, String nickname, String email, String userId,String authority) {
         this.username = username;
@@ -52,6 +53,7 @@ public class UserInfo {
         this.email = email;
         this.userId = userId;
         this.authority = authority;
+        this.photo=null;
     }
     public UserInfo(String username, String password, String nickname, String email, String userId,String authority,String photo) {
         this.username = username;
