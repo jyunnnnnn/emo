@@ -216,9 +216,9 @@ $('#recordListButton').on('click', function () {
     $('#saveEditRecord').css("display", "none");
     $('#deleteEditRecord').css("display", "none");
 
-    $('#category').val('all');
-    $('#sortType').val('time');
-    $('#sortMethod').val('old');
+    $('#selectedSortType').text('請選擇排序依據');
+    $('#selectedMethod').text('請先選擇一項依據');
+    $('#method').attr('class', 'ts-select is-disabled');
     let formattedDate = getFormattedDate().match(/\d{4}-\d{2}-\d{2}/)[0];
     let datePart;
     if(records.length>0){
@@ -229,15 +229,68 @@ $('#recordListButton').on('click', function () {
     $('#startDate').val(datePart);
     $('#endDate').val(formattedDate);
 });
+$('#sortByTime, #sortByFP').on('click', function() {
+    $('#method').attr('class', 'ts-select');
+    $('#selectedMethod').text('請選擇排序方式');
+    $('#sortTypeBtn').find('.item').removeClass('is-selected').addClass('item');
+    $(this).addClass('is-selected');
+    $('#selectedSortType').text($(this).text());
+
+    if($(this).text() === "時間"){
+        $('#time1').css('display', 'block');
+        $('#time2').css('display', 'block');
+        $('#FP1').css('display', 'none');
+        $('#FP2').css('display', 'none');
+    } else {
+        $('#time1').css('display', 'none');
+        $('#time2').css('display', 'none');
+        $('#FP1').css('display', 'block');
+        $('#FP2').css('display', 'block');
+    }
+});
+$('#time1, #time2, #FP1, #FP2').on('click', function() {
+    $('#methodBtn').find('.item').removeClass('is-selected').addClass('item');
+    $(this).addClass('is-selected');
+    $('#selectedMethod').text($(this).text());
+    sortRecordsBySelectedOption($(this).text());
+});
+// 顯示更多紀錄
 $('#moreRecord').on('click', function (){
     $('#recordListFW').css("display", "flex");
     $('#recordListFW').css("position", "fixed");
     $('#historyFW').css("display", "none");
+    $('#editRecord').css("display", "block");
+    $('#saveEditRecord').css("display", "none");
+    $('#deleteEditRecord').css("display", "none");
+
+    let checked = $('input[name="tabs"]:checked');
+    let checkedVal = $('input[name="tabs"]:checked').val();
+    if(checkedVal != undefined){
+        checked.prop('checked', false);
+        $('#selectClass input[id="allHistory"]').prop('checked', true);
+        showRecord();
+    } else {
+        $('#selectClass input[id="allHistory"]').prop('checked', true);
+    }
 });
 $('#recordReturn').on('click', function (){
     $('#historyFW').css("display", "flex");
     $('#historyFW').css("position", "fixed");
     $('#recordListFW').css("display", "none");
+
+    $('#newestRecord .deleteBox').css("display", "none");
+    $('#newestRecord .recordListSvg').css("display", "flex");
+});
+// 顯示更多成就
+$('#moreAchievement').on('click', function (){
+    $('#achievementFW').css("display", "flex");
+    $('#achievementFW').css("position", "fixed");
+    $('#historyFW').css("display", "none");
+});
+$('#achievementReturn').on('click', function (){
+    $('#historyFW').css("display", "flex");
+    $('#historyFW').css("position", "fixed");
+    $('#achievementFW').css("display", "none");
 });
 
 // 點擊設定按鈕
@@ -282,6 +335,11 @@ function closeFW(event){
         $('#closeAuthFW').css("display", "none");
     } else if(event.target.id === 'adminFW') {
         $('#adminFW').css("display", "none");
+    } else if(event.target.id === 'historyFW') {
+        $('#historyFW').css("display", "none");
+    } else if(event.target.id === 'achievementFW') {
+        $('#achievementFW').css("display", "none");
+        $('#historyFW').css("display", "flex");
     }
 }
 
@@ -330,9 +388,13 @@ $('#editRecord').on('click', function() {
     $('#editRecord').css("display", "none");
     $('#saveEditRecord').css("display", "block");
     $('#deleteEditRecord').css("display", "block");
-    let checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'flex';
+    let deleteBoxes = document.querySelectorAll('.deleteBox');
+    let recordListSvg = document.querySelectorAll('.recordListSvg');
+    deleteBoxes.forEach(function(deleteBox) {
+        deleteBox.style.display = 'flex';
+    });
+    recordListSvg.forEach(function(svg) {
+        svg.style.display = 'none';
     });
 })
 $('#saveEditRecord').on('click', function() {
@@ -340,9 +402,14 @@ $('#saveEditRecord').on('click', function() {
     $('#editRecord').css("display", "block");
     $('#saveEditRecord').css("display", "none");
     $('#deleteEditRecord').css("display", "none");
-    let checkboxes = document.querySelectorAll('.checkbox-container');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.style.display = 'none';
+    $('input[type=checkbox].deleteCheckbox:checked').prop('checked', false);
+    let deleteBoxes = document.querySelectorAll('.deleteBox');
+    let recordListSvg = document.querySelectorAll('.recordListSvg');
+    deleteBoxes.forEach(function(deleteBox) {
+        deleteBox.style.display = 'none';
+    });
+    recordListSvg.forEach(function(svg) {
+        svg.style.display = 'flex';
     });
 });
 

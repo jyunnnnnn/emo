@@ -5,10 +5,10 @@ function deleteMultiRecord(){
         $('#editRecord').css("display", "block");
         $('#saveEditRecord').css("display", "none");
         $('#deleteEditRecord').css("display", "none");
-        let selectedCheckboxes = $('input[type=checkbox].custom-checkbox:checked');
+        let selectedCheckboxes = $('input[type=checkbox].deleteCheckbox:checked');
         let selectedRecordIds = [];
         selectedCheckboxes.each(function() {
-             let recordIdString = $(this).closest('div').attr('id').split('_')[1];
+             let recordIdString = $(this).attr('id').split('_')[1];
              let recordId = parseInt(recordIdString, 10);
              deleteRecord(recordId);
              document.getElementById("record_" + recordId).remove();
@@ -16,7 +16,7 @@ function deleteMultiRecord(){
         });
         if (selectedRecordIds.length > 0) {
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
-            let nowType = $("#category option:selected").text();
+            let nowType = $("#selectClass input[type=\"radio\"]:checked").next('label').text();
 
             //console.log(nowType);
             let sortedRecords = records;

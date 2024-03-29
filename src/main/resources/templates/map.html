@@ -361,39 +361,12 @@
             <div class="more" id="moreRecord">顯示更多</div>
         </div>
         <div id="newestRecord"></div>
-
-
-        <div style="display: flex; justify-content: center;">
-            <div style="flex:1; display: inline-flex; justify-content: center; align-items: center;">
-                <p style="margin-top:16px; align-items: center; font-size: 20px; color: rgb(123, 125, 127);">
-                    請選擇日期：</p>
-                <input type="text" id="startDate"
-                       style="text-align: center; font-size: 15px; color: rgb(123, 125, 127); width: 280px; height: 23px;"/>
-            </div>
+        <!-- 成就 -->
+        <div class="historyTitle">
+            <div style="font-size: 20px; margin-left: 10px;">成就</div>
+            <div class="more" id="moreAchievement">顯示更多</div>
         </div>
-        <div id="typeSelect" style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-            <select class="recordForm-control" id="category" style="flex: 1; font-size: 15px;">
-                <optgroup label="類別">
-                </optgroup>
-            </select>
-            <select class="recordForm-control" id="sortType" style="flex: 1; font-size: 15px;">
-                <optgroup label="排序依據">
-                    <option value="time">時間</option>
-                    <option value="footprint">減碳量</option>
-                </optgroup>
-            </select>
-            <select class="recordForm-control" id="sortMethod" style="flex: 1; font-size: 15px;">
-                <optgroup label="時間" id="method">
-                    <option value="old" id="option1">遠到近</option>
-                    <option value="new" id="option2">近到遠</option>
-                </optgroup>
-            </select>
-        </div>
-        <div style="display: flex">
-            <input id="editRecord" class="save-button" type="submit" value="編輯">
-            <input id="saveEditRecord" class="save-button" type="submit" value="完成" style="display: none;">
-            <input id="deleteEditRecord" class="save-button" type="submit" value="刪除" style="display: none;">
-        </div>
+        <div id="achievement" class="historyAchievement">test</div>
     </div>
 </div>
 <!-- 懸浮窗：紀錄 -->
@@ -405,7 +378,56 @@
         </div>
 
         <div class="historyHeading">紀錄</div>
-        <div id="listContent"></div>
+        <div style="display: flex; justify-content: center;">
+            <div style="flex:1; display: inline-flex; justify-content: center; align-items: center;">
+                <p style="margin-top:16px; align-items: center; font-size: 20px; color: rgb(123, 125, 127);">
+                    請選擇日期：</p>
+                <input type="text" id="startDate"
+                       style="text-align: center; font-size: 15px; color: rgb(123, 125, 127); width: 280px; height: 23px;"/>
+            </div>
+        </div>
+        <div id="typeSelect" style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <div class="ts-select" data-dropdown="sort" id="sortType" style="width: 50%">
+                <div class="content" id="selectedSortType">請選擇排序依據</div>
+            </div>
+            <div class="ts-dropdown" style="width: 42%; left: 35px; top: 237px; z-index: 101;" data-name="sort" data-position="bottom-start" id="sortTypeBtn">
+                <button class="item" type="button" value="time" id="sortByTime">時間</button>
+                <button class="item" type="button" value="footprint" id="sortByFP">減碳量</button>
+            </div>
+            <div class="ts-select" data-dropdown="method" id="method" style="width: 50%">
+                <div class="content" id="selectedMethod">請選擇排序方式</div>
+            </div>
+            <div class="ts-dropdown" style="width: 42%; left: 35px; top: 237px; z-index: 101;" data-name="method" data-position="bottom-start" id="methodBtn">
+                <button class="item" type="button" id="time1">近到遠</button>
+                <button class="item" type="button" id="time2">遠到近</button>
+                <button class="item" type="button" id="FP1">少到多</button>
+                <button class="item" type="button" id="FP2">多到少</button>
+            </div>
+        </div>
+        <div class="selectDiv">
+            <div class="selectClass" id="selectClass">
+            </div>
+        </div>
+
+        <div id="listContent" class="parent"></div>
+
+        <div style="display: flex">
+            <input id="editRecord" class="save-button" type="submit" value="編輯">
+            <input id="saveEditRecord" class="save-button" type="submit" value="完成" style="display: none;">
+            <input id="deleteEditRecord" class="save-button" type="submit" value="刪除" style="display: none;">
+        </div>
+    </div>
+</div>
+<!-- 懸浮窗：成就 -->
+<div id="achievementFW" onclick="closeFW(event)">
+    <div class="historyContainer">
+        <!-- 返回 -->
+        <div class="achievementReturn" id="achievementReturn">
+            〈摘要
+        </div>
+
+        <div class="historyHeading">成就</div>
+        <div class="historyAchievement">哈哈先這樣</div>
     </div>
 </div>
 

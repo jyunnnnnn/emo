@@ -325,11 +325,19 @@ function questionMarkConstructor(jsonData) {
     }
 }
 function initCategory(jsonData){
-    $('#category').append($('<option>', {
-        text: "全部",
-        value: "all",
-        selected: true
-    }));
+    $('#selectClass').append(
+        $('<input>', {
+            type: "radio",
+            id: "allHistory",
+            name: "tabs",
+            value: "all",
+        }),
+        $('<label>', {
+            for: "allHistory",
+            text: "全部",
+            class: 'tab'
+        })
+    );
     for (let i = 0; i < FootprintData.length; i++) {
         let currentCategory = FootprintData[i].classZH;
         let currentType = FootprintData[i].type;
@@ -377,10 +385,19 @@ function initCategory(jsonData){
                 color: jsonData[FootprintData[i].class].color,
                 action: []
             };
-            $('#category').append($('<option>', {
-                text: currentCategory,
-                value: FootprintData[i].class
-            }));
+            $('#selectClass').append(
+                $('<input>', {
+                    type: "radio",
+                    id: FootprintData[i].class + 'History',
+                    name: "tabs",
+                    value: FootprintData[i].class
+                }),
+                $('<label>', {
+                    for: FootprintData[i].class + 'History',
+                    text: currentCategory,
+                    class: 'tab'
+                })
+            );
         }
 
         if(currentCategory === "交通"){
@@ -430,8 +447,10 @@ function initCategory(jsonData){
     }
 
     // 等按鈕建好再放照片跟 + 監聽器
+    $('#selectClass input[type="radio"]').on("change", sortRecordsBySelectedOption);
     svgConstructor(svgData);
     typeListener();
+    console.log(categories);
 }
 let trafficChecked = null;
 let dailyChecked = null;

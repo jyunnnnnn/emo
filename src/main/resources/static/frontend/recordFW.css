@@ -184,7 +184,7 @@ svg:hover .detail {
 /* 懸浮窗 */
 #routeFW,
 #closeAuthFW,
-#recordListFW{
+#recordFW{
     display: none;
     position: fixed;
     top: 0;
@@ -510,6 +510,7 @@ svg:hover .detail {
 }
 
 @media only screen and (max-width: 1000px) {
+    #recordFW,
     #closeAuthFW,
     #recordListFW{
         display: none;

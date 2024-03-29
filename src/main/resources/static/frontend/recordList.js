@@ -1,6 +1,7 @@
 // 顯示總減碳量
 let dateArray=[];
 let totalFP = 0;
+let deleteSvg = "<svg\n    xmlns=\"http://www.w3.org/2000/svg\"\n    fill=\"none\"\n    viewBox=\"0 0 50 59\"\n    class=\"bin\"\n  >\n    <path\n      fill=\"#B5BAC1\"\n      d=\"M0 7.5C0 5.01472 2.01472 3 4.5 3H45.5C47.9853 3 50 5.01472 50 7.5V7.5C50 8.32843 49.3284 9 48.5 9H1.5C0.671571 9 0 8.32843 0 7.5V7.5Z\"\n    ></path>\n    <path\n      fill=\"#B5BAC1\"\n      d=\"M17 3C17 1.34315 18.3431 0 20 0H29.3125C30.9694 0 32.3125 1.34315 32.3125 3V3H17V3Z\"\n    ></path>\n    <path\n      fill=\"#B5BAC1\"\n      d=\"M2.18565 18.0974C2.08466 15.821 3.903 13.9202 6.18172 13.9202H43.8189C46.0976 13.9202 47.916 15.821 47.815 18.0975L46.1699 55.1775C46.0751 57.3155 44.314 59.0002 42.1739 59.0002H7.8268C5.68661 59.0002 3.92559 57.3155 3.83073 55.1775L2.18565 18.0974ZM18.0003 49.5402C16.6196 49.5402 15.5003 48.4209 15.5003 47.0402V24.9602C15.5003 23.5795 16.6196 22.4602 18.0003 22.4602C19.381 22.4602 20.5003 23.5795 20.5003 24.9602V47.0402C20.5003 48.4209 19.381 49.5402 18.0003 49.5402ZM29.5003 47.0402C29.5003 48.4209 30.6196 49.5402 32.0003 49.5402C33.381 49.5402 34.5003 48.4209 34.5003 47.0402V24.9602C34.5003 23.5795 33.381 22.4602 32.0003 22.4602C30.6196 22.4602 29.5003 23.5795 29.5003 24.9602V47.0402Z\"\n      clip-rule=\"evenodd\"\n      fill-rule=\"evenodd\"\n    ></path>\n    <path fill=\"#B5BAC1\" d=\"M2 13H48L47.6742 21.28H2.32031L2 13Z\"></path>\n  </svg>";
 function showTotalFP(){
     totalFP = 0;
     let thisRecords = records;
@@ -127,7 +128,6 @@ function showNewChart(nowRecords, type) {
                         color: value.color
                     }
                 });
-                nowFP += value.footprint;
             }
         }
     } else {
@@ -143,12 +143,9 @@ function showNewChart(nowRecords, type) {
                         color: subcategory.color
                     }
                 });
-                nowFP += subcategory.totalFP;
             }
         });
     }
-
-    nowFP = parseFloat(nowFP).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     if(type === "全部" || type === "init") type = "總";
     let option = {
         grid: {
@@ -229,50 +226,67 @@ function showRecord() {
     if(thisRecords.length == 0){
         let recordDiv = $("<div>")
             .css({
-                'text-align': 'center',
+                'display': 'flex',
+                'align-items': 'center',
+                'background': 'rgba(235, 237, 239, 0.87)',
+                'border-radius': '20px',
                 'justify-content': 'center',
-                'font-size': '20px'
+                'align-items': 'center',
+                'height': '70px',
+                'margin-bottom': '5px'
             })
             .text("沒有紀錄");
         container.append(recordDiv);
+        $('#newestRecord').empty();
+        $('#newestRecord').append(recordDiv.clone());
     } else {
+        let yearNmonth = "";
+        let nowDiv;
         for (let i = thisRecords.length-1; i >= 0; i--) {
+            let time = thisRecords[i].time.split(" ");
+            // 時間標籤
+            let timeTitle = time[0].split("-");
+            let now = timeTitle[0] + "年" + timeTitle[1] + "月";
+            if(now != yearNmonth){
+                yearNmonth = now;
+                let newTime = $("<div>")
+                    .addClass("recordTime")
+                    .text(now);
+                nowDiv = $("<div>");
+                container.append(newTime, nowDiv);
+            }
             let icon = $('<svg>')
-                .html(svgData.svgImages.recordList[thisRecords[i].classType]);
+                .html(svgData.svgImages.recordList[thisRecords[i].classType])
+                .attr('class', 'recordListSvg');
+
             // 創建新的checkbox
-            let checkbox = $('<label>')
-                .addClass('checkbox-container')
+            let deleteBox = $('<div>')
+                .addClass('deleteBox')
                 .css({
-                    'margin-right': '3px',
                     'display': 'none'
                 });
-            let input = $('<input>')
-                .attr('type', 'checkbox')
-                .addClass('custom-checkbox');
-            let span = $('<span>')
-                .addClass('checkmark')
-                .attr('id', 'check_' + thisRecords[i].recordId);
-            checkbox.append(input).append(span);
+            let checkbox = $('<input>', {
+                type: 'checkbox',
+                class: 'deleteCheckbox',
+                id: 'check_' + thisRecords[i].recordId
+            });
+            let label = $('<label>', {
+                for: 'check_' + thisRecords[i].recordId,
+                class: 'deleteButton'
+            });
+            label.html(deleteSvg);
+            deleteBox.append(checkbox).append(label);
 
             // 每一筆紀錄的div
             let recordDiv = $("<div>")
-                .css({
-                    'display': 'flex',
-                    'align-items': 'center',
-                    'background': 'rgba(235, 237, 239, 0.87)',
-                    'border-radius': '20px',
-                    'justify-content': 'center',
-                    'align-items': 'center',
-                    'height': '70px',
-                    'margin-bottom': '5px'
-                })
+                .addClass('recordDiv')
                 .hover(
-                function() {
-                    $(this).css('background-color', categories[thisRecords[i].classType].color);
-                },
-                function() {
-                    $(this).css('background-color', 'rgba(235, 237, 239, 0.87)');
-                }
+                    function() {
+                        $(this).css('background-color', categories[thisRecords[i].classType].color);
+                    },
+                    function() {
+                        $(this).css('background-color', 'rgba(235, 237, 239, 0.87)');
+                    }
                 );
 
             // 紀錄項目及減碳量div
@@ -305,16 +319,15 @@ function showRecord() {
                     'margin-bottom': '5px',
                     'font-size': '12px'
                 });
-            let time = thisRecords[i].time.split(" ");
             let dateSpan = $("<div>")
                 .text(time[0]);
             let timeSpan = $("<div>")
                 .text(time[1]);
             timeElement.append(dateSpan, timeSpan);
 
-            recordDiv.append(icon, recordElement, timeElement);
+            recordDiv.append(deleteBox, icon, recordElement, timeElement);
             recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
-            container.append(recordDiv);
+            nowDiv.append(recordDiv);
             if(i == thisRecords.length -1){
                 $('#newestRecord').empty();
                 $('#newestRecord').append(recordDiv.clone());
@@ -362,40 +375,25 @@ function showRecord() {
     });
 }
 // 排序歷史紀錄
-function sortRecordsBySelectedOption() {
-    let selectedCategory = $("#category option:selected").text();
-    let selectedType = $("#sortType option:selected").text();
+function sortRecordsBySelectedOption(method) {
+    let selectedCategory = $("#selectClass input[type=\"radio\"]:checked").next('label').text();
+    let selectedType = $('#sortTypeBtn').find('.item.is-selected').text();
     let sortedRecords = records;
 
     if (selectedCategory != "全部") {
         sortedRecords = sortedRecords.filter(record => record.classType === selectedCategory);
     }
 
-    if (selectedType === "時間") {
-        $("#method").attr("label", "時間");
-        $("#option1").val("old");
-        $("#option1").text("遠到近");
-        $("#option2").val("new");
-        $("#option2").text("近到遠");
-        let selectedMethod = $("#sortMethod option:selected").text();
-        if (selectedMethod === "近到遠") {
-            sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
-        } else if (selectedMethod === "遠到近") {
-            sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
-        }
-    } else if (selectedType === "減碳量") {
-        $("#method").attr("label", "減碳量");
-        $("#option1").val("more");
-        $("#option1").text("多到少");
-        $("#option2").val("less");
-        $("#option2").text("少到多");
-        let selectedMethod = $("#sortMethod option:selected").text();
-        if (selectedMethod === "多到少") {
-            sortedRecords.sort((a, b) => b.footprint - a.footprint);
-        } else if (selectedMethod === "少到多") {
-            sortedRecords.sort((a, b) => a.footprint - b.footprint);
-        }
+    if (method === "遠到近") {
+        sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
+    } else if (method === "近到遠") {
+        sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
+    } else if (method === "少到多") {
+        sortedRecords.sort((a, b) => b.footprint - a.footprint);
+    } else if (method === "多到少") {
+        sortedRecords.sort((a, b) => a.footprint - b.footprint);
     }
+
     let startDate = dateArray[0];
     let endDate = dateArray[1];
     sortedRecords = sortedRecords.filter(record =>{
@@ -405,9 +403,13 @@ function sortRecordsBySelectedOption() {
     showNewRecord(sortedRecords, selectedCategory);
 }
 // 監聽排序選項變化事件
-$('#category, #sortType, #sortMethod, #startDate, #endDate').on("change", sortRecordsBySelectedOption);
+$('#startDate, #endDate').on("change", sortRecordsBySelectedOption);
 
 function showNewRecord(sortedRecords, selectedCategory) {
+    $('#editRecord').css("display", "block");
+    $('#saveEditRecord').css("display", "none");
+    $('#deleteEditRecord').css("display", "none");
+
     let thisRecords = sortedRecords;
     let container = $('#listContent');
     container.empty();
@@ -415,103 +417,210 @@ function showNewRecord(sortedRecords, selectedCategory) {
     if(thisRecords.length == 0){
         let recordDiv = $("<div>")
             .css({
-                'text-align': 'center',
+                'display': 'flex',
+                'align-items': 'center',
+                'background': 'rgba(235, 237, 239, 0.87)',
+                'border-radius': '20px',
                 'justify-content': 'center',
-                'font-size': '20px'
+                'align-items': 'center',
+                'height': '70px',
+                'margin-bottom': '5px'
             })
             .text("沒有紀錄");
         container.append(recordDiv);
+        $('#newestRecord').empty();
+        $('#newestRecord').append(recordDiv.clone());
     } else {
-        for (let i = 0; i < thisRecords.length; i++) {
-            let icon;
-            let recordElement;
-            if(selectedCategory != '全部'){
-                icon = $('<svg>')
-                    .html(svgData.svgImages.recordList[thisRecords[i].type]);
-                let action = categories[thisRecords[i].classType].action;
-                let actionColor;
-                for(let k=0; k<action.length; k++){
-                    if(action[k].type == thisRecords[i].type){
-                        actionColor = action[k].color;
-                        break;
-                    }
+        let yearNmonth = "";
+        let nowDiv;
+        if(selectedCategory == "全部"){
+            for (let i = thisRecords.length-1; i >= 0; i--) {
+                let time = thisRecords[i].time.split(" ");
+                // 時間標籤
+                let timeTitle = time[0].split("-");
+                let now = timeTitle[0] + "年" + timeTitle[1] + "月";
+                if(now != yearNmonth){
+                    yearNmonth = now;
+                    let newTime = $("<div>")
+                        .addClass("recordTime")
+                        .text(now);
+                    nowDiv = $("<div>");
+                    container.append(newTime, nowDiv);
                 }
-                recordElement= $("<p>")
+                let icon = $('<svg>')
+                    .html(svgData.svgImages.recordList[thisRecords[i].classType])
+                    .attr('class', 'recordListSvg');
+
+                // 創建新的checkbox
+                let deleteBox = $('<div>')
+                    .addClass('deleteBox')
                     .css({
-                        'display': 'inline-flex',
-                        'align-items': 'center',
-                        'margin': '0px'
-                    })
-                    .hover(
-                        function() {
-                            $(this).css('background-color', actionColor);
-                        },
-                        function() {
-                            $(this).css('background-color', '');
-                        }
-                    );
-            } else {
-                icon = $('<svg>')
-                    .html(svgData.svgImages.recordList[thisRecords[i].classType]);
-                recordElement= $("<p>")
-                    .css({
-                        'display': 'inline-flex',
-                        'align-items': 'center',
-                        'margin': '0px'
-                    })
+                        'display': 'none'
+                    });
+                let checkbox = $('<input>', {
+                    type: 'checkbox',
+                    class: 'deleteCheckbox',
+                    id: 'check_' + thisRecords[i].recordId
+                });
+                let label = $('<label>', {
+                    for: 'check_' + thisRecords[i].recordId,
+                    class: 'deleteButton'
+                });
+                label.html(deleteSvg);
+                deleteBox.append(checkbox).append(label);
+
+                // 每一筆紀錄的div
+                let recordDiv = $("<div>")
+                    .addClass('recordDiv')
                     .hover(
                         function() {
                             $(this).css('background-color', categories[thisRecords[i].classType].color);
                         },
                         function() {
-                            $(this).css('background-color', '');
+                            $(this).css('background-color', 'rgba(235, 237, 239, 0.87)');
                         }
                     );
+
+                // 紀錄項目及減碳量div
+                let recordElement = $("<div>")
+                    .css({
+                        'width': '200px',
+                    });
+                let typeDiv = $("<div>")
+                    .text(thisRecords[i].type)
+                    .css({
+                        'font-size': '20px',
+                        'margin-left' : '5px'
+                    });
+                let footprintDiv = $("<div>")
+                    .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                    .css({
+                        'color': '#28a745',
+                        'font-size': '25px',
+                        'margin-left': '5px',
+                        'font-weight': 'bold'
+                    });
+                recordElement.append(typeDiv, footprintDiv);
+
+                // 時間div
+                let timeElement = $("<div>")
+                    .css({
+                        'text-align': 'right',
+                        'align-self': 'flex-end',
+                        'margin-left': '20px',
+                        'margin-bottom': '5px',
+                        'font-size': '12px'
+                    });
+                let dateSpan = $("<div>")
+                    .text(time[0]);
+                let timeSpan = $("<div>")
+                    .text(time[1]);
+                timeElement.append(dateSpan, timeSpan);
+
+                recordDiv.append(deleteBox, icon, recordElement, timeElement);
+                recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
+                nowDiv.append(recordDiv);
+
+                (function(recordId) {
+                    recordElement.on('click', function() {
+                        recordClick(recordId);
+                    });
+                })(thisRecords[i].recordId);
             }
-            // 創建新的checkbox
-            let checkbox = $('<label>')
-                .addClass('checkbox-container')
-                .css({
-                    'margin-right': '3px',
-                    'display': 'none'
+        } else {
+            for (let i = thisRecords.length-1; i >= 0; i--) {
+                let time = thisRecords[i].time.split(" ");
+                // 時間標籤
+                let timeTitle = time[0].split("-");
+                let now = timeTitle[0] + "年" + timeTitle[1] + "月";
+                if(now != yearNmonth){
+                    yearNmonth = now;
+                    let newTime = $("<div>")
+                        .addClass("recordTime")
+                        .text(now);
+                    nowDiv = $("<div>");
+                    container.append(newTime, nowDiv);
+                }
+                let icon = $('<svg>')
+                    .html(svgData.svgImages.recordList[thisRecords[i].type])
+                    .attr('class', 'recordListSvg');
+
+                // 創建新的checkbox
+                let deleteBox = $('<div>')
+                    .addClass('deleteBox')
+                    .css({
+                        'display': 'none'
+                    });
+                let checkbox = $('<input>', {
+                    type: 'checkbox',
+                    class: 'deleteCheckbox',
+                    id: 'check_' + thisRecords[i].recordId
                 });
-            let input = $('<input>')
-                .attr('type', 'checkbox')
-                .addClass('custom-checkbox');
-            let span = $('<span>')
-                .addClass('checkmark')
-                .attr('id', 'check_' + thisRecords[i].recordId);
-            checkbox.append(input).append(span);
-
-            // 創建新的<div>元素
-            let recordDiv = $("<div>")
-                .css({
-                    'align-items': 'center'
+                let label = $('<label>', {
+                    for: 'check_' + thisRecords[i].recordId,
+                    class: 'deleteButton'
                 });
+                label.html(deleteSvg);
+                deleteBox.append(checkbox).append(label);
 
-            let timeSpan = $("<span>")
-                .text(thisRecords[i].time + " ");
-            let typeSpan = $("<span>")
-                .css({
-                    'font-size': '20px',
-                    'margin-left' : '5px',
-                    'margin-right' : '5px'
-                })
-                .text(thisRecords[i].type + " ");
-            let footprintSpan = $("<span>")
-                .text(parseFloat(thisRecords[i].footprint).toFixed(2) + " gCo2E");
+                // 每一筆紀錄的div
+                let recordDiv = $("<div>")
+                    .addClass('recordDiv')
+                    .hover(
+                        function() {
+                            $(this).css('background-color', categories[thisRecords[i].classType].color);
+                        },
+                        function() {
+                            $(this).css('background-color', 'rgba(235, 237, 239, 0.87)');
+                        }
+                    );
 
-            recordElement.append(timeSpan, typeSpan, footprintSpan);
-            recordDiv.append(checkbox, icon, recordElement);
-            recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
-            container.append(recordDiv);
+                // 紀錄項目及減碳量div
+                let recordElement = $("<div>")
+                    .css({
+                        'width': '200px',
+                    });
+                let typeDiv = $("<div>")
+                    .text(thisRecords[i].type)
+                    .css({
+                        'font-size': '20px',
+                        'margin-left' : '5px'
+                    });
+                let footprintDiv = $("<div>")
+                    .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                    .css({
+                        'color': '#28a745',
+                        'font-size': '25px',
+                        'margin-left': '5px',
+                        'font-weight': 'bold'
+                    });
+                recordElement.append(typeDiv, footprintDiv);
 
-            (function(recordId) {
-                recordElement.on('click', function() {
-                    recordClick(recordId);
-                });
-            })(thisRecords[i].recordId);
+                // 時間div
+                let timeElement = $("<div>")
+                    .css({
+                        'text-align': 'right',
+                        'align-self': 'flex-end',
+                        'margin-left': '20px',
+                        'margin-bottom': '5px',
+                        'font-size': '12px'
+                    });
+                let dateSpan = $("<div>")
+                    .text(time[0]);
+                let timeSpan = $("<div>")
+                    .text(time[1]);
+                timeElement.append(dateSpan, timeSpan);
+
+                recordDiv.append(deleteBox, icon, recordElement, timeElement);
+                recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
+                container.append(recordDiv);
+
+                (function(recordId) {
+                    recordElement.on('click', function() {
+                        recordClick(recordId);
+                    });
+                })(thisRecords[i].recordId);
+            }
         }
     }
-    showNewChart(thisRecords, $("#category option:selected").text());
 }
