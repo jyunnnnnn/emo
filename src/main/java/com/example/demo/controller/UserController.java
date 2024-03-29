@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.SecurityConfig;
 import com.example.demo.entity.UserInfo;
-import com.example.demo.entity.UserPhoto;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,21 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bson.types.Binary;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -211,7 +202,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("/updatePhoto")
-    public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") MultipartFile photo) throws IOException {
+    public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") String photo) throws IOException {
 
         byte[] photoByte= photo.getBytes();
         System.out.println(photoByte);

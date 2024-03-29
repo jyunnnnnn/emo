@@ -1,4 +1,5 @@
 let selectDatas;
+let cropper; // 裁好的照片
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
     //關閉上一個打開的infoWindow，及清除路線
@@ -474,4 +475,64 @@ function recordModal(){
         $("#recordCompare").text(description[0]);
         $("#recordFormula").text(description[1]);
     }
+}
+
+// 打開上傳照片懸浮窗
+$('#photoContainer').click(function(event) {
+    $('#uploadUserPhotoFW').css("display", "flex");
+    $('#cropperContainer').css("display","none");
+    $('#croppedImage').css("display","none");
+    $('.cropper-container').css("display", "none");
+    $('#uploadPhoto').css("display","none");
+});
+$('#userPhoto').click(function(event) {
+    $('#uploadUserPhotoFW').css("display", "flex");
+});
+
+// 關閉上傳照片懸浮窗
+$('#uploadUserPhotoBtn').on('click', function () {
+    $('#uploadUserPhotoFW').css("display", "none");
+});
+
+// 上傳照片後處理
+$('#fileInput').on('change', function(event) {
+    $('#croppedImage').css("display","none");
+    let file = event.target.files[0];
+    let reader = new FileReader();
+
+    reader.onload = function(event) {
+        let img = document.getElementById('cropperContainer');
+        img.src = event.target.result;
+        if (cropper) {
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(img, {
+            aspectRatio: 1 / 1,
+            viewMode: 1
+        });
+    };
+
+    reader.readAsDataURL(file);
+    $('#cropperContainer').css("display","block");
+    $('#cropImage').css("display","block");
+});
+$('#cropImage').click(cropImage);
+// 裁剪照片
+function cropImage() {
+    $('.cropper-container').css("display", "none");
+    $('#cropperContainer').css("display","none");
+    $('#cropImage').css("display","none");
+    let canvas = cropper.getCroppedCanvas({
+        width: 280,
+        height: 200
+    });
+    if (canvas) {
+        let croppedImageUrl = canvas.toDataURL();
+        let modalImg = document.getElementById('croppedImage');
+        modalImg.src = croppedImageUrl;
+        console.log(croppedImageUrl);
+    }
+    $('#croppedImage').css("display","block");
+    $('#uploadPhoto').css("display","block");
 }

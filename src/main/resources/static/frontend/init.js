@@ -232,6 +232,7 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
+    // 轉換照片
     base64ToImage(User.photo, 'photoDisplay')
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
@@ -248,6 +249,12 @@ function systemInit(){
     // 幫current初始化
     currentInfoWindowRecord = undefined;
     currentMarker = undefined;
+    // 顯示使用者照片
+    if(User.photo){
+        $('#photoContainer').css("display", "block");
+    }else {
+        $('#userPhoto').css("display", "block");
+    }
 }
 //更新現在位置
 function updateCurrentCircle() {
@@ -583,6 +590,8 @@ function removeDirections() {
         directionsDisplay.setMap(null);
     }
 }
+
+$('#uploadPhoto').click(uploadPhoto);
 function uploadPhoto() {
      const fileInput = document.querySelector('#fileInput');
         const file = fileInput.files[0];
@@ -614,12 +623,17 @@ function uploadPhoto() {
 }
 
 function base64ToImage(base64String, outputElementId) {
-    console.log("開始解碼")
+    console.log("base64String")
     // 解碼Base64字符串
     var decodedData = atob(base64String);
+    // 將二進制數據轉換為數組
+    var bytes = new Uint8Array(decodedData.length);
+    for (var i = 0; i < decodedData.length; i++) {
+        bytes[i] = decodedData.charCodeAt(i);
+    }
 
     // 創建一個新的Blob對象
-    var blob = new Blob([decodedData], { type: 'image/jpeg' });
+    var blob = new Blob([bytes], { type: 'image/jpeg' });
 
     // 創建一個新的URL對象
     var url = URL.createObjectURL(blob);
