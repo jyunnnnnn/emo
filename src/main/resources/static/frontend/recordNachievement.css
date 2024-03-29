@@ -15,7 +15,8 @@
 }
 .parent {
     width: 100%;
-    max-height: 44vh;
+    height: 45vh;
+    max-height: 45vh;
     overflow-y: scroll;
 }
 
@@ -190,8 +191,8 @@
 
 @media only screen and (max-width: 700px) {
     .parent {
-        max-height: 65%;
-        height: 65%;
+        max-height: 64%;
+        height: 64%;
     }
 
     .historyContainer {

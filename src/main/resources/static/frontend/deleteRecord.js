@@ -2,9 +2,6 @@
 function deleteMultiRecord(){
     let result = confirm("確定要刪除目前資料嗎？");
     if (result) {
-        $('#editRecord').css("display", "block");
-        $('#saveEditRecord').css("display", "none");
-        $('#deleteEditRecord').css("display", "none");
         let selectedCheckboxes = $('input[type=checkbox].deleteCheckbox:checked');
         let selectedRecordIds = [];
         selectedCheckboxes.each(function() {
@@ -15,6 +12,9 @@ function deleteMultiRecord(){
              selectedRecordIds.push(recordId);
         });
         if (selectedRecordIds.length > 0) {
+            $('#editRecord').css("display", "block");
+            $('#saveEditRecord').css("display", "none");
+            $('#deleteEditRecord').css("display", "none");
             //console.log('要刪除的記錄 ID：', selectedRecordIds);
             let nowType = $("#selectClass input[type=\"radio\"]:checked").next('label').text();
 
@@ -23,8 +23,75 @@ function deleteMultiRecord(){
             if (nowType != "全部") {
                 sortedRecords = sortedRecords.filter(record => record.classType === nowType);
             }
-            showNewChart(sortedRecords, nowType);
+            let startDate = dateArray[0];
+            let endDate = dateArray[1];
+            sortedRecords = sortedRecords.filter(record =>{
+                let recordDate = new Date(record.time.split(' ')[0]); // 提取日期部分
+                return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
+            });
+            showNewChart(records, "全部");
             showNewRecord(sortedRecords, nowType);
+
+            // 更新外面的最新紀錄
+            console.log(records[records.length - 1]);
+            let time = records[records.length - 1].time.split(" ");
+            let icon = $('<svg>')
+                .html(svgData.svgImages.recordList[records[records.length - 1].classType])
+                .attr('class', 'recordListSvg');
+
+            // 每一筆紀錄的div
+            let recordDiv = $("<div>")
+                .addClass('recordDiv')
+                .hover(
+                    function() {
+                        $(this).css('background-color', categories[records[records.length - 1].classType].color);
+                    },
+                    function() {
+                        $(this).css('background-color', 'rgba(235, 237, 239, 0.87)');
+                    }
+                );
+
+            // 紀錄項目及減碳量div
+            let recordElement = $("<div>")
+                .css({
+                    'width': '200px',
+                });
+            let typeDiv = $("<div>")
+                .text(records[records.length - 1].type)
+                .css({
+                    'font-size': '20px',
+                    'margin-left' : '5px'
+                });
+            let footprintDiv = $("<div>")
+                .text(parseFloat(records[records.length - 1].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                .css({
+                    'color': '#28a745',
+                    'font-size': '25px',
+                    'margin-left': '5px',
+                    'font-weight': 'bold'
+                });
+            recordElement.append(typeDiv, footprintDiv);
+
+            // 時間div
+            let timeElement = $("<div>")
+                .css({
+                    'text-align': 'right',
+                    'align-self': 'flex-end',
+                    'margin-left': '20px',
+                    'margin-bottom': '5px',
+                    'font-size': '12px'
+                });
+            let dateSpan = $("<div>")
+                .text(time[0]);
+            let timeSpan = $("<div>")
+                .text(time[1]);
+            timeElement.append(dateSpan, timeSpan);
+
+            recordDiv.append(icon, recordElement, timeElement);
+            recordDiv.attr('id', 'newest');
+            $('#newestRecord').empty();
+            $('#newestRecord').append(recordDiv);
+
             alert("刪除成功!!");
         } else {
             alert('沒有選中任何記錄');

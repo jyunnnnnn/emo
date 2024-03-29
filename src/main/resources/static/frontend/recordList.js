@@ -170,6 +170,7 @@ function showNewChart(nowRecords, type) {
                 },
                 label: {
                     formatter: '{b|{b}}\n{per|{d}%}',
+                    position: 'inside',
                     backgroundColor: '#EBEDEFDD',
                     borderColor: '#8C8D8E',
                     borderRadius: 4,
@@ -190,10 +191,6 @@ function showNewChart(nowRecords, type) {
                         }
                     },
                     fontFamily: "'cwTeXYen', 'Mandali', sans-serif"
-                },
-                labelLine: {
-                    length1: 5,
-                    length2: 45
                 },
                 labelLayout: {
                     hideOverlap: true
@@ -329,8 +326,12 @@ function showRecord() {
             recordDiv.attr('id', 'record_' + thisRecords[i].recordId);
             nowDiv.append(recordDiv);
             if(i == thisRecords.length -1){
+                let newest = recordDiv.clone();
+                newest.find('[id]').each(function() {
+                    $(this).attr('id', 'newest');
+                });
                 $('#newestRecord').empty();
-                $('#newestRecord').append(recordDiv.clone());
+                $('#newestRecord').append(newest);
             }
 
             (function(recordId) {
