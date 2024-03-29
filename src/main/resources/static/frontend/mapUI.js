@@ -562,14 +562,10 @@ function recordModal(){
 
 // 打開上傳照片懸浮窗
 $('#photoContainer').click(function(event) {
-    if(User.photo){
-        $('#originalPhoto').css("display","block");
-        $('#originalPhoto').attr("src",User.photo);
-        $('#changePhoto').css("display","block");
-        $('#fileInput').css("display","none");
-    }else{
-        $('#fileInput').css("display","block");
-    }
+    $('#originalPhoto').css("display","block");
+    $('#originalPhoto').attr("src",User.photo);
+    $('#changePhoto').css("display","block");
+    $('#fileInput').css("display","none");
     $('#uploadUserPhotoFW').css("display", "flex");
     $('#cropperContainer').css("display","none");
     $('#croppedImage').css("display","none");
@@ -584,7 +580,14 @@ $('#changePhoto').click(function (){
     $('#changePhoto').css("display","none");
 });
 $('#userPhoto').click(function(event) {
+    $('#fileInput').css("display","block");
     $('#uploadUserPhotoFW').css("display", "flex");
+    $('#cropperContainer').css("display","none");
+    $('#croppedImage').css("display","none");
+    $('#cropImage').css("display","none");
+    $('.cropper-container').css("display", "none");
+    $('#upLoadUserPhoto').css("display","none");
+    $('#fileInput').val("");
 });
 
 // 關閉上傳照片懸浮窗
