@@ -484,12 +484,26 @@
             </svg>
         </button>
         <img id="originalPhoto" src="" style="display: none">
-        <div id="changePhoto" style="display: none">修改頭像</div>
-        <input type="file" id="fileInput" style="display: none" accept="image/*" multiple="false"><br>
+        <input id="changePhotoInput" style="display: none" type="button">
+        <label class="changePhoto" id="changePhoto" for="changePhotoInput" style="display: none">
+          <span>修改頭像</span>
+        </label>
+        <input type="file" id="fileInput" style="display: none" accept="image/*" multiple="false">
+        <label class="photo" id="fileInputLabel" for="fileInput" style="display: none">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> 選擇檔案
+          </span>
+        </label>
         <img id="cropperContainer" src="" alt="選擇一個圖片進行裁切" style="max-width: 100%; display: none">
-        <div id="cropImage" style="display: none" class="save-button">確認裁剪</div>
+        <input id="cropImageInput" style="display: none" type="button">
+        <label class="changePhoto" id="cropImage" for="cropImageInput" style="display: none">
+            <span>確認裁剪</span>
+        </label>
         <img id="croppedImage" style="display: none"  src="" alt="裁切後的圖片">
-        <div id="upLoadUserPhoto" class="save-button" style="display: none">確認上傳</div>
+        <input id="upLoadUserPhotoInput" style="display: none" type="button">
+        <label class="changePhoto" id="upLoadUserPhoto" for="upLoadUserPhotoInput" style="display: none">
+            <span>確認上傳</span>
+        </label>
     </div>
 </div>
 

@@ -565,7 +565,7 @@ $('#photoContainer').click(function(event) {
     $('#originalPhoto').css("display","block");
     $('#originalPhoto').attr("src",User.photo);
     $('#changePhoto').css("display","block");
-    $('#fileInput').css("display","none");
+    $('#fileInputLabel').css("display","none");
     $('#uploadUserPhotoFW').css("display", "flex");
     $('#cropperContainer').css("display","none");
     $('#croppedImage').css("display","none");
@@ -575,12 +575,12 @@ $('#photoContainer').click(function(event) {
     $('#fileInput').val("");
 });
 $('#changePhoto').click(function (){
-    $('#fileInput').css("display","block");
+    $('#fileInputLabel').css("display","block");
     $('#originalPhoto').css("display","none");
     $('#changePhoto').css("display","none");
 });
 $('#userPhoto').click(function(event) {
-    $('#fileInput').css("display","block");
+    $('#fileInputLabel').css("display","block");
     $('#uploadUserPhotoFW').css("display", "flex");
     $('#cropperContainer').css("display","none");
     $('#croppedImage').css("display","none");

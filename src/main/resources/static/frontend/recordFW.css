@@ -554,6 +554,43 @@ svg:hover .detail {
     border: 2px solid black;
 }
 
+.photo {
+    background-color: #7a7979;
+    border-radius: 0.9em;
+    padding: 0.8em 1.2em 0.8em 1em;
+    transition: all ease-in-out 0.2s;
+    font-size: 16px;
+}
+.photo span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+}
+.photo:hover {
+    background-color: #b7bcbd;
+}
+
+.changePhoto {
+    background-color: #7a7979;
+    border-radius: 20px;
+    padding: 10px;
+    transition: all ease-in-out 0.2s;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.changePhoto span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+}
+.changePhoto:hover {
+    background-color: #b7bcbd;
+}
+
 #cropperContainer {
     width: 300px;
     height: auto;
