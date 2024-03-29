@@ -186,7 +186,8 @@ svg:hover .detail {
 /* 懸浮窗 */
 #routeFW,
 #closeAuthFW,
-#recordFW{
+#recordFW,
+#uploadUserPhotoFW{
     display: none;
     position: fixed;
     top: 0;
@@ -544,4 +545,23 @@ svg:hover .detail {
         left: 12%;
         transform:scale(1.2);
     }
+}
+
+#photoContainer{
+    margin: 5px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+}
+
+#cropperContainer {
+    width: 300px;
+    height: auto;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: none;
+}
+#croppedImage{
+    display: none;
 }

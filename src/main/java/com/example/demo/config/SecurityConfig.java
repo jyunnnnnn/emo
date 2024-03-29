@@ -114,7 +114,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         //url權限設定
                         auth.requestMatchers("/frontend/**").permitAll()
-                                //.requestMatchers("/eco/**").permitAll()
+                                .requestMatchers("/user/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/user/init").hasAuthority("NORMAL")
                                 .requestMatchers("/user/**").permitAll()

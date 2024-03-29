@@ -232,6 +232,7 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
+
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -247,6 +248,14 @@ function systemInit(){
     // 幫current初始化
     currentInfoWindowRecord = undefined;
     currentMarker = undefined;
+    // 顯示使用者照片
+    if(User.photo){
+        $('#photoContainer').css("display", "block");
+        // console.log(User.photo);
+        $('#photoDisplay').attr('src', User.photo);
+    }else {
+        $('#userPhoto').css("display", "block");
+    }
 }
 //更新現在位置
 function updateCurrentCircle() {
@@ -600,4 +609,36 @@ function removeDirections() {
     if (directionsDisplay) {
         directionsDisplay.setMap(null);
     }
+}
+
+$('#upLoadUserPhoto').click(uploadPhoto);
+function uploadPhoto() {
+        if (!croppedImageUrl) {
+            alert('請選擇檔案');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('username', User.username);
+        formData.append('photo', croppedImageUrl);
+
+        // Send data to server using AJAX
+        $.ajax({
+            url: '/user/updatePhoto',
+            type: 'PUT',
+            data: formData,
+            processData: false,  // 不要將 FormData 轉換為字串
+            contentType: false,  // 不設定內容類型，讓瀏覽器自動設定
+            success: function(response) {
+                User.photo = croppedImageUrl;
+                $('#photoDisplay').attr('src', User.photo);
+                $('#originalPhoto').attr('src', User.photo);
+                alert(response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('上傳失敗');
+            }
+        });
+    $('#uploadUserPhotoFW').css("display", "none");
 }

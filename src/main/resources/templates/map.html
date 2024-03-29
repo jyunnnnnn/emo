@@ -33,6 +33,10 @@
     <link rel="stylesheet" href="/frontend/recordFW.css">
     <link rel="stylesheet" href="/frontend/setting.css">
     <link rel="stylesheet" href="/frontend/recordNachievement.css">
+    <!--裁照片-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
         @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
@@ -68,12 +72,21 @@
     <div style="display:flex;" id="map"></div>
     <!-- 使用者帳號 -->
     <div class="showUser">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill=black class="bi bi-person-circle"
-             id="userIcon" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-            <path fill-rule="evenodd"
-                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-        </svg>
+        <div id="userPhoto" style="display: none; ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill=black class="bi bi-person-circle"
+                 id="userIcon" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd"
+                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+            </svg>
+        </div>
+        <div>
+            <div id="photoContainer" style="display: none; ">
+                <img id="photoDisplay" src="" style="width: 30px; height: 30px">
+            </div>
+        </div>
+
+
         <div style="display: block; ">
             <p id="user"></p>
             <p id="totalFootprint" style="font-size: 12px; border-radius: 20px; padding-left: 5px; padding-right: 5px;"></p>
@@ -455,6 +468,31 @@
         </button>
     </div>
 </div>
+
+<!-- 懸浮窗：上傳照片 -->
+<div id="uploadUserPhotoFW" onclick="closeFW(event)">
+    <div id="uploadUserPhotoModal" class="settingContainer" style="width:300px;">
+        <!-- 關閉 -->
+        <button class="btn" id="uploadUserPhotoBtn" style="top:10px; right:10px;">
+            <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <g>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                </g>
+            </svg>
+        </button>
+        <img id="originalPhoto" src="" style="display: none">
+        <div id="changePhoto" style="display: none">修改頭像</div>
+        <input type="file" id="fileInput" style="display: none" accept="image/*" multiple="false"><br>
+        <img id="cropperContainer" src="" alt="選擇一個圖片進行裁切" style="max-width: 100%;">
+        <div id="cropImage" class="save-button">確認裁剪</div>
+        <img id="croppedImage" src="" alt="裁切後的圖片">
+        <div id="upLoadUserPhoto" class="save-button" style="display: none">確認上傳</div>
+    </div>
+</div>
+
 </body>
 <script src="/frontend/init.js"></script>
 <script src="/frontend/saveRecord.js"></script>

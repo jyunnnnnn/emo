@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.SecurityConfig;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,16 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -203,4 +201,15 @@ public class UserController {
         response.put("username", result.getUsername());
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/updatePhoto")
+    public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") String photo) throws IOException {
+        int result = this.userService.updatePhoto(username, photo);
+
+        if (result == UserService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改頭像成功"));
+
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改頭像失敗"));
+    }
+
+
 }
