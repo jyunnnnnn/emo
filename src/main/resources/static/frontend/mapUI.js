@@ -602,22 +602,57 @@ $('#fileInput').on('change', function(event) {
     let reader = new FileReader();
 
     reader.onload = function(event) {
-        let img = document.getElementById('cropperContainer');
-        img.src = event.target.result;
-        if (cropper) {
-            cropper.destroy();
+        // 判斷HEIF
+        if (file.type === 'image/heic' || file.type === 'image/heif') {
+            convertHEIFtoJPEG(file).then((jpegFile) => {
+                displayImage(jpegFile);
+            }).catch((error) => {
+                console.error('照片格式轉換錯誤:', error);
+            });
+        } else {
+            displayImage(file);
         }
-
-        cropper = new Cropper(img, {
-            aspectRatio: 1 / 1,
-            viewMode: 1
-        });
     };
 
     reader.readAsDataURL(file);
     $('#cropperContainer').css("display","block");
     $('#cropImage').css("display","block");
 });
+
+// 將 HEIF 格式的影像轉換為 JPEG 格式
+function convertHEIFtoJPEG(heifFile) {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = image.width;
+            canvas.height = image.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0);
+            canvas.toBlob((blob) => {
+                resolve(new File([blob], heifFile.name.replace(/\.(heif|heic)$/, '.jpg'), { type: 'image/jpeg' }));
+            }, 'image/jpeg');
+        };
+        image.onerror = (error) => {
+            reject(error);
+        };
+        image.src = URL.createObjectURL(heifFile);
+    });
+}
+
+function displayImage(imageFile) {
+    let img = document.getElementById('cropperContainer');
+    img.src = URL.createObjectURL(imageFile);
+    if (cropper) {
+        cropper.destroy();
+    }
+
+    cropper = new Cropper(img, {
+        aspectRatio: 1 / 1,
+        viewMode: 1
+    });
+}
+
 $('#cropImage').click(cropImage);
 // 裁剪照片
 function cropImage() {
