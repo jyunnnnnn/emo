@@ -459,7 +459,6 @@ function initCategory(jsonData){
     $('#selectClass input[type="radio"]').on("change", sortRecordsBySelectedOption);
     svgConstructor(svgData);
     typeListener();
-    console.log(categories);
 }
 let trafficChecked = null;
 let dailyChecked = null;

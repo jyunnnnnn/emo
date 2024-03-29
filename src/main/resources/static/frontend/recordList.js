@@ -314,17 +314,26 @@ function showRecord() {
             let typeDiv = $("<div>")
                 .text(thisRecords[i].type)
                 .css({
-                    'font-size': '20px',
+                    'font-size': '18px',
                     'margin-left' : '5px'
                 });
             let footprintDiv = $("<div>")
-                .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
                 .css({
                     'color': '#28a745',
-                    'font-size': '25px',
+                    'font-size': '23px',
                     'margin-left': '5px',
                     'font-weight': 'bold'
                 });
+            let co2 = $("<span>")
+                .text('gCo2E')
+                .css({
+                    'color': '#28a745',
+                    'font-size': '10px',
+                    'margin-left': '5px',
+                    'font-weight': 'bold'
+                });
+            footprintDiv.append(co2);
             recordElement.append(typeDiv, footprintDiv);
 
             // 時間div
@@ -510,17 +519,26 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 let typeDiv = $("<div>")
                     .text(thisRecords[i].type)
                     .css({
-                        'font-size': '20px',
+                        'font-size': '15px',
                         'margin-left' : '5px'
                     });
                 let footprintDiv = $("<div>")
-                    .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                    .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
                     .css({
                         'color': '#28a745',
-                        'font-size': '25px',
+                        'font-size': '20px',
                         'margin-left': '5px',
                         'font-weight': 'bold'
                     });
+                let co2 = $("<span>")
+                    .text('gCo2E')
+                    .css({
+                        'color': '#28a745',
+                        'font-size': '10px',
+                        'margin-left': '5px',
+                        'font-weight': 'bold'
+                    });
+                footprintDiv.append(co2);
                 recordElement.append(typeDiv, footprintDiv);
 
                 // 時間div
@@ -604,17 +622,26 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 let typeDiv = $("<div>")
                     .text(thisRecords[i].type)
                     .css({
-                        'font-size': '20px',
+                        'font-size': '15px',
                         'margin-left' : '5px'
                     });
                 let footprintDiv = $("<div>")
-                    .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                    .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
                     .css({
                         'color': '#28a745',
-                        'font-size': '25px',
+                        'font-size': '20px',
                         'margin-left': '5px',
                         'font-weight': 'bold'
                     });
+                let co2 = $("<span>")
+                    .text('gCo2E')
+                    .css({
+                        'color': '#28a745',
+                        'font-size': '10px',
+                        'margin-left': '5px',
+                        'font-weight': 'bold'
+                    });
+                footprintDiv.append(co2);
                 recordElement.append(typeDiv, footprintDiv);
 
                 // 時間div

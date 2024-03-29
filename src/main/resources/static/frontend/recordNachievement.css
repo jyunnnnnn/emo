@@ -91,9 +91,9 @@
 .recordTime {
     background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
     position: sticky;
-    top: -2px;
+    top: 0px;
     z-index: 100;
-    padding: 5px;
+    padding: 7px;
 }
 
 
@@ -139,7 +139,7 @@
     justify-content: center;
     height: 30px;
     width: 50px;
-    font-size: .8rem;
+    font-size: 15px;
     color: black;
     font-weight: 500;
     border-radius: 99px;
@@ -191,8 +191,8 @@
 
 @media only screen and (max-width: 700px) {
     .parent {
-        max-height: 64%;
-        height: 64%;
+        max-height: 54%;
+        height: 54%;
     }
 
     .historyContainer {
