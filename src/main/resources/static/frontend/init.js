@@ -232,7 +232,7 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
-    loadUserPhoto(User.photo);
+    base64ToImage(User.photo, 'photoDisplay')
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -612,32 +612,35 @@ function uploadPhoto() {
             }
         });
 }
-function loadUserPhoto(imageData){
-    //console.log(imageData)
-    const imageElement = arrayBufferToImage(imageData);
-//
-    console.log(imageElement);
-    document.body.appendChild(imageElement);
-    $('#photoDisplay').attr('src', imageElement.src);
+
+function base64ToImage(base64String, outputElementId) {
+    console.log("開始解碼")
+    // 解碼Base64字符串
+    var decodedData = atob(base64String);
+
+    // 創建一個新的Blob對象
+    var blob = new Blob([decodedData], { type: 'image/jpeg' });
+
+    // 創建一個新的URL對象
+    var url = URL.createObjectURL(blob);
+
+    // 創建一個新的Image物件
+    var img = new Image();
+
+    // 當圖像加載完成時，將其設置為輸出元素的src
+    img.onload = function() {
+        var outputElement = document.getElementById(outputElementId);
+        if (outputElement) {
+            outputElement.src = this.src;
+        } else {
+            console.error('Output element with id ' + outputElementId + ' not found.');
+        }
+    };
+
+    // 設置圖像的src為URL
+    img.src = url;
+    console.log(img);
 }
-function arrayBufferToImage(arrayBuffer) {
-    // 创建 Uint8Array 并将 ArrayBuffer 分配给它
-    const uint8Array = new Uint8Array(arrayBuffer);
-    // 创建 Blob 对象
-    const blob = new Blob([uint8Array]);
-    // 创建 URL 对象
-    const url = URL.createObjectURL(blob);
-    // 创建图像元素
-    const image = new Image();
-    // 设置图像元素的 src 属性为 URL 对象的 URL
-    image.src = url;
-    // 返回图像元素
-    return image;
-}
-
-
-
-
 
 
 
