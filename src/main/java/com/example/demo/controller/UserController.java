@@ -203,10 +203,7 @@ public class UserController {
     }
     @PutMapping("/updatePhoto")
     public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") String photo) throws IOException {
-
-        byte[] photoByte= photo.getBytes();
-        System.out.println(photoByte);
-        int result = this.userService.updatePhoto(username, photoByte);
+        int result = this.userService.updatePhoto(username, photo);
 
         if (result == UserService.OK)
             return ResponseEntity.ok(Collections.singletonMap("message", "修改頭像成功"));

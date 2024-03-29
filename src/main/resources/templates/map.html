@@ -81,7 +81,7 @@
         </div>
         <div>
             <div id="photoContainer" style="display: none; ">
-                <img id="photoDisplay" src="#" style="width: 30px; height: 30px">
+                <img id="photoDisplay" src="" style="width: 30px; height: 30px">
             </div>
         </div>
 
@@ -435,12 +435,13 @@
                 </g>
             </svg>
         </button>
-
-        <input type="file" id="fileInput" accept="image/*" multiple="false"><br>
+        <img id="originalPhoto" src="" style="display: none">
+        <div id="changePhoto" style="display: none">修改頭像</div>
+        <input type="file" id="fileInput" style="display: none" accept="image/*" multiple="false"><br>
         <img id="cropperContainer" src="" alt="選擇一個圖片進行裁切" style="max-width: 100%;">
-        <div id="cropImage">確認裁剪</div>
+        <div id="cropImage" class="save-button">確認裁剪</div>
         <img id="croppedImage" src="" alt="裁切後的圖片">
-        <div id="upLoadUserPhoto" style="display: none">確認上傳</div>
+        <div id="upLoadUserPhoto" class="save-button" style="display: none">確認上傳</div>
     </div>
 </div>
 

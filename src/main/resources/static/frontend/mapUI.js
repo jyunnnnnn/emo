@@ -1,5 +1,6 @@
 let selectDatas;
-let cropper; // 裁好的照片
+let cropper; // 上傳的照片
+let croppedImageUrl;// 裁好的照片
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
     //關閉上一個打開的infoWindow，及清除路線
@@ -270,6 +271,8 @@ function closeFW(event){
         $('#closeAuthFW').css("display", "none");
     } else if(event.target.id === 'adminFW') {
         $('#adminFW').css("display", "none");
+    }else if(event.target.id === 'uploadUserPhotoFW') {
+        $('#uploadUserPhotoFW').css("display", "none");
     }
 }
 
@@ -479,11 +482,26 @@ function recordModal(){
 
 // 打開上傳照片懸浮窗
 $('#photoContainer').click(function(event) {
+    if(User.photo){
+        $('#originalPhoto').css("display","block");
+        $('#originalPhoto').attr("src",User.photo);
+        $('#changePhoto').css("display","block");
+        $('#fileInput').css("display","none");
+    }else{
+        $('#fileInput').css("display","block");
+    }
     $('#uploadUserPhotoFW').css("display", "flex");
     $('#cropperContainer').css("display","none");
     $('#croppedImage').css("display","none");
+    $('#cropImage').css("display","none");
     $('.cropper-container').css("display", "none");
-    $('#uploadPhoto').css("display","none");
+    $('#upLoadUserPhoto').css("display","none");
+    $('#fileInput').val("");
+});
+$('#changePhoto').click(function (){
+    $('#fileInput').css("display","block");
+    $('#originalPhoto').css("display","none");
+    $('#changePhoto').css("display","none");
 });
 $('#userPhoto').click(function(event) {
     $('#uploadUserPhotoFW').css("display", "flex");
@@ -528,11 +546,11 @@ function cropImage() {
         height: 200
     });
     if (canvas) {
-        let croppedImageUrl = canvas.toDataURL();
+        croppedImageUrl = canvas.toDataURL();
         let modalImg = document.getElementById('croppedImage');
         modalImg.src = croppedImageUrl;
-        console.log(croppedImageUrl);
+        // console.log(croppedImageUrl);
     }
     $('#croppedImage').css("display","block");
-    $('#uploadPhoto').css("display","block");
+    $('#upLoadUserPhoto').css("display","block");
 }

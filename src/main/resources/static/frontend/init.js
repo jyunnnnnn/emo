@@ -232,8 +232,7 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
-    // 轉換照片
-    base64ToImage(User.photo, 'photoDisplay')
+
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -252,6 +251,8 @@ function systemInit(){
     // 顯示使用者照片
     if(User.photo){
         $('#photoContainer').css("display", "block");
+        // console.log(User.photo);
+        $('#photoDisplay').attr('src', User.photo);
     }else {
         $('#userPhoto').css("display", "block");
     }
@@ -591,75 +592,34 @@ function removeDirections() {
     }
 }
 
-$('#uploadPhoto').click(uploadPhoto);
+$('#upLoadUserPhoto').click(uploadPhoto);
 function uploadPhoto() {
-     const fileInput = document.querySelector('#fileInput');
-        const file = fileInput.files[0];
-
-        if (!file) {
-            alert('Please select a file.');
+        if (!croppedImageUrl) {
+            alert('請選擇檔案');
             return;
         }
 
         const formData = new FormData();
         formData.append('username', User.username);
-        formData.append('photo', file);
+        formData.append('photo', croppedImageUrl);
 
         // Send data to server using AJAX
         $.ajax({
             url: '/user/updatePhoto',
             type: 'PUT',
             data: formData,
-            processData: false,  // 不要将 FormData 转换为字符串
-            contentType: false,  // 不设置内容类型，让浏览器自动设置
+            processData: false,  // 不要將 FormData 轉換為字串
+            contentType: false,  // 不設定內容類型，讓瀏覽器自動設定
             success: function(response) {
+                User.photo = croppedImageUrl;
+                $('#photoDisplay').attr('src', User.photo);
+                $('#originalPhoto').attr('src', User.photo);
                 alert(response.message);
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
-                alert('Failed to upload photo.');
+                alert('上傳失敗');
             }
         });
+    $('#uploadUserPhotoFW').css("display", "none");
 }
-
-function base64ToImage(base64String, outputElementId) {
-    console.log("base64String")
-    // 解碼Base64字符串
-    var decodedData = atob(base64String);
-    // 將二進制數據轉換為數組
-    var bytes = new Uint8Array(decodedData.length);
-    for (var i = 0; i < decodedData.length; i++) {
-        bytes[i] = decodedData.charCodeAt(i);
-    }
-
-    // 創建一個新的Blob對象
-    var blob = new Blob([bytes], { type: 'image/jpeg' });
-
-    // 創建一個新的URL對象
-    var url = URL.createObjectURL(blob);
-
-    // 創建一個新的Image物件
-    var img = new Image();
-
-    // 當圖像加載完成時，將其設置為輸出元素的src
-    img.onload = function() {
-        var outputElement = document.getElementById(outputElementId);
-        if (outputElement) {
-            outputElement.src = this.src;
-        } else {
-            console.error('Output element with id ' + outputElementId + ' not found.');
-        }
-    };
-
-    // 設置圖像的src為URL
-    img.src = url;
-    console.log(img);
-}
-
-
-
-
-
-
-
-

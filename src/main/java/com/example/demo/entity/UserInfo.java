@@ -32,7 +32,7 @@ public class UserInfo {
     }
 
     private String authority;
-    private byte[] photo;
+    private String photo;
 
     //constructor
     public UserInfo() {
@@ -53,7 +53,7 @@ public class UserInfo {
         this.userId = userId;
         this.authority = authority;
     }
-    public UserInfo(String username, String password, String nickname, String email, String userId,String authority,byte[] photo) {
+    public UserInfo(String username, String password, String nickname, String email, String userId,String authority,String photo) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -108,17 +108,16 @@ public class UserInfo {
         return password;
     }
 
-    public byte[] getPhoto() {return photo;}
+    public String getPhoto() {return photo;}
 
-    public void setPhoto(byte[] photo) {this.photo = photo;}
+    public void setPhoto(String photo) {this.photo = photo;}
 
     public String toString() {
         return "Username: " + username + "\n" +
                 "Password: " + password + "\n" +
                 "nickname: " + nickname + "\n" +
                 "email: " + email + "\n" +
-                "userId: " + userId + "\n" +
-                "photo: " + photo + "\n" ;
+                "userId: " + userId + "\n";
     }
 
 }
