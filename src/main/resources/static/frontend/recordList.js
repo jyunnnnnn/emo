@@ -26,11 +26,18 @@ function showTotalFP(){
     }else if(totalFP < 100000){ // 銀
         $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%)');
         container.html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
-    }else{ // 金
+    }else { // 金
         $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%)');
-        container.html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
+        // 換科學記號 不然上面數字會撞EMO
+        if ((totalFP / 1000.0) > 1000000) {
+            let exponent = Math.floor(Math.log10(Math.abs((totalFP / 1000.0)))); // Get exponent
+            let mantissa = (totalFP / 1000.0) / Math.pow(10, exponent); // Get mantissa
+            let notation = mantissa.toFixed(2) + "E" + exponent; // Format in scientific notation with 2 decimal places
+            container.html("總減碳量：<strong>" + notation + "</strong> kgCo2E");
+        } else {
+            container.html("總減碳量：<strong>" + (totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
+        }
     }
-
 
     $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
     $('#recordFP').text(totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
