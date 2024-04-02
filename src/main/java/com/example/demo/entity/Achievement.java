@@ -7,10 +7,10 @@
 
     @Document(collection = "Emo_Achievement")
     public class Achievement {
-
-        private String AchievementId;//紀錄id
-        private String AchievementName;//成就名稱
-        private String AchievementDescription;//成就目標敘述
+        @Id
+        private String achievementId;//紀錄id
+        private String achievementName;//成就名稱
+        private String achievementDescription;//成就目標敘述
         private String unLockedSvg;
         private String lockedSvg;
         private int target; //成就目標
@@ -18,10 +18,10 @@
         private boolean achieve;//是否解鎖
 
         //constructor
-        public Achievement(String AchievementId, String AchievementName, String AchievementDescription, String unLockedSvg, String lockedSvg,int target,int current,boolean achieve) {
-            this.AchievementId = AchievementId; ;
-            this.AchievementName = AchievementName;
-            this.AchievementDescription = AchievementDescription;
+        public Achievement(String achievementId, String achievementName, String achievementDescription, String unLockedSvg, String lockedSvg,int target,int current,boolean achieve) {
+            this.achievementId = achievementId; ;
+            this.achievementName = achievementName;
+            this.achievementDescription = achievementDescription;
             this.unLockedSvg = unLockedSvg;
             this.lockedSvg = lockedSvg;
             this.target = target;
@@ -34,7 +34,7 @@
         }
 
         public String getAchievementId() {
-            return AchievementId;
+            return achievementId;
         }
 
         public int getCurrent() {
@@ -42,11 +42,11 @@
         }
 
         public String getAchievementDescription() {
-            return AchievementDescription;
+            return achievementDescription;
         }
 
         public String getAchievementName() {
-            return AchievementName;
+            return achievementName;
         }
 
         public int getTarget() {
@@ -66,15 +66,15 @@
         }
 
         public void setAchievementId(String achievementId) {
-            AchievementId = achievementId;
+            this.achievementId = achievementId;
         }
 
         public void setAchievementDescription(String achievementDescription) {
-            AchievementDescription = achievementDescription;
+            this.achievementDescription = achievementDescription;
         }
 
         public void setAchievementName(String achievementName) {
-            AchievementName = achievementName;
+            this.achievementName = achievementName;
         }
 
         public void setCurrent(int current) {
@@ -95,9 +95,9 @@
 
         public String toString(){
             return "{" +
-            "AchievementId: "+ AchievementId+"\n"+
-            "AchievementName: " + AchievementName+"\n"+
-            "AchievementDescription: " + AchievementDescription+"\n"+
+            "AchievementId: "+ achievementId+"\n"+
+            "AchievementName: " + achievementName+"\n"+
+            "AchievementDescription: " + achievementDescription+"\n"+
             "unLockedSvg: " + unLockedSvg+"\n"+
             "lockedSvg: " + lockedSvg+"\n"+
             "target: " + target+"\n"+
