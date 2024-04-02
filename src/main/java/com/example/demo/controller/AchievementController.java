@@ -43,7 +43,7 @@ public class AchievementController {
         return ResponseEntity.ok("achievement updated successfully");
     }
     @GetMapping("/getAllAchievement")
-    public ResponseEntity<?> getAllRecords() {
+    public ResponseEntity<?> getAllAchievement() {
         try {
             List<Achievement> Achievements = this.achievementService.getAllAchievement();
             return ResponseEntity.ok(Achievements);
@@ -52,8 +52,8 @@ public class AchievementController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/deleteOneRecord")
-    public ResponseEntity<?> deleteOneRecord(@RequestParam("AchievementId") String AchievementId) {
+    @DeleteMapping("/deleteOneAchievement")
+    public ResponseEntity<?> deleteOneAchievement(@RequestParam("AchievementId") String AchievementId) {
         try {
             this.achievementService.deleteOneAchievement(AchievementId);
             return new ResponseEntity<>(HttpStatus.OK);
