@@ -41,6 +41,10 @@ public class ConfigService {
         return gson.toJson(record.getRecordCategory());
     }
 
+    public Map<String, RecordWrapper> getRecordConfigurationObj() {
+        return this.record.getRecordCategory();
+    }
+
     //新增或更新一個新(舊)紀錄項目到特定類別
     public int updateNewContent(String category, RecordItem newItem) throws IOException {
 
@@ -196,6 +200,7 @@ public class ConfigService {
         String newJsonStr = gson.toJson(record);
         updateConfiguration(newJsonStr);
     }
+
 
     public String test() {
         return gson.toJson(record.getSetting());

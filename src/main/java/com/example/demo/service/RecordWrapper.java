@@ -57,9 +57,12 @@ public class RecordWrapper {
 
     @Override
     public String toString() {
-        return
-                "base=" + base + "\n" +
-                        ", content=" + content
-                ;
+        return "RecordWrapper{" +
+                "base=" + base +
+                ", color='" + color + '\'' +
+                ", units=" + units +
+                ", content=" + content +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
