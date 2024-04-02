@@ -74,7 +74,7 @@
     <div class="titleContainer">
         <div class="showUser">
             <div id="userPhoto" style="display: none; ">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill=black class="bi bi-person-circle"
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill=black class="bi bi-person-circle"
                      id="userIcon" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                     <path fill-rule="evenodd"
@@ -83,7 +83,7 @@
             </div>
             <div>
                 <div id="photoContainer" style="display: none; ">
-                    <img id="photoDisplay" src="" style="width: 30px; height: 30px">
+                    <img id="photoDisplay" src="" style="width: 40px; height: 40px">
                 </div>
             </div>
             <div style="display: block; ">
@@ -483,11 +483,8 @@
                 </g>
             </svg>
         </button>
-        <img id="originalPhoto" src="" style="display: none">
-        <input id="changePhotoInput" style="display: none" type="button">
-        <label class="changePhoto" id="changePhoto" for="changePhotoInput" style="display: none">
-          <span>修改頭像</span>
-        </label>
+        <div class="recordHeading">修改頭像</div>
+        <img id="originalPhoto" class="originalPhoto" src="" style="display: none">
         <input type="file" id="fileInput" style="display: none" accept="image/*" multiple="false">
         <label class="photo" id="fileInputLabel" for="fileInput" style="display: none">
           <span>
@@ -499,11 +496,36 @@
         <label class="changePhoto" id="cropImage" for="cropImageInput" style="display: none">
             <span>確認裁剪</span>
         </label>
-        <img id="croppedImage" style="display: none"  src="" alt="裁切後的圖片">
+        <img id="croppedImage" class="originalPhoto" style="display: none"  src="" alt="裁切後的圖片">
         <input id="upLoadUserPhotoInput" style="display: none" type="button">
         <label class="changePhoto" id="upLoadUserPhoto" for="upLoadUserPhotoInput" style="display: none">
             <span>確認上傳</span>
         </label>
+    </div>
+</div>
+
+<!-- 懸浮窗：減碳量轉換 -->
+<div id="FPTransferFW" onclick="closeFW(event)">
+    <div id="FPTransferModal" class="settingContainer" style="width:300px;">
+        <!-- 關閉 -->
+        <button class="btn" id="FPTransferBtn" style="top:10px; right:10px;">
+            <svg viewBox="0 0 20 20" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <g>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                </g>
+            </svg>
+        </button>
+        <div class="recordHeading">碳排放轉換</div>
+        <div style="margin: 10px">你共減少了...</div>
+        <div style="display: inline-flex;">
+            <div class="FPTransferUnit"><div id="reduceToBottle"></div><div>個塑膠杯</div></div>
+            <div class="FPTransferUnit" style="border-left: 0.5px solid"><div id="reduceToStraw"></div><div>個塑膠吸管</div></div>
+            <div class="FPTransferUnit" style="border-left: 0.5px solid"><div id="reduceToChopsticks"></div><div>個免洗筷</div></div>
+        </div>
+        <div id="FPTransferTree" style="margin-top: 20px; text-align: center;"></div>
     </div>
 </div>
 

@@ -189,7 +189,8 @@ svg:hover .detail {
 #routeFW,
 #closeAuthFW,
 #recordFW,
-#uploadUserPhotoFW{
+#uploadUserPhotoFW,
+#FPTransferFW{
     display: none;
     position: fixed;
     top: 0;
@@ -559,6 +560,7 @@ svg:hover .detail {
     padding: 0.8em 1.2em 0.8em 1em;
     transition: all ease-in-out 0.2s;
     font-size: 16px;
+    margin-top: 10px;
 }
 .photo span {
     display: flex;
@@ -569,6 +571,15 @@ svg:hover .detail {
 }
 .photo:hover {
     background-color: #b7bcbd;
+}
+
+.originalPhoto{
+    -webkit-user-select: none;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #7a7979;
+    margin: 20px;
+
 }
 
 .changePhoto {
@@ -600,4 +611,10 @@ svg:hover .detail {
 }
 #croppedImage{
     display: none;
+}
+
+.FPTransferUnit{
+    padding: 5px;
+    font-size: 13px;
+    text-align: center;
 }
