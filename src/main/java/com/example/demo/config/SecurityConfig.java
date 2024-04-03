@@ -126,6 +126,7 @@ public class SecurityConfig {
                                 .requestMatchers("/index/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/user/googleLogin").permitAll()
+                                .requestMatchers("/eco/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout(auth ->

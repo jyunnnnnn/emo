@@ -8,16 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/AC")
 public class AchievementController {
     private final AchievementService achievementService;
+
     @Autowired
     public AchievementController(AchievementService achievementService) {
         this.achievementService = achievementService;
     }
+
     @PostMapping("/addAchievement")
     public ResponseEntity<?> addAchievement(@RequestBody Achievement achievement) {
         try {
@@ -30,6 +33,7 @@ public class AchievementController {
 
         return ResponseEntity.ok("achievement added successfully");
     }
+
     @PutMapping("/updateAchievement")
     public ResponseEntity<?> updateAchievement(@RequestBody Achievement achievement) {
         //是否正常更新
@@ -42,6 +46,7 @@ public class AchievementController {
 
         return ResponseEntity.ok("achievement updated successfully");
     }
+
     @GetMapping("/getAllAchievement")
     public ResponseEntity<?> getAllAchievement() {
         try {
@@ -52,6 +57,7 @@ public class AchievementController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     @DeleteMapping("/deleteOneAchievement")
     public ResponseEntity<?> deleteOneAchievement(@RequestParam("AchievementId") String AchievementId) {
         try {
@@ -61,6 +67,11 @@ public class AchievementController {
             System.err.println("刪除" + AchievementId + "成就過程出現問題");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<?> get(@RequestParam("userId") String userId) throws FileNotFoundException {
+        return ResponseEntity.ok(this.achievementService.userAchievementsHandler(userId));
+    }
+
 }

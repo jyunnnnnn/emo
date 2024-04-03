@@ -41,7 +41,7 @@ public class Achievement {
     private int target; //成就目標
 
     @JsonProperty("current")
-    private int current;//目前進度
+    private double current;//目前進度
 
     @JsonProperty("achieve")
     private boolean achieve;//是否解鎖
@@ -49,11 +49,17 @@ public class Achievement {
     @JsonProperty("type")
     private int type;//成就類型
 
+    @JsonProperty("achievementClass")//成就屬於的大類別
+    /*
+        目前分為:生活用品、交通、其他類別
+     */
+    private String achievementClass;
+
     public Achievement() {
     }
 
 
-    public Achievement(String achievementId, String achievementName, String achievementDescription, String unLockedSvg, String lockedSvg, int target, int current, boolean achieve, int type) {
+    public Achievement(String achievementId, String achievementName, String achievementDescription, String unLockedSvg, String lockedSvg, int target, double current, boolean achieve, int type, String achievementClass) {
         this.achievementId = achievementId;
         this.achievementName = achievementName;
         this.achievementDescription = achievementDescription;
@@ -63,6 +69,7 @@ public class Achievement {
         this.current = current;
         this.achieve = achieve;
         this.type = type;
+        this.achievementClass = achievementClass;
     }
 
     public String getAchievementId() {
@@ -113,11 +120,11 @@ public class Achievement {
         this.target = target;
     }
 
-    public int getCurrent() {
+    public double getCurrent() {
         return current;
     }
 
-    public void setCurrent(int current) {
+    public void setCurrent(double current) {
         this.current = current;
     }
 
@@ -137,6 +144,14 @@ public class Achievement {
         this.type = type;
     }
 
+    public String getAchievementClass() {
+        return achievementClass;
+    }
+
+    public void setAchievementClass(String achievementClass) {
+        this.achievementClass = achievementClass;
+    }
+
     @Override
     public String toString() {
         return "Achievement{" +
@@ -149,6 +164,7 @@ public class Achievement {
                 ", current=" + current +
                 ", achieve=" + achieve +
                 ", type=" + type +
+                ", achievementClass='" + achievementClass + '\'' +
                 '}';
     }
 }
