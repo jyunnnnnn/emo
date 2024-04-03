@@ -69,7 +69,7 @@ public class AchievementController {
         }
     }
 
-    @GetMapping("/get")
+    @GetMapping("/getUserAchievementStateObj")
     public ResponseEntity<?> get(@RequestParam("userId") String userId) throws FileNotFoundException {
         return ResponseEntity.ok(this.achievementService.userAchievementsHandler(userId));
     }
