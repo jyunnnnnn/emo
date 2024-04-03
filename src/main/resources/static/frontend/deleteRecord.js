@@ -123,6 +123,7 @@ function deleteRecord(recordId){
         url: `/eco/deleteOneRecord?recordId=${recordId}`,
         contentType: 'application/string',
         success: function(response) {
+            loadAchievementObj(User.userId);
             //console.log(response); // 成功刪除時的處理邏輯
         },
         error: function(xhr, status, error) {

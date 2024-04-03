@@ -18,6 +18,7 @@ let testFixPoints=[]; // 路線修正後的點點
 let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
 let directionsDisplay;
 let questionMark = {};
+let AchievementObj={};
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -232,7 +233,7 @@ function systemInit(){
     watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
-
+    loadAchievementObj(User.userId);
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -642,4 +643,17 @@ function uploadPhoto() {
             }
         });
     $('#uploadUserPhotoFW').css("display", "none");
+}
+function loadAchievementObj(userId){
+    $.ajax({
+        url: '/AC/getUserAchievementStateObj?userId='+userId,
+        type: 'GET',
+        success: function(response) {
+            AchievementObj=response;
+            //console.log(AchievementObj);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
 }

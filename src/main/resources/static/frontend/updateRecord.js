@@ -70,6 +70,7 @@ function modifyRecordToBackend(record) {
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {
+            loadAchievementObj(User.userId);
             //console.log(response); // 成功更新時的處理邏輯
         },
         error: function(xhr, status, error) {

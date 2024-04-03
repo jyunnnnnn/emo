@@ -44,6 +44,7 @@ function uploadRecordToBackend(record) {
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {
+            loadAchievementObj(User.userId);
             //console.log(response); // 成功上傳時的處理邏輯
         },
         error: function(xhr, status, error) {
