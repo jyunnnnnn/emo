@@ -211,6 +211,7 @@ $('#saveTrafficRecord').on('click', function () {
 
 // 查看按鈕
 $('#recordListButton').on('click', function () {
+    reloadAchievement();
     // 顯示懸浮窗
     $('#historyFW').css("display", "flex");
     $('#historyFW').css("position", "fixed");
@@ -283,17 +284,6 @@ $('#recordReturn').on('click', function (){
     $('#newestRecord .deleteBox').css("display", "none");
     $('#newestRecord .recordListSvg').css("display", "flex");
 });
-// 顯示更多成就
-$('#moreAchievement').on('click', function (){
-    $('#achievementFW').css("display", "flex");
-    $('#achievementFW').css("position", "fixed");
-    $('#historyFW').css("display", "none");
-});
-$('#achievementReturn').on('click', function (){
-    $('#historyFW').css("display", "flex");
-    $('#historyFW').css("position", "fixed");
-    $('#achievementFW').css("display", "none");
-});
 
 // 點擊設定按鈕
 $('#settingButton').on('click', function () {
@@ -342,6 +332,9 @@ function closeFW(event){
     } else if(event.target.id === 'achievementFW') {
         $('#achievementFW').css("display", "none");
         $('#historyFW').css("display", "flex");
+    } else if(event.target.id === 'eachAchievementFW') {
+        $('#eachAchievementFW').css("display", "none");
+        $('#achievementFW').css("display", "flex");
     }else if(event.target.id === 'uploadUserPhotoFW') {
         $('#uploadUserPhotoFW').css("display", "none");
     }else if(event.target.id === 'FPTransferFW') {
