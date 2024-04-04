@@ -379,7 +379,9 @@
             <div style="font-size: 20px; margin-left: 10px;">成就</div>
             <div class="more" id="moreAchievement">顯示更多</div>
         </div>
-        <div id="achievement" class="historyAchievement">test</div>
+        <div class="historyAchievement">
+            <div id="achievement"></div>
+        </div>
     </div>
 </div>
 <!-- 懸浮窗：紀錄 -->
@@ -440,8 +442,10 @@
         </div>
 
         <div class="historyHeading">成就</div>
-        <div class="historyAchievement">哈哈先這樣</div>
+        <div class="achievementContainer" id="achievementContainer"></div>
     </div>
+</div>
+<div id="eachAchievementFW" onclick="closeFW(event)" style="flex-direction: column;">
 </div>
 
 <!-- 懸浮窗：確認關閉新增/修改 -->
@@ -539,6 +543,7 @@
 <script src="/frontend/updateRecord.js"></script>
 <script src="/frontend/deleteRecord.js"></script>
 <script src="/frontend/recordList.js"></script>
+<script src="/frontend/achievement.js"></script>
 
 
 <!-- 初始化地圖 -->
