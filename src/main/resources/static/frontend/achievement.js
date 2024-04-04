@@ -136,8 +136,10 @@ function achievementClick(achievementId){
         let textDiv = $("<div>")
             .css({
                 'height': '190px',
-                'vertical-align': 'center',
-                'align-content': 'center'
+                'display': 'flex',
+                'display': 'flex',
+                'flex-direction': 'column',
+                'justify-content': 'center'
             });
 
         time = target[0].current.toFixed(2).toString()
@@ -182,12 +184,21 @@ function achievementClick(achievementId){
             .attr({
                 'class': 'back',
             });
+        let textDiv = $("<div>")
+            .css({
+                'height': '190px',
+                'display': 'flex',
+                'display': 'flex',
+                'flex-direction': 'column',
+                'justify-content': 'center'
+            });
         let time = (target[0].current.toFixed(2)*100/100).toString();
         let achievementText1 = $("<div>")
             .text(User.nickname + "還差一點！繼續加油");
         let achievementText2 = $("<div>")
             .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-        backDiv.append(achievementText1, achievementText2);
+        textDiv.append(achievementText1, achievementText2);
+        backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
         achievementDiv.append(cardInner);
