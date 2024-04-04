@@ -350,6 +350,8 @@ svg:hover .detail {
     border-radius: 20px;
     border: none;
     text-align: center;
+    justify-items: center;
+    align-content: center;
 }
 #editRecord:hover,
 #saveEditRecord:hover,

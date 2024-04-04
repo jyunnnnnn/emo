@@ -138,18 +138,18 @@ function achievementClick(achievementId){
                 'justify-content': 'center'
             });
 
-        time = target[0].current.toFixed(2).toString()
+        time = (target[0].current.toFixed(2)*100/100).toString()
         let achievementText1 = $("<div>")
             .text(User.nickname + "做得很好！繼續加油");
         let achievementText2 = $("<div>")
-            .text(time.replace(/\.?0+$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\.?0+$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
         textDiv.append(achievementText1, achievementText2);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
         achievementDiv.append(cardInner);
         time = parseInt(target[0].current / target[0].target,10).toString();
-        let achieveTime = time.replace(/\.?0+$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        let achieveTime = time.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         let achieveDescription = $("<div>")
             .text("你贏得此獎章" + achieveTime + "次，表揚你" + target[0].achievementDescription)
             .attr('class', 'achievementDescription');
