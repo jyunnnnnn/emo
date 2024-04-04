@@ -594,7 +594,7 @@
                     element.classList.remove("carousel-item");
                 }
             });
-            console.log(screenWidth);
+            // console.log(screenWidth);
         }
 
         // 初次加載時檢查一次
@@ -621,6 +621,10 @@
                 }
             });
         });
+    });
+
+    $('.navbar-nav>li>a').on('click', function(){
+      $('.navbar-collapse').collapse('hide');
     });
 
 
