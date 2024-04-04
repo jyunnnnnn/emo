@@ -133,13 +133,20 @@ function achievementClick(achievementId){
             .attr({
                 'class': 'back',
             });
+        let textDiv = $("<div>")
+            .css({
+                'height': '190px',
+                'vertical-align': 'center',
+                'align-content': 'center'
+            });
 
         time = target[0].current.toFixed(2).toString()
         let achievementText1 = $("<div>")
             .text(User.nickname + "做得很好！繼續加油");
         let achievementText2 = $("<div>")
             .text(time.replace(/\.?0+$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\.?0+$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-        backDiv.append(achievementText1, achievementText2);
+        textDiv.append(achievementText1, achievementText2);
+        backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
         achievementDiv.append(cardInner);
