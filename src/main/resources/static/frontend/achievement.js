@@ -94,7 +94,6 @@ function reloadAchievement(){
             });
         })(unfinish[i].achievementId);
     }
-    $('#achievementSum').text(finish.length + ' / ' + AchievementObj.length);
 }
 $('.card').click(function() {
     $(this).toggleClass('flipped');
