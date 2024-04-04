@@ -1,6 +1,5 @@
 // 顯示更多成就
 $('#moreAchievement').on('click', function (){
-    console.log("in");
     $('#achievementFW').css("display", "flex");
     $('#achievementFW').css("position", "fixed");
     $('#historyFW').css("display", "none");
@@ -12,7 +11,6 @@ $('#achievementReturn').on('click', function (){
 });
 
 function reloadAchievement(){
-    console.log(AchievementObj);
     $('#achievementContainer').empty();
 
     let finish = AchievementObj.filter(achievement => achievement.achieve === true);
@@ -56,7 +54,6 @@ function reloadAchievement(){
         })(finish[i].achievementId);
     }
     for(let i=0; i<unfinish.length; i++){
-        console.log(unfinish[i])
         let achievementDiv = $("<div>")
             .attr({
                 'class': 'achievementDiv',
@@ -102,12 +99,10 @@ $('.card').click(function() {
     $(this).toggleClass('flipped');
 });
 function achievementClick(achievementId){
-    console.log(achievementId)
     $('#achievementFW').css("display", "none");
     $('#eachAchievementFW').css("display", "flex");
     $('#eachAchievementFW').empty();
     let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
-    console.log(target)
 
     if(target[0].achieve === true){
         let achievementName = $("<div>")
@@ -160,7 +155,6 @@ function achievementClick(achievementId){
 
         $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription);
     } else {
-        console.log("false")
         let achievementName = $("<div>")
             .text(target[0].achievementName)
             .attr('class', 'eachAchievementName');
