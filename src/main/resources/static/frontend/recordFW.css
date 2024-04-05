@@ -44,7 +44,12 @@
     background: darkgray;
 }
 
-
+button:focus {
+    outline: unset !important;
+}
+:focus-visible{
+    outline: unset !important;
+}
 .gm-style .gm-ui-hover-effect{
     top: 5px !important;
     right: 5px !important;
