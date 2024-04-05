@@ -1,7 +1,8 @@
 #historyFW,
 #recordListFW,
 #achievementFW,
-#eachAchievementFW{
+#eachAchievementFW,
+#firstTimeAchieveFW{
     display: none;
     position: fixed;
     top: 0;
@@ -226,6 +227,22 @@
     text-align: center;
     box-shadow: inset 3px 3px 5px #c5c5c5,
     inset -3px -3px 5px #ffffff;
+}
+@keyframes rotateAchievement {
+    from{
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+@keyframes rotateRadiance {
+    from{
+        transform: rotateZ(0deg);
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
 }
 .achievementText{
     color: #737373;

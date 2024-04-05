@@ -651,6 +651,10 @@ function loadAchievementObj(userId){
         success: function(response) {
             AchievementObj=response;
             //console.log(AchievementObj);
+            /*
+            let target = AchievementObj.filter(achievement => achievement.accomplishTime != null);
+            firstTimeAchieve(target);
+             */
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
