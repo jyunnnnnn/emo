@@ -11,7 +11,6 @@ $('#achievementReturn').on('click', function (){
 });
 
 function reloadAchievement(){
-    console.log("重跑成就頁面");
     console.log(AchievementObj);
     $('#achievementContainer').empty();
 
@@ -106,7 +105,6 @@ function achievementClick(achievementId){
     $('#eachAchievementFW').css("display", "flex");
     $('#eachAchievementFW').empty();
     let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
-    console.log(target);
 
     if(target[0].achieve === true){
         let achievementName = $("<div>")
@@ -148,8 +146,9 @@ function achievementClick(achievementId){
         let achievementText1 = $("<div>")
             .text("做得很好！繼續加油")
             .attr('class', 'achievementText');
+        let datePart = target[0].accomplishTime.substring(0, 10).split("-");
         let achievementText2 = $("<div>")
-            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+            .text(datePart[0] + "年" + datePart[1] + "月" + datePart[2] + "日")
             .attr('class', 'achievementText');
         let emoIcon = $("<div>")
             .text("EMO")
