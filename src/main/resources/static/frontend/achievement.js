@@ -11,6 +11,8 @@ $('#achievementReturn').on('click', function (){
 });
 
 function reloadAchievement(){
+    console.log("重跑成就頁面");
+    console.log(AchievementObj);
     $('#achievementContainer').empty();
 
     let finish = AchievementObj.filter(achievement => achievement.achieve === true);
@@ -104,6 +106,7 @@ function achievementClick(achievementId){
     $('#eachAchievementFW').css("display", "flex");
     $('#eachAchievementFW').empty();
     let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
+    console.log(target);
 
     if(target[0].achieve === true){
         let achievementName = $("<div>")
