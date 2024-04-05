@@ -122,7 +122,7 @@ button:focus {
 .gram-inputs .gram {
     flex: 1;
     text-align: center;
-    margin-top: 8px;
+    margin: 8px 0px 8px;
 }
 
 .gram-inputs .gram input {
@@ -567,6 +567,8 @@ svg:hover .detail {
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid black;
+    width: 40px;
+    height: 40px;
 }
 
 .photo {

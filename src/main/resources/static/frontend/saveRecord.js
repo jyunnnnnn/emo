@@ -110,7 +110,7 @@ function addMarker(recordToAdd) {
        let infoWindowContent = `
            <div>
                <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'HunInn', 'Mandali', sans-serif; font-weight: bold;">${recordToAdd.type}</h6>
-               <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px;padding-top: 14px;  padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'HunInn', 'Mandali', sans-serif;">
+               <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px; padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'HunInn', 'Mandali', sans-serif;">
                 <p style="font-size: 16px;">減少的碳足跡為：</p>
                 <p style="font-size: 20px; font-weight: bold; padding-right: 5px; padding-bottom: 3px;">${recordToAdd.footprint}</p>
                 <p style="font-size: 10px;"> g CO2e</p>

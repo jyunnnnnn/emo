@@ -115,7 +115,7 @@
     display: flex;
     justify-content: center;
     overflow-y: scroll;
-    height: 30%;
+    height: 27%;
 }
 #achievement{
     display: grid;
@@ -365,7 +365,7 @@
         transform: scale(0.7);
     }
     .historyAchievement{
-        height: 230px;
+        height: 30%;
         align-items: center;
         overflow-y: hidden;
         overflow-x: hidden;
