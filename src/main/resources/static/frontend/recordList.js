@@ -239,7 +239,7 @@ function showNewChart(nowRecords, type) {
                             borderRadius: 4
                         }
                     },
-                    fontFamily: "'cwTeXYen', 'Mandali', sans-serif"
+                    fontFamily: "'HunInn', 'Mandali', sans-serif"
                 },
                 labelLayout: {
                     hideOverlap: true
