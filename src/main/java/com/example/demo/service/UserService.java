@@ -159,7 +159,7 @@ public class UserService {
         //檢查帳號是否存在
         UserInfo result = this.repository.findByUsername(username);
         if (result != null) {
-            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId(), result.getAuthority());
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId(), result.getAuthority(), result.getPhoto());
             this.repository.save(updatedUserInfo);
             return OK;
         }
