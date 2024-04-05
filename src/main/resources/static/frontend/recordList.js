@@ -491,8 +491,10 @@ function showNewRecord(sortedRecords, selectedCategory) {
             })
             .text("沒有紀錄");
         container.append(recordDiv);
-        $('#newestRecord').empty();
-        $('#newestRecord').append(recordDiv.clone());
+        if(selectedCategory == "全部"){
+            $('#newestRecord').empty();
+            $('#newestRecord').append(recordDiv.clone());
+        }
     } else {
         let yearNmonth = "";
         let nowDiv;
@@ -552,14 +554,14 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 let typeDiv = $("<div>")
                     .text(thisRecords[i].type)
                     .css({
-                        'font-size': '15px',
+                        'font-size': '20px',
                         'margin-left' : '5px'
                     });
                 let footprintDiv = $("<div>")
                     .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
                     .css({
                         'color': '#28a745',
-                        'font-size': '20px',
+                        'font-size': '23px',
                         'margin-left': '5px',
                         'font-weight': 'bold'
                     });
@@ -655,14 +657,14 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 let typeDiv = $("<div>")
                     .text(thisRecords[i].type)
                     .css({
-                        'font-size': '15px',
+                        'font-size': '18px',
                         'margin-left' : '5px'
                     });
                 let footprintDiv = $("<div>")
                     .text(parseFloat(thisRecords[i].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
                     .css({
                         'color': '#28a745',
-                        'font-size': '20px',
+                        'font-size': '23px',
                         'margin-left': '5px',
                         'font-weight': 'bold'
                     });
