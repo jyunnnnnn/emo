@@ -4,6 +4,8 @@ import java.lang.reflect.*;
 
 import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
+import com.example.demo.repository.UserRecordCounterRepository;
+import com.example.demo.service.AchievementService;
 import com.example.demo.service.EcoRecordService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.internal.matchers.Null;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,10 @@ class EcoControllerTest {
     @MockBean
     private EcoRecordService ecoRecordService;
 
+    @MockBean
+    private AchievementService achievementService;
+
+
     @Autowired
     private ObjectMapper objectMapper;
     private EcoRecord testRecord = new EcoRecord(
@@ -78,6 +85,7 @@ class EcoControllerTest {
     void addRecord() throws Exception {
         //新增過程成功
         when(ecoRecordService.addRecord(any(EcoRecord.class))).thenReturn(testRecord);
+        when(achievementService.userAchievementsHandler(any(String.class))).thenReturn(null);
         mockMvc.perform(post("/eco/addRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
