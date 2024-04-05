@@ -4,6 +4,7 @@ import java.lang.reflect.*;
 
 import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
+import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.service.AchievementService;
 import com.example.demo.service.EcoRecordService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.internal.matchers.Null;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,7 @@ class EcoControllerTest {
 
     @MockBean
     private AchievementService achievementService;
+
 
     @Autowired
     private ObjectMapper objectMapper;

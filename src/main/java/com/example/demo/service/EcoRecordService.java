@@ -35,24 +35,28 @@ public class EcoRecordService {
         UserAchievementEntity userAchievementEntity = this.userRecordCounterRepository.findByUserId(newRecord.getUserId());
         //累計次數
         int cnt = 1;
+        if (userAchievementEntity.getClassRecordCounter() != null) {
+            //該使用者已經存過此類別的項目
+            if (userAchievementEntity.getClassRecordCounter().containsKey(newRecord.getClassType())) {
+                cnt += userAchievementEntity.getClassRecordCounter().get(newRecord.getClassType());
+                //重新覆蓋原本的資訊
 
-        //該使用者已經存過此類別的項目
-        if (userAchievementEntity.getClassRecordCounter().containsKey(newRecord.getClassType())) {
-            cnt += userAchievementEntity.getClassRecordCounter().get(newRecord.getClassType());
-            //重新覆蓋原本的資訊
-
+            }
         }
+
         userAchievementEntity.getClassRecordCounter().put(newRecord.getClassType(), cnt);
 
         //累計減碳量
         double sum = newRecord.getFootprint();
+        if (userAchievementEntity.getClassRecordCarbonCounter() != null) {
+            //該使用者已經存過此類別的項目
+            if (userAchievementEntity.getClassRecordCarbonCounter().containsKey(newRecord.getClassType())) {
+                sum += userAchievementEntity.getClassRecordCarbonCounter().get(newRecord.getClassType());
+                //重新覆蓋原本的資訊
 
-        //該使用者已經存過此類別的項目
-        if (userAchievementEntity.getClassRecordCarbonCounter().containsKey(newRecord.getClassType())) {
-            sum += userAchievementEntity.getClassRecordCarbonCounter().get(newRecord.getClassType());
-            //重新覆蓋原本的資訊
-
+            }
         }
+
         userAchievementEntity.getClassRecordCarbonCounter().put(newRecord.getClassType(), sum);
         this.userRecordCounterRepository.save(userAchievementEntity);
     }

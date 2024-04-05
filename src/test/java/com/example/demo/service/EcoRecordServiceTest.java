@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
+import com.example.demo.entity.UserAchievementEntity;
 import com.example.demo.repository.RecordRepository;
+import com.example.demo.repository.UserRecordCounterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,11 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,6 +29,8 @@ class EcoRecordServiceTest {
 
     @InjectMocks
     private EcoRecordService ecoRecordService;
+    @MockBean
+    private UserRecordCounterRepository userRecordCounterRepository;
     //虛假紀錄資料庫，用以模擬資料庫運作，並非實際與資料庫互動，能避免mongoDB出問題時導致service測試失敗的問題
     @Mock
     private static RecordRepository recordRepository;
@@ -44,10 +46,10 @@ class EcoRecordServiceTest {
                     "testUserId",
                     "testClassType",
                     "testType",
-                    i*5,
-                    i*0.1,
-                    i*0.2,
-                    i+5,
+                    i * 5,
+                    i * 0.1,
+                    i * 0.2,
+                    i + 5,
                     "testField1",
                     "testField2",
                     Arrays.asList(
@@ -65,10 +67,15 @@ class EcoRecordServiceTest {
     @DisplayName("Add Record Test")
     void addRecordTest() {
         EcoRecord target = testList.get(1);
+        UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
+        userAchievementEntity.setUserId("testUserId");
+        userAchievementEntity.setAchieveTime(new HashMap<>());
+        userAchievementEntity.setClassRecordCounter(new HashMap<>());
+        userAchievementEntity.setClassRecordCarbonCounter(new HashMap<>());
 
         //設置資料庫運作模式
         when(this.recordRepository.save(target)).thenReturn(target);
-
+        when(userRecordCounterRepository.findByUserId(any(String.class))).thenReturn(userAchievementEntity);
         EcoRecord result = ecoRecordService.addRecord(target);
         assertEquals(target.getRecordId(), result.getRecordId());
     }
