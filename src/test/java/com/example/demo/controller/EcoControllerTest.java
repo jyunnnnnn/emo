@@ -4,6 +4,7 @@ import java.lang.reflect.*;
 
 import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
+import com.example.demo.service.AchievementService;
 import com.example.demo.service.EcoRecordService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +51,9 @@ class EcoControllerTest {
     @MockBean
     private EcoRecordService ecoRecordService;
 
+    @MockBean
+    private AchievementService achievementService;
+
     @Autowired
     private ObjectMapper objectMapper;
     private EcoRecord testRecord = new EcoRecord(
@@ -78,6 +82,7 @@ class EcoControllerTest {
     void addRecord() throws Exception {
         //新增過程成功
         when(ecoRecordService.addRecord(any(EcoRecord.class))).thenReturn(testRecord);
+        when(achievementService.userAchievementsHandler(any(String.class))).thenReturn(null);
         mockMvc.perform(post("/eco/addRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
