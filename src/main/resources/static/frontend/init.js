@@ -495,7 +495,7 @@ function svgConstructor(svgData) {
                         if (data_value > 0){
                             showExpectedFP = parseFloat(calculateFootprint(type, data_value)).toFixed(2);
                         }
-                        $('#routeCalculate').text(showExpectedFP + " gCo2E");
+                        $('#routeCalculate').text(showExpectedFP + " gCO2e");
                          let target = FootprintData.find(item => item.type === type);
                          let description = questionMark[target.type].split(" ");
                          $("#routeCompare").text(description[0]);

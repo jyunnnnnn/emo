@@ -13,7 +13,7 @@ $('#openRecordModal').on('click', function() {
     }
 
 
-    $('#recordCalculate').text("0 gCo2E");
+    $('#recordCalculate').text("0 gCO2e");
     $("#recordCompare").text("選擇行為以獲得基準值");
     $("#recordFormula").text("選擇行為以獲得計算公式");
     $('#recordFW').css("display", "flex");
@@ -158,7 +158,7 @@ $('#gramRadios').on('change', 'input[type="radio"]', function() {
     if (data_value > 0){
         showExpectedFP = parseFloat(calculateFootprint(type.text(), data_value)).toFixed(2);
     }
-    $('#recordCalculate').text(showExpectedFP  + " gCo2E");
+    $('#recordCalculate').text(showExpectedFP  + " gCO2e");
 });
 $('#gram').on('input', function(event) {
     let type = $('#type').find('.item.is-selected');
@@ -167,7 +167,7 @@ $('#gram').on('input', function(event) {
     if (data_value > 0){
         showExpectedFP = parseFloat(calculateFootprint(type.text(), data_value)).toFixed(2);
     }
-    $('#recordCalculate').text(showExpectedFP + " gCo2E");
+    $('#recordCalculate').text(showExpectedFP + " gCO2e");
     let target = FootprintData.find(item => item.type === type.text());
     let description = questionMark[target.type].split(" ");
     $("#recordCompare").text(description[0]);
@@ -453,7 +453,7 @@ function recordModal(){
         $("#routeCompare").text(description[0]);
         $("#routeFormula").text(description[1]);
         $('#kilometer').val(currentInfoWindowRecord.data_value);
-        $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
+        $('#routeCalculate').text(currentInfoWindowRecord.footprint + " gCO2e");
     } else {
         $('#recordFW').css("display", "flex");
         $('#recordFW').css("position", "fixed");
@@ -548,7 +548,7 @@ function recordModal(){
 
         $('#gram').val(currentInfoWindowRecord.data_value);
         $('#gram').prop("disabled", false);
-        $('#recordCalculate').text(currentInfoWindowRecord.footprint + " gCo2E");
+        $('#recordCalculate').text(currentInfoWindowRecord.footprint + " gCO2e");
         let description = questionMark[target.type].split(" ");
         $("#recordCompare").text(description[0]);
         $("#recordFormula").text(description[1]);

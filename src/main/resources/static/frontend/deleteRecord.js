@@ -63,7 +63,7 @@ function deleteMultiRecord(){
                     'margin-left' : '5px'
                 });
             let footprintDiv = $("<div>")
-                .text(parseFloat(records[records.length - 1].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E")
+                .text(parseFloat(records[records.length - 1].footprint).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCO2e")
                 .css({
                     'color': '#28a745',
                     'font-size': '25px',

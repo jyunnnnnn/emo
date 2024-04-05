@@ -104,7 +104,7 @@ function stopRecording() {
     processAllPoints(recordedPositions);
 
     // 打開路線記錄懸浮窗
-    $('#recordCalculate').text("0 gCo2E");
+    $('#recordCalculate').text("0 gCO2e");
     $("#routeDetail").html("<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
         "                        選擇行為以獲得基準值\n" +
         "                        </span>\n" +
@@ -121,7 +121,7 @@ function stopRecording() {
     let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
     let data_value = $('#kilometer').val();
     let showExpectedFP = 0;
-    $('#routeCalculate').text(showExpectedFP + " gCo2E");
+    $('#routeCalculate').text(showExpectedFP + " gCO2e");
 
     let checked = $('input[name="engine"]:checked');
     let checkedVal = $('input[name="engine"]:checked').val();

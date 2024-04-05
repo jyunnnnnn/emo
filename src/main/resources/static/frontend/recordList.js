@@ -11,7 +11,7 @@ function showTotalFP(){
     container.innerHTML = ""; // 清空容器內容
 
     if(thisRecords.length == 0){
-        container.text("0g Co2E");
+        container.text("0g CO2e");
     } else {
         for (let i = 0; i < thisRecords.length; i++) {
             totalFP += parseFloat(thisRecords[i].footprint, 10);
@@ -21,19 +21,19 @@ function showTotalFP(){
     // 設定量級 0-1,000 灰 1,000-10,000 銅 10,000-100,000銀 100,000上 金
     if(totalFP < 1000){ // 灰
         $('#totalFootprint').css('background', 'darkgray');
-        container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
-        $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E");
-        $('#recordFP').text(totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E");
+        container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCO2e");
+        $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCO2e");
+        $('#recordFP').text(totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCO2e");
     }else if(totalFP < 10000){ // 銅
         $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(184, 115, 51) 0%, rgb(218, 165, 32) 100%)');
-        container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
-        $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E");
-        $('#recordFP').text(totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCo2E");
+        container.html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCO2e");
+        $('#deleteDataFP').text("共減去 " + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCO2e");
+        $('#recordFP').text(totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " gCO2e");
     }else if(totalFP < 100000){ // 銀
         $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%)');
-        container.html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
-        $('#deleteDataFP').text("共減去 " + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCo2E");
-        $('#recordFP').text((totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCo2E");
+        container.html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCO2e");
+        $('#deleteDataFP').text("共減去 " + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCO2e");
+        $('#recordFP').text((totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCO2e");
     }else { // 金
         $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%)');
         // 換科學記號 不然上面數字會撞EMO
@@ -41,13 +41,13 @@ function showTotalFP(){
             let exponent = Math.floor(Math.log10(Math.abs((totalFP / 1000.0)))); // Get exponent
             let mantissa = (totalFP / 1000.0) / Math.pow(10, exponent); // Get mantissa
             let notation = mantissa.toFixed(2) + "E" + exponent; // Format in scientific notation with 2 decimal places
-            container.html("總減碳量：<strong>" + notation + "</strong> kgCo2E");
-            $('#deleteDataFP').text("共減去 " + notation + " kgCo2E");
-            $('#recordFP').text(notation + " kgCo2E");
+            container.html("總減碳量：<strong>" + notation + "</strong> kgCO2e");
+            $('#deleteDataFP').text("共減去 " + notation + " kgCO2e");
+            $('#recordFP').text(notation + " kgCO2e");
         } else {
-            container.html("總減碳量：<strong>" + (totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
-            $('#deleteDataFP').text("共減去 " + (totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCo2E");
-            $('#recordFP').text((totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCo2E");
+            container.html("總減碳量：<strong>" + (totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCO2e");
+            $('#deleteDataFP').text("共減去 " + (totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCO2e");
+            $('#recordFP').text((totalFP / 1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " kgCO2e");
         }
     }
 }
@@ -68,16 +68,16 @@ function showTotalFP(){
 //         // 設定量級 0-1,000 灰 1,000-10,000 銅 10,000-100,000銀 100,000上 金
 //         if(totalFP < 1000){ // 灰
 //             $('#totalFootprint').css('background', 'darkgray');
-//             $(this).html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
+//             $(this).html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCO2e");
 //         }else if(totalFP < 10000){ // 銅
 //             $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(184, 115, 51) 0%, rgb(218, 165, 32) 100%)');
-//             $(this).html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCo2E");
+//             $(this).html("總減碳量：<strong>" + totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> gCO2e");
 //         }else if(totalFP < 100000){ // 銀
 //             $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%)');
-//             $(this).html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
+//             $(this).html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCO2e");
 //         }else{ // 金
 //             $('#totalFootprint').css('background', 'linear-gradient(to bottom right, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%)');
-//             $(this).html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCo2E");
+//             $(this).html("總減碳量：<strong>" + (totalFP/1000.0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "</strong> kgCO2e");
 //         }
 //     }
 // });
@@ -206,7 +206,7 @@ function showNewChart(nowRecords, type) {
             left: 'center'
         },
         tooltip: {
-            formatter: '{b}: {c} gCo2E',
+            formatter: '{b}: {c} gCO2e',
             trigger: 'item'
         },
         series: [
@@ -359,7 +359,7 @@ function showRecord() {
                     'font-weight': 'bold'
                 });
             let co2 = $("<span>")
-                .text('gCo2E')
+                .text('gCO2e')
                 .css({
                     'color': '#28a745',
                     'font-size': '10px',
@@ -564,7 +564,7 @@ function showNewRecord(sortedRecords, selectedCategory) {
                         'font-weight': 'bold'
                     });
                 let co2 = $("<span>")
-                    .text('gCo2E')
+                    .text('gCO2e')
                     .css({
                         'color': '#28a745',
                         'font-size': '10px',
@@ -667,7 +667,7 @@ function showNewRecord(sortedRecords, selectedCategory) {
                         'font-weight': 'bold'
                     });
                 let co2 = $("<span>")
-                    .text('gCo2E')
+                    .text('gCO2e')
                     .css({
                         'color': '#28a745',
                         'font-size': '10px',
