@@ -169,6 +169,8 @@ function showNewChart(nowRecords, type) {
             if(value.footprint != 0 && value.footprint != undefined) {
                 if(typeof value.footprint !== "number"){
                     value.footprint = parseFloat(value.footprint).toFixed(2);
+                } else {
+                    value.footprint = value.footprint.toFixed(2);
                 }
                 seriesData.push({
                     name: key,
@@ -184,6 +186,8 @@ function showNewChart(nowRecords, type) {
             if(subcategory.totalFP != 0){
                 if(typeof subcategory.totalFP !== "number"){
                     subcategory.totalFP = parseFloat(subcategory.totalFP).toFixed(2);
+                } else {
+                    value.footprint = value.footprint.toFixed(2);
                 }
                 seriesData.push({
                     name: subcategory.type,
