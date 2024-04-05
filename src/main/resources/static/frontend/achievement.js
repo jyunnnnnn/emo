@@ -151,7 +151,17 @@ function achievementClick(achievementId){
         let achievementText2 = $("<div>")
             .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
             .attr('class', 'achievementText');
-        textDiv.append(userName, achievementText1, achievementText2);
+        let emoIcon = $("<div>")
+            .text("EMO")
+            .attr('class', 'achievementText')
+            .css({
+                'font-weight': 'bold',
+                'color': 'gray',
+                'margin-top': '10px',
+                'font-size': '10px',
+                'top': '20px'
+            })
+        textDiv.append(userName, achievementText1, achievementText2, emoIcon);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
@@ -205,7 +215,17 @@ function achievementClick(achievementId){
         let achievementText2 = $("<div>")
             .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
             .attr('class', 'achievementText');
-        textDiv.append(userName, achievementText1, achievementText2);
+        let emoIcon = $("<div>")
+            .text("EMO")
+            .attr('class', 'achievementText')
+            .css({
+                'font-weight': 'bold',
+                'color': 'gray',
+                'margin-top': '10px',
+                'font-size': '10px',
+                'top': '20px'
+            })
+        textDiv.append(userName, achievementText1, achievementText2, emoIcon);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
