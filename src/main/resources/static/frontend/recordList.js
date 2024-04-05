@@ -554,7 +554,7 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 let typeDiv = $("<div>")
                     .text(thisRecords[i].type)
                     .css({
-                        'font-size': '20px',
+                        'font-size': '18px',
                         'margin-left' : '5px'
                     });
                 let footprintDiv = $("<div>")
