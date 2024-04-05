@@ -142,11 +142,16 @@ function achievementClick(achievementId){
             });
 
         time = (target[0].current.toFixed(2)*100/100).toString()
+        let userName = $("<div>")
+            .text(User.nickname)
+            .attr('class', 'achievementText');
         let achievementText1 = $("<div>")
-            .text(User.nickname + "做得很好！繼續加油");
+            .text("做得很好！繼續加油")
+            .attr('class', 'achievementText');
         let achievementText2 = $("<div>")
-            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-        textDiv.append(achievementText1, achievementText2);
+            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+            .attr('class', 'achievementText');
+        textDiv.append(userName, achievementText1, achievementText2);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
@@ -191,11 +196,16 @@ function achievementClick(achievementId){
                 'justify-content': 'center'
             });
         let time = (target[0].current.toFixed(2)*100/100).toString();
+        let userName = $("<div>")
+            .text(User.nickname)
+            .attr('class', 'achievementText');
         let achievementText1 = $("<div>")
-            .text(User.nickname + "還差一點！繼續加油");
+            .text("還差一點！繼續加油")
+            .attr('class', 'achievementText');
         let achievementText2 = $("<div>")
-            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-        textDiv.append(achievementText1, achievementText2);
+            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+            .attr('class', 'achievementText');
+        textDiv.append(userName, achievementText1, achievementText2);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);

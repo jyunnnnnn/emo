@@ -227,6 +227,10 @@
     box-shadow: inset 3px 3px 5px #c5c5c5,
     inset -3px -3px 5px #ffffff;
 }
+.achievementText{
+    text-shadow: 1px 1px 1px #fff, -1px -1px 1px #acaaaa;
+    color: #4b494a;
+}
 
 .progress{
     height: 5px;
