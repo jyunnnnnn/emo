@@ -56,6 +56,10 @@ button:focus {
     position: fixed;
     transform: scale(2);
 }
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: unset !important;
+}
 
 /* 按鈕區 */
 #recordBtns{
