@@ -84,8 +84,8 @@ function updateMarkerContent(newContent) {
     newContent.footprint = parseFloat(newContent.footprint, 10).toFixed(3) *1000/1000;
     let modifyContent=`
          <div>
-              <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'cwTeXYen', 'Mandali', sans-serif; font-weight: bold;">${newContent.type}</h6>
-              <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px;padding-top: 14px;  padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'cwTeXYen', 'Mandali', sans-serif;">
+              <h6 style="padding:3px; margin:3px; font-size: 30px; font-family: 'HunInn', 'Mandali', sans-serif; font-weight: bold;">${newContent.type}</h6>
+              <div style="display:inline-flex; align-items: center; height:40px; color: #ffffff; background-color: #166a29; border-radius: 20px;padding-top: 14px;  padding-left: 10px; padding-right: 10px; margin:3px; font-family: 'HunInn', 'Mandali', sans-serif;">
                 <p style="font-size: 16px;">減少的碳足跡為：</p>
                 <p style="font-size: 20px; font-weight: bold; padding-right: 5px; padding-bottom: 3px;">${newContent.footprint}</p>
                 <p style="font-size: 10px;">g CO2e</p>
