@@ -72,6 +72,20 @@ public class Achievement {
         this.achievementClass = achievementClass;
     }
 
+    public Achievement(Achievement achievement) {
+        this.achievementId = achievement.getAchievementId();
+        this.achievementName = achievement.getAchievementName();
+        this.achievementDescription = achievement.getAchievementDescription();
+        this.unLockedSvg = achievement.getUnLockedSvg();
+        this.lockedSvg = achievement.getLockedSvg();
+        this.target = achievement.getTarget();
+        this.current = achievement.getCurrent();
+        this.achieve = achievement.getAchieve();
+        this.type = achievement.getType();
+        this.achievementClass = achievement.getAchievementClass();
+
+    }
+
     public String getAchievementId() {
         return achievementId;
     }
@@ -128,7 +142,7 @@ public class Achievement {
         this.current = current;
     }
 
-    public boolean isAchieve() {
+    public boolean getAchieve() {
         return achieve;
     }
 

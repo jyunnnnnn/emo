@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.UserAchievementEntity;
 import com.example.demo.entity.UserInfo;
+import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,14 +35,31 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserRecordCounterRepository userRecordCounterRepository;
+
+    @Autowired
     private AuthenticationManager authenticationManagerBean;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRecordCounterRepository userRecordCounterRepository) {
         this.userService = userService;
+        this.userRecordCounterRepository = userRecordCounterRepository;
     }
 
     public UserController() {
+    }
+
+
+    //新的使用者須創立一個成就紀錄物件到資料庫內
+
+    private void createNewUserAchievementCollection(String userId) {
+
+        UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
+        userAchievementEntity.setUserId(userId);
+        userAchievementEntity.setAchieveTime(new HashMap<>());
+        userAchievementEntity.setClassRecordCounter(new HashMap<>());
+        userAchievementEntity.setClassRecordCarbonCounter(new HashMap<>());
+        this.userRecordCounterRepository.save(userAchievementEntity);
     }
 
     //註冊新帳號
@@ -51,6 +70,8 @@ public class UserController {
         int result = userService.createUser(request);
 
         if (result == UserService.OK) {
+            //創建新的使用者成就物件
+            createNewUserAchievementCollection(request.getUserId());
             return ResponseEntity.ok(Collections.singletonMap("message", "帳號註冊成功"));
         }
 
@@ -185,7 +206,7 @@ public class UserController {
 
         System.out.println(userDataJson);
 
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(result.getUsername(),"dummy");
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(result.getUsername(), "dummy");
 
         Authentication auth = authenticationManagerBean.authenticate(authReq);
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -201,6 +222,7 @@ public class UserController {
         response.put("username", result.getUsername());
         return ResponseEntity.ok(response);
     }
+
     @PutMapping("/updatePhoto")
     public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") String photo) throws IOException {
         int result = this.userService.updatePhoto(username, photo);

@@ -45,6 +45,8 @@ function uploadRecordToBackend(record) {
         data: JSON.stringify(record),
         success: function(response) {
             loadAchievementObj(User.userId);
+            //回傳使用者成就物件
+            console.log(response);
             //console.log(response); // 成功上傳時的處理邏輯
         },
         error: function(xhr, status, error) {
