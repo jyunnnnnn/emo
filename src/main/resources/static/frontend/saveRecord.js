@@ -48,7 +48,7 @@ function uploadRecordToBackend(record) {
             //回傳使用者成就物件
             console.log(response)
             let target = response.filter(achievement => achievement.firstAccomplish === true);
-            firstTimeAchieve(target);
+            if(target.length > 0) firstTimeAchieve(target);
             //console.log(response); // 成功上傳時的處理邏輯
         },
         error: function(xhr, status, error) {
