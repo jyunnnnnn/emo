@@ -45,7 +45,9 @@
 }
 
 
-.gm-ui-hover-effect{
+.gm-style .gm-ui-hover-effect{
+    top: 5px !important;
+    right: 5px !important;
     position: fixed;
     transform: scale(2);
 }
