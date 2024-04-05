@@ -332,6 +332,7 @@
     }
     .achievementContainer{
         grid-template-columns: repeat(3, 130px);
+        grid-template-rows: repeat(3, 130px);
         max-height: 80vh;
         width: 110%;
         left: -8%;
