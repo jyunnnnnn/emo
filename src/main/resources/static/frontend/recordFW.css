@@ -539,6 +539,8 @@ svg:hover .detail {
     #startRecording{
         transform: scale(0.9);
         padding:5px;
+        font-size: 17px;
+        font-weight: normal;
     }
 
     #settingButton{
