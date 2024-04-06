@@ -36,6 +36,8 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 import java.io.IOException;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -58,8 +60,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
+                .headers((headers) ->
+                        headers
+                                .frameOptions((frameOptions) -> frameOptions.disable())
+                )
                 .exceptionHandling(handler ->
                         //權限不足導向
                         handler.accessDeniedHandler(new AccessDeniedHandler() {
