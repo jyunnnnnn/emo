@@ -1,15 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.config.SecurityConfig;
+import com.example.demo.entity.Authority;
+import com.example.demo.entity.UserInfo;
+import com.example.demo.repository.RecordRepository;
+import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.desktop.SystemSleepEvent;
+import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,8 @@ public class UserService {
 
     public static final int FAIL = 8;
     private UserRepository repository;
+    private UserRecordCounterRepository userRecordCounterRepository;
+    private RecordRepository recordRepository;
 
     private Map<String, Boolean> passwordChangable;//檢查該帳號是否可以更改密碼 (之後可以改成用重設密碼連結)
 
@@ -38,40 +42,44 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, UserRecordCounterRepository userRecordCounterRepository, RecordRepository recordRepository) {
         this.repository = repository;
         passwordChangable = new HashMap<>();
+        this.userRecordCounterRepository = userRecordCounterRepository;
+        this.recordRepository = recordRepository;
     }
 
 
     //建立新使用者帳號
-    public int createUser(User newUser) throws Exception {
+    public int createUser(UserInfo newUserInfo) throws Exception {
         //檢查帳號是否存在
-        if (isAccountExists(newUser.getUsername()) == UserService.USER_FOUND) {
+        if (isAccountExists(newUserInfo.getUsername()) == UserService.USER_FOUND) {
             return ACCOUNT_ALREADY_EXIST;
         }
-        newUser.setPassword(new AESEncryption().encrypt(newUser.getPassword()));
-        this.repository.save(newUser);
+        newUserInfo.setPassword(SecurityConfig.passwordEncoder().encode(newUserInfo.getPassword()));
+        //設定新帳戶為一般使用者
+        newUserInfo.setAuthority(Authority.NORMAL.name());
+        this.repository.save(newUserInfo);
         return OK;
     }
 
-    public User findUserDataFromUsername(String username) {
+    public UserInfo findUserDataFromUsername(String username) {
         return this.repository.findByUsername(username);
     }
 
     //登入帳號
     public int login(String username, String password) {
 
-        User user = this.repository.findByUsername(username);
-        if (user == null) return FAIL;
-        if (user.getPassword().equals(password)) return OK;
+        UserInfo userInfo = this.repository.findByUsername(username);
+        if (userInfo == null) return FAIL;
+        if (userInfo.getPassword().equals(password)) return OK;
         return FAIL;
     }
 
     //帳號是否存在
     public int isAccountExists(String username) {
         try {
-            User result = this.repository.findByUsername(username);
+            UserInfo result = this.repository.findByUsername(username);
             if (result != null) return USER_FOUND;
             return USER_NOT_FOUND;
         } catch (Exception err) {
@@ -82,44 +90,46 @@ public class UserService {
     }
 
     //返回特定信箱的帳號資訊
-    public User findSpecificAccountByEmail(String email) {
+    public UserInfo findSpecificAccountByEmail(String email) {
         return this.repository.findByEmail(email);
     }
 
     //電子郵件是否存在
     public int isEmailExists(String email) {
-        User result = this.repository.findByEmail(email);
+        UserInfo result = this.repository.findByEmail(email);
         if (result != null) return EXIST;
         return NOT_EXIST;
     }
 
 
     //抓取特定帳號資料
-    public User fetchOneUserByUsername(String username) {
+    public UserInfo fetchOneUserByUsername(String username) {
         return this.repository.findByUsername(username);
     }
 
     //修改密碼
     public int updatePassword(String email, String newPassword) {
-        User result = this.repository.findByEmail(email);
+        UserInfo result = this.repository.findByEmail(email);
         if (result != null) {
-            User updatedUser = new User(result.getUsername(), newPassword, result.getNickname(), email, result.getUserId());
-            this.repository.save(updatedUser);
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), newPassword, result.getNickname(), email, result.getUserId(), result.getAuthority());
+            this.repository.save(updatedUserInfo);
             return OK;
         }
         return FAIL;
 
     }
 
-    public User deleteAccountByUserId(String UserId) {
+    public UserInfo deleteAccountByUserId(String UserId) {
+        this.userRecordCounterRepository.deleteById(UserId);
+        this.recordRepository.deleteByUserId(UserId);
         return this.repository.deleteByUserId(UserId);
     }
 
     public int updatePasswordByUsername(String username, String newPassword) {
         try {
-            User user = fetchOneUserByUsername(username);
-            user.setPassword(newPassword);
-            this.repository.save(user);
+            UserInfo userInfo = fetchOneUserByUsername(username);
+            userInfo.setPassword(newPassword);
+            this.repository.save(userInfo);
             return OK;
         } catch (Exception err) {
             System.err.println("修改" + username + "密碼過程出現問題");
@@ -155,16 +165,16 @@ public class UserService {
 
     public int updateNicknameByUsername(String username, String nickname) {
         //檢查帳號是否存在
-        User result = this.repository.findByUsername(username);
+        UserInfo result = this.repository.findByUsername(username);
         if (result != null) {
-            User updatedUser = new User(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId());
-            this.repository.save(updatedUser);
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), nickname, result.getEmail(), result.getUserId(), result.getAuthority(), result.getPhoto());
+            this.repository.save(updatedUserInfo);
             return OK;
         }
         return FAIL;
     }
 
-    public User googleLogin(String googleData) throws Exception {
+    public UserInfo googleLogin(String googleData) throws Exception {
         /*
             帳號:@ + 電子郵件去除@之後的字串
             密碼:jsonNode.get('sub') 以Google帳號特殊ID為密碼
@@ -182,27 +192,34 @@ public class UserService {
         String username = String.valueOf(jsonNode.get("email"));
         username = "@Google-" + username.substring(1, username.indexOf('@'));
 
-        String password = String.valueOf(jsonNode.get("sub"));
-        password = new AESEncryption().encrypt(password.substring(1, password.length() - 1));
+
+        String password = SecurityConfig.passwordEncoder().encode("dummy");
+
         String nickname = String.valueOf(jsonNode.get("name"));
         nickname = nickname.substring(1, nickname.length() - 1);
         String email = String.valueOf(jsonNode.get("email"));
         email = email.substring(1, email.length() - 1);
         String userId = String.valueOf(new Date().getTime());
 
-
-        User googleUser = new User(username, password, nickname, email, userId);
+        UserInfo googleUserInfo = new UserInfo(username, password, nickname, email, userId, Authority.NORMAL.name());
         //----------------提取使用者資訊----------------
 
-        //建立使用者 or 使用者登入
-        int result = createUser(googleUser);
+        if (repository.findByUsername(username) == null) {
+            repository.save(googleUserInfo);
+            return googleUserInfo;
+        } else
+            return repository.findByUsername(username);
 
-        if (result == OK) {//該google帳戶不存在，註冊帳戶
-            return googleUser;
-        } else if (result == ACCOUNT_ALREADY_EXIST) {//該帳戶已存在
-            return fetchOneUserByUsername(username);
+
+    }
+
+    public int updatePhoto(String username, String photo) {
+        UserInfo result = this.repository.findByUsername(username);
+        if (result != null) {
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), result.getNickname(), result.getEmail(), result.getUserId(), result.getAuthority(), photo);
+            this.repository.save(updatedUserInfo);
+            return OK;
         }
-
-        return null;
+        return FAIL;
     }
 }

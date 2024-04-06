@@ -2,25 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=1">
-  <title>EMO HomePage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, userInfo-scalable=1">
+  <title>EMO 首頁</title>
+  <!--設定favicon-->
+  <link rel="icon" href="/frontend/img/生活用品.svg" type="image/svg+xml">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!--    import js and css-->
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
 
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <!-- 載入字型 -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
   <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+  <!-- 動畫資源庫 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- <link rel="shortcut icon" href="images/favicon.ico"> -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
   <style>
+  @import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
         body {
-            font-family: 'Crimson Pro', serif;
+            font-family: 'cwTeXYen', 'Mandali', sans-serif;
             background-image: url(frontend/img/bg4.png);
             background-size: cover;
             /* background-repeat: no-repeat; */
@@ -43,7 +51,7 @@
             border-radius: 40px;
         }
         .nav-item{
-            padding: 15px;
+            padding: 20px;
 
         }
         .nav-link{
@@ -91,6 +99,12 @@
             -o-transition: 0.3s;
             transition: 0.3s;
         }
+        #contact{
+            background-color: #0f491b;
+        }
+        .copyright{
+            color: #a09b9b;
+        }
         @media (prefers-reduced-motion: reduce) {
         .form-control {
             -webkit-transition: none;
@@ -122,7 +136,7 @@
         .emo{   /*標題的字型顏色*/
             /* text-align: center; */
             font-family: 'Black Ops One', serif;
-            font-size:500%;
+            font-size:450%;
             color: rgb(253, 253, 253);
             padding-left: 5%;
             text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000, 1px -1px 0 #000000, 1px 1px 0 black;
@@ -134,7 +148,6 @@
             background-color: rgba(255, 255, 255, 0.7); /* Use rgba to set the background color with alpha (transparency) */
             border-radius: 20px; /* Adjust the border-radius to control the roundness of the box */
             padding: 20px; /* Adjust padding as needed */
-            margin: 20px;
             text-align: center; /* Center content */
         }
         .row{
@@ -149,9 +162,69 @@
             text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
 
         }
+        .caption{
+            font-size: 13px;
+            color: #000000;
+            text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
+        }
         .link:hover {
             text-decoration: underline;
             text-shadow: none;
+        }
+        #navbar{
+            transition: background-color 0.3s ease;
+        }
+        .youtube{
+            width: 560px;
+            height: 315px;
+        }
+        /* 將切換按鈕的背景顏色設置為白色 */
+        .navbar-toggler {
+            background-color: #fff;
+            margin-right: 15px;
+            transform: scale(0.8);
+         }
+
+            /* 將切換按鈕的圖標顏色設置為黑色（或其他適合的顏色） */
+        .navbar-toggler-icon {
+            color: #fff;
+         }
+         .faq {
+            /* border: 1px solid #ccc; */
+            margin-bottom: 10px;
+        }
+
+        .question {
+            /* background-color: #f0f0f0; */
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+            font-weight: bolder; /* 更加粗的字体 */
+        }
+
+        .arrow {
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .arrow.down {
+            transform: translateY(-50%) rotate(225deg);
+        }
+
+        .answer {
+            display: none;
+            padding: 10px;
+            background: rgba(143, 188, 143, 0.614);
+            border-radius: 20px;
+        }
+        .top{
+          font-size:140px;
         }
 
         /* rwd */
@@ -162,9 +235,25 @@
                 padding-left: 30px;
             }
             .emo{
-                font-size: 390%;
+                font-size: 300%;
+                width: 65%;
             }
-
+            .youtube{
+                width: 350px;
+                height: 200px;
+            }
+            .navbar{
+                text-align: center;
+            }
+            /* .carousel-item {
+                display: inline- !important;
+            } */
+            .transparent-box{
+              margin: 20px;
+            }
+            .top{
+              font-size:100px;
+            }
         }
 
 </style>
@@ -173,12 +262,11 @@
 </head>
 <body>
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand emo" href="#">EMO app</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light" id="navbar">
+    <a class="navbar-brand emo " href="#">EMO app</a>
+    <button onclick="toggleNavbarColor()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <!-- 導覽列先放著之後再加內容 demo沒有要用到也可先刪 -->
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item active">
@@ -191,33 +279,40 @@
           <a class="nav-link" href="#resources">Resources</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="#qa"> Q & A</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#contact">Contact Us</a>
         </li>
+
         <!-- <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li> -->
       </ul>
-      <form class="form">
+      <!-- <form class="form d-none d-lg-flex">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn search-btn my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      </form> -->
     </div>
   </nav>
 </header>
 <section id = "home">
   <!-- <h3 style="color:red;font-size:147px;">&nbsp</h3> -->
-  <h3 style="color:red;font-size:30px;"class="d-none d-lg-block">&nbsp</h3>
-  <div class="container">
-    <div class = "row">
-      <div class="col-lg-5 col-11 text-white introduction text-center">
+  <h3 class="d-block top">&nbsp</h3>
+  <div class=" animate__animated animate__slideInDown container">
+    <div class = "row ">
+      <div class="col-lg-5 col-11 text-white introduction text-center ">
         <p>
-          &emsp; &emsp;這是一款可以紀錄日常活動中與環保相關的活動，並記錄您省下的碳足跡的行動網頁應用程式，
-          旨在協助您追踪並降低個人的碳足跡。透過簡單的使用介面與直覺的地圖設計，
-          您可以隨時紀錄環保活動，例如餐飲、交通等等並隨時查看、修改您的紀錄。
+
+          &emsp; &emsp;這是一款可以讓使用者紀錄日常生活環保行為所減少的碳排放的行動網頁應用程式。
+          所有紀錄可直接視覺化、數據化呈現在使用者面前，結合 Google Map，並且以簡單且直覺的紀錄方式、
+          創新的減碳 紀錄呈現，讓使用者能更直接看到自己的紀錄行為，淘汰傳統列表式的紀錄方式，
+          使用地圖呈現更能帶出虛實一體的感覺，再綜合社交、成就功能，以此來增加使用者在紀錄上的實質回饋、成就感，
+          以提高使用者紀錄、執行環保行為之意願。
           <br><br>
-          &emsp;&emsp; 不僅僅是一個數據紀錄的工具，希望透過我們的行動網頁程式可以啟發人們改變生活習慣。
-          透過了解自身的碳足跡，意識到個人行為對環境的影響，並進一步致力於減少碳排放的行動，
-          共同為地球盡一份心力，建立更綠色、可持續的生活方式。
+          &emsp;&emsp; 透過本平台，使用者可以鼓勵更多的人參與環保行為，
+          並一起為減少碳排放做出努力，達到提高使用意願、長期實踐、推廣環保意識這 3
+          個本平台致力實現的核心目標，共同為地球盡一份心力，建立更綠色、可持續的生活方式。
           <br><br>
         </p>
         <button class="btn loginpage-btn my-2 my-sm-0 w-100" type="submit" id="goto-login">立即註冊/登入
@@ -227,34 +322,103 @@
         <br><br>
       </div>
       <div class="col-lg-1 col-0"></div>
-      <!-- <div class="col-xl-2 col-6 introduction "> -->
-
-      <div class="col-lg-2 col-6 introduction text-white text-center">
-        <!--<div class="col-xl-6 text-center text-white">-->
-          <p>使用者介面範例：</p>
-        <!-- </div> -->
-        <img class="ui" src="frontend/img/ui1.png" alt="UI Image 1">
+      <div class="col-lg-6 col-12 introduction text-white text-center">
+        <iframe class="youtube" src="https://www.youtube.com/embed/_sGGO9y66-Y?si=hgsq9TW6q2CFoQnI&amp;start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
-      <div class="col-lg-2 col-6 introduction text-white">
-        <p>&emsp;</p>
-        <img class="ui " src="frontend/img/ui2.png" alt="UI Image 2">
-
-      </div>
-      <div class="col-lg-2 col-6 introduction text-center">
-        <p>&emsp;</p>
-        <img class="ui" src="frontend/img/ui3.png" alt="UI Image 3">
-      </div>
-      <!-- <div class="col-xl-6"></div>
-      <div class="col-xl-6 text-center text-white">
-          <p>＊使用者介面範例＊</p>
-      </div> -->
-      <!-- </div> -->
     </div>
   </div>
 </section>
+<section  id="features">
+  <h3 style="color:red;font-size:100px;"class="d-none d-lg-block">&nbsp;</h3>
+  <div id="carouselExampleDark" class="carousel carousel-light slide" data-bs-ride="carousel">
+    <!-- 指示燈 -->
+    <!-- <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div> -->
+    <div class="carousel-inner">
+      <div class="showSlider active " data-bs-interval="10000">
+        <div class="container">
+          <br>
+          <h3 class="text-white">&emsp;&emsp;減碳記錄功能</h3>
+          <div class="row">
+            <div class="col-lg-3 col-8 text-black text-center animate__animated animate__bounceIn caption" >
+              <img class="ui" src="frontend/img/record1.png" alt="UI Image 1">
+              <p> &lt;一般活動紀錄&gt; </p>
+            </div>
+            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
+              <h3 style="font-size:70px;"class="d-none d-lg-block">&nbsp;</h3>
+              <p>&emsp;&emsp;使用者能自行選擇紀錄項目，如環保杯、環保餐具、環保袋的使用等等，
+                本平台會自動計算出該活動相對於非環保行為(例如：環保杯相對於塑膠杯)的所減少的碳足跡量。
+
+              </p>
+            </div>
+            <div class="col-lg-3 col-8  text-black text-center animate__animated animate__bounceIn caption">
+              <img class="ui" src="frontend/img/record2.png" alt="UI Image 1">
+              <p>&lt;路線描繪&gt;</p>
+            </div>
+            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
+              <h3 style="font-size:70px;"class="d-none d-lg-block">&nbsp;</h3>
+              <p>&emsp;&emsp;交通足跡的紀錄上，使用者只需簡單的點擊路線紀錄按鈕，
+                本系統就會開始自動偵測使用者位置並在地圖上顯示出經過的路線，
+                最後再選擇使用的交通工具（例如：公車、捷運、火車、高鐵等大眾運輸）
+                系統會自動計算相較於開車時所減少的碳排放。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=" showSlider"  data-bs-interval="10000">
+        <div class="container">
+          <br>
+          <h3 class="text-white">&emsp;&emsp;記錄呈現</h3>
+          <div class="row">
+            <div class="col-lg-3 col-8  text-black text-center animate__animated animate__bounceIn caption">
+              <img class="ui" src="frontend/img/record3.png" alt="UI Image 1">
+              <p>&lt;歷史紀錄地標&gt;</p>
+            </div>
+            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
+              <h3 style="font-size:60px;"class="d-none d-lg-block">&nbsp;</h3>
+              <p>&emsp;&emsp;使用者的碳足跡能夠在地圖上視覺化、數據化地顯示，不僅可以看到自己的碳排放紀錄，
+                還可以通過地圖圖標和圖表來直觀地回顧自己的減碳行為，以及與日常生活中非環保行為的碳排放比較
+                ，並搭配Google Map來找到當下的減碳紀錄。
+                也可藉由點擊這些圖標直接刪除或修改過去的紀錄。
+
+                <!-- <img src="../static/frontend/img/bg4.jpg" height="5560" width="7945"/></p> -->
+            </div>
+            <div class="col-lg-3 col-8  text-black text-center animate__animated animate__bounceIn caption">
+              <img class="ui" src="frontend/img/record4.png" alt="UI Image 1">
+              <p>&lt;歷史紀錄圖表&gt;</p>
+            </div>
+            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
+              <h3 style="font-size:60px;"class="d-none d-lg-block">&nbsp;</h3>
+              <p>&emsp;&emsp; 本平台也提供圖表化的數據比對呈現，讓使用者了解當前環保行為相較於不環保的行為所
+                減少的碳足跡量，藉此更清楚地了解他們的日常行為對地球的影響，
+                讓使用者更加了解自己的行為帶來的效益並且進一步去加強、調整自己的行為，來達到更好的減碳效果。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 未來增加的介紹 -->
+      <!-- <div class="carousel-item" data-bs-interval="3000">
+
+      </div> -->
+    </div>
+    <!-- 切換按鈕 -->
+    <button class="carousel-control-prev d-none d-lg-block" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" style="margin-left: -70px;" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next d-none d-lg-block" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+      <span class="carousel-control-next-icon" style="margin-right: -70px;" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+
 <section  id="resources">
   <h3 style="color:red;font-size:100px;"class="d-none d-lg-block">&nbsp</h3>
-  <div class="container">
+  <div class="container ">
     <div class="row">
       <div class="col-lg-12 text-center text-white mb-2">
         <h2>碳足跡計算相關資料來源</h2>
@@ -287,7 +451,6 @@
           <a class="link" href="https://data.moenv.gov.tw/dataset/detail/CFP_P_02" target="_blank">環境部碳足跡排放係數</a>
           <br>
           <a class="link" href="https://tccdaka.com/tw/project/lowCarbonTravel/report/減碳計算機.pdf" target="_blank">減碳計算機</a>)
-          <!-- <br><br> -->
         </p>
       </div>
       <div class="col-lg-1 col-12"></div> <!-- Empty column -->
@@ -303,23 +466,172 @@
         <p>交通類碳排放以每公里的碳排放量KgCO2e為單位<br>
           （係數參考來源：
           <a class="link" href="https://edesg.com/?p=5771" target="_blank">台灣大眾交通碳排放</a> ）
-          <!-- <br><br> -->
+          <br><br>
         </p>
       </div>
     </div>
   </div>
 </section>
+<section  id="qa">
+  <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
+  <h3 style="color:red;font-size:50px;"class="d-none d-lg-block">&nbsp</h3>
+  <div class="container ">
+    <div class="row">
+      <div class="col-lg-5 text-center text-white mb-2">
+        <br><br>
+        <h1>常見Q & A</h1>
+      </div>
+      <div class="col-lg-7 transparent-box">
+        <!-- <h2>
+          生活用品類</h2> -->
+        <div class="faq">
+          <div class="question">
+            本平台和其他環保app的差別？
+            <span class="arrow"></span>
+          </div>
+          <div class="answer">
+            目前市面上許多環保碳足跡app都是以綁定悠遊卡或信用卡的方式直接進行計算，
+            本平臺則支援實際計算路線更為彈性。此外有別於其他app多為直接計算碳排放總量，
+            本平台提供的數據是減少的碳排放量，更為直觀。
+          </div>
+        </div>
+        <div class="faq">
+          <div class="question">
+            平台在紀錄路線時會取用使用者的位置與足跡是否有隱私疑慮？
+            <span class="arrow"></span>
+          </div>
+          <div class="answer">
+            使用者所有的數據資料與足跡本平台只會用於優化平台之用途並且會嚴格保密，決不外洩，請使用者放心使用。
+          </div>
+        </div>
+        <!-- <p><h4><strong>Ｑ：本平台和其他環保app的差別？<br><br></strong></h4>
+        目前市面上許多環保碳足跡app都是以綁定悠遊卡或信用卡的方式直接進行計算，
+        本平臺則支援實際計算路線更為彈性。此外有別於其他app多為直接計算碳排放總量，
+        本平台提供的數據是減少的碳排放量，更為直觀。
+        </p> -->
+      </div>
+      <!-- <div class="col-lg-1 col-12"></div> Empty column -->
+      <!-- <div class="col-lg-5 col-11 transparent-box">
+        <p><h4><strong>Ｑ：平台在紀錄路線時會取用使用者的位置與足跡，此部分是否有隱私疑慮？<br><br></strong></h4>
+        使用者所有的數據資料與足跡本平台只會用於優化平台之用途並且會嚴格保密，決不外洩，請使用者放心使用。
+        </p>
+      </div> -->
+    </div>
+  </div>
+  <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
+</section>
+<section  id="contact">
+  <h3 style="font-size:80px;"class="d-block">&nbsp</h3> <!-- 留白 -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center text-white mb-2">
+        <h2>聯絡我們</h2>
+      </div>
+      <footer class="footer">
+        <div class="container">
+          <div class="row">
+            <div class="clean-footer-content text-center text-white">
+              <p> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope-fill " viewBox="0 0 16 16">
+                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
+              </svg>
+                &nbsp;emoapp@gmail.com</p>
+
+              <p class="copyright">Copyright &copy; 2024 EMO App Team All rights reserved.
+                <!-- <a target="_blank" href="http://guantaow.taobao.com/">ntou</a><a target="_blank" href="http://www.moobnn.com">cse</a></p> -->
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <h3 style="font-size:80px;"class="d-block">&nbsp</h3>
+</section>
 <script>
-    $(document).ready(function () {
-    // 切換到登入頁面
-    $('#goto-login').click(function (e) {
-        e.preventDefault();
-        window.location.href = 'login';
+     $(document).ready(function () {
+      // 切換到登入頁面
+      $('#goto-login').click(function (e) {
+          e.preventDefault();
+          window.location.href = 'login';
+      });
     });
-});
+    document.addEventListener("DOMContentLoaded", function () {
+        // 監聽滾動事件
+        window.addEventListener("scroll", function () {
+            // 取得滾動的垂直位置
+            var scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
+            // 設定滾動位置的閾值
+            var scrollThreshold = 20;
+
+            // 判斷是否超過閾值，超過則增加底色，否則移除底色
+            if (scrollPosition > scrollThreshold) {
+                document.getElementById("navbar").style.backgroundColor = "#01310b";
+            } else {
+                document.getElementById("navbar").style.backgroundColor = "transparent";
+            }
+        });
+    });
+
+    //navbar背景顏色
+    // var checkNavbar = true;
+    function toggleNavbarColor() {
+        // checkNavbar = ! checkNavbar;
+        // document.getElementById("navbar").style.backgroundColor =  checkNavbar ? "transparent": "#01310b";
+        document.getElementById("navbar").style.backgroundColor = "#01310b";
+    }
+
+    // 手機模式不要用slider
+    document.addEventListener('DOMContentLoaded', function () {
+        function checkScreenWidth() {
+            var screenWidth = window.innerWidth || document.documentElement.clientWidth;
+            var elements = document.querySelectorAll(".showSlider");
+
+            elements.forEach(function(element) {
+                if (screenWidth > 700) {
+                    element.classList.add("carousel-item");
+                } else {
+                    element.classList.remove("carousel-item");
+                }
+            });
+            // console.log(screenWidth);
+        }
+
+        // 初次加載時檢查一次
+        checkScreenWidth();
+
+        // 窗口大小變化時檢查
+        window.addEventListener('resize', checkScreenWidth);
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const questions = document.querySelectorAll('.question');
+
+        questions.forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const arrow = this.querySelector('.arrow');
+
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    arrow.classList.remove('down');
+                } else {
+                    answer.style.display = 'block';
+                    arrow.classList.add('down');
+                }
+            });
+        });
+    });
+
+    $('.navbar-nav>li>a').on('click', function(){
+      $('.navbar-collapse').collapse('hide');
+    });
+
+
 </script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

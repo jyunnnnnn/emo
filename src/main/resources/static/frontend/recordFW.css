@@ -1,41 +1,64 @@
-#settingButton{
-    position: fixed;
-    top: 6%;
-    right: 9%;
-    transform:scale(1.5);
+.titleContainer{
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    top: 4%;
+    display: flex;
 }
-#settingButton:hover{
-    color:  rgb(103, 103, 103);
+#settingButton{
+    color: rgb(255, 255, 255);
+    transform: scale(2);
+}
+#settingButton:hover path {
+    fill: rgb(122, 121, 121);
 }
 
-#listContent p:hover {
-    color: #e0e0e0; /* 需要替換成你想要的背景顏色 */
+#listContent div:hover {
     cursor: pointer; /* 讓游標在 hover 時變成手型 */
 }
 
 .showUser{
-    transform:scale(1.5);
+    transform:scale(2);
     display:flex;
     align-items:center;
     justify-content: center;
-    position: fixed;
-    top: 6%;
     left: 10%;
-    font-family: 'Crimson Pro', serif;
-    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;
 }
 
 #userIcon {
   margin-right: 8px;
 }
-#user{
+#user,
+#totalFootprint{
     font-size:18px;
     margin:0px;
 }
 
-.gm-ui-hover-effect{
+#user{
+    color: black;
+}
+
+#totalFootprint{
+    color: white;
+    -webkit-user-select: none;
+    background: darkgray;
+}
+
+button:focus {
+    outline: unset !important;
+}
+:focus-visible{
+    outline: unset !important;
+}
+.gm-style .gm-ui-hover-effect{
+    top: 5px !important;
+    right: 5px !important;
     position: fixed;
     transform: scale(2);
+}
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: unset !important;
 }
 
 /* 按鈕區 */
@@ -49,7 +72,6 @@
 
 /* 記錄按鈕 */
 .recordButton {
-    font-family: 'Crimson Pro', serif;
     padding: 1.3em 3em;
     font-size: 18px;
     text-transform: uppercase;
@@ -63,7 +85,7 @@
     transition: all 0.3s ease 0s;
     cursor: pointer;
     outline: none;
-    width:200px;
+    width:230px;
     height:60px;
     display: flex;
     align-items: center;
@@ -100,7 +122,7 @@
 .gram-inputs .gram {
     flex: 1;
     text-align: center;
-    margin-top: 8px;
+    margin: 8px 0px 8px;
 }
 
 .gram-inputs .gram input {
@@ -124,11 +146,62 @@
     font-weight: 600;
 }
 
+/* 小問號 */
+.questionMark {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    padding-left: 8px;
+}
+.detail {
+    top: -50px;
+    width: 300px;
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.detail::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.questionMark:hover .detail {
+    margin-right: 150px;
+    top: -50px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+svg:hover p,
+svg:hover .detail {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.questionMark:hover .detail,
+.questionMark:hover {
+    background: linear-gradient(320deg, rgb(255, 255, 255), rgb(255, 255, 255));
+    color: #000000;
+}
+
 /* 懸浮窗 */
-#recordFW,
 #routeFW,
 #closeAuthFW,
-#recordListFW{
+#recordFW,
+#uploadUserPhotoFW,
+#FPTransferFW{
     display: none;
     position: fixed;
     top: 0;
@@ -143,7 +216,7 @@
 }
 
 .recordContainer {
-    max-width: 400px;
+    max-width: 480px;
     background: #F8F9FD;
     background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
     border-radius: 40px;
@@ -154,10 +227,10 @@
     position: fixed;
     display: block;
     transform: scale(0.9);
+    align-items: center;
 }
 
 .recordHeading {
-    font-family: 'Crimson Pro', serif;
     text-align: center;
     font-weight: 900;
     font-size: 30px;
@@ -168,7 +241,6 @@
     margin-top: 20px;
 }
 .recordForm .input {
-    font-family: 'Crimson Pro', serif;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -200,11 +272,10 @@
     /*width: 100%;*/
     width:200px;
     font-weight: bold;
-    font-size: 15px;
-    font-family: 'Crimson Pro', serif;
+    font-size: 20px;
     background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
     color: white;
-    padding-block: 15px;
+    padding-block: 5px;
     margin: 20px auto;
     border-radius: 20px;
     box-shadow: rgba(152, 158, 161, 0.87) 0px 20px 10px -15px;
@@ -228,6 +299,7 @@
     top: 20px;
     right: 30px;
     cursor: pointer;
+    z-index: 999;
 }
 .btn:active {
     transform: scale(0.95);
@@ -249,7 +321,6 @@
 
 /* 下拉選單 */
 .recordForm-control {
-    font-family: 'Crimson Pro', serif;
     font-size: 16px;
     padding: 10px;
     width:300px;
@@ -281,16 +352,17 @@
 #saveEditRecord,
 #deleteEditRecord{
     display: block;
-    width: 50px;
+    width: 70px;
     font-weight: bold;
-    font-size: 15px;
-    font-family: 'Crimson Pro', serif;
+    font-size: 20px;
     background: linear-gradient(45deg, rgb(104, 107, 108) 0%, rgb(183, 188, 189) 100%);
     color: white;
     margin: 8px auto;
     border-radius: 20px;
     border: none;
-    transition: all 0.2s ease-in-out;
+    text-align: center;
+    justify-items: center;
+    align-content: center;
 }
 #editRecord:hover,
 #saveEditRecord:hover,
@@ -307,7 +379,7 @@
     display: inline-block;
     position: relative;
     padding-left: 20px;
-    margin-bottom: 28px;
+    margin-bottom: 15px;
     cursor: pointer;
     font-size: 16px;
     user-select: none;
@@ -376,16 +448,12 @@
 .radio-input:checked + .radio-tile {
     border-color: #2260ff;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    color: #2260ff;
 }
 .radio-input:checked + .radio-tile:before {
     transform: scale(1);
     opacity: 1;
     background-color: #2260ff;
     border-color: #2260ff;
-}
-.radio-input:checked + .radio-tile .radio-icon svg {
-    fill: #2260ff;
 }
 .radio-input:checked + .radio-tile .radio-label {
     color: #2260ff;
@@ -447,7 +515,6 @@
     color: #707070;
     transition: 0.375s ease;
     text-align: center;
-    font-size: 13px;
 }
 
 .radio-input {
@@ -482,15 +549,89 @@
     #recordListButton,
     #startRecording{
         transform: scale(0.9);
-        font-size: 15px;
         padding:5px;
+        font-size: 17px;
+        font-weight: normal;
     }
 
-    #settingButton,
+    #settingButton{
+        transform:scale(1.2);
+    }
     .showUser{
-        top: 4%;
+        transform:scale(1.2);
     }
-    .recordContainer {
-        transform: scale(0.9);
-    }
+}
+
+#photoContainer{
+    margin: 5px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+    width: 40px;
+    height: 40px;
+}
+
+.photo {
+    background-color: #7a7979;
+    border-radius: 0.9em;
+    padding: 0.8em 1.2em 0.8em 1em;
+    transition: all ease-in-out 0.2s;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.photo span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+}
+.photo:hover {
+    background-color: #b7bcbd;
+}
+
+.originalPhoto{
+    -webkit-user-select: none;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #7a7979;
+    margin: 20px;
+
+}
+
+.changePhoto {
+    background-color: #7a7979;
+    border-radius: 20px;
+    padding: 10px;
+    transition: all ease-in-out 0.2s;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.changePhoto span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+}
+.changePhoto:hover {
+    background-color: #b7bcbd;
+}
+
+#cropperContainer {
+    width: 300px;
+    height: auto;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: none;
+}
+#croppedImage{
+    display: none;
+}
+
+.FPTransferUnit{
+    padding: 5px;
+    font-size: 13px;
+    text-align: center;
 }

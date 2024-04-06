@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.service.AESEncryption;
+import com.example.demo.entity.AESEncryption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;

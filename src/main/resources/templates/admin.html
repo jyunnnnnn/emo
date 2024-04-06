@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, userInfo-scalable=1">
+    <title>EMO 管理員頁面</title>
+    <!--設定favicon-->
+    <link rel="icon" href="/frontend/img/生活用品.svg" type="image/svg+xml">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 載入字型 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" href="/frontend/admin.css">
+</head>
+<body>
+<div class="container center-div">
+    <div class="row  full-container">
+        <div class="col-lg-1 col-0"></div>
+        <div  class="manage-container col-lg-10 col-12 " id="manage-container">
+            <form method="post" action="/user/logout">
+                <button class="logout-btn" id="logoutAccount">
+                    <div class="setBtn d-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+                        <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+                    </svg>
+<!--                   登出-->
+                    </div>
+                </button>
+            </form>
+            <h2 class="text-center" style="color: rgb(123, 125, 127);">EMO 管理員頁面</h2>
+            <div class="d-flex">
+                <button class="category-button btn d-none" id="basic-setting"  disabled>一般數據設定</button>
+                <button class="category-button btn d-none" id="svg-setting" >SVG 設定</button>
+            </div>
+            <div class="svgView">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor"
+                     class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                            d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>請先使用&nbsp;<a href="https://www.svgviewer.dev/" class="" target="_blank">
+                svg線上預覽網站</a>&nbsp;進行預覽
+            </div>
+            <label>請選擇欲更動的類別</label>
+<!--            <select name="options" id="options">-->
+                <!-- <option value=""> </option> -->
+<!--                <option value="daily">Daily</option>-->
+<!--                <option value="daily-base">Daily-base</option>-->
+<!--                <option value="traffic">Traffic</option>-->
+<!--                <option value="traffic-base">Traffic-base</option>-->
+<!--            </select>-->
+            <!-- daily -->
+<!--            <div id="daily" class="content-block">-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>index</label>-->
+<!--                    <select name="types" id="types">-->
+
+<!--                    </select>-->
+
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>name</label>-->
+<!--                    <input type="text" id="name1" >-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="inline">-->
+<!--                    <label>大</label>-->
+<!--                    <input type="text" id="big">-->
+<!--                    <label>中</label>-->
+<!--                    <input type="text" id="mid">-->
+<!--                    <label>小</label>-->
+<!--                    <input type="text" id="small">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>coefficient</label>-->
+<!--                    <input type="text" id="coefficient1">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>unit</label>-->
+<!--                    <input type="text" id="unit1">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>baseline</label>-->
+<!--                    <input type="text" id="baseline1">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--&lt;!&ndash;                <button class="save-button btn " id="button1">修改/新增</button>&ndash;&gt;-->
+<!--            </div>-->
+            <!-- daily-base -->
+<!--            <div id="daily-base" class="d-none content-block">-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>paper</label>-->
+<!--                    <input type="text" id="paper">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>plastic</label>-->
+<!--                    <input type="text" id="plastic">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--&lt;!&ndash;                <button class="save-button btn " id="button2">修改</button>&ndash;&gt;-->
+<!--            </div>-->
+            <!-- traffic -->
+<!--            <div id="transportation" class="d-none content-block">-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>index</label>-->
+<!--                    <select name="types" id="types2">-->
+<!--&lt;!&ndash;                        <option value="bus">bus</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="MRT">MRT</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="train">train</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="addNew">新增項目</option>&ndash;&gt;-->
+<!--                    </select>-->
+<!--&lt;!&ndash;                    <input type="text" id="otherOption2" style="display: none;">&ndash;&gt;-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>name</label>-->
+<!--                    <input type="text" id="name">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>coefficient</label>-->
+<!--                    <input type="text" id="coefficient">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>unit</label>-->
+<!--                    <input type="text" id="unit">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>baseline</label>-->
+<!--                    <input type="text" id="baseline">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--&lt;!&ndash;                <button  class="save-button btn " id="button3">修改/新增</button>&ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; traffic-base &ndash;&gt;-->
+<!--            <div id="transportation-base" class="d-none content-block">-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>car</label>-->
+<!--                    <input type="text" id="car">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="form-group">-->
+<!--                    <label>scooter</label>-->
+<!--                    <input type="text" id="scooter">-->
+<!--                </div>-->
+<!--                <br>-->
+<!--&lt;!&ndash;                <button  class="save-button btn " id="button">修改</button>&ndash;&gt;-->
+<!--            </div>-->
+
+        </div>
+        <div class="col-lg-1 col-0"></div>
+        <div class="button-container">
+            <button class="save-button btn " id="add" >新增項目</button>
+            <button class="save-button btn " id="save" >儲存變更</button>
+            <button class="save-button btn d-none" id="complete" >完成</button>
+            <button class="save-button btn " id="delete" >刪除</button>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/frontend/admin.js"></script>
+</body>
+</html>

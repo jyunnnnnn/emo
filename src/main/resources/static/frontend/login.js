@@ -1,55 +1,8 @@
 
 
-//加密金鑰
-let key;
-//加密偏移量
-let iv;
-
-function getEncryptKey() {
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            type: 'GET',
-            url: '/api/getEncryptKey',
-            contentType: 'application/json',
-            success: function (response) {
-                key = response.key;
-                iv = response.iv;
-                resolve();  // 解析 Promise 表示成功取得金鑰和偏移量
-            },
-            error: function (xhr, status, error) {
-                console.log("獲取金鑰失敗");
-                reject();  // 拒絕 Promise 表示無法取得金鑰和偏移量
-            }
-        });
-    });
-}
-
-//加密
-function encrypt(text,key,iv) {
-    let encrypted;
- encrypted= CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
-         iv: CryptoJS.enc.Utf8.parse(iv),
-         mode: CryptoJS.mode.CBC,
-         padding: CryptoJS.pad.Pkcs7
-     });
-    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
-}
-
-
-//解密
-function decrypt(ciphertext,key,iv){
-    let decrypt;
-     decrypt= CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse(key), {
-            iv: CryptoJS.enc.Utf8.parse(iv),
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-          return decrypt.toString(CryptoJS.enc.Utf8);
-}
 
 
 $(document).ready(function () {
-
 
 
     // 按下註冊切換表單
@@ -70,7 +23,11 @@ $(document).ready(function () {
         $('#login-container').removeClass('d-none');
         $('#forgetPassword-container').addClass('d-none');
     });
-
+    // 切換到首頁
+    $('#back-to-index').click(function (e) {
+        e.preventDefault();
+        window.location.href = 'index';
+    });
     //按下忘記密碼切換到忘記密碼的選單
     $('#no-account').click(function (e) {
         e.preventDefault();
@@ -102,7 +59,7 @@ $(document).ready(function () {
         //檢查是否已經寄送過驗證碼，還沒的話就寄送
         $.ajax({
             type: 'GET',
-            url: '/api/sendAgain?userMail=' + inputEmail,
+            url: '/mail/sendAgain?userMail=' + inputEmail,
             contentType: 'application/json',
             success: function (response) {
                 sendEmail(inputEmail);
@@ -147,12 +104,7 @@ $(document).ready(function () {
         let now = new Date();
         let userId=now.getTime();
         // nickname default:username
-         getEncryptKey().then(function() {
-            // 在這裡執行需要 key 和 iv 的程式碼
-            inputPassword=encrypt(inputPassword,key,iv);
-        }).catch(function() {
-            console.log("無法取得金鑰和偏移量");
-        });
+
 
 
 
@@ -173,13 +125,13 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'GET',
-                url: '/api/matchVerifyingCode?userMail=' + inputEmail + "&userInput=" + verifyingCode,
+                url: '/mail/matchVerifyingCode?userMail=' + inputEmail + "&userInput=" + verifyingCode,
                 contentType: 'application/json',
                 success: function (xhr, status, error) {
                     //建立新使用者
                     $.ajax({
                         type: 'POST',
-                        url: '/api/register',
+                        url: '/user/register',
                         contentType: 'application/json',
                         data: JSON.stringify(userData),
                         success: function (response) {
@@ -220,7 +172,7 @@ $(document).ready(function () {
     function sendEmail(email) {
         $.ajax({
             type: 'POST',
-            url: '/api/sendVerifyingCode?userMail=' + email,
+            url: '/mail/sendVerifyingCode?userMail=' + email,
             contentType: 'application/json',
             success: function (response) {
                 alert("驗證碼寄送成功");
@@ -233,40 +185,13 @@ $(document).ready(function () {
 
     // 登入
     $('#login-button').click(function (e) {
-        e.preventDefault();
 
         let inputAccount = $('#exampleInputAccount1').val();
-        let inputPassword = $('#password-field').val();
 
-        if(!inputAccount || !inputPassword){
-            alert("請確認輸入欄位是否輸入");
-            return;
-        }
+        localStorage.setItem("username",inputAccount);
 
-         getEncryptKey().then(function() {
-                // 在這裡執行需要 key 和 iv 的程式碼
-                inputPassword=encrypt(inputPassword,key,iv);
-                //檢驗登入
-                $.ajax({
-                    type: 'GET',
-                    url: encodeURI('/api/login?username=' + inputAccount + '&password=' + inputPassword),
-                    contentType: 'application/json',
 
-                    success: function (response) {
-                        let userData = response.user;
-                        localStorage.setItem('EmoAppUser', userData);
-                        alert(response.message);
-                        window.location.href = response.location;
-                    },
-                    error: function (xhr, status, error) {
-                        let errorMessage = JSON.parse(xhr.responseText);
-                        alert(errorMessage.message);
-                    }
-                });
-            }).catch(function() {
-                console.log("無法取得金鑰和偏移量");
-            });
-
+        return ;
     });
 
 
@@ -285,7 +210,7 @@ $(document).ready(function () {
         //檢查帳號是否存在，並抓取該帳號資訊
         $.ajax({
             type: 'GET',
-            url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
+            url: '/user/checkAccountExistByUsername?username=' + inputAccount ,
             contentType: 'application/json',
             success: function (response) {
                 //檢查是否已經寄送過
@@ -325,13 +250,13 @@ $(document).ready(function () {
         //檢查帳號是否存在
         $.ajax({
             type: 'GET',
-            url: '/api/checkAccountExistByUsername?username=' + inputAccount ,
+            url: '/user/checkAccountExistByUsername?username=' + inputAccount ,
             contentType: 'application/json',
             success: function (response) {
                 //檢查驗證碼是否正確
                 $.ajax({
                     type: 'GET',
-                    url: '/api/matchVerifyingCode?userMail=' + response.email + "&userInput=" + inputCode,
+                    url: '/mail/matchVerifyingCode?userMail=' + response.email + "&userInput=" + inputCode,
                     contentType: 'application/json',
                     success: function (response) {
                         allowChangePassword(inputAccount);
@@ -357,7 +282,7 @@ $(document).ready(function () {
     function allowChangePassword(username){
         $.ajax({
             type: 'POST',
-            url: '/api/allowChangePassword?username=' + username,
+            url: '/user/allowChangePassword?username=' + username,
             contentType: 'application/json',
             success: function (response) {
             },
@@ -448,14 +373,15 @@ function handleCallback(response) {
 
     $.ajax({
         type: 'POST',
-        url: '/api/googleLogin',
+        url: '/user/googleLogin',
         contentType: 'application/json',
         data: JSON.stringify(profile),
         success: function (response) {
                 let userData = response.user;
+                console.log(userData)
+                localStorage.setItem("username",response.username);
                 localStorage.setItem('EmoAppUser', userData);
-                alert(response.message);
-                window.location.href = response.location;
+                window.location.href=response.location;
         },
         error: function (response) {
             console.log("使用google帳號登入失敗");
@@ -463,4 +389,3 @@ function handleCallback(response) {
     });
 
  }
-

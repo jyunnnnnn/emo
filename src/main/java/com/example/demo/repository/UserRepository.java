@@ -1,18 +1,18 @@
 package com.example.demo.repository;
 
-import com.example.demo.service.User;
+import com.example.demo.entity.UserInfo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<UserInfo, String> {
 
-    User findByUsername(String username);
+    UserInfo findByUsername(String username);
 
-    User findByEmail(String email);
+    UserInfo findByEmail(String email);
 
 
-    User deleteByUserId(String userId);
+    UserInfo deleteByUserId(String userId);
 }
 

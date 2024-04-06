@@ -1,24 +1,37 @@
 let intervalId;//時間間隔
-let recordedPositions = [];//路線紀錄(點)
-let mapLines = [];//一次紀錄的路線線段
 let isRecording = false;//false=>開始  true=>結束
+let distanceThreshold = -1; // 初始化地圖位置
+let accuracyThreshold = 100000; //
 
 function success(pos){
-    distanceThreshold = 10; // 十公尺
-    //console.log(pos,currentLocation);
+
     const newLat = pos.coords.latitude;
     const newLng = pos.coords.longitude;
     const point1 = new google.maps.LatLng(newLat, newLng);
     const point2 = new google.maps.LatLng(currentLocation.lat, currentLocation.lng);
     //計算新位置和當前位置的距離 meter
     const distance = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-    // 只有當距離超過閾值時才更新位置和圓圈 (小於10公尺不更新)
-    if (distance > distanceThreshold) {
-        currentLocation = {
-            lat: newLat,
-            lng: newLng
-        };
-        updateCurrentCircle(pos);
+    const accuracy = pos.coords.accuracy;
+//    console.log(pos,currentLocation);
+//    console.log(accuracy); // accuracy 經緯度的水平誤差(平面距離)(m)
+//    console.log(distance);
+
+    // 只有當距離超過閾值時才更新位置和圓圈 (小於2公尺不更新)，且定位精準度不超過閾值
+    // 有些裝置不提供speed 訊息
+    if(distance > distanceThreshold) {
+        if (accuracy < accuracyThreshold) { // 超過精準度直接判掉當作異常資料(先這樣，我也不知道可不可以):))
+            distanceThreshold = 5;
+            // 50m ，估狗官方寫誤差不超過20m，但沒標示是否為移動時誤差，反正我先設50，超過可能是出現飄移
+            // 缺點是，在gps信號不好時，位置就不會改變.......
+            accuracyThreshold = 500;//這邊要改回50
+            currentLocation = {
+                lat: newLat,
+                lng: newLng,
+            };
+            updateCurrentCircle();
+        }else {
+            // alert("精準度太低:)，accuracy: " + accuracy);
+        }
     }
 }
 
@@ -29,9 +42,9 @@ function error(err) {
 }
 
 options = {
-    enableHighAccuracy: false,//低精準，較不耗能
-    timeout: 5000,//最長等待時間五秒
-    maximumAge: 1000,//緩存位置1秒
+    enableHighAccuracy: true,//高精準，但耗能
+    timeout: Infinity,// 設備必須要在多少時間內回應位置資訊(ms)
+    maximumAge: 5000,// 緩存位置5秒
 };
 // 路線紀錄(開始/停止)
 function checkIsRecording() {
@@ -43,14 +56,37 @@ function checkIsRecording() {
 }
 ////路線紀錄
 function startRecording() {
+    $("#routeCompare").text("選擇行為以獲得基準值");
+    $("#routeFormula").text("選擇行為以獲得計算公式");
     // 按下變成結束
     $('#startRecording').text('結束');
     isRecording = true;
 
-    // 每1秒記錄一次
+    recordedPositions = []; // 清空上一個路線紀錄
+    if (typeof currentMarker!='undefined') {
+        currentMarker.infoWindow.close();
+        removeDirections();
+        clearMapLines();
+    }
+
+    //清除上一次距離
     kilometer = 0;
+
+    // 每1秒記錄一次
     intervalId = setInterval(function () {
-        recordLocation();
+        // 減少記憶體浪費
+        lastPosition = recordedPositions.slice(-1)[0];
+        if(lastPosition) lp = lastPosition;
+        else {
+            lp = {
+                lat: null,
+                lng: null
+            };
+        }
+        // console.log(lp , currentLocation.lat);
+        if(lp.lat != currentLocation.lat && lp.lng != currentLocation.lng) {
+            recordLocation();
+        }
     }, 1000);
 }
 
@@ -58,22 +94,23 @@ function stopRecording() {
     // 修改按鈕文字和標誌位元
     $('#startRecording').text('路線記錄');
     isRecording = false;
-
-    //這裡存一下recordedPositions 要顯示十一次重畫
-    //或在clearMapLines 存mapLines資料
-    //好像?抓mapLines就可以直接出現線條(還未確定，等資料庫可新增這筆在測試)
-    //存kilometer
-
-    //console.log(mapLines);
-    console.log("kilometer: "+kilometer.toFixed(3)+" KM");
+    //console.log("kilometer: "+kilometer.toFixed(3)+" KM");
     // 清除時間間隔
     clearInterval(intervalId);
     // 清空位置紀錄
-    recordedPositions = [];
     // 移除地圖上的線條
     clearMapLines();
+    // 修正路線
+    processAllPoints(recordedPositions);
 
     // 打開路線記錄懸浮窗
+    $('#recordCalculate').text("0 gCO2e");
+    $("#routeDetail").html("<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
+        "                        選擇行為以獲得基準值\n" +
+        "                        </span>\n" +
+        "                        <span style=\"display: block; text-align: center;\">\n" +
+        "                        選擇行為以獲得計算公式\n" +
+        "                        </span>");
     $('#routeFW').css("display", "flex");
     $('#routeFW').css("position", "fixed");
     $('#kilometer').val(kilometer.toFixed(3));
@@ -81,32 +118,24 @@ function stopRecording() {
     $('#saveTrafficRecord').css("display", "block");
     $('#updateTrafficRecord').css("display", "none");
     $('#deleteTrafficRecord').css("display", "none");
+    let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
+    let data_value = $('#kilometer').val();
+    let showExpectedFP = 0;
+    $('#routeCalculate').text(showExpectedFP + " gCO2e");
 
-    let select = $('#trafficType');
-    let trafficDatas = FootprintData.filter(function(item) {
-        return item.class === "transportation";
-    });
-    select.empty();
-    select.append($('<option>', {
-        text: "請選擇一項行為",
-        id: "noAction",
-        selected: true,
-        disabled: true
-    }));
-    for(let trafficData of trafficDatas){
-        select.append($('<option>', {
-            text: trafficData.type
-        }));
+    let checked = $('input[name="engine"]:checked');
+    let checkedVal = $('input[name="engine"]:checked').val();
+    if(checkedVal != undefined){
+        $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
+        checked.prop('checked', false);
     }
-
-    //清除距離
-    kilometer = 0;
 }
 
 function recordLocation() {
     // 儲存記錄的位置
     recordedPositions.push(currentLocation);
-
+    //只有在路線紀錄時強制跑到中心
+    map.panTo(currentLocation);
     // 在記錄的位置之間繪製線條
     if (recordedPositions.length >= 2) {
         //一段一段畫
@@ -117,9 +146,9 @@ function recordLocation() {
         let line = new google.maps.Polyline({
             path: lineCoordinates,
             geodesic: true,
-            strokeColor: '#0D5025',
-            strokeOpacity: 1.0,
-            strokeWeight: 2
+            strokeColor: '#166a29',
+            strokeOpacity: 1,
+            strokeWeight: 4
         });
 
         line.setMap(map);
@@ -129,10 +158,26 @@ function recordLocation() {
     }
 }
 
+//畫路線圖
+function drawLine(cRecord){
+    //console.log(tracking);
+    let tracking = cRecord.lineOnMap;
+    let path = new google.maps.Polyline({
+        path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
+        geodesic: true,
+        strokeColor: '#166a29',
+        strokeOpacity: 1,
+        strokeWeight: 4
+    });
+    path.setMap(map);
+    mapLines.push(path);
+}
+
 //清線
 function clearMapLines() {
     for (let i = 0; i < mapLines.length; i++) {
         mapLines[i].setMap(null);
     }
-    mapLines = [];
+    mapLines=[];
 }
+

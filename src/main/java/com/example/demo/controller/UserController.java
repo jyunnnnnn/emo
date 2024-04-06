@@ -1,46 +1,77 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.User;
+import com.example.demo.entity.UserAchievementEntity;
+import com.example.demo.entity.UserInfo;
+import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 public class UserController {
 
 
     @Autowired
-    private  UserService userService;
-
+    private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    private UserRecordCounterRepository userRecordCounterRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManagerBean;
+
+    @Autowired
+    public UserController(UserService userService, UserRecordCounterRepository userRecordCounterRepository) {
         this.userService = userService;
+        this.userRecordCounterRepository = userRecordCounterRepository;
     }
 
     public UserController() {
     }
 
+
+    //新的使用者須創立一個成就紀錄物件到資料庫內
+
+    private void createNewUserAchievementCollection(String userId) {
+
+        UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
+        userAchievementEntity.setUserId(userId);
+        userAchievementEntity.setAchieveTime(new HashMap<>());
+        userAchievementEntity.setClassRecordCounter(new HashMap<>());
+        userAchievementEntity.setClassRecordCarbonCounter(new HashMap<>());
+        this.userRecordCounterRepository.save(userAchievementEntity);
+    }
+
     //註冊新帳號
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User request) throws Exception {
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserInfo request) throws Exception {
 
 
         int result = userService.createUser(request);
 
         if (result == UserService.OK) {
+            //創建新的使用者成就物件
+            createNewUserAchievementCollection(request.getUserId());
             return ResponseEntity.ok(Collections.singletonMap("message", "帳號註冊成功"));
         }
 
@@ -48,22 +79,17 @@ public class UserController {
         return ResponseEntity.badRequest().body(Collections.singletonMap("message", "帳號已存在"));
     }
 
-    //登入
-    @GetMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws JsonProcessingException {
-        int result = this.userService.login(username, password);
-        User userData = this.userService.findUserDataFromUsername(username);
+    //登入後初始化map頁面使用者資訊
+    @GetMapping("/init")
+    public ResponseEntity<?> loginUser(@RequestParam("username") String username) throws JsonProcessingException {
+        UserInfo userInfoData = this.userService.findUserDataFromUsername(username);
+        userInfoData.setPassword("不給你看");
+        System.out.println(userInfoData);
         ObjectMapper objectMapper = new ObjectMapper();
-        String userDataJson = objectMapper.writeValueAsString(userData);
-        if (result == UserService.OK) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "登入成功!");
-            response.put("location", "/map");
-            response.put("user", userDataJson);
-            return ResponseEntity.ok(response);
-        }
-
-        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "登入失敗"));
+        String userDataJson = objectMapper.writeValueAsString(userInfoData);
+        Map<String, String> response = new HashMap<>();
+        response.put("user", userDataJson);
+        return ResponseEntity.ok(response);
     }
 
     //修改密碼
@@ -115,7 +141,7 @@ public class UserController {
     //使用帳號檢查該使用者是否存在 並回傳該使用者資料
     @GetMapping("/checkAccountExistByUsername")
     public ResponseEntity<?> chekcAccountExistByUsername(@RequestParam("username") String username) {
-        User result = this.userService.fetchOneUserByUsername(username);
+        UserInfo result = this.userService.fetchOneUserByUsername(username);
 
 
         if (result == null) {
@@ -129,7 +155,7 @@ public class UserController {
     @GetMapping("/checkSpecificAccountByEmail")
     public ResponseEntity<?> fetchSpecificAccountByEmail(@RequestParam("userMail") String email) {
 
-        User result = this.userService.findSpecificAccountByEmail(email);
+        UserInfo result = this.userService.findSpecificAccountByEmail(email);
 
         if (result == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用者不存在"));
@@ -169,26 +195,45 @@ public class UserController {
 
     //Google登入
     @PostMapping("/googleLogin")
-    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo) throws Exception {
+    public ResponseEntity<?> googleLogin(@RequestBody String googleInfo, HttpServletRequest req) throws Exception {
         //抓取該google帳戶userId
-        User result = this.userService.googleLogin(googleInfo);
+        UserInfo result = this.userService.googleLogin(googleInfo);
 
-
-        //google登入失敗
-        if (result == null)
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "使用google帳號登入失敗"));
-
+        //創建使用者成就資料庫
+        this.createNewUserAchievementCollection(result.getUserId());
 
         //轉換json字串
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(result);
 
+        System.out.println(userDataJson);
+
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(result.getUsername(), "dummy");
+
+        Authentication auth = authenticationManagerBean.authenticate(authReq);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(auth);
+        HttpSession session = req.getSession(true);
+        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
+
 
         //登入成功
         Map<String, String> response = new HashMap<>();
         response.put("message", "登入成功!");
-        response.put("location", "/map");
-        response.put("user", userDataJson);
+        response.put("location", "map");
+        response.put("username", result.getUsername());
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/updatePhoto")
+    public ResponseEntity<?> updatePhotoData(@RequestParam("username") String username, @RequestParam("photo") String photo) throws IOException {
+        int result = this.userService.updatePhoto(username, photo);
+
+        if (result == UserService.OK)
+            return ResponseEntity.ok(Collections.singletonMap("message", "修改頭像成功"));
+
+        return ResponseEntity.badRequest().body(Collections.singletonMap("message", "修改頭像失敗"));
+    }
+
+
 }

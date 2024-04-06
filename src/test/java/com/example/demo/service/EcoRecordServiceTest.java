@@ -1,25 +1,21 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.DotOfLine;
+import com.example.demo.entity.EcoRecord;
+import com.example.demo.entity.UserAchievementEntity;
 import com.example.demo.repository.RecordRepository;
-import org.junit.jupiter.api.BeforeAll;
+import com.example.demo.repository.UserRecordCounterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -33,6 +29,8 @@ class EcoRecordServiceTest {
 
     @InjectMocks
     private EcoRecordService ecoRecordService;
+    @MockBean
+    private UserRecordCounterRepository userRecordCounterRepository;
     //虛假紀錄資料庫，用以模擬資料庫運作，並非實際與資料庫互動，能避免mongoDB出問題時導致service測試失敗的問題
     @Mock
     private static RecordRepository recordRepository;
@@ -44,7 +42,21 @@ class EcoRecordServiceTest {
         //自創測試紀錄
         testList.clear();
         for (int i = 1; i <= 3; i++) {
-            EcoRecord tmp = new EcoRecord("test", "test", "test", i, i * 0.1, i * 0.2, 100.0, new Date().toString(), "test" + i);
+            EcoRecord tmp = tmp = new EcoRecord(
+                    "testUserId",
+                    "testClassType",
+                    "testType",
+                    i * 5,
+                    i * 0.1,
+                    i * 0.2,
+                    i + 5,
+                    "testField1",
+                    "testField2",
+                    Arrays.asList(
+                            new DotOfLine(1.0, 1.0),
+                            new DotOfLine(1.0, 3.0)
+                    )
+            );
             testList.add(tmp);
         }
 
@@ -55,10 +67,15 @@ class EcoRecordServiceTest {
     @DisplayName("Add Record Test")
     void addRecordTest() {
         EcoRecord target = testList.get(1);
+        UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
+        userAchievementEntity.setUserId("testUserId");
+        userAchievementEntity.setAchieveTime(new HashMap<>());
+        userAchievementEntity.setClassRecordCounter(new HashMap<>());
+        userAchievementEntity.setClassRecordCarbonCounter(new HashMap<>());
 
         //設置資料庫運作模式
         when(this.recordRepository.save(target)).thenReturn(target);
-
+        when(userRecordCounterRepository.findByUserId(any(String.class))).thenReturn(userAchievementEntity);
         EcoRecord result = ecoRecordService.addRecord(target);
         assertEquals(target.getRecordId(), result.getRecordId());
     }
@@ -92,11 +109,11 @@ class EcoRecordServiceTest {
     }
 
     @Test
-    @DisplayName("Get All Specific User Record Test")
+    @DisplayName("Get All Specific UserInfo Record Test")
         //抓取特定使用者的所有紀錄資訊
     void getSpecificUserRecordsTest() {
 
-        String targetUser = "test";
+        String targetUser = "testUserId";
         when(recordRepository.findAllByUserId(targetUser)).thenReturn(testList);
 
         List<EcoRecord> result = this.ecoRecordService.getSpecificUserRecords(targetUser);

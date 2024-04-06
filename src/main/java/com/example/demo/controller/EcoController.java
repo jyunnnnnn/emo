@@ -1,41 +1,45 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.EcoRecord;
+import com.example.demo.entity.EcoRecord;
+import com.example.demo.entity.UserAchievement;
+import com.example.demo.service.AchievementService;
 import com.example.demo.service.EcoRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/eco")
 public class EcoController {
     private final EcoRecordService ecoRecordService;
 
+    private AchievementService achievementService;
 
     //constructor
     @Autowired
-    public EcoController(EcoRecordService ecoRecordService) {
+    public EcoController(EcoRecordService ecoRecordService, AchievementService achievementService) {
         this.ecoRecordService = ecoRecordService;
+        this.achievementService = achievementService;
     }
 
-    //新增紀錄
 
+    //新增紀錄
     @PostMapping("/addRecord")
-    public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) {
+    public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) throws FileNotFoundException {
         try {
             this.ecoRecordService.addRecord(ecoRecord);
             System.out.println(ecoRecord);
         } catch (Exception err) {
-            System.err.println(err + " 使用者新增紀錄過程出現錯誤");
+            err.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok("Record added successfully");
+        return ResponseEntity.ok(this.achievementService.userAchievementsHandler(ecoRecord.getUserId()));
     }
 
     //更新紀錄

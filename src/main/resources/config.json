@@ -5,82 +5,108 @@
         "paper": 0.242,
         "plastic": 1.95
       },
-      "name": "生活用品",
+      "color": "#9ED368",
+      "units": {
+        "gCO2e": "克碳排放量",
+        "kgCO2e": "千克碳排放量"
+      },
       "content": [
         {
+          "option": {
+            "小": 5.0,
+            "中": 10.0,
+            "大": 15.0
+          },
           "index": "cup",
           "name": "環保杯",
-          "coefficient": 0,
+          "coefficient": 0.0,
           "unit": "gCO2e",
-          "option": {
-            "小(5g)": 5,
-            "中(10g)": 10,
-            "大(15g)": 15
-          },
-          "baseline": "plastic"
+          "baseline": "paper",
+          "color": "#4fc0e8",
+          "description": "比較對象為塑膠免洗杯 當前克數×排放係數(塑膠免洗杯[0.242]-環保杯[0])"
         },
         {
+          "option": {
+            "小": 15.0,
+            "中": 20.0,
+            "大": 25.0
+          },
           "index": "tableware",
           "name": "環保餐具",
-          "coefficient": 0,
+          "coefficient": 0.0,
           "unit": "gCO2e",
-          "option": {
-            "小(15g)": 15,
-            "中(20g)": 20,
-            "大(25g)": 25
-          },
-          "baseline": "paper"
+          "baseline": "paper",
+          "color": "#ffcd54",
+          "description": "比較對象為紙餐具 當前克數×排放係數(紙餐具[0.242]-環保餐具[0])"
         },
         {
+          "option": {
+            "小": 2.0,
+            "中": 5.0,
+            "大": 10.0
+          },
           "index": "bag",
           "name": "環保袋",
-          "coefficient": 0,
+          "coefficient": 0.0,
           "unit": "gCO2e",
-          "option": {
-            "小(2g)": 2,
-            "中(5g)": 5,
-            "大(10g)": 10
-          },
-          "baseline": "plastic"
+          "baseline": "plastic",
+          "color": "#fa6e51",
+          "description": "比較對象為塑膠袋 當前克數×排放係數(塑膠袋[1.95]-環保袋[0])"
         }
-      ]
+      ],
+      "name": "生活用品"
     },
     "transportation": {
       "base": {
-        "car": 110,
-        "scooter": 100
+        "car": 110.0,
+        "scooter": 100.0
       },
-      "name": "交通",
+      "color": "#5d9beb",
+      "units": {
+        "gCO2e/km": "克碳排放量每公里",
+        "kgCO2e/km": "千克碳排放量每公里",
+        "gCO2e/m": "克碳排放量每公尺",
+        "kgCO2e/m": "千克碳排放量每公尺"
+      },
       "content": [
         {
           "index": "bus",
           "name": "公車",
-          "coefficient": 40,
+          "coefficient": 40.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "color": "#ffc872",
+          "description": "比較對象為開車 當前公里數×排放係數(開車[110]-公車[40])"
         },
         {
           "index": "MRT",
           "name": "捷運",
-          "coefficient": 40,
+          "coefficient": 40.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "color": "#30a0e0",
+          "description": "比較對象為開車 當前公里數×排放係數(開車[110]-捷運[40])"
         },
         {
           "index": "train",
           "name": "火車",
-          "coefficient": 60,
+          "coefficient": 60.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "color": "#006bbb",
+          "description": "比較對象為開車 當前公里數×排放係數(開車[110]-火車[60])"
         },
         {
           "index": "HSR",
           "name": "高鐵",
-          "coefficient": 32,
+          "coefficient": 32.0,
           "unit": "gCO2e/km",
-          "baseline": "car"
+          "baseline": "car",
+          "color": "#87e1c7",
+          "description": "比較對象為開車 當前公里數×排放係數(開車[110]-高鐵[32])"
         }
-      ]
+      ],
+      "name": "交通"
     }
   },
   "setting": {

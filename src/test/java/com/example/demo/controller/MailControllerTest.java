@@ -47,7 +47,7 @@ class MailControllerTest {
     void sendVerifyingCode() throws Exception {
         //成功寄送驗證馬
         doNothing().when(mailService).sendMail(any(String.class));
-        mockMvc.perform(post("/api/sendVerifyingCode")
+        mockMvc.perform(post("/mail/sendVerifyingCode")
                         .param("userMail", testMail))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
@@ -55,7 +55,7 @@ class MailControllerTest {
         //季送驗證碼失敗
         doThrow(NullPointerException.class).when(mailService).sendMail(any(String.class));
 
-        mockMvc.perform(post("/api/sendVerifyingCode")
+        mockMvc.perform(post("/mail/sendVerifyingCode")
                         .param("userMail", testMail))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
@@ -72,7 +72,7 @@ class MailControllerTest {
         when(mailService.validCodeVerify(any(String.class), any(String.class)))
                 .thenReturn(MailService.MAIL_VALIDCODE_CORRECT);
 
-        mockMvc.perform(get("/api/matchVerifyingCode")
+        mockMvc.perform(get("/mail/matchVerifyingCode")
                         .param("userMail", testMail)
                         .param("userInput", testInput))
                 .andExpect(status().isOk())
@@ -80,7 +80,7 @@ class MailControllerTest {
         //驗證碼輸入錯誤
         when(mailService.validCodeVerify(any(String.class), any(String.class)))
                 .thenReturn(MailService.MAIL_VALIDCODE_INCORRECT);
-        mockMvc.perform(get("/api/matchVerifyingCode")
+        mockMvc.perform(get("/mail/matchVerifyingCode")
                         .param("userMail", testMail)
                         .param("userInput", testInput))
                 .andExpect(status().isBadRequest())
@@ -96,13 +96,13 @@ class MailControllerTest {
     void sendAgain() throws Exception {
         //可再次發送驗證碼
         when(mailService.SendRequest(any(String.class))).thenReturn(MailService.OK);
-        mockMvc.perform(get("/api/sendAgain")
+        mockMvc.perform(get("/mail/sendAgain")
                         .param("userMail", testMail))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //不可發送驗證碼
         when(mailService.SendRequest(any(String.class))).thenReturn(MailService.REJECT);
-        mockMvc.perform(get("/api/sendAgain")
+        mockMvc.perform(get("/mail/sendAgain")
                         .param("userMail", testMail))
                 .andExpect(status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
