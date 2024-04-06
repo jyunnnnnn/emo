@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.entity.AESEncryption;
 import com.example.demo.entity.UserInfo;
+import com.example.demo.repository.RecordRepository;
+import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +27,10 @@ class UserInfoServiceTest {
 
     @Spy
     private UserRepository repository;
+    @Spy
+    private UserRecordCounterRepository userRecordCounterRepository;
+    @Spy
+    private RecordRepository recordRepository;
     @Mock
     private AESEncryption aesEncryption;
     @InjectMocks
@@ -163,6 +169,12 @@ class UserInfoServiceTest {
     void deleteAccountByUserId() {
         String target = "testUserId";
         when(this.repository.deleteByUserId(target)).thenReturn(testUserInfo);
+        doNothing()
+                .when(this.userRecordCounterRepository)
+                .deleteById(target);
+        doNothing()
+                .when(this.recordRepository)
+                .deleteByUserId(any(String.class));
         UserInfo result = this.userService.deleteAccountByUserId(target);
         //刪除對象為目標對象
         assertEquals(result.getUserId(), target);
