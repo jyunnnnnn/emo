@@ -64,9 +64,9 @@ function reloadAchievement(){
         let achievementName = $("<div>")
             .text(unfinish[i].achievementName)
             .attr('class', 'achievementName');
-        time = (unfinish[i].current.toFixed(2)/100*100).toString();
+        let time = (unfinish[i].current.toFixed(2)/100*100);
         let achieveDescription = $("<div>")
-            .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') +  ' / ' + unfinish[i].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+            .text(time.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +  ' / ' + unfinish[i].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
             .attr('class', 'achieveDescription');
         let progress = $("<progress>")
             .attr({

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
 
     <!-- Bootstrap CSS -->
-<!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Bootstrap Icons CSS
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.19.0/font/bootstrap-icons.css">-->
 <!--    <link rel="stylesheet" href="/frontend/boostrap.min.css">-->
@@ -69,6 +69,28 @@
             padding-left: 0px;
             margin-right: auto;
             margin-left: auto;
+        }
+        @media (min-width: 576px) {
+        .container,.container-sm {
+                max-width:900px
+            }
+        }
+        @media (min-width: 768px) {
+            .container,.container-md,.container-sm {
+                max-width:1000px
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container,.container-lg,.container-md,.container-sm {
+                max-width:1300px
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container,.container-lg,.container-md,.container-sm,.container-xl {
+                max-width:2000px
+            }
         }
 
     </style>
@@ -264,7 +286,7 @@
             <input id="gram" name="gram" class="input" type="number">
 
             <!-- 碳足跡及小問號 -->
-            <div style="display: flex;justify-content: center; margin-top:5px; font-size:15px;">
+            <div style="display: flex;justify-content: center; margin-top:15px; font-size:15px;">
                 <div>計算減碳量：</div>
                 <div id="recordCalculate">0 gCO2e</div>
                 <div class="questionMark">
