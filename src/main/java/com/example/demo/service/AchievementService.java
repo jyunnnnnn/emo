@@ -249,7 +249,6 @@ public class AchievementService {
         int szOfContents = configService.getRecordConfigurationObj().get(engClassname).getContent().size();
 
 
-
         //紀錄已計算過的種類
         Map<String, Boolean> vis = new HashMap<>();
 
@@ -257,7 +256,7 @@ public class AchievementService {
         int cnt = 0;
         for (EcoRecord record : records) {
             //找到目標大類別紀錄
-            if (className.equals(className)) {
+            if (record.getClassType().equals(className)) {
                 if (!vis.containsKey(record.getType())) {
                     vis.put(record.getType(), true);
                     cnt++;
