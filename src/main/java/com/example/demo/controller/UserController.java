@@ -199,6 +199,8 @@ public class UserController {
         //抓取該google帳戶userId
         UserInfo result = this.userService.googleLogin(googleInfo);
 
+        //創建使用者成就資料庫
+        this.createNewUserAchievementCollection(result.getUserId());
 
         //轉換json字串
         ObjectMapper objectMapper = new ObjectMapper();

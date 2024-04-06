@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.config.SecurityConfig;
 import com.example.demo.entity.Authority;
 import com.example.demo.entity.UserInfo;
+import com.example.demo.repository.RecordRepository;
+import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +33,8 @@ public class UserService {
 
     public static final int FAIL = 8;
     private UserRepository repository;
+    private UserRecordCounterRepository userRecordCounterRepository;
+    private RecordRepository recordRepository;
 
     private Map<String, Boolean> passwordChangable;//檢查該帳號是否可以更改密碼 (之後可以改成用重設密碼連結)
 
@@ -38,9 +42,11 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, UserRecordCounterRepository userRecordCounterRepository, RecordRepository recordRepository) {
         this.repository = repository;
         passwordChangable = new HashMap<>();
+        this.userRecordCounterRepository = userRecordCounterRepository;
+        this.recordRepository = recordRepository;
     }
 
 
@@ -114,6 +120,8 @@ public class UserService {
     }
 
     public UserInfo deleteAccountByUserId(String UserId) {
+        this.userRecordCounterRepository.deleteById(UserId);
+        this.recordRepository.deleteByUserId(UserId);
         return this.repository.deleteByUserId(UserId);
     }
 
@@ -204,10 +212,11 @@ public class UserService {
 
 
     }
-    public int updatePhoto(String username, String photo){
+
+    public int updatePhoto(String username, String photo) {
         UserInfo result = this.repository.findByUsername(username);
         if (result != null) {
-            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), result.getNickname(), result.getEmail(), result.getUserId(), result.getAuthority(),photo);
+            UserInfo updatedUserInfo = new UserInfo(result.getUsername(), result.getPassword(), result.getNickname(), result.getEmail(), result.getUserId(), result.getAuthority(), photo);
             this.repository.save(updatedUserInfo);
             return OK;
         }
