@@ -24,7 +24,7 @@ public class UserAchievementEntity {
     private Map<String, Double> classRecordCarbonCounter;
 
     //<成就Id,解鎖時間>
-    private Map<String, Date> achieveTime;
+    private Map<String, String> achieveTime;
 
     public UserAchievementEntity() {
         this.classRecordCounter = new HashMap<>();
@@ -33,7 +33,7 @@ public class UserAchievementEntity {
     }
 
 
-    public UserAchievementEntity(String userId, Map<String, Integer> classRecordCounter, Map<String, Double> classRecordCarbonCounter, Map<String, Date> achieveTime) {
+    public UserAchievementEntity(String userId, Map<String, Integer> classRecordCounter, Map<String, Double> classRecordCarbonCounter, Map<String, String> achieveTime) {
         this.userId = userId;
         this.classRecordCounter = classRecordCounter;
         this.classRecordCarbonCounter = classRecordCarbonCounter;
@@ -56,11 +56,11 @@ public class UserAchievementEntity {
         this.classRecordCounter = classRecordCounter;
     }
 
-    public Map<String, Date> getAchieveTime() {
+    public Map<String, String> getAchieveTime() {
         return achieveTime;
     }
 
-    public void setAchieveTime(Map<String, Date> achieveTime) {
+    public void setAchieveTime(Map<String, String> achieveTime) {
         this.achieveTime = achieveTime;
     }
 

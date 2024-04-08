@@ -30,7 +30,7 @@ public class EcoController {
 
     //新增紀錄
     @PostMapping("/addRecord")
-    public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) throws FileNotFoundException {
+    public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) throws FileNotFoundException, InterruptedException {
         try {
             this.ecoRecordService.addRecord(ecoRecord);
             System.out.println(ecoRecord);
