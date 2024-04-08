@@ -397,7 +397,7 @@ function initCategory(jsonData){
                 $('<a>', {
                     class: "item",
                     id: FootprintData[i].class + 'NClass',
-                    text: FootprintData[i].classZH,
+                    text: '- ' + FootprintData[i].classZH,
                 })
             )
 
