@@ -1,9 +1,26 @@
 .EMOapp{
     padding-left: 60px;
 }
-.home{
+.home {
     background: #b8eecc;
 }
+.features{
+    background: #caf5d9;
+    height: 700px;
+}
+.resources{
+    background: #b8eecc;
+    height: 700px;
+}
+.qa{
+    background: #caf5d9;
+    height: 700px;
+}
+.contact{
+    background-color: rgb(98, 172, 113);
+}
+
+
 .navbarJustify{
     justify-content: right;
     padding-right: 50px;
@@ -11,6 +28,10 @@
 .navLink{
     width: 100px;
     height: 100px;
+}
+.navbar a:active{
+    transform: scale(0.9);
+    transition: transform 0.1s linear;
 }
 
 
@@ -39,12 +60,6 @@ img{
     background-color: #0f491b;
     border-color: rgba(255, 255, 255, 0.4);
     color: white;
-}
-#contact{
-    background-color: #0f491b;
-}
-.copyright{
-    color: #a09b9b;
 }
 @media (prefers-reduced-motion: reduce) {
 
