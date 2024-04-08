@@ -222,6 +222,22 @@ $('#recordListButton').on('click', function () {
     $('#selectedSortType').text('請選擇排序依據');
     $('#selectedMethod').text('請先選擇一項依據');
     $('#method').attr('class', 'ts-select is-disabled');
+    $('#classNType').children().each(function() {
+        if (!$(this).hasClass('is-disabled')) {
+            $(this).addClass('is-disabled');
+        }
+        if ($(this).hasClass('is-selected')) {
+            $(this).removeClass('is-selected');
+        }
+        $('#all').removeClass('is-disabled');
+        $('#all').addClass('is-selected');
+    });
+    $('#selectedClass').children().each(function() {
+        if ($(this).css('display') === 'inline-flex') {
+            $(this).css('display', 'none');
+        }
+        $('#allClass').css('display', 'inline-flex');
+    });
     let formattedDate = getFormattedDate().match(/\d{4}-\d{2}-\d{2}/)[0];
     let datePart;
     if(records.length>0){
@@ -257,6 +273,85 @@ $('#time1, #time2, #FP1, #FP2').on('click', function() {
     $('#selectedMethod').text($(this).text());
     sortRecordsBySelectedOption($(this).text());
 });
+// 監聽篩選項目
+let selectedArray = ["全部"]
+let targetNode = document.getElementById('selectedClass');
+let observer = new MutationObserver(function(mutationsList, observer) {
+    mutationsList.forEach(function(mutation) {
+        if (mutation.attributeName === 'style') {
+            let nowClass;
+            if(mutation.target.style.display === 'none'){
+                selectedArray = selectedArray.filter(item => item !== mutation.target.textContent);
+                if (mutation.target.id.includes("Class")){ //是類別且取消選取
+                    nowClass = mutation.target.id.replace("Class", "");
+                    if(nowClass === "all"){
+                        $('#classNType').children().each(function() {
+                            if ($(this).hasClass('is-disabled')) {
+                                $(this).removeClass('is-disabled');
+                            }
+                        });
+                    } else {
+                        if ($('#all').hasClass('is-disabled')) {
+                            $('#all').removeClass('is-disabled');
+                        }
+                        $('#classNType').children().each(function() {
+                            let id = $(this).attr('id');
+                            if (id.includes(nowClass) && $(this).hasClass('is-disabled') && id != nowClass + 'Class') {
+                                $(this).removeClass('is-disabled');
+                            }
+                        });
+                    }
+                } else {//是項目且取消選取
+                    nowClass = mutation.target.id.split('and');
+                    let count = 0;
+                    let allcount = 0;
+                    $('#classNType').children().each(function() {
+                        let id = $(this).attr('id');
+                        if (id.includes( 'N' + nowClass[1]) && $(this).hasClass('is-selected')) {
+                            count++;
+                        } else if ($(this).hasClass('is-selected')) allcount++;
+                    });
+                    if (count == 0) $('#' + nowClass[1] + 'NClass').removeClass('is-disabled');
+                    if (allcount == 0) $('#all').removeClass('is-disabled');
+                }
+            } else {
+                selectedArray.push(mutation.target.textContent);
+                if (mutation.target.id.includes("Class")){ //是類別且選取
+                    nowClass = mutation.target.id.replace("Class", "");
+                    if(nowClass === "all"){
+                        $('#classNType').children().each(function() {
+                            if (!$(this).hasClass('is-disabled') && $(this).attr('id') != 'all') {
+                                $(this).addClass('is-disabled');
+                            }
+                        });
+                    } else {
+                        if (!$('#all').hasClass('is-disabled')) {
+                            $('#all').addClass('is-disabled');
+                        }
+                        $('#classNType').children().each(function() {
+                            let id = $(this).attr('id');
+                            if (id.includes(nowClass) && !$(this).hasClass('is-disabled')  && id != nowClass + 'NClass') {
+                                $(this).addClass('is-disabled');
+                            }
+                        });
+                    }
+                } else {//是項目且選取
+                    nowClass = mutation.target.id.split('and');
+                    if (!$('#all').hasClass('is-disabled')) {
+                        $('#all').addClass('is-disabled');
+                    }
+                    if(!$('#' + nowClass[1] + 'NClass').hasClass('is-disabled')){
+                        $('#' + nowClass[1] + 'NClass').addClass('is-disabled');
+                    }
+                }
+            }
+        }
+        sortRecordsBySelectedOption($('#selectedMethod').text());
+    });
+});
+let config = { attributes: true, subtree: true };
+observer.observe(targetNode, config);
+
 // 顯示更多紀錄
 $('#moreRecord').on('click', function (){
     $('#recordListFW').css("display", "flex");
