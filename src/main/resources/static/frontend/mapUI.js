@@ -316,6 +316,11 @@ let observer = new MutationObserver(function(mutationsList, observer) {
                                 $('#' + newId[0] + newId[1]).css('display', 'none');
                             }
                         });
+                        $('#selectedClass').children().each(function() {
+                            if ($(this).css('display') === 'flex' && $(this).attr('id').includes(nowClass) && $(this).attr('id') != mutation.target.id) {
+                                $(this).css('display', 'none');
+                            }
+                        });
                     }
                 } else {//是項目且選取
                     nowClass = mutation.target.id.split('and');
