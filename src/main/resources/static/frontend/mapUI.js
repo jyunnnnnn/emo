@@ -223,17 +223,13 @@ $('#recordListButton').on('click', function () {
     $('#selectedMethod').text('請先選擇一項依據');
     $('#method').attr('class', 'ts-select is-disabled');
     $('#classNType').children().each(function() {
-        if (!$(this).hasClass('is-disabled')) {
-            $(this).addClass('is-disabled');
-        }
         if ($(this).hasClass('is-selected')) {
             $(this).removeClass('is-selected');
         }
-        $('#all').removeClass('is-disabled');
         $('#all').addClass('is-selected');
     });
     $('#selectedClass').children().each(function() {
-        if ($(this).css('display') === 'inline-flex') {
+        if ($(this).css('display') === 'flex') {
             $(this).css('display', 'none');
         }
         $('#allClass').css('display', 'inline-flex');
@@ -282,37 +278,15 @@ let observer = new MutationObserver(function(mutationsList, observer) {
             let nowClass;
             if(mutation.target.style.display === 'none'){
                 selectedArray = selectedArray.filter(item => item !== mutation.target.textContent);
-                if (mutation.target.id.includes("Class")){ //是類別且取消選取
-                    nowClass = mutation.target.id.replace("Class", "");
-                    if(nowClass === "all"){
-                        $('#classNType').children().each(function() {
-                            if ($(this).hasClass('is-disabled')) {
-                                $(this).removeClass('is-disabled');
-                            }
-                        });
-                    } else {
-                        if ($('#all').hasClass('is-disabled')) {
-                            $('#all').removeClass('is-disabled');
-                        }
-                        $('#classNType').children().each(function() {
-                            let id = $(this).attr('id');
-                            if (id.includes(nowClass) && $(this).hasClass('is-disabled') && id != nowClass + 'Class') {
-                                $(this).removeClass('is-disabled');
-                            }
-                        });
+                let count = 0;
+                $('#classNType').children().each(function() {
+                    if ($(this).hasClass('is-selected')) {
+                        count++;
                     }
-                } else {//是項目且取消選取
-                    nowClass = mutation.target.id.split('and');
-                    let count = 0;
-                    let allcount = 0;
-                    $('#classNType').children().each(function() {
-                        let id = $(this).attr('id');
-                        if (id.includes( 'N' + nowClass[1]) && $(this).hasClass('is-selected')) {
-                            count++;
-                        } else if ($(this).hasClass('is-selected')) allcount++;
-                    });
-                    if (count == 0) $('#' + nowClass[1] + 'NClass').removeClass('is-disabled');
-                    if (allcount == 0) $('#all').removeClass('is-disabled');
+                });
+                if(count == 0){
+                    $('#allClass').css('display', 'inline-flex');
+                    $('#all').addClass('is-selected');
                 }
             } else {
                 selectedArray.push(mutation.target.textContent);
@@ -320,28 +294,38 @@ let observer = new MutationObserver(function(mutationsList, observer) {
                     nowClass = mutation.target.id.replace("Class", "");
                     if(nowClass === "all"){
                         $('#classNType').children().each(function() {
-                            if (!$(this).hasClass('is-disabled') && $(this).attr('id') != 'all') {
-                                $(this).addClass('is-disabled');
+                            if ($(this).hasClass('is-selected') && $(this).attr('id') != 'all') {
+                                $(this).removeClass('is-selected');
+                            }
+                        });
+                        $('#selectedClass').children().each(function() {
+                            if ($(this).css('display') === 'flex' && $(this).attr('id') != 'allClass') {
+                                $(this).css('display', 'none');
                             }
                         });
                     } else {
-                        if (!$('#all').hasClass('is-disabled')) {
-                            $('#all').addClass('is-disabled');
+                        if ($('#all').hasClass('is-selected')) {
+                            $('#all').removeClass('is-selected');
+                            $('#allClass').css('display', 'none');
                         }
                         $('#classNType').children().each(function() {
                             let id = $(this).attr('id');
-                            if (id.includes(nowClass) && !$(this).hasClass('is-disabled')  && id != nowClass + 'NClass') {
-                                $(this).addClass('is-disabled');
+                            if (id.includes(nowClass) && $(this).hasClass('is-selected')  && id != nowClass + 'NClass') {
+                                $(this).removeClass('is-selected');
+                                let newId = id.split('N');
+                                $('#' + newId[0] + newId[1]).css('display', 'none');
                             }
                         });
                     }
                 } else {//是項目且選取
                     nowClass = mutation.target.id.split('and');
-                    if (!$('#all').hasClass('is-disabled')) {
-                        $('#all').addClass('is-disabled');
+                    if ($('#all').hasClass('is-selected')) {
+                        $('#all').removeClass('is-selected');
+                        $('#allClass').css('display', 'none');
                     }
-                    if(!$('#' + nowClass[1] + 'NClass').hasClass('is-disabled')){
-                        $('#' + nowClass[1] + 'NClass').addClass('is-disabled');
+                    if($('#' + nowClass[1] + 'NClass').hasClass('is-selected')){
+                        $('#' + nowClass[1] + 'NClass').removeClass('is-selected');
+                        $('#' + nowClass[1] + 'Class').css('display', 'none');
                     }
                 }
             }

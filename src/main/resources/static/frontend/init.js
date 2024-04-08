@@ -344,50 +344,6 @@ function initCategory(jsonData){
             selectElement.css('display', 'none');
         }
     });
-    let plusClass = $("<div>")
-        .attr({
-            'class': 'ts-dropdown',
-            'id':'plusHistory',
-            'data-dropdown': 'plusClass'
-        })
-        .text('類別')
-        .css({
-            'margin-right': '3px'
-        });
-    plusClass.append(
-        $('<span>', {
-            class: 'ts-icon is-plus-icon'
-        })
-    );
-    let plusType = $("<div>")
-        .attr({
-            'class': 'ts-chip is-outlined is-circular plusHover is-disabled',
-            'id':'plusHistory',
-            'data-dropdown': 'plusType'
-        })
-        .text('項目')
-        .css({
-            'margin-right': '3px'
-        });
-    plusType.append(
-        $('<span>', {
-            class: 'ts-icon is-plus-icon'
-        })
-    );
-    let classDropdown = $("<div>")
-        .attr({
-            'class': 'ts-dropdown',
-            'id':'plusDropdown',
-            'data-name': 'plusClass',
-            'data-position': 'bottom-start'
-        });
-    let typeDropdown = $("<div>")
-        .attr({
-            'class': 'ts-dropdown',
-            'id':'plusDropdown',
-            'data-name': 'plusType',
-            'data-position': 'bottom-start'
-        });
 
     for (let i = 0; i < FootprintData.length; i++) {
         let currentCategory = FootprintData[i].classZH;
@@ -439,7 +395,7 @@ function initCategory(jsonData){
 
             $('#classNType').append(
                 $('<a>', {
-                    class: "item is-disabled",
+                    class: "item",
                     id: FootprintData[i].class + 'NClass',
                     text: FootprintData[i].classZH,
                 })
@@ -466,7 +422,7 @@ function initCategory(jsonData){
 
         $('#classNType').append(
             $('<a>', {
-                class: "item is-disabled",
+                class: "item",
                 id: FootprintData[i].index + 'N' + FootprintData[i].class,
                 text: FootprintData[i].type
             })
