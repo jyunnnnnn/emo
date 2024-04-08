@@ -10,6 +10,8 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- CountUP JS -->
+  <script type="module" src='/frontend/countUp.js'></script>
   <!--    import js and css--><!-- 載入字型 -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="stylesheet" href="/frontend/index.css">
-  <script src="/frontend/index.js"></script>
+  <script type="module" src='/frontend/index.js'></script>
 
 
   <style>
@@ -85,19 +87,8 @@
   </nav>
 </header>
 <section id="home" class="home">
-  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="300 50 200 200" xml:space="preserve" width="200px" height="200px">
-  <g id="OBJECTS">
-      <g>
-          <g>
-              <path style="fill:#2A4924;" d="M414.904,83.921l-69.796,13.416l-0.715-15.371c-0.15-3.214,2.084-6.05,5.244-6.658l52.894-10.167     c3.16-0.607,6.286,1.198,7.339,4.239L414.904,83.921z"/>
-            <path style="fill:#80AFB2;" d="M414.824,86.202l3.9,83.132c0.134,2.857-1.267,5.34-3.466,6.113     c-3.267,1.148-9.041,2.834-18.59,4.67c-9.549,1.836-15.537,2.41-18.998,2.555c-2.329,0.098-4.55-1.689-5.485-4.392     l-27.197-78.654l34.918-6.712L414.824,86.202z"/>
-            <polygon style="fill:#79BA2B;" points="419.626,153.915 417.109,100.258 348.077,113.527 365.631,164.294    "/>
-            <rect x="366.002" y="66.323" transform="matrix(0.982 -0.1888 0.1888 0.982 -6.4798 72.2491)" style="fill:#33854E;" width="20.134" height="7.64"/>
-            <path style="fill:#ADCDD1;" d="M414.143,74.382c0.899-0.173,1.855,0.865,2.134,2.314l1.879,9.775     c0.279,1.449-0.229,2.749-1.128,2.922l-1.534,0.295L380.576,96.4l-34.918,6.712l-1.534,0.295c-0.9,0.173-1.852-0.846-2.13-2.296     l-1.879-9.775c-0.279-1.449,0.224-2.767,1.124-2.94l0.793-0.153l35.659-6.854l35.659-6.854L414.143,74.382z"/>
-          </g>
-      </g>
-  </g>
-  </svg>
+  <div class="totalFPDescription">截至目前，EMOapp的使用者已累積為地球減少</div>
+  <div id="totalFPCounter" class="totalFPCounter"></div>
   <object data="/frontend/img/indexBackground.svg" type="image/svg+xml"></object>
 </section>
 <section  id="features" class="features">

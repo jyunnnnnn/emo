@@ -1,4 +1,11 @@
+import { CountUp } from '/frontend/countUp.js';
 document.addEventListener("DOMContentLoaded", function () {
+    let totalFP = new CountUp('totalFPCounter', 20909008098);
+    if (!totalFP.error) {
+        totalFP.start();
+    } else {
+        console.error(totalFP.error);
+    }
     // 監聽滾動事件
     window.addEventListener("scroll", function () {
         // 取得滾動的垂直位置
