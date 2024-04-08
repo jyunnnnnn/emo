@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 判斷是否超過閾值，超過則增加底色，否則移除底色
         if (scrollPosition > scrollThreshold) {
-            document.getElementById("navbar").style.backgroundColor = "#1f8336";
+            document.getElementById("navbar").style.backgroundColor = "#62ac71";
         } else {
             document.getElementById("navbar").style.backgroundColor = "transparent";
         }

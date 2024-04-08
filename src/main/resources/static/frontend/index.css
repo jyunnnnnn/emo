@@ -1,5 +1,16 @@
+.EMOapp{
+    padding-left: 60px;
+}
 .home{
     background: #b8eecc;
+}
+.navbarJustify{
+    justify-content: right;
+    padding-right: 50px;
+}
+.navLink{
+    width: 100px;
+    height: 100px;
 }
 
 
@@ -15,9 +26,6 @@ img{
 .nav-item{
     padding: 20px;
 
-}
-.nav-link{
-    color: #ffffff;
 }
 .loginpage-btn{
     background-color: #166a29;
@@ -39,12 +47,6 @@ img{
     color: #a09b9b;
 }
 @media (prefers-reduced-motion: reduce) {
-    .emo { /*標題的字型顏色*/
-        font-size: 450%;
-        color: rgb(253, 253, 253);
-        padding-left: 5%;
-        text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000, 1px -1px 0 #000000, 1px 1px 0 black;
-    }
 
     .transparent-box {
         background-color: rgba(255, 255, 255, 0.7); /* Use rgba to set the background color with alpha (transparency) */
@@ -141,11 +143,6 @@ img{
 
     /* rwd */
     @media only screen and (max-width: 700px) {
-        .emo {
-            font-size: 300%;
-            width: 65%;
-        }
-
         .youtube {
             width: 350px;
             height: 200px;
