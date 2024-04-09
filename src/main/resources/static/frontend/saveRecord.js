@@ -44,7 +44,10 @@ function uploadRecordToBackend(record) {
         contentType: 'application/json',
         data: JSON.stringify(record),
         success: function(response) {
-            loadAchievementObj(User.userId);
+
+//            loadAchievementObj(User.userId);
+            //直接覆蓋原本的成就物件就好 response本來就是回傳一個全新的成就物件，不用再呼叫loadAchievementObj
+            AchievementObj=response;
             //回傳使用者成就物件
             console.log(response)
             let target = response.filter(achievement => achievement.firstAccomplish === true);

@@ -439,15 +439,17 @@ function showRecord() {
 }
 // 排序歷史紀錄
 function sortRecordsBySelectedOption(method) {
-    let selectedCategory = $("#selectClass input[type=\"radio\"]:checked").next('label').text();
-    let selectedType = $('#sortTypeBtn').find('.item.is-selected').text();
+    let selectedCategory = selectedArray;
     let sortedRecords = records;
 
-    if (selectedCategory != "全部") {
-        sortedRecords = sortedRecords.filter(record => record.classType === selectedCategory);
+    if (!selectedCategory.includes("全部")) {
+        sortedRecords = sortedRecords.filter(function(item) {
+            return selectedArray.includes(item.classType) || selectedArray.includes(item.type);
+        });
     }
 
     if (method === "遠到近") {
+        console.log("遠到近")
         sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
     } else if (method === "近到遠") {
         sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));
@@ -487,7 +489,8 @@ function showNewRecord(sortedRecords, selectedCategory) {
                 'justify-content': 'center',
                 'align-items': 'center',
                 'height': '70px',
-                'margin-bottom': '5px'
+                'margin-bottom': '5px',
+                'margin-top': '15px'
             })
             .text("沒有紀錄");
         container.append(recordDiv);

@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import org.springframework.security.core.userdetails.User;
-
 import java.util.Date;
-import java.util.Map;
 
 /*
     回傳給前端頁面的使用者成就狀態資訊物件
@@ -11,7 +8,7 @@ import java.util.Map;
 public class UserAchievement extends Achievement {
 
     //達成時間
-    private Date accomplishTime;
+    private String accomplishTime;
 
     //是否為初次解鎖
     private boolean firstAccomplish;
@@ -19,7 +16,7 @@ public class UserAchievement extends Achievement {
     public UserAchievement() {
     }
 
-    public UserAchievement(Achievement achievement, Date accomplishTime, boolean firstAccomplish) {
+    public UserAchievement(Achievement achievement, String accomplishTime, boolean firstAccomplish) {
         super(achievement);
         this.accomplishTime = accomplishTime;
         this.firstAccomplish = firstAccomplish;
@@ -35,11 +32,11 @@ public class UserAchievement extends Achievement {
         firstAccomplish = false;
     }
 
-    public Date getAccomplishTime() {
+    public String getAccomplishTime() {
         return accomplishTime;
     }
 
-    public void setAccomplishTime(Date accomplishTime) {
+    public void setAccomplishTime(String accomplishTime) {
         this.accomplishTime = accomplishTime;
     }
 

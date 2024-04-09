@@ -318,8 +318,8 @@ function FPConstructor(jsonData) {
                 FootprintData.push({ type, index,coefficient, baseline, baseCoefficient: base[baseline], unit, class:key, classZH: name, color});
             });
         } else {
-            jsonData[key].content.forEach(({name: type, coefficient, baseline, option, unit, color}) => {
-                 FootprintData.push({ type, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name, color});
+            jsonData[key].content.forEach(({name: type, index, coefficient, baseline, option, unit, color}) => {
+                 FootprintData.push({ type, index, coefficient, baseline, baseCoefficient: base[baseline], option, unit, class:key, classZH: name, color});
              });
         }
     }
@@ -335,19 +335,16 @@ function questionMarkConstructor(jsonData) {
     }
 }
 function initCategory(jsonData){
-    $('#selectClass').append(
-        $('<input>', {
-            type: "radio",
-            id: "allHistory",
-            name: "tabs",
-            value: "all",
-        }),
-        $('<label>', {
-            for: "allHistory",
-            text: "全部",
-            class: 'tab'
-        })
-    );
+    $('#all').on('click', function() {
+        $(this).toggleClass('is-selected');
+        let selectElement = $('#allClass');
+        if ($(this).hasClass('is-selected')) {
+            selectElement.css('display', 'inline-flex');
+        } else {
+            selectElement.css('display', 'none');
+        }
+    });
+
     for (let i = 0; i < FootprintData.length; i++) {
         let currentCategory = FootprintData[i].classZH;
         let currentType = FootprintData[i].type;
@@ -395,20 +392,58 @@ function initCategory(jsonData){
                 color: jsonData[FootprintData[i].class].color,
                 action: []
             };
-            $('#selectClass').append(
-                $('<input>', {
-                    type: "radio",
-                    id: FootprintData[i].class + 'History',
-                    name: "tabs",
-                    value: FootprintData[i].class
-                }),
-                $('<label>', {
-                    for: FootprintData[i].class + 'History',
-                    text: currentCategory,
-                    class: 'tab'
+
+            $('#classNType').append(
+                $('<a>', {
+                    class: "item",
+                    id: FootprintData[i].class + 'NClass',
+                    text: '- ' + FootprintData[i].classZH,
                 })
-            );
+            )
+
+            $('#selectedClass').append(
+                $('<div>', {
+                    class: 'ts-chip is-circular',
+                    id: FootprintData[i].class + 'Class',
+                    text: FootprintData[i].classZH,
+                    css: { display: 'none' }
+                })
+            )
+            $('#' + FootprintData[i].class + 'NClass').on('click', function() {
+                $(this).toggleClass('is-selected');
+                let selectElement = $('#' + FootprintData[i].class + 'Class');
+                if ($(this).hasClass('is-selected')) {
+                    selectElement.css('display', 'inline-flex');
+                } else {
+                    selectElement.css('display', 'none');
+                }
+            });
         }
+
+        $('#classNType').append(
+            $('<a>', {
+                class: "item",
+                id: FootprintData[i].index + 'N' + FootprintData[i].class,
+                text: FootprintData[i].type
+            })
+        )
+        $('#selectedClass').append(
+            $('<div>', {
+                class: 'ts-chip is-circular is-outlined',
+                id: FootprintData[i].index + 'and' + FootprintData[i].class,
+                text: FootprintData[i].type,
+                css: { display: 'none' }
+            })
+        )
+        $('#' + FootprintData[i].index + 'N' + FootprintData[i].class).on('click', function() {
+            $(this).toggleClass('is-selected');
+            let selectElement = $('#' + FootprintData[i].index + 'and' + FootprintData[i].class);
+            if ($(this).hasClass('is-selected')) {
+                selectElement.css('display', 'inline-flex');
+            } else {
+                selectElement.css('display', 'none');
+            }
+        });
 
         if(currentCategory === "交通"){
             // 建立類別按鈕
@@ -461,6 +496,7 @@ function initCategory(jsonData){
     svgConstructor(svgData);
     typeListener();
 }
+
 let trafficChecked = null;
 let dailyChecked = null;
 function svgConstructor(svgData) {
@@ -650,6 +686,7 @@ function loadAchievementObj(userId){
         type: 'GET',
         success: function(response) {
             AchievementObj=response;
+
             //console.log(AchievementObj);
             /*
             let target = AchievementObj.filter(achievement => achievement.accomplishTime != null);

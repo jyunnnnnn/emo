@@ -200,6 +200,7 @@ class EcoControllerTest {
     @DisplayName("Delete One Record Test")
     @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void deleteOneRecord() throws Exception {
+        when(this.ecoRecordService.findOneRecord(any(String.class))).thenReturn(testRecord);
         //刪除記錄成功
         mockMvc.perform(delete("/eco/deleteOneRecord")
                         .param("recordId", testRecord.getRecordId()))
@@ -222,6 +223,7 @@ class EcoControllerTest {
     @DisplayName("Delete amount of Record Test")
     @WithMockUser(username = "normalUsername", password = "normalPwd", authorities = "NORMAL")
     void deleteMulRecord() throws Exception {
+        when(this.ecoRecordService.findOneRecord(any(String.class))).thenReturn(testRecord);
         //刪除多筆紀錄成功
         List<String> test = new ArrayList<>();
         test.add("test");
