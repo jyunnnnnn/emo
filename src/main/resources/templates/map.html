@@ -448,8 +448,13 @@
                 <button class="item" type="button" id="FP2">多到少</button>
             </div>
         </div>
-        <div class="selectDiv">
-            <div class="selectClass" id="selectClass">
+
+        <div class="ts-select is-fluid" data-dropdown="selectClass" style="padding: 5px; height: fit-content;">
+            <div class="content" id="selectedClass" style="overflow-x: auto; min-height: 30px;">
+                <div class="ts-chip is-circular" id="allClass">全部</div>
+            </div>
+            <div class="ts-dropdown is-bottom-right" data-name="selectClass" id="classNType" style="z-index: 101; width: 82%;max-height: 30%;overflow-y: scroll;">
+                <a class="item is-selected" id="all">- 全部</a>
             </div>
         </div>
 
@@ -594,6 +599,14 @@
 
 
 <!-- 初始化地圖 -->
-<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}"></script>
+<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}">
+    $(document).on("keypress", "form", function (e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
 
 </html>

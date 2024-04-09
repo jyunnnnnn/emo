@@ -222,6 +222,18 @@ $('#recordListButton').on('click', function () {
     $('#selectedSortType').text('請選擇排序依據');
     $('#selectedMethod').text('請先選擇一項依據');
     $('#method').attr('class', 'ts-select is-disabled');
+    $('#classNType').children().each(function() {
+        if ($(this).hasClass('is-selected')) {
+            $(this).removeClass('is-selected');
+        }
+        $('#all').addClass('is-selected');
+    });
+    $('#selectedClass').children().each(function() {
+        if ($(this).css('display') === 'flex') {
+            $(this).css('display', 'none');
+        }
+        $('#allClass').css('display', 'inline-flex');
+    });
     let formattedDate = getFormattedDate().match(/\d{4}-\d{2}-\d{2}/)[0];
     let datePart;
     if(records.length>0){
@@ -257,6 +269,78 @@ $('#time1, #time2, #FP1, #FP2').on('click', function() {
     $('#selectedMethod').text($(this).text());
     sortRecordsBySelectedOption($(this).text());
 });
+// 監聽篩選項目
+let selectedArray = ["全部"]
+let targetNode = document.getElementById('selectedClass');
+let observer = new MutationObserver(function(mutationsList, observer) {
+    mutationsList.forEach(function(mutation) {
+        if (mutation.attributeName === 'style') {
+            let nowClass;
+            if(mutation.target.style.display === 'none'){
+                selectedArray = selectedArray.filter(item => item !== mutation.target.textContent);
+                let count = 0;
+                $('#classNType').children().each(function() {
+                    if ($(this).hasClass('is-selected')) {
+                        count++;
+                    }
+                });
+                if(count == 0){
+                    $('#allClass').css('display', 'inline-flex');
+                    $('#all').addClass('is-selected');
+                }
+            } else {
+                selectedArray.push(mutation.target.textContent);
+                if (mutation.target.id.includes("Class")){ //是類別且選取
+                    nowClass = mutation.target.id.replace("Class", "");
+                    if(nowClass === "all"){
+                        $('#classNType').children().each(function() {
+                            if ($(this).hasClass('is-selected') && $(this).attr('id') != 'all') {
+                                $(this).removeClass('is-selected');
+                            }
+                        });
+                        $('#selectedClass').children().each(function() {
+                            if ($(this).css('display') === 'flex' && $(this).attr('id') != 'allClass') {
+                                $(this).css('display', 'none');
+                            }
+                        });
+                    } else {
+                        if ($('#all').hasClass('is-selected')) {
+                            $('#all').removeClass('is-selected');
+                            $('#allClass').css('display', 'none');
+                        }
+                        $('#classNType').children().each(function() {
+                            let id = $(this).attr('id');
+                            if (id.includes(nowClass) && $(this).hasClass('is-selected')  && id != nowClass + 'NClass') {
+                                $(this).removeClass('is-selected');
+                                let newId = id.split('N');
+                                $('#' + newId[0] + newId[1]).css('display', 'none');
+                            }
+                        });
+                        $('#selectedClass').children().each(function() {
+                            if ($(this).css('display') === 'flex' && $(this).attr('id').includes(nowClass) && $(this).attr('id') != mutation.target.id) {
+                                $(this).css('display', 'none');
+                            }
+                        });
+                    }
+                } else {//是項目且選取
+                    nowClass = mutation.target.id.split('and');
+                    if ($('#all').hasClass('is-selected')) {
+                        $('#all').removeClass('is-selected');
+                        $('#allClass').css('display', 'none');
+                    }
+                    if($('#' + nowClass[1] + 'NClass').hasClass('is-selected')){
+                        $('#' + nowClass[1] + 'NClass').removeClass('is-selected');
+                        $('#' + nowClass[1] + 'Class').css('display', 'none');
+                    }
+                }
+            }
+        }
+        sortRecordsBySelectedOption($('#selectedMethod').text());
+    });
+});
+let config = { attributes: true, subtree: true };
+observer.observe(targetNode, config);
+
 // 顯示更多紀錄
 $('#moreRecord').on('click', function (){
     $('#recordListFW').css("display", "flex");
