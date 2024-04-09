@@ -55,8 +55,6 @@ public class AchievementThread extends Thread {
     //總紀錄數量
     private void totalNumberOfRecord() {
 
-        long time1 = System.currentTimeMillis();
-
 
         //獲取該使用者所有紀錄次數
         int total = 0;
@@ -115,14 +113,11 @@ public class AchievementThread extends Thread {
         }
 
 
-        long time2 = System.currentTimeMillis();
-
-        System.out.println("totalNumberOfRecord :" + (time2 - time1) + "毫秒");
     }
 
     //全部種類項目是否都記錄過(包含交通、日常用品)
     private void allKinds() {
-        long time1 = System.currentTimeMillis();
+
         /*
             判斷使用者是否達成
          */
@@ -187,16 +182,12 @@ public class AchievementThread extends Thread {
         }
 
 
-
-        long time2 = System.currentTimeMillis();
-        System.out.println("allKinds: " + (time2 - time1) + "毫秒");
     }
 
 
     //特定大類別紀錄所有種類紀錄
     private void specificClassAllKinds() {
 
-        long time1 = System.currentTimeMillis();
 
         //目標類別名稱
         String className = source.getType() == Achievement.DAILY_ALL ? "生活用品" : "交通";
@@ -267,8 +258,6 @@ public class AchievementThread extends Thread {
         }
 
 
-        long time2 = System.currentTimeMillis();
-        System.out.println("specificClassAllKinds: " + (time2 - time1) + "毫秒");
     }
 
     //處理某類別紀錄次數相關成就
@@ -325,7 +314,6 @@ public class AchievementThread extends Thread {
                 userAchievementEntity.getAchieveTime().remove(source.getAchievementId());
             }
         }
-
 
 
     }
