@@ -31,7 +31,6 @@ public class AchievementService {
     public static int BAD = 0;
 
 
-
     @Autowired
     public AchievementService(AchievementRepository repository, RecordRepository recordRepository, ConfigService configService, UserRecordCounterRepository userRecordCounterRepository) {
         this.repository = repository;
@@ -67,6 +66,7 @@ public class AchievementService {
 
     //處理使用者的成就達成狀態並回傳一個成就LIST，裡面包含成就相關資訊以及使用者達成狀態
     public List<UserAchievement> userAchievementsHandler(String userId) throws FileNotFoundException, InterruptedException {
+
         //獲取所有成就
         List<Achievement> allAchievements = this.getAllAchievement();
 
@@ -76,6 +76,7 @@ public class AchievementService {
         //預先獲取該使用者的紀錄相關資訊
         UserAchievementEntity userAchievementEntity = this.userRecordCounterRepository.findByUserId(userId);
 
+
         //該使用者的所有成就達成狀況
         List<UserAchievement> result = new ArrayList<>();
 
@@ -83,7 +84,7 @@ public class AchievementService {
         AchievementThread myThreads[] = new AchievementThread[allAchievements.size()];
         int idx = 0;
         for (Achievement achievement : allAchievements) {
-            myThreads[idx] = new AchievementThread(userId, achievement, achievement.getType(), userRecordCounterRepository, configService, records, userAchievementEntity);
+            myThreads[idx] = new AchievementThread(userId, achievement, achievement.getType(), configService, records, userAchievementEntity);
             myThreads[idx].start();
             idx += 1;
         }
@@ -92,6 +93,11 @@ public class AchievementService {
             myThreads[i].join();
             result.add(myThreads[i].getUserAchievement());
         }
+
+
+        //Threads跑完之後 將最後的使用者成就物件覆蓋到資料庫內(java pass by reference)
+        this.userRecordCounterRepository.save(userAchievementEntity);
+
 
         return result;
     }

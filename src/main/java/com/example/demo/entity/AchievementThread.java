@@ -13,7 +13,6 @@ import java.util.Map;
 public class AchievementThread extends Thread {
     private int type;
     private UserAchievement userAchievement;
-    private UserRecordCounterRepository userRecordCounterRepository;
     private ConfigService configService;
 
     private List<EcoRecord> records;
@@ -23,14 +22,14 @@ public class AchievementThread extends Thread {
     private String userId;
     private Achievement source;
 
-    public AchievementThread(String userId, Achievement source, int type, UserRecordCounterRepository userRecordCounterRepository, ConfigService configService, List<EcoRecord> records, UserAchievementEntity userAchievementEntity) {
+    public AchievementThread(String userId, Achievement source, int type, ConfigService configService, List<EcoRecord> records, UserAchievementEntity userAchievementEntity) {
         this.type = type;
-        this.userRecordCounterRepository = userRecordCounterRepository;
         this.configService = configService;
         this.userAchievementEntity = userAchievementEntity;
         this.records = records;
         this.userId = userId;
         this.source = source;
+        this.userAchievement = new UserAchievement(source);
     }
 
     @Override
@@ -58,7 +57,6 @@ public class AchievementThread extends Thread {
 
         long time1 = System.currentTimeMillis();
 
-        UserAchievement userAchievement = new UserAchievement(source);
 
         //獲取該使用者所有紀錄次數
         int total = 0;
@@ -73,12 +71,12 @@ public class AchievementThread extends Thread {
         //設定使用者完成次數
         userAchievement.setCurrent(total);
 
-        //是否達成過了且(可能)經過CRUD後仍然達成
-        if (total >= source.getTarget() && isAccomplished(source.getAchievementId(), userAchievementEntity)) {
+        //是否達成過了且經過CRUD後仍然達成
+        if (total >= source.getTarget() && isAccomplished(source.getAchievementId())) {
             userAchievement.setFirstAccomplish(false);
             userAchievement.setAccomplishTime(userAchievementEntity.getAchieveTime().get(source.getAchievementId()));
             userAchievement.setAchieve(true);
-            this.userAchievement = userAchievement;
+            return;
         }
 
         /*
@@ -87,46 +85,45 @@ public class AchievementThread extends Thread {
 
         //若第一次達成成就條件
         if (total >= source.getTarget()) {
-
-            userAchievement.setAchieve(true);
             //使用者第一次完成此成就
+            userAchievement.setAchieve(true);
+
 
             //設定為第一次完成以及初次達成時間(前端判斷用)
             userAchievement.setFirstAccomplish(true);
 
 
             //  直接格式化輸出現在時間的方法
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String accomplishDate = sdFormat.format(new Date());
-            userAchievement.setAccomplishTime(accomplishDate);
 
-            //設置完成時間並存到資料庫內
+            String accomplishDate = generateCurrentDateAndTimeInStr();
+
+            userAchievement.setAccomplishTime(accomplishDate);
+            userAchievement.setFirstAccomplish(true);
             userAchievementEntity.getAchieveTime().put(source.getAchievementId(), accomplishDate);
         } else {
-            //未達成成就
+            //未達成成就且也沒達成過
             userAchievement.setAchieve(false);
             userAchievement.setAccomplishTime(null);
             userAchievement.setFirstAccomplish(false);
 
             //重新設定使用者成就資料庫物件
-            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId()))
+            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId())) {
                 //移除之前達成時間
                 userAchievementEntity.getAchieveTime().remove(source.getAchievementId());
+            }
+
         }
 
-        //覆蓋使用者成就資料庫資訊
-        this.userRecordCounterRepository.save(userAchievementEntity);
+
         long time2 = System.currentTimeMillis();
 
-        System.out.println("totalNumberOfRecord花了:" + (time2 - time1) + "毫秒");
-        this.userAchievement = userAchievement;
+        System.out.println("totalNumberOfRecord :" + (time2 - time1) + "毫秒");
     }
 
     //全部種類項目是否都記錄過(包含交通、日常用品)
     private void allKinds() {
         long time1 = System.currentTimeMillis();
-        UserAchievement userAchievement = new UserAchievement(source);
-                /*
+        /*
             判斷使用者是否達成
          */
 
@@ -148,13 +145,14 @@ public class AchievementThread extends Thread {
             }
         }
 
+        userAchievement.setCurrent(cnt >= szOfContents ? 1 : 0);
+
         //是否已達成
-        if (cnt >= szOfContents && isAccomplished(source.getAchievementId(), userAchievementEntity)) {
+        if (cnt >= szOfContents && isAccomplished(source.getAchievementId())) {
             userAchievement.setAccomplishTime(userAchievementEntity.getAchieveTime().get(source.getAchievementId()));
-            userAchievement.setCurrent(1);
             userAchievement.setAchieve(true);
             userAchievement.setFirstAccomplish(false);
-            this.userAchievement = userAchievement;
+            return;
         }
 
 
@@ -165,15 +163,12 @@ public class AchievementThread extends Thread {
         //使用者第一次達成
         if (cnt >= szOfContents) {
             //設定使用者達成狀態
-            userAchievement.setCurrent(1);
             //設置已達成
             userAchievement.setAchieve(true);
             //  直接格式化輸出現在時間的方法
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String accomplishDate = sdFormat.format(new Date());
-            userAchievement.setAccomplishTime(accomplishDate);
 
-            //設置達成時間並覆蓋資料庫內容
+            String accomplishDate = generateCurrentDateAndTimeInStr();
+
             userAchievement.setAccomplishTime(accomplishDate);
             userAchievement.setFirstAccomplish(true);
             userAchievementEntity.getAchieveTime().put(source.getAchievementId(), accomplishDate);
@@ -185,17 +180,16 @@ public class AchievementThread extends Thread {
             userAchievement.setFirstAccomplish(false);
 
             //重新設定使用者成就資料庫物件
-            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId()))
+            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId())) {
                 //移除之前達成時間
                 userAchievementEntity.getAchieveTime().remove(source.getAchievementId());
+            }
         }
 
-        //覆蓋使用者成就資料庫資訊
-        this.userRecordCounterRepository.save(userAchievementEntity);
+
 
         long time2 = System.currentTimeMillis();
         System.out.println("allKinds: " + (time2 - time1) + "毫秒");
-        this.userAchievement = userAchievement;
     }
 
 
@@ -203,7 +197,6 @@ public class AchievementThread extends Thread {
     private void specificClassAllKinds() {
 
         long time1 = System.currentTimeMillis();
-        UserAchievement userAchievement = new UserAchievement(source);
 
         //目標類別名稱
         String className = source.getType() == Achievement.DAILY_ALL ? "生活用品" : "交通";
@@ -233,14 +226,14 @@ public class AchievementThread extends Thread {
         userAchievement.setCurrent(cnt >= szOfContents ? 1 : 0);
 
         //是否已達成
-        if (cnt >= szOfContents && isAccomplished(source.getAchievementId(), userAchievementEntity)) {
+        if (cnt >= szOfContents && isAccomplished(source.getAchievementId())) {
 
             userAchievement.setFirstAccomplish(false);
             userAchievement.setAccomplishTime(userAchievementEntity.getAchieveTime().get(source.getAchievementId()));
             userAchievement.setCurrent(1);
             userAchievement.setAchieve(true);
 
-            this.userAchievement = userAchievement;
+            return;
         }
 
         /*
@@ -253,12 +246,11 @@ public class AchievementThread extends Thread {
             userAchievement.setAchieve(true);
 
             //  直接格式化輸出現在時間的方法
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String accomplishDate = sdFormat.format(new Date());
+
+            String accomplishDate = generateCurrentDateAndTimeInStr();
+
             userAchievement.setAccomplishTime(accomplishDate);
-
             userAchievement.setFirstAccomplish(true);
-
             userAchievementEntity.getAchieveTime().put(source.getAchievementId(), accomplishDate);
 
         } else {
@@ -268,23 +260,20 @@ public class AchievementThread extends Thread {
             userAchievement.setFirstAccomplish(false);
 
             //重新設定使用者成就資料庫物件
-            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId()))
+            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId())) {
                 //移除之前達成時間
                 userAchievementEntity.getAchieveTime().remove(source.getAchievementId());
+            }
         }
 
-        //覆蓋使用者成就資料庫資訊
-        this.userRecordCounterRepository.save(userAchievementEntity);
+
         long time2 = System.currentTimeMillis();
         System.out.println("specificClassAllKinds: " + (time2 - time1) + "毫秒");
-        this.userAchievement = userAchievement;
     }
 
     //處理某類別紀錄次數相關成就
     private void frequencyAchievementsHandler() {
 
-        UserAchievement userAchievement = new UserAchievement(source);
-        long time1 = System.currentTimeMillis();
 
         //目標類別名稱
         String className = source.getType() == Achievement.DAILY_FREQUENCY ? "生活用品" : "交通";
@@ -298,12 +287,12 @@ public class AchievementThread extends Thread {
 
 
         //是否已達成且仍然達成
-        if (cnt >= source.getTarget() && isAccomplished(source.getAchievementId(), userAchievementEntity)) {
+        if (cnt >= source.getTarget() && isAccomplished(source.getAchievementId())) {
             userAchievement.setAchieve(true);
             userAchievement.setAccomplishTime(userAchievementEntity.getAchieveTime().get(source.getAchievementId()));
             userAchievement.setCurrent(userAchievementEntity.getClassRecordCounter().get(className));
             userAchievement.setFirstAccomplish(false);
-            this.userAchievement = userAchievement;
+            return;
         }
 
         /*
@@ -317,12 +306,11 @@ public class AchievementThread extends Thread {
             userAchievement.setAchieve(true);
 
             //  直接格式化輸出現在時間的方法
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String accomplishDate = sdFormat.format(new Date());
+
+            String accomplishDate = generateCurrentDateAndTimeInStr();
+
             userAchievement.setAccomplishTime(accomplishDate);
-
             userAchievement.setFirstAccomplish(true);
-
             userAchievementEntity.getAchieveTime().put(source.getAchievementId(), accomplishDate);
 
         } else {
@@ -332,23 +320,20 @@ public class AchievementThread extends Thread {
             userAchievement.setFirstAccomplish(false);
 
             //重新設定使用者成就資料庫物件
-            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId()))
+            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId())) {
                 //移除之前達成時間
                 userAchievementEntity.getAchieveTime().remove(source.getAchievementId());
+            }
         }
 
-        //覆蓋使用者成就資料庫資訊
-        this.userRecordCounterRepository.save(userAchievementEntity);
-        long time2 = System.currentTimeMillis();
-        System.out.println("frequencyAchievementsHandler: " + (time2 - time1) + "毫秒");
-        this.userAchievement = userAchievement;
+
+
     }
 
     //處理累積量相關成就
     private void accumulationAchievementsHandler() throws FileNotFoundException {
-        long time1 = System.currentTimeMillis();
 
-        UserAchievement userAchievement = new UserAchievement(source);
+
         //目標類別名稱
         String className = source.getType() == Achievement.DAILY_ACCUMULATION ? "生活用品" : "交通";
 
@@ -363,12 +348,12 @@ public class AchievementThread extends Thread {
 
 
         //是否已達成
-        if (sum >= source.getTarget() && isAccomplished(source.getAchievementId(), userAchievementEntity)) {
+        if (sum >= source.getTarget() && isAccomplished(source.getAchievementId())) {
             userAchievement.setAccomplishTime(userAchievementEntity.getAchieveTime().get(source.getAchievementId()));
             userAchievement.setFirstAccomplish(false);
             userAchievement.setCurrent(userAchievementEntity.getClassRecordCarbonCounter().get(className));
             userAchievement.setAchieve(true);
-            this.userAchievement = userAchievement;
+            return;
         }
 
         /*
@@ -381,12 +366,11 @@ public class AchievementThread extends Thread {
             userAchievement.setAchieve(true);
 
             //  直接格式化輸出現在時間的方法
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String accomplishDate = sdFormat.format(new Date());
+
+            String accomplishDate = generateCurrentDateAndTimeInStr();
+
             userAchievement.setAccomplishTime(accomplishDate);
-
             userAchievement.setFirstAccomplish(true);
-
             userAchievementEntity.getAchieveTime().put(source.getAchievementId(), accomplishDate);
 
 
@@ -397,20 +381,25 @@ public class AchievementThread extends Thread {
             userAchievement.setFirstAccomplish(false);
 
             //重新設定使用者成就資料庫物件
-            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId()))
+            if (userAchievementEntity.getAchieveTime().containsKey(source.getAchievementId())) {
                 //移除之前達成時間
                 userAchievementEntity.getAchieveTime().remove(source.getAchievementId());
+            }
         }
 
-        //覆蓋使用者成就資料庫資訊
-        this.userRecordCounterRepository.save(userAchievementEntity);
-        long time2 = System.currentTimeMillis();
-        System.out.println("accumulationAchievementsHandler: " + (time2 - time1) + "毫秒");
-        this.userAchievement = userAchievement;
+
+    }
+
+    //產生當前時間字串
+    private String generateCurrentDateAndTimeInStr() {
+        //  直接格式化輸出現在時間的方法
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String accomplishDate = sdFormat.format(new Date());
+        return accomplishDate;
     }
 
     //判斷是否已達成某成就
-    private boolean isAccomplished(String acId, UserAchievementEntity userAchievementEntity) {
+    private boolean isAccomplished(String acId) {
         if (userAchievementEntity.getAchieveTime() == null)
             return false;
         return userAchievementEntity.getAchieveTime().containsKey(acId);

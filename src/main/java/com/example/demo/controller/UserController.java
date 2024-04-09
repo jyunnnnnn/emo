@@ -53,13 +53,15 @@ public class UserController {
     //新的使用者須創立一個成就紀錄物件到資料庫內
 
     private void createNewUserAchievementCollection(String userId) {
+        if (this.userRecordCounterRepository.findByUserId(userId) == null) {
+            UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
+            userAchievementEntity.setUserId(userId);
+            userAchievementEntity.setAchieveTime(new HashMap<>());
+            userAchievementEntity.setClassRecordCounter(new HashMap<>());
+            userAchievementEntity.setClassRecordCarbonCounter(new HashMap<>());
+            this.userRecordCounterRepository.save(userAchievementEntity);
+        }
 
-        UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
-        userAchievementEntity.setUserId(userId);
-        userAchievementEntity.setAchieveTime(new HashMap<>());
-        userAchievementEntity.setClassRecordCounter(new HashMap<>());
-        userAchievementEntity.setClassRecordCarbonCounter(new HashMap<>());
-        this.userRecordCounterRepository.save(userAchievementEntity);
     }
 
     //註冊新帳號

@@ -83,6 +83,7 @@ public class EcoRecordService {
 
 
         this.userRecordCounterRepository.save(userAchievementEntity);
+
         long time2 = System.currentTimeMillis();
 
         System.out.println("重新整理使用者成就物件 執行時間: " + (time2 - time1) + "豪秒");
