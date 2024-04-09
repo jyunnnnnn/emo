@@ -72,6 +72,26 @@ public class UserAchievementEntity {
         this.classRecordCarbonCounter = classRecordCarbonCounter;
     }
 
+    public static UserAchievementEntity getTestEntity() {
+        UserAchievementEntity userAchievementEntity = new UserAchievementEntity();
+        Map<String, Double> classRecordCarbonCounter = new HashMap<>();
+        classRecordCarbonCounter.put("生活用品", 1.0);
+        classRecordCarbonCounter.put("交通", 2.0);
+        Map<String, Integer> classRecordCounter = new HashMap<>();
+        classRecordCounter.put("生活用品", 1);
+        classRecordCounter.put("交通", 3);
+
+        Map<String, String> achieveDate = new HashMap<>();
+        achieveDate.put("0001", "test time");
+
+        userAchievementEntity.setUserId("testId");
+        userAchievementEntity.setAchieveTime(achieveDate);
+        userAchievementEntity.setClassRecordCarbonCounter(classRecordCarbonCounter);
+        userAchievementEntity.setClassRecordCounter(classRecordCounter);
+
+        return userAchievementEntity;
+    }
+
     @Override
     public String toString() {
         return "UserAchievementEntity{" +
