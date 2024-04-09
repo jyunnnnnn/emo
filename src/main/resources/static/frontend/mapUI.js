@@ -178,7 +178,6 @@ $('#saveRecord').on('click', function () {
     event.preventDefault();
     let classType = $('input[name="typeRadio"]:checked').next('.radio-tile').find('.radio-label').text();
     let type = $('#type').find('.item.is-selected');
-    console.log(type.text());
     let data_value = $('#gram').val();
     if(!classType){
         alert("請選擇類別");
