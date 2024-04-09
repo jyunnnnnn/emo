@@ -686,6 +686,7 @@ function loadAchievementObj(userId){
         type: 'GET',
         success: function(response) {
             AchievementObj=response;
+
             //console.log(AchievementObj);
             /*
             let target = AchievementObj.filter(achievement => achievement.accomplishTime != null);

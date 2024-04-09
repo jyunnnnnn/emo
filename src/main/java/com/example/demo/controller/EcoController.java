@@ -30,7 +30,7 @@ public class EcoController {
 
     //新增紀錄
     @PostMapping("/addRecord")
-    public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) throws FileNotFoundException {
+    public ResponseEntity<?> addRecord(@RequestBody EcoRecord ecoRecord) throws FileNotFoundException, InterruptedException {
         try {
             this.ecoRecordService.addRecord(ecoRecord);
             System.out.println(ecoRecord);
@@ -49,10 +49,9 @@ public class EcoController {
         try {
             this.ecoRecordService.updateRecord(ecoRecord);
         } catch (Exception err) {
-            System.err.println(err + " 使用者更新資料過程出現錯誤");
+            err.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         return ResponseEntity.ok("Record updated successfully");
     }
 
@@ -65,7 +64,7 @@ public class EcoController {
             List<EcoRecord> records = this.ecoRecordService.getSpecificUserRecords(userId);
             return ResponseEntity.ok(records);
         } catch (Exception err) {
-            System.err.println(err + " 抓取特定使用者紀錄過程出現錯誤");
+            err.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -79,7 +78,7 @@ public class EcoController {
             List<EcoRecord> records = this.ecoRecordService.getAllRecords();
             return ResponseEntity.ok(records);
         } catch (Exception err) {
-            System.err.println(err + " 抓取所有紀錄過程出現錯誤");
+            err.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -88,10 +87,11 @@ public class EcoController {
     @DeleteMapping("/deleteOneRecord")
     public ResponseEntity<?> deleteOneRecord(@RequestParam("recordId") String recordId) {
         try {
+            String userId = this.ecoRecordService.findOneRecord(recordId).getUserId();
             this.ecoRecordService.deleteOneRecord(recordId);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception err) {
-            System.err.println("刪除" + recordId + "紀錄過程出現問題");
+            err.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -101,7 +101,7 @@ public class EcoController {
     @DeleteMapping("/deleteMulRecord")
     public ResponseEntity<?> deleteMulRecord(@RequestBody List<String> recordIdList) {
         try {
-
+            String userId = this.ecoRecordService.findOneRecord(recordIdList.get(0)).getUserId();
             for (int i = 0; i < recordIdList.size(); i++) {
                 this.ecoRecordService.deleteOneRecord(recordIdList.get(i));
             }
@@ -114,7 +114,6 @@ public class EcoController {
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception err) {
-            System.err.println("刪除多筆紀錄過程出現問題");
             err.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -129,7 +128,7 @@ public class EcoController {
             this.ecoRecordService.deleteSpecificUserRecord(userId);
             return ResponseEntity.ok("Ok");
         } catch (Exception err) {
-            System.err.println(err + "刪除特定使用者紀錄過程出現錯誤");
+            err.printStackTrace();
             return ResponseEntity.ok("Fail");
         }
     }
