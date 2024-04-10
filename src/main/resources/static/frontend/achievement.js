@@ -173,7 +173,10 @@ function achievementClick(achievementId){
             .text("表揚你" + target[0].achievementDescription)
             .attr('class', 'achievementDescription');
 
-        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2);
+        let downloadLink = $("<a>")
+            .text("下載圖片")
+            .click(function (){generatePhoto(target);});
+        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2, downloadLink);
     } else {
         let achievementName = $("<div>")
             .text(target[0].achievementName)
@@ -388,5 +391,67 @@ function firstTimeAchieve(target){
                 firstTimeAchieve(target);
             }
         });
+    }
+}
+
+function generatePhoto(target) {
+    let achievementName = $("<div>")
+        .text(target[0].achievementName)
+        .attr({'class': 'eachAchievementName', 'style': 'text-align: center;'});
+    let achievementDiv = $("<div>")
+        .attr({
+            'class': 'achievementCard',
+            'id': 'achievementCard'
+        });
+    let cardInner = $("<div>")
+        .attr({
+            'class': 'cardInner',
+        });
+    let frontDiv = $("<div>")
+        .attr({
+            'class': 'front',
+            'style': 'text-align: center;',
+        });
+    let achievementSvg = $("<svg>")
+        .html(target[0].unLockedSvg);
+    frontDiv.append(achievementSvg);
+
+
+    time = (target[0].current.toFixed(2) * 100 / 100).toString()
+
+    let datePart = target[0].accomplishTime.substring(0, 10).split("-");
+    let achievementText2 = $("<div>")
+        .text(datePart[0] + "年" + datePart[1] + "月" + datePart[2] + "日")
+        .attr({'class': 'achievementText', 'style': 'text-align: center;'});
+
+    cardInner.append(frontDiv);
+    achievementDiv.append(cardInner);
+    time = parseInt(target[0].current / target[0].target, 10).toString();
+    let achieveTime = time.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    let achieveDescription1 = $("<div>")
+        .text("你贏得此獎章" + achieveTime + "次")
+        .attr({'class': 'achievementDescription','style':'color: black;'});
+    let achieveDescription2 = $("<div>")
+        .text("表揚你" + target[0].achievementDescription)
+        .attr({'class': 'achievementDescription','style':'color: black;'});
+
+    $('#ACPhoto').append(achievementName, frontDiv, achievementText2, achieveDescription1, achieveDescription2);
+
+    if (achievementName && frontDiv && achievementText2 && achieveDescription1 && achieveDescription2) {
+        let canvas = document.createElement('canvas');
+        let html2canvasElement = document.getElementById('ACPhoto');
+        html2canvasElement.style.display = 'flex';
+        html2canvasElement.style.opacity = 1;
+        html2canvasElement.style.zIndex = 10000;
+
+        html2canvas(html2canvasElement, {
+            canvas: canvas,
+            useCORS: true,
+        }).then(function () {
+            Canvas2Image.saveAsPNG(canvas);
+            // $('#ACPhoto').empty();
+        });
+    } else {
+        console.error("One or more elements are not found or undefined.");
     }
 }
