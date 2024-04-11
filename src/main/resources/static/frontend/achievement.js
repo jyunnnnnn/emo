@@ -406,16 +406,33 @@ function generatePhoto(target) {
     let cardInner = $("<div>")
         .attr({
             'class': 'cardInner',
+            'style': 'text-align: center;'
         });
     let frontDiv = $("<div>")
         .attr({
-            'class': 'front',
-            'style': 'text-align: center;',
-        });
+            'style': 'align-content: center;\n' +
+                '    width: 190px;\n' +
+                '    height: 190px;\n' +
+                '    background: white;\n' +
+                '    border-radius: 50%;\n' +
+                '    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),\n' +
+                '    0 0  0 2px rgb(190, 190, 190),\n' +
+                '    0.3em 0.3em 1em rgba(0,0,0,0.3);\n' +
+                '    position: relative;\n' +
+                '    margin-left: 95px;\n' +
+                '    margin-top: 20px;\n' +
+                '    margin-bottom: 20px;'});
 
     // 轉乘img，html2canvas無法正確轉換svg圖
     let img = new Image();
     img.src = 'data:image/svg+xml;base64,' + btoa(target[0].unLockedSvg);
+    img.style.position='absolute';
+    img.style.top='0';
+    img.style.right='0';
+    img.style.left='0';
+    img.style.bottom='0';
+    img.style.margin='auto';
+
     frontDiv.append(img);
 
     time = (target[0].current.toFixed(2) * 100 / 100).toString()
@@ -440,24 +457,30 @@ function generatePhoto(target) {
 
     if (achievementName && frontDiv && achievementText2 && achieveDescription1 && achieveDescription2) {
         let canvas = document.createElement('canvas');
-        let html2canvasElement = document.getElementById('ACPhoto');
-        html2canvasElement.style.display = 'block';
-        html2canvasElement.style.position='fixed';
-        html2canvasElement.style.opacity = 1;
-        html2canvasElement.style.zIndex = -100 ;
+        let ACPhoto2Png = document.getElementById('ACPhoto');
+        const ctx = canvas.getContext('2d');
+        ACPhoto2Png.style.backgroundColor='#fff'
+        ACPhoto2Png.style.display = 'block';
+        ACPhoto2Png.style.position = 'fixed';
+        ACPhoto2Png.style.zIndex = -1000;
 
 
-        //沒有限定這個大小他就會亂跑:)，但徒太小她會截到空白
-        canvas.width = 450;
-        canvas.height = 500;
+        // 使用 dom-to-image 轉html為png
+        domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
+                let img = new Image();
+                img.src = dataUrl;
 
-        html2canvas(html2canvasElement, {
-            canvas: canvas,
-            useCORS: true,
-        }).then(function () {
-            Canvas2Image.saveAsPNG(canvas);
-            $('#ACPhoto').empty();
-        });
+
+                let link = document.createElement('a');
+                link.download = 'image.png';
+                link.href = dataUrl;
+                link.click();
+                $('#ACPhoto').empty();
+                $('#ACPhoto').css("display","none");
+            })
+            .catch(function (error) {
+                console.error('dom-to-image error:', error);
+            });
     } else {
         console.error("One or more elements are not found or undefined.");
     }
