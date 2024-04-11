@@ -412,10 +412,11 @@ function generatePhoto(target) {
             'class': 'front',
             'style': 'text-align: center;',
         });
-    let achievementSvg = $("<svg>")
-        .html(target[0].unLockedSvg);
-    frontDiv.append(achievementSvg);
 
+    // 轉乘img，html2canvas無法正確轉換svg圖
+    let img = new Image();
+    img.src = 'data:image/svg+xml;base64,' + btoa(target[0].unLockedSvg);
+    frontDiv.append(img);
 
     time = (target[0].current.toFixed(2) * 100 / 100).toString()
 
@@ -440,16 +441,22 @@ function generatePhoto(target) {
     if (achievementName && frontDiv && achievementText2 && achieveDescription1 && achieveDescription2) {
         let canvas = document.createElement('canvas');
         let html2canvasElement = document.getElementById('ACPhoto');
-        html2canvasElement.style.display = 'flex';
+        html2canvasElement.style.display = 'block';
+        html2canvasElement.style.position='fixed';
         html2canvasElement.style.opacity = 1;
-        html2canvasElement.style.zIndex = 10000;
+        html2canvasElement.style.zIndex = -100 ;
+
+
+        //沒有限定這個大小他就會亂跑:)，但徒太小她會截到空白
+        canvas.width = 450;
+        canvas.height = 500;
 
         html2canvas(html2canvasElement, {
             canvas: canvas,
             useCORS: true,
         }).then(function () {
             Canvas2Image.saveAsPNG(canvas);
-            // $('#ACPhoto').empty();
+            $('#ACPhoto').empty();
         });
     } else {
         console.error("One or more elements are not found or undefined.");
