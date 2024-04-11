@@ -19,6 +19,8 @@ let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
 let directionsDisplay;
 let questionMark = {};
 let AchievementObj={};
+let Rank={};//減碳量等級判定物件
+let AllUsersFp={};//所有使用者排行物件陣列
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -234,6 +236,8 @@ function systemInit(){
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
+    loadRank();
+    loadAllUsersFp();
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -698,3 +702,29 @@ function loadAchievementObj(userId){
         }
     });
 }
+function loadRank(){
+    $.ajax({
+        url: '/Rank/getRank,
+        type: 'GET',
+        success: function(response) {
+            Rank=response;
+            //console.log(Rank);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+function loadAllUsersFp(
+    $.ajax({
+        url: '/Rank/getRank,
+        type: 'GET',
+        success: function(response) {
+            Rank=response;
+            //console.log(Rank);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+);
