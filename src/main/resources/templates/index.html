@@ -40,8 +40,8 @@
       @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
 
       body {
+          overflow-x: hidden;
           font-family: 'HunInn', 'Mandali', sans-serif;
-          background-image: url(frontend/img/bg4.png);
           background-size: cover;
           background-position: center center;
           height: 100vh;
@@ -57,7 +57,7 @@
     <a class="navbar-brand EMOapp" href="#">
       <object data="/frontend/img/EMOapp.svg" type="image/svg+xml"></object>
     </a>
-    <button onclick="toggleNavbarColor()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button id="navbarBtn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse navbarJustify" id="navbarNav">
@@ -89,11 +89,34 @@
 <section id="home" class="home">
   <div class="totalFPDescription">截至目前，EMOapp的使用者已累積為地球減少</div>
   <div id="totalFPCounter" class="totalFPCounter"></div>
-  <object data="/frontend/img/indexBackground.svg" type="image/svg+xml"></object>
+  <object data="/frontend/img/indexBackground.svg" type="image/svg+xml" class="homeBG"></object>
 </section>
-<section  id="features" class="features">
-</section>
+<section id="features" class="features">
+  <div class="featuresSlogan">
+    <span class="sloganSymbolLeft fade-in-up">“</span>
+    <div class="sloganTyping1 fade-in-up">地球暖化加劇，</div>
+    <div class="sloganTyping2 fade-in-up">北極熊將無家可歸。</div>
+    <span class="sloganSymbolRight fade-in-up">”</span>
 
+    <div class="fade-in-up" id="slogan2">
+      <div class="sloganDescription" style="padding-top: 30px;">根據研究，</div>
+      <div class="sloganDescription">北極氣候暖化速度是整個地球的2倍。</div>
+    </div>
+  </div>
+</section>
+<section  id="featuresRecord" class="featuresRecord">
+  <div class="recordSlogan fade-in-up" id="recordSlogan">
+    <div>留下<span>減碳足跡</span></div>
+    <div>讓地球不再EMO</div>
+  </div>
+  <img id="recordPhoto1" class="recordPhoto1 fade-in-up" src="/frontend/img/生活紀錄.png">
+  <img id="recordPhoto2" class="recordPhoto2 fade-in-up" src="/frontend/img/路線紀錄.png">
+  <div class="recordDescription fade-in-up" id="recordDescription">
+    <div>隨時記錄環保行為，</div>
+    <div>出行路線一點即可查詢，</div>
+    <div>每天一小步，累積成一大步。</div>
+  </div>
+</section>
 <section  id="resources" class="resources">
 </section>
 <section  id="qa" class="qa">

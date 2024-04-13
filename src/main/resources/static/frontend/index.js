@@ -6,30 +6,53 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error(totalFP.error);
     }
-    // 監聽滾動事件
-    window.addEventListener("scroll", function () {
-        // 取得滾動的垂直位置
-        let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+});
 
-        // 設定滾動位置的閾值
-        let scrollThreshold = 20;
+// feature typing
+window.addEventListener('scroll', () => {
+    let sloganTyping1 = document.querySelector('.sloganTyping1');
+    let sloganTyping2 = document.querySelector('.sloganTyping2');
+    let sloganSymbolLeft = document.querySelector('.sloganSymbolLeft');
+    let sloganSymbolRight = document.querySelector('.sloganSymbolRight');
+    let scrollPosition = window.scrollY;
+    let homePosition = window.innerHeight/2;
 
-        // 判斷是否超過閾值，超過則增加底色，否則移除底色
-        if (scrollPosition > scrollThreshold) {
-            document.getElementById("navbar").style.backgroundColor = "#62ac71";
-        } else {
-            document.getElementById("navbar").style.backgroundColor = "transparent";
-        }
-    });
+    if (scrollPosition > homePosition) {
+        sloganTyping1.classList.add('active');
+        sloganSymbolLeft.classList.add('active');
+        sloganSymbolRight.classList.add('active');
+        setTimeout(() => {
+            sloganTyping2.classList.add('active');
+        }, 1000);
+        setTimeout(() => {
+            $('#slogan2').addClass('active');
+        }, 2000);
+    }
+
+    let featurePosition = window.innerHeight;
+    if (scrollPosition > featurePosition) {
+        $('#recordSlogan').addClass('active');
+        setTimeout(() => {
+            $('#recordPhoto1').addClass('active');
+        }, 500);
+        setTimeout(() => {
+            $('#recordPhoto2').addClass('active');
+        }, 1000);
+        setTimeout(() => {
+            $('#recordDescription').addClass('active');
+        }, 1500);
+    }
 });
 
 //navbar背景顏色
-// var checkNavbar = true;
-function toggleNavbarColor() {
-    // checkNavbar = ! checkNavbar;
-    // document.getElementById("navbar").style.backgroundColor =  checkNavbar ? "transparent": "#01310b";
-    document.getElementById("navbar").style.backgroundColor = "#01310b";
-}
+$('#navbarBtn').on('click',function(){
+    console.log($('#navbar').css('backgroundColor').toString())
+    if($('#navbar').css('backgroundColor').toString() === 'rgb(98, 172, 113)'){
+        $('#navbar').css('backgroundColor', 'rgba(0, 0, 0, 0)');
+    } else {
+        $('#navbar').css('backgroundColor', 'rgb(98, 172, 113)')
+    }
+})
 
 // 手機模式不要用slider
 document.addEventListener('DOMContentLoaded', function () {

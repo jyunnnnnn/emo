@@ -1,13 +1,140 @@
+/* 共用 */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+.fade-in-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+img{
+    border-radius: 30px;
+    max-width: 100vh;
+    max-height: 100vh;
+    box-shadow: -29px 34px 67px 0 rgba(0,0,0,.1);
+}
+span{
+    color: rgb(98, 172, 113);
+}
+
+/* 導航列 */
 .EMOapp{
     padding-left: 60px;
 }
+#navbar{
+    padding: 0;
+}
+#features{
+    scroll-margin-top: 130px;
+}
+
+/* section:home */
 .home {
     background: #b8eecc;
+    position: relative;
+    height: 100vh;
 }
+.homeBG{
+    position: relative;
+    bottom: 50px;
+}
+.totalFPCounter{
+    font-size: 80px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding-top: 250px;
+    color: #3d3c3c;
+}
+.totalFPDescription{
+    font-size: 30px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding-top: 200px;
+    color: #3d3c3c;
+}
+
+/* section:features */
 .features{
     background: #caf5d9;
-    height: 700px;
+    height: 80vh;
+    position: relative;
 }
+.featuresSlogan{
+    padding-top: 8%;
+    text-align: center;
+    font-size: 55px;
+}
+.sloganTyping1{
+    margin: 0 auto;
+    width: 7em;
+    color: #3d3c3c;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.sloganTyping1.active{
+    animation: typing 1s steps(7);
+}
+.sloganTyping2{
+    margin: 0 auto;
+    width: 9em;
+    color: #3d3c3c;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.sloganTyping2.active{
+    animation: typing 1s steps(9);
+}
+@keyframes typing {
+    from { width: 0% }
+}
+.sloganSymbolLeft{
+    color: #7a7979;
+    position: absolute;
+    left: 25%;
+}
+.sloganSymbolRight{
+    color: #7a7979;
+    position: absolute;
+    right: 25%;
+    top: 37%;
+}
+.sloganDescription{
+    color: #7a7979;
+    font-size: 25px;
+    text-align: center;
+}
+/* section:featuresRecord */
+.featuresRecord{
+    background: #dafee2;
+    height: 180vh;
+}
+.recordSlogan{
+    font-size: 55px;
+    position: relative;
+    left: 18%;
+    top: 15%;
+}
+.recordPhoto1{
+    position: relative;
+    top: 18%;
+    left: 18%;
+}
+.recordPhoto2{
+    position: relative;
+    top: 2%;
+    left: 25%;
+}
+.recordDescription{
+    position: relative;
+    color: #3d3c3c;
+    font-size: 25px;
+    left: 52%;
+    top: 8%;
+}
+
 .resources{
     background: #b8eecc;
     height: 700px;
@@ -34,30 +161,13 @@
     transition: transform 0.1s linear;
 }
 
-.totalFPCounter{
-    font-size: 80px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    padding-top: 250px;
-}
-.totalFPDescription{
-    font-size: 30px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    padding-top: 200px;
-}
 
 
 
 
 
 
-img{
-    max-width: 100%;
-    padding:5px;
-}
+
 .btn{
     border-radius: 40px;
 }
@@ -172,24 +282,98 @@ img{
     .top {
         font-size: 140px;
     }
+}
+@media only screen and (max-width: 700px) {
+    /* 共用 */
+    img{
+        max-height: 45vh;
+    }
+    /* navBar */
+    .navbar {
+        text-align: center;
+        padding: 0;
+    }
+    .EMOapp{
+        transform: scale(0.8);
+    }
+    #navbarBtn{
+        margin-right: 8%;
+    }
+    /* section:home */
+    .homeBG{
+        left: -150px;
+        top: 100px;
+        height: 100vh;
+        position: relative;
+        transform: scale(0.8);
+    }
+    .totalFPDescription{
+        font-size: 15px;
+    }
+    .totalFPCounter{
+        font-size: 30px;
+        padding-top: 230px;
+    }
+    /* section:feature */
+    .features{
+        height: 50vh;
+    }
+    .featuresSlogan{
+        padding-top: 20%;
+    }
+    .sloganSymbolLeft{
+        display: none;
+    }
+    .sloganSymbolRight{
+        display: none;
+    }
+    .sloganTyping1,
+    .sloganTyping2{
+        font-size: 30px;
+    }
+    .sloganDescription{
+        font-size: 17px;
+    }
+    /* section:featureRecord */
+    .featuresRecord{
+        height: 100vh;
+        position: relative;
+    }
+    .recordSlogan{
+        font-size: 30px;
+        position: relative;
+        left: 10%;
+        top: 10%;
+    }
+    .recordPhoto1{
+        position: relative;
+        top: 25%;
+        left: 5%;
+    }
+    .recordPhoto2{
+        position: absolute;
+        top: 25%;
+        left: 51%;
+    }
+    .recordDescription{
+        position: absolute;
+        font-size: 17px;
+        left: 38%;
+        top: 80%;
+        text-align: right;
+    }
 
-    /* rwd */
-    @media only screen and (max-width: 700px) {
-        .youtube {
-            width: 350px;
-            height: 200px;
-        }
+    .youtube {
+        width: 350px;
+        height: 200px;
+    }
 
-        .navbar {
-            text-align: center;
-        }
 
-        .transparent-box {
-            margin: 20px;
-        }
+    .transparent-box {
+        margin: 20px;
+    }
 
-        .top {
-            font-size: 100px;
-        }
+    .top {
+        font-size: 100px;
     }
 }
