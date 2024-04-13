@@ -704,7 +704,7 @@ function loadAchievementObj(userId){
 }
 function loadRank(){
     $.ajax({
-        url: '/Rank/getRank,
+        url: '/Rank/getRank',
         type: 'GET',
         success: function(response) {
             Rank=response;
@@ -715,9 +715,9 @@ function loadRank(){
         }
     });
 }
-function loadAllUsersFp(
+function loadAllUsersFp(){
     $.ajax({
-        url: '/Rank/getRank,
+        url: '/Rank/getRank',
         type: 'GET',
         success: function(response) {
             Rank=response;
@@ -727,4 +727,5 @@ function loadAllUsersFp(
             console.error('Error:', error);
         }
     });
-);
+
+}
