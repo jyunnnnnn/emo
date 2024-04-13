@@ -642,18 +642,39 @@ svg:hover .detail {
     text-align: center;
 }
 
+.ranking-container {
+    overflow-y: auto;
+    height: auto;
+    height: 80%;
+}
 
+.row-container {
+    display: flex;
+    align-items: center;
 
-.rank-div {
+}
+    .rank-div{
         display: flex;
         align-items: center;
-        background: rgba(235, 237, 239, 0.87);
         border-radius: 20px;
-        justify-content: space-between;
-        height: 70px;
         margin-bottom: 5px;
         margin-top: 15px;
         padding: 10px;
+        text-align: center;
+         background: rgba(235, 237, 239, 0.87);
+        border: 3px solid;
+        flex: 90%;
+    }
+
+    .rankNum-div {
+        text-align: center;
+        margin-right: 10px;
+         margin-bottom: 5px;
+         margin-top: 15px;
+        align-items: center; /* 垂直居中 */
+        justify-content: center; /* 水平居中 */
+        font-size:25px;
+        font-weight: bold;
     }
 
     .rank-div img {
@@ -667,8 +688,11 @@ svg:hover .detail {
     .rank-div .username {
         flex: 1;
         margin-right: 10px;
+        text-align: center;
+        font-size:20px;
     }
 
     .rank-div .carbon-offset {
         font-weight: bold;
+        font-size:18px;
     }
