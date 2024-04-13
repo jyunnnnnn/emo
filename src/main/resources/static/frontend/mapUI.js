@@ -422,7 +422,9 @@ function closeFW(event){
         $('#uploadUserPhotoFW').css("display", "none");
     }else if(event.target.id === 'FPTransferFW') {
         $('#FPTransferFW').css("display", "none");
-    }
+    }else if(event.target.id === 'rankingFW') {
+             $('#rankingFW').css("display", "none");
+         }
 }
 
 // 關閉紀錄懸浮窗
@@ -462,6 +464,7 @@ $('#closeRenameModal').on('click', function () {
 $('#closeAdminModal').on('click', function () {
     $('#adminFW').css("display", "none");
 });
+
 
 
 // 批量編輯歷史紀錄

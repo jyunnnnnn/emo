@@ -236,8 +236,8 @@ function systemInit(){
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
-    loadRank();
-    loadAllUsersFp();
+    //loadRank();
+    //loadAllUsersFp();
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -704,7 +704,7 @@ function loadAchievementObj(userId){
 }
 function loadRank(){
     $.ajax({
-        url: '/Rank/getRank,
+        url: '/Rank/getRank',
         type: 'GET',
         success: function(response) {
             Rank=response;
@@ -715,9 +715,9 @@ function loadRank(){
         }
     });
 }
-function loadAllUsersFp(
+function loadAllUsersFp(){
     $.ajax({
-        url: '/Rank/getRank,
+        url: '/Rank/getRank',
         type: 'GET',
         success: function(response) {
             Rank=response;
@@ -727,4 +727,4 @@ function loadAllUsersFp(
             console.error('Error:', error);
         }
     });
-);
+}
