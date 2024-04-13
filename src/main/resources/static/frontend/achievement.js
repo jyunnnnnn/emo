@@ -175,8 +175,17 @@ function achievementClick(achievementId){
 
         let downloadLink = $("<a>")
             .text("下載圖片")
-            .click(function (){generatePhoto(target);});
-        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2, downloadLink);
+            .click(function (){
+                generatePhoto(target);
+                downlodACPhoto();
+            });
+        let shareLink = $("<a>")
+            .text("分享圖片")
+            .click(function (){
+                generatePhoto(target);
+                shareImage();
+            });
+        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2, downloadLink, shareLink);
     } else {
         let achievementName = $("<div>")
             .text(target[0].achievementName)
@@ -456,32 +465,77 @@ function generatePhoto(target) {
     $('#ACPhoto').append(achievementName, frontDiv, achievementText2, achieveDescription1, achieveDescription2);
 
     if (achievementName && frontDiv && achievementText2 && achieveDescription1 && achieveDescription2) {
-        let canvas = document.createElement('canvas');
         let ACPhoto2Png = document.getElementById('ACPhoto');
-        const ctx = canvas.getContext('2d');
+
         ACPhoto2Png.style.backgroundColor='#fff'
         ACPhoto2Png.style.display = 'block';
         ACPhoto2Png.style.position = 'fixed';
         ACPhoto2Png.style.zIndex = -1000;
 
 
-        // 使用 dom-to-image 轉html為png
-        domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
-                let img = new Image();
-                img.src = dataUrl;
-
-
-                let link = document.createElement('a');
-                link.download = 'image.png';
-                link.href = dataUrl;
-                link.click();
-                $('#ACPhoto').empty();
-                $('#ACPhoto').css("display","none");
-            })
-            .catch(function (error) {
-                console.error('dom-to-image error:', error);
-            });
     } else {
         console.error("One or more elements are not found or undefined.");
     }
+}
+function downlodACPhoto(){
+    let ACPhoto2Png = document.getElementById('ACPhoto');
+    // 使用 dom-to-image 轉html為png
+    domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
+        let img = new Image();
+        img.src = dataUrl;
+
+        let link = document.createElement('a');
+        link.download = 'image.png';
+        link.href = dataUrl;
+        link.click();
+        $('#ACPhoto').empty();
+        $('#ACPhoto').css("display","none");
+    }).catch(function (error) {
+        console.error('dom-to-image error:', error);
+    });
+}
+
+async function shareImage() {
+
+    let ACPhoto2Png = document.getElementById('ACPhoto');
+    // 使用 dom-to-image 轉html為png
+    domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
+        const blob = dataURItoBlob(dataUrl);
+        const filesArray = [
+            new File(
+                [blob],
+                'meme.jpg',
+                {
+                    type: "image/jpeg",
+                    lastModified: new Date().getTime()
+                }
+            )
+        ];
+        const shareData = {
+            files: filesArray,
+        };
+        navigator.share(shareData);
+        $('#ACPhoto').empty();
+        $('#ACPhoto').css("display","none");
+    }).catch(function (error) {
+        console.error('dom-to-image error:', error);
+    });
+
+}
+
+function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    var bb = new Blob([ab]);
+    return bb;
 }
