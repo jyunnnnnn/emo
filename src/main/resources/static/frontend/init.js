@@ -261,6 +261,7 @@ function systemInit(){
     }else {
         $('#userPhoto').css("display", "block");
     }
+
 }
 //更新現在位置
 function updateCurrentCircle() {
@@ -285,7 +286,7 @@ function loadSVG(){
             // 處理成功時的邏輯
             svgData = JSON.parse(data);
             loadFootprintData();//載入碳足跡計算
-            loadEcoRecords(User.userId);//載入環保紀錄
+
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
@@ -651,6 +652,7 @@ function removeDirections() {
     }
 }
 
+
 $('#upLoadUserPhoto').click(uploadPhoto);
 function uploadPhoto() {
         if (!croppedImageUrl) {
@@ -705,28 +707,31 @@ function loadAchievementObj(userId){
 
 
 
-function loadRank(){
+function loadAllUsersFp(){
     $.ajax({
         url: '/rank/getRankObj',
         type: 'GET',
         success: function(response) {
-            console.log(response);
-            Rank=response;
-            //console.log(Rank);
+            //console.log(response);
+            AllUsersFp=response;
+            loadEcoRecords(User.userId);//載入環保紀錄
+            //console.log(AllUsersFp);
+            initUserData();
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
         }
     });
 }
-function loadAllUsersFp(){
+function loadRank(){
     $.ajax({
         url: '/rank/getUsersRankData',
         type: 'GET',
         success: function(response) {
-        console.log(response);
+            // console.log(response);
             Rank=response;
             //console.log(Rank);
+            // 調用生成使用者資料函數
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
