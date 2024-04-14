@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error(totalFP.error);
     }
+
+    // featureHistory影片速度
+    $('#historyVideo').get(0).playbackRate = 2.0;
 });
 
 // feature typing
@@ -29,8 +32,8 @@ window.addEventListener('scroll', () => {
         }, 2000);
     }
 
-    let featurePosition = window.innerHeight;
-    if (scrollPosition > featurePosition) {
+    let recordPosition = window.innerHeight;
+    if (scrollPosition > recordPosition) {
         $('#recordSlogan').addClass('active');
         setTimeout(() => {
             $('#recordPhoto1').addClass('active');
@@ -42,9 +45,20 @@ window.addEventListener('scroll', () => {
             $('#recordDescription').addClass('active');
         }, 1500);
     }
+
+    let historyPosition = window.innerHeight * 2;
+    if (scrollPosition > historyPosition) {
+        $('#historySlogan').addClass('active');
+        setTimeout(() => {
+            $('#historyVideo').addClass('active');
+        }, 500);
+        setTimeout(() => {
+            $('#historyDescription').addClass('active');
+        }, 1000);
+    }
 });
 
-//navbar背景顏色
+// navbar背景顏色
 $('#navbarBtn').on('click',function(){
     console.log($('#navbar').css('backgroundColor').toString())
     if($('#navbar').css('backgroundColor').toString() === 'rgb(98, 172, 113)'){

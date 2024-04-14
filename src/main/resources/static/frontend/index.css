@@ -14,6 +14,12 @@ img{
     max-height: 100vh;
     box-shadow: -29px 34px 67px 0 rgba(0,0,0,.1);
 }
+video{
+    border-radius: 30px;
+    max-width: 100vh;
+    max-height: 100vh;
+    box-shadow: -29px 34px 67px 0 rgba(0,0,0,.1);
+}
 span{
     color: rgb(98, 172, 113);
 }
@@ -133,6 +139,30 @@ span{
     font-size: 25px;
     left: 52%;
     top: 8%;
+}
+/* section:featuresHistory */
+.featuresHistory{
+    background: #caf5d9;
+    height: 130vh;
+    position: relative;
+}
+.historyVideo{
+    position: absolute;
+    left: 56vw;
+    top: 16vh;
+}
+.historySlogan{
+    font-size: 55px;
+    position: relative;
+    left: 15%;
+    top: 33%;
+}
+.historyDescription{
+    position: relative;
+    color: #3d3c3c;
+    font-size: 25px;
+    left: 15%;
+    top: 38%;
 }
 
 .resources{
@@ -287,6 +317,7 @@ span{
     /* 共用 */
     img{
         max-height: 45vh;
+        max-width: 45vw;
     }
     /* navBar */
     .navbar {
@@ -348,12 +379,12 @@ span{
     .recordPhoto1{
         position: relative;
         top: 25%;
-        left: 5%;
+        left: 5vw;
     }
     .recordPhoto2{
         position: absolute;
         top: 25%;
-        left: 51%;
+        left: 50vw;
     }
     .recordDescription{
         position: absolute;
