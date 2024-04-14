@@ -239,7 +239,7 @@ function setData(parsedData, svgData){
              $('#hover'+i).val(svgData.svgImages[categories[i]][temp]);
              $('#hover'+i).attr('placeholder', '此欄位長寬限制為width: 10px height: 10px');
              $('#recordList'+i).val(svgData.svgImages.recordList[firstName]);
-             $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 20px height: 20px');
+             $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 30px height: 30px');
              $('#marker'+i).val(svgData.svgImages.marker[firstName]);
              $('#marker'+i).attr('placeholder', '此欄位長寬限制為width: 50px height: 50px');
          }else{
@@ -306,7 +306,7 @@ function setData(parsedData, svgData){
                     $('#small').val(parsedData[categories[i]].content[0].option.小);
                 }
                 $('#recordList'+i).val(svgData.svgImages.recordList.環保杯);
-                $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 20px height: 20px');
+                $('#recordList'+i).attr('placeholder', '此欄位長寬限制為width: 30px height: 30px');
          }
         //初始化
         $('#name'+i).val(parsedData[categories[i]].content[0].name);
@@ -375,8 +375,8 @@ function setData(parsedData, svgData){
                         break;
                     }
                }
-               svgCard += '<div class="recordList-group">'+recordListSvg+
-                          '<label>RecordList svg</label>'+
+               svgCard += '<div class="recordList-group"><span id="recordListDisplay'+i+'">'+recordListSvg+
+                          '</span><label>RecordList svg</label>'+
                             '<input type="text" class="svg-input" id="'+categories[i]+'-recordList">'+
                           '</div> <br>';
                svgCard += ' </div>';
@@ -410,23 +410,22 @@ function setData(parsedData, svgData){
                         break;
                     }
                }
-               svgCard += '<div class="icon-group">'+IconSvg+
-                         '<label>Icon svg</label>'+
+               svgCard += '<div class="icon-group"><span id="iconDisplay'+i+'">'+IconSvg+
+                         '</span><label>Icon svg</label>'+
                            '<input type="text" class="svg-input" id="'+categories[i]+'-icon">'+
                          '</div> <br>';
-               svgCard += '<div class="icon-group">'+HoverSvg+
-                         '<label>Hover svg</label>'+
+               svgCard += '<div class="icon-group"><span id="hoverDisplay'+i+'">'+HoverSvg+
+                         '</span><label>Hover svg</label>'+
                            '<input type="text" class="svg-input" id="'+categories[i]+'-hover">'+
                          '</div> <br>';
-               svgCard += '<div class="recordList-group">'+recordListSvg+
-                          '<label>RecordList svg</label>'+
+               svgCard += '<div class="recordList-group"><span id="recordListDisplay'+i+'">'+recordListSvg+
+                          '</span><label>RecordList svg</label>'+
                             '<input type="text" class="svg-input" id="'+categories[i]+'-recordList">'+
                           '</div> <br>';
-               svgCard += '<div class="marker-group">'+markerSvg+
-                         '<label>Marker svg</label>'+
+               svgCard += '<div class="marker-group"><span id="markerDisplay'+i+'">'+markerSvg+
+                         '</span><label>Marker svg</label>'+
                            '<input type="text" class="svg-input" id="'+categories[i]+'-marker">'+
                          '</div> <br>';
-               svgCard += ' </div>';
                $('#manage-container').append(svgCard);
                //初始化
                $('#'+categories[i]+'-icon').val(IconSvg);
@@ -594,6 +593,21 @@ function saveData(){
                 success: function(response) {
                     alert("儲存成功!");
                     //svg顯示
+                    if(selectedOption=="transportation"){
+                        $('#recordListDisplay1').empty();
+                        $('#recordListDisplay1').append(sendSvgData[selectedOption].recordList);
+                    }else{
+                        //daily 有四種
+                        $('#iconDisplay0').empty();
+                        $('#iconDisplay0').append(sendSvgData[selectedOption].icon);
+                        $('#hoverDisplay0').empty();
+                        $('#hoverDisplay0').append(sendSvgData[selectedOption].hover);
+                        $('#recordListDisplay0').empty();
+                        $('#recordListDisplay0').append(sendSvgData[selectedOption].recordList);
+                        $('#markerDisplay0').empty();
+                        $('#markerDisplay0').append(sendSvgData[selectedOption].marker);
+                    }
+
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // 更新失敗時的處理邏輯
@@ -639,12 +653,8 @@ function saveData(){
                               alert(errorMessage);
                           }
                     });
-                    if(!isAdd){
-                        updateContentWindow(sendBasicData[selectedOption].content.index);
-                        clickAdd(); //回到修改
-                    }else{
-                    //svg顯示
-                    }
+
+                    updateContentWindow(sendBasicData[selectedOption].content.index);
 
                 },
                 error: function(xhr, status, error) {
@@ -900,7 +910,29 @@ function updateContentWindow( index ){
                  targetNum = i;
             }
         }
-     $('#types'+targetNum).append('<option value="'+index+'">'+index+'</option>');
+        if(!isAdd){
+             $('#types'+targetNum).append('<option value="'+index+'">'+index+'</option>');
+             $('#types'+targetNum).val(index);//選擇最新選項
+             clickAdd();
+        }else{
+            //svg顯示
+            if(targetCategory=="transportation"){
+                //四種svg
+                $('#icon-svgDisplay'+targetNum).empty();
+                $('#icon-svgDisplay'+targetNum).append($('#icon'+targetNum).val());
+                $('#hover-svgDisplay'+targetNum).empty();
+                $('#hover-svgDisplay'+targetNum).append($('#hover'+targetNum).val());
+                $('#recordList-svgDisplay'+targetNum).empty();
+                $('#recordList-svgDisplay'+targetNum).append($('#recordList'+targetNum).val());
+                $('#marker-svgDisplay'+targetNum).empty();
+                $('#marker-svgDisplay'+targetNum).append($('#marker'+targetNum).val());
+            }else{
+                //一種svg
+                $('#recordList-svgDisplay'+targetNum).empty();
+                $('#recordList-svgDisplay'+targetNum).append($('#recordList'+targetNum).val());
+            }
+        }
+
 }
 
 //切換新增修改
