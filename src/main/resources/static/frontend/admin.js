@@ -593,6 +593,7 @@ function saveData(){
                 data: JSON.stringify(sendSvgData),
                 success: function(response) {
                     alert("儲存成功!");
+                    //svg顯示
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // 更新失敗時的處理邏輯
@@ -641,6 +642,8 @@ function saveData(){
                     if(!isAdd){
                         updateContentWindow(sendBasicData[selectedOption].content.index);
                         clickAdd(); //回到修改
+                    }else{
+                    //svg顯示
                     }
 
                 },
@@ -905,7 +908,7 @@ function clickAdd(){
     //  切換按鈕顯示的新增或修改
         selectedOption2 = $('#basic-options2').val();// ex. content color
         if(isAdd){//在修改模式中按下新增模式
-            $(this).text("修改模式");
+            $('#add').text("修改模式");
             $('#save').text("新增");
             $('#delete').prop('disabled', true);
 
@@ -952,7 +955,7 @@ function clickAdd(){
 
 //            }
         }else{//在新增模式中按下修改模式
-            $(this).text("新增模式");
+            $('#add').text("新增模式");
             $('#save').text("儲存變更");
              $('#delete').prop('disabled', false);
              if(selectedOption2.includes("color")||selectedOption2.includes("svg")){
@@ -984,7 +987,12 @@ function clickAdd(){
                     }
                     $('#types'+i).val(parsedData[categories[i]].content[0].index);
                     $('#name'+i).val(parsedData[categories[i]].content[0].name);
-                    $('#description'+i).val(parsedData[categories[i]].content[0].description);
+                    //分割description字串
+                    let str = parsedData[categories[i]].content[0].description;
+                    let startIndex = str.indexOf("比較對象為") + "比較對象為".length;
+                    let endIndex = str.indexOf(" ", startIndex);
+                    let comparisonObject = str.substring(startIndex, endIndex);
+                    $('#description'+i).val(comparisonObject);
                     $('#coefficient'+i).val(parsedData[categories[i]].content[0].coefficient);
                     $('#units'+i).val(parsedData[categories[i]].content[0].unit);
                     //console.log("unit", parsedData[categories[i]].content[0].unit);
