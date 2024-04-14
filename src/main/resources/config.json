@@ -113,6 +113,15 @@
           "baseline": "scooter",
           "color": "#a265c3",
           "description": "比較對象為騎車 當前公里數×排放係數(騎車[100]-走路[0])"
+        },
+        {
+          "index": "bicycle",
+          "name": "腳踏車",
+          "coefficient": 0.0,
+          "unit": "gCO2e/km",
+          "baseline": "scooter",
+          "color": "#eeb4d6",
+          "description": "比較對象為騎車 當前公里數×排放係數(騎車[100]-腳踏車[0])"
         }
       ],
       "name": "交通"
