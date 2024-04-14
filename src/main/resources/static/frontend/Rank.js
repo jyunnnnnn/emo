@@ -3,6 +3,11 @@ $('#rankingButton').on('click', function () {
     // 顯示懸浮窗
     $('#rankingFW').css("display", "flex");
     $('#rankingFW').css("position", "fixed");
+
+    // 顯示自己的排行
+    $('#myRankPhoto').attr("src",User.photo);
+    $('#MyRankName').text(User.nickname);
+    $('#myRankCarbon').text("我的總減碳量: "+totalFP.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 });
 
 // 關閉排行懸浮窗
