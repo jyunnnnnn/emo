@@ -132,6 +132,7 @@ public class SecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/user/googleLogin").permitAll()
                                 .requestMatchers("/eco/**").permitAll()
+                                .requestMatchers("/rank/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout(auth ->
