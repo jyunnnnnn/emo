@@ -87,10 +87,12 @@ public class ConfigService {
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
         RecordWrapper t2 = t1.get(categoryName);//獲取目標類別
         List<RecordItem> contents = t2.getContent();
+        RecordItem target = null;
         //flag:true 新增 flag:false 更新
         boolean flag = true;
         for (int i = 0; i < contents.size(); i++) {
             if (contents.get(i).getIndex().equals(req.getContent().getIndex())) {
+                target = contents.get(i);
                 contents.set(i, req.getContent());
                 flag = false;
                 break;
@@ -98,14 +100,20 @@ public class ConfigService {
         }
 
         if (flag) {
+            //為新增紀錄
             contents.add(req.getContent());
+        } else {
+            //更新紀錄，刪除原svg內容
+
+            this.svgConfigService.deleteClass(categoryName, target);
         }
         //更新該類別的content
         t2.setContent(contents);
         t1.replace(categoryName, t2);
+        //刪除其對應的svg資料
 
-
-        this.svgConfigService.adminPageUpdateContentSvg(categoryName, req.getSvg(), t2.getName(), req.getContent().getIndex());
+        //更新svg設定檔
+        this.svgConfigService.adminPageUpdateContentSvg(categoryName, req.getSvg(), req.getContent().getName(), req.getContent().getIndex());
 
         record.setRecordCategory(t1);
         //修改設定檔文件
@@ -149,9 +157,11 @@ public class ConfigService {
     }
 
     //刪除特定紀錄項目
-    public void deleteRecordContent(String index) {
+    public void deleteRecordContent(String index) throws FileNotFoundException {
 
+        //刪除類別設定檔特定內容
         Map<String, RecordWrapper> t1 = record.getRecordCategory();//獲取原減碳紀錄內容
+        RecordItem target = null;
         String targetClassName = null;
         for (String key : t1.keySet()) {
             boolean flag = false;
@@ -161,6 +171,7 @@ public class ConfigService {
                 //找到目標
                 if (contents.get(i).getIndex().equals(index)) {
                     targetClassName = key;
+                    target = contents.get(i);
                     contents.remove(i);
                     t2.setContent(contents);
                     //取代原本的顏色
@@ -178,7 +189,8 @@ public class ConfigService {
                 break;
         }
 
-
+        //刪除其對應的svg資料
+        this.svgConfigService.deleteClass(targetClassName, target);
     }
 
     //刪除特定大類別的基準
