@@ -2,7 +2,8 @@
 #recordListFW,
 #achievementFW,
 #eachAchievementFW,
-#firstTimeAchieveFW{
+#firstTimeAchieveFW,
+#rankingFW{
     display: none;
     position: fixed;
     top: 0;

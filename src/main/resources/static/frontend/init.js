@@ -236,8 +236,8 @@ function systemInit(){
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
-    loadRank();
-    loadAllUsersFp();
+    //loadRank();
+    //loadAllUsersFp();
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -727,5 +727,4 @@ function loadAllUsersFp(){
             console.error('Error:', error);
         }
     });
-
 }
