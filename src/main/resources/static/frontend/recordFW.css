@@ -668,9 +668,8 @@ svg:hover .detail {
 
     .rankNum-div {
         text-align: center;
-        margin-right: 10px;
-         margin-bottom: 5px;
-         margin-top: 15px;
+        margin-bottom: 5px;
+        fmargin-top: 15px;
         align-items: center; /* 垂直居中 */
         justify-content: center; /* 水平居中 */
         font-size:25px;

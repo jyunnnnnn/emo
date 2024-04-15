@@ -27,7 +27,7 @@ function convertRankToPresent(rankType, total) {
     if (rankType <= 2) {
         totalFPString = (total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")) + "gCO2e";
     } else {
-        if ((total / 1000.0) > 1000000) {
+        if ((total / 1000.0) > 100000) {
             let exponent = Math.floor(Math.log10(Math.abs((total / 1000.0)))); // Get exponent
             let mantissa = (total / 1000.0) / Math.pow(10, exponent); // Get mantissa
             let notation = mantissa.toFixed(2) + "E" + exponent; // Format in scientific notation with 2 decimal places
@@ -103,32 +103,36 @@ function showRankByRankType(rankType,all){
         let count=0;
         findUsers.forEach((user, index) => {
             count++;
-            switch (count) {
-                case 1:
-                    rankNumColor="#FFD306";
-                    break;
-                case 2:
-                    rankNumColor="#8E8E8E";
-                    break;
-                case 3:
-                    rankNumColor="#FF8000";
-                    break;
-                default:
-                    rankNumColor="black"; // 黑色，默認顏色
-                    break;
-            }
+
             // 獲取使用者對應的 rankOption
             const rankOption = Rank.find(option => option.rankType === user.rankType);
             const rowDiv=$("<div>")
                 .addClass("row-container")
                 .appendTo(rankingContainer);
-            const rankNum= $("<div>")
-                .addClass("rankNum-div")
-                .appendTo(rowDiv)
-                .css({
-                    "color":rankNumColor // 設置文字顏色
-                })
-                .text(count);
+            if (count <= 3) {
+                const rankNum = $('<img>')
+                    .attr({
+                        src: `frontend/img/no${count}.png`,
+                        alt: `${user.nickname}'s Profile Photo`
+                    })
+                    .appendTo(rowDiv)
+                    .css({
+                        'width':'50px',
+                        'height':'50px'
+                    });
+            } else {
+                // Display rank number for ranks beyond 3
+                const rankNum= $("<div>")
+                    .addClass("rankNum-div")
+                    .appendTo(rowDiv)
+                    .css({
+                        "color":'black',
+                        'width':'50px',
+                        'height':'50px'// 設置文字顏色
+                    })
+                    .text(count);
+            }
+
             // 創建 .rank-div 元素，並設置背景顏色
             const rankDiv = $("<div>")
                 .addClass("rank-div")

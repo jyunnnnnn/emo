@@ -174,47 +174,64 @@ function achievementClick(achievementId){
             .attr('class', 'achievementDescription');
 
         let downloadLink = $("<button>")
-            .text("下載圖片")
             .click(function (){
                 let $this = $(this);
                 $this.prop('disabled', true); // 按鈕點擊後設為不可用
-                $this.css('color', 'white'); // 修改文字顏色為白色
 
                 generatePhoto(target);
                 downlodACPhoto();
             })
-            .attr('class','changePhoto')
-            .attr('id','downloadLink')
-            .css({
-                'margin':'5px',
-                'background-color': 'lightgray'
+            .attr({
+                'id':'downloadLink',
+                'class': 'setBtn'
             })
-            .hover(function() {
-                $(this).css('background-color', '#b7bcbd'); // 滑鼠移入時改變背景顏色
-            }, function() {
-                $(this).css('background-color', 'lightgray'); // 滑鼠移出時恢復原來的背景顏色
+            .css({
+                'background-color': 'rgba(183,188,189,0.3)',
+                'width': '70px',
+                'height': '30px',
+                'margin':'10px'
             });
+
+        let downloadBtnText = $("<div>")
+            .text("下載")
+            .attr({
+                'class': 'setText'
+            })
+            .css({
+                'right': '10%',
+                'font-size': '15px'
+            });
+        downloadLink.append(downloadBtnText);
+
         let shareLink = $("<button>")
-            .text("分享圖片")
             .click(function (){
                 let $this = $(this);
                 $this.prop('disabled', true); // 按鈕點擊後設為不可用
-                $this.css('color', 'white'); // 修改文字顏色為白色
                 generatePhoto(target);
                 shareImage();
 
             })
-            .attr('class','changePhoto')
-            .attr('id','shareLink')
-            .css({
-                'margin':'5px',
-                'background-color': 'lightgray'
+            .attr({
+                'id':'shareLink',
+                'class': 'setBtn'
             })
-            .hover(function() {
-                $(this).css('background-color', '#b7bcbd'); // 滑鼠移入時改變背景顏色
-            }, function() {
-                $(this).css('background-color', 'lightgray'); // 滑鼠移出時恢復原來的背景顏色
+            .css({
+                'background-color': 'rgba(183,188,189,0.3)',
+                'width': '70px',
+                'height': '30px',
+                'margin':'10px'
             });
+
+        let shareBtnText = $("<div>")
+            .text("分享")
+            .attr({
+                'class': 'setText'
+            })
+            .css({
+                'right': '10%',
+                'font-size': '15px'
+            });
+        shareLink.append(shareBtnText);
 
         let buttonDiv = $("<div>")
             .css({
@@ -403,8 +420,10 @@ function firstTimeAchieve(target){
         .css({
             'background-color': 'rgba(183,188,189,0.3)',
             'width': '70px',
-            'height': '30px'
+            'height': '30px',
+            'margin':'10px'
         });
+
     let closeBtnText = $("<div>")
         .text("關閉")
         .attr({
@@ -415,7 +434,46 @@ function firstTimeAchieve(target){
             'font-size': '15px'
         });
     closeBtn.append(closeBtnText);
-    $('#firstTimeAchieveFW').append(closeBtn);
+
+    let shareLink = $("<button>")
+        .click(function (){
+            let $this = $(this);
+            $this.prop('disabled', true); // 按鈕點擊後設為不可用
+            generatePhoto(target);
+            shareImage();
+
+        })
+        .attr({
+            'id':'shareLink',
+            'class': 'setBtn'
+        })
+        .css({
+            'background-color': 'rgba(183,188,189,0.3)',
+            'width': '70px',
+            'height': '30px',
+            'margin':'10px'
+        });
+
+    let shareBtnText = $("<div>")
+        .text("分享")
+        .attr({
+            'class': 'setText'
+        })
+        .css({
+            'right': '10%',
+            'font-size': '15px'
+        });
+    shareLink.append(shareBtnText)
+    let buttonDiv = $("<div>")
+        .css({
+            'display': 'flex',
+            'flex-direction': 'row',
+            'justify-content': 'center'
+        });
+    buttonDiv.append(closeBtn, shareLink);
+
+
+    $('#firstTimeAchieveFW').append(buttonDiv);
 
     if(now == 0){
         $('#firstTimeAchieveFW').css('display', 'flex').hide();
@@ -529,7 +587,6 @@ function downlodACPhoto(){
         $('#ACPhoto').empty();
         $('#ACPhoto').css("display","none");
         $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-        $('#downloadLink').css('color', 'black'); // 恢復文字顏色為黑色
     }).catch(function (error) {
         console.error('dom-to-image error:', error);
     });
@@ -558,7 +615,6 @@ async function shareImage() {
         $('#ACPhoto').empty();
         $('#ACPhoto').css("display","none");
         $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-        $('#shareLink').css('color', 'black'); // 恢復文字顏色為黑色
     }).catch(function (error) {
         console.error('dom-to-image error:', error);
     });
