@@ -90,7 +90,7 @@ window.addEventListener('scroll', () => {
             totalFP.start();
             firstTime = false;
         }
-        if(window.innerWidth < 900){
+        if(window.innerWidth < 1000){
             $('#joinUS').css('transform', 'scale(0.6)');
         }
     }
