@@ -7,15 +7,19 @@
   <!--設定favicon-->
   <link rel="icon" href="/frontend/img/生活用品.svg" type="image/svg+xml">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!--    import js and css-->
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
-
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <!-- 載入字型 -->
+  <!-- CountUP JS -->
+  <script type="module" src='/frontend/countUp.js'></script>
+  <!-- Tocas -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.js"></script>
+  <!--    import js and css--><!-- 載入字型 -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
-  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
   <!-- 動畫資源庫 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <!-- <link rel="shortcut icon" href="images/favicon.ico"> -->
@@ -23,239 +27,29 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+  <link rel="stylesheet" href="/frontend/index.css">
+  <script type="module" src='/frontend/index.js'></script>
+
 
   <style>
-  @import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
-  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
-        body {
-            font-family: 'cwTeXYen', 'Mandali', sans-serif;
-            background-image: url(frontend/img/bg4.png);
-            background-size: cover;
-            /* background-repeat: no-repeat; */
-            background-position: center center;
-            /* 背景圖片半透明 */
-            /*background-color: rgba(0, 0, 0, 0.55);
-            background-blend-mode: multiply;*/
+      @font-face {
+        font-family: 'HunInn';
+        src: url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.eot); /* IE9 Compat Modes */
+        src: url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.eot?#iefix) format("embedded-opentype"), /* IE6-IE8 */
+        url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.woff) format("woff"), /* Modern Browsers */
+        url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.ttf) format("truetype"), /* Safari, Android, iOS */
+        url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.svg#SealmemoryHeader) format("svg"); /* Legacy iOS */
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
 
-            /* display: flex; */
-            /*justify-content: center;
-            align-items: center; */
-            height: 100vh;
-            margin: 0;
-        }
-        img{
-            max-width: 100%;
-            padding:5px;
-        }
-        .btn{
-            border-radius: 40px;
-        }
-        .nav-item{
-            padding: 20px;
-
-        }
-        .nav-link{
-            color: #ffffff;
-        }
-        .search-btn{
-            background-color: #166a29;
-            color: white;
-            border-radius: 40px;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        .search-btn:hover{
-            background-color: #0f491b;
-            border-color: rgba(255, 255, 255, 0.4);
-            color: white;
-        }
-        .loginpage-btn{
-            background-color: #166a29;
-            color: white;
-            border-radius: 40px;
-            height: 50px;
-            /* padding-left: 20px;
-            padding-right: 20px; */
-        }
-        .loginpage-btn:hover{
-            background-color: #0f491b;
-            border-color: rgba(255, 255, 255, 0.4);
-            color: white;
-        }
-        .form{
-            display: flex;
-        }
-        .form-control {
-            background: transparent;
-            border: none;
-            height: 50px;
-            color: white !important; /*  !important覆蓋其他具有相同屬性的規則 */
-            border: 1px solid transparent;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 40px;
-            padding-left: 20px;
-            padding-right: 20px;
-            -webkit-transition: 0.3s;
-            -o-transition: 0.3s;
-            transition: 0.3s;
-        }
-        #contact{
-            background-color: #0f491b;
-        }
-        .copyright{
-            color: #a09b9b;
-        }
-        @media (prefers-reduced-motion: reduce) {
-        .form-control {
-            -webkit-transition: none;
-            -o-transition: none;
-            transition: none; } }
-        .form-control::-webkit-input-placeholder {    /* place holder的顏色*/
-            color: rgba(255, 255, 255, 0.8) !important;
-        }
-        .form-control:hover, .form-control:focus {
-            background: transparent;
-            outline: none;
-            -webkit-box-shadow: none;
-            box-shadow: none;
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        .form-control:focus {
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .form-control.btn {
-            background-color: #166a29;
-            color: white;
-        }
-
-        .form-control.btn:hover,
-        .form-control.btn:focus {
-            background-color: #0f491b;
-        }
-        .emo{   /*標題的字型顏色*/
-            /* text-align: center; */
-            font-family: 'Black Ops One', serif;
-            font-size:450%;
-            color: rgb(253, 253, 253);
-            padding-left: 5%;
-            text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000, 1px -1px 0 #000000, 1px 1px 0 black;
-        }
-        .emo:hover{
-            color:#0f491b;
-        }
-        .transparent-box {
-            background-color: rgba(255, 255, 255, 0.7); /* Use rgba to set the background color with alpha (transparency) */
-            border-radius: 20px; /* Adjust the border-radius to control the roundness of the box */
-            padding: 20px; /* Adjust padding as needed */
-            text-align: center; /* Center content */
-        }
-        .row{
-            justify-content: center;
-        }
-        .container{
-            padding: 10px;
-        }
-        .link{
-            text-decoration: none;
-            color: #000000;
-            text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
-
-        }
-        .caption{
-            font-size: 13px;
-            color: #000000;
-            text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
-        }
-        .link:hover {
-            text-decoration: underline;
-            text-shadow: none;
-        }
-        #navbar{
-            transition: background-color 0.3s ease;
-        }
-        .youtube{
-            width: 560px;
-            height: 315px;
-        }
-        /* 將切換按鈕的背景顏色設置為白色 */
-        .navbar-toggler {
-            background-color: #fff;
-            margin-right: 15px;
-            transform: scale(0.8);
-         }
-
-            /* 將切換按鈕的圖標顏色設置為黑色（或其他適合的顏色） */
-        .navbar-toggler-icon {
-            color: #fff;
-         }
-         .faq {
-            /* border: 1px solid #ccc; */
-            margin-bottom: 10px;
-        }
-
-        .question {
-            /* background-color: #f0f0f0; */
-            padding: 10px;
-            cursor: pointer;
-            position: relative;
-            font-weight: bolder; /* 更加粗的字体 */
-        }
-
-        .arrow {
-            border: solid #000;
-            border-width: 0 2px 2px 0;
-            display: inline-block;
-            padding: 3px;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%) rotate(45deg);
-        }
-
-        .arrow.down {
-            transform: translateY(-50%) rotate(225deg);
-        }
-
-        .answer {
-            display: none;
-            padding: 10px;
-            background: rgba(143, 188, 143, 0.614);
-            border-radius: 20px;
-        }
-        .top{
-          font-size:140px;
-        }
-
-        /* rwd */
-        @media only screen and (max-width: 700px) {
-            .form-control{
-                height: 110px;
-                font-size: 2rem;
-                padding-left: 30px;
-            }
-            .emo{
-                font-size: 300%;
-                width: 65%;
-            }
-            .youtube{
-                width: 350px;
-                height: 200px;
-            }
-            .navbar{
-                text-align: center;
-            }
-            /* .carousel-item {
-                display: inline- !important;
-            } */
-            .transparent-box{
-              margin: 20px;
-            }
-            .top{
-              font-size:100px;
-            }
-        }
-
+      body {
+          overflow-x: hidden;
+          font-family: 'HunInn', 'Mandali', sans-serif;
+          background-size: cover;
+          background-position: center center;
+          height: 100vh;
+          margin: 0;
+      }
 </style>
 
 
@@ -263,264 +57,133 @@
 <body>
 <header>
   <nav class="navbar fixed-top navbar-expand-lg navbar-light" id="navbar">
-    <a class="navbar-brand emo " href="#">EMO app</a>
-    <button onclick="toggleNavbarColor()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand EMOapp" href="#">
+      <object data="/frontend/img/EMOapp.svg" type="image/svg+xml"></object>
+    </a>
+    <button id="navbarBtn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
+    <div class="collapse navbar-collapse navbarJustify" id="navbarNav">
+      <ul class="navbar-nav navbar">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="#" id="navbarHome">
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#features">Features</a>
+          <a class="nav-link" href="#features" id="navbarFeatures">
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#resources">Resources</a>
+          <a class="nav-link" href="#qa" id="navbarQA">
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#qa"> Q & A</a>
+          <a class="nav-link" href="#contact" id="navbarContact">
+          </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#contact">Contact Us</a>
-        </li>
-
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li> -->
       </ul>
-      <!-- <form class="form d-none d-lg-flex">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn search-btn my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
     </div>
   </nav>
 </header>
-<section id = "home">
-  <!-- <h3 style="color:red;font-size:147px;">&nbsp</h3> -->
-  <h3 class="d-block top">&nbsp</h3>
-  <div class=" animate__animated animate__slideInDown container">
-    <div class = "row ">
-      <div class="col-lg-5 col-11 text-white introduction text-center ">
-        <p>
-
-          &emsp; &emsp;這是一款可以讓使用者紀錄日常生活環保行為所減少的碳排放的行動網頁應用程式。
-          所有紀錄可直接視覺化、數據化呈現在使用者面前，結合 Google Map，並且以簡單且直覺的紀錄方式、
-          創新的減碳 紀錄呈現，讓使用者能更直接看到自己的紀錄行為，淘汰傳統列表式的紀錄方式，
-          使用地圖呈現更能帶出虛實一體的感覺，再綜合社交、成就功能，以此來增加使用者在紀錄上的實質回饋、成就感，
-          以提高使用者紀錄、執行環保行為之意願。
-          <br><br>
-          &emsp;&emsp; 透過本平台，使用者可以鼓勵更多的人參與環保行為，
-          並一起為減少碳排放做出努力，達到提高使用意願、長期實踐、推廣環保意識這 3
-          個本平台致力實現的核心目標，共同為地球盡一份心力，建立更綠色、可持續的生活方式。
-          <br><br>
-        </p>
-        <button class="btn loginpage-btn my-2 my-sm-0 w-100" type="submit" id="goto-login">立即註冊/登入
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
-          </svg></button>
-        <br><br>
-      </div>
-      <div class="col-lg-1 col-0"></div>
-      <div class="col-lg-6 col-12 introduction text-white text-center">
-        <iframe class="youtube" src="https://www.youtube.com/embed/_sGGO9y66-Y?si=hgsq9TW6q2CFoQnI&amp;start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
+<section id="home" class="home">
+  <div class="homeSlogan fade-in-up" id="homeSlogan">用行動打造屬於你的環保地圖</div>
+  <button class="login fade-in-up" id="login">
+    <div class="txt">立即註冊 / 登入</div>
+    <div class="gradient"></div>
+  </button>
+  <object data="/frontend/img/indexBackground.svg" type="image/svg+xml" class="homeBG"></object>
+</section>
+<section id="features" class="features">
+  <div class="featuresSlogan">
+    <span class="sloganSymbolLeft fade-in-up">“</span>
+    <div class="sloganTyping1 fade-in-up">地球暖化加劇，</div>
+    <div class="sloganTyping2 fade-in-up">北極熊將無家可歸。</div>
+    <span class="sloganSymbolRight fade-in-up">”</span>
+    <div class="fade-in-up" id="slogan2">
+      <div class="sloganDescription" style="padding-top: 30px;">根據研究，</div>
+      <div class="sloganDescription">北極氣候暖化速度是整個地球的2倍。</div>
     </div>
   </div>
 </section>
-<section  id="features">
-  <h3 style="color:red;font-size:100px;"class="d-none d-lg-block">&nbsp;</h3>
-  <div id="carouselExampleDark" class="carousel carousel-light slide" data-bs-ride="carousel">
-    <!-- 指示燈 -->
-    <!-- <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div> -->
-    <div class="carousel-inner">
-      <div class="showSlider active " data-bs-interval="10000">
-        <div class="container">
-          <br>
-          <h3 class="text-white">&emsp;&emsp;減碳記錄功能</h3>
-          <div class="row">
-            <div class="col-lg-3 col-8 text-black text-center animate__animated animate__bounceIn caption" >
-              <img class="ui" src="frontend/img/record1.png" alt="UI Image 1">
-              <p> &lt;一般活動紀錄&gt; </p>
-            </div>
-            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
-              <h3 style="font-size:70px;"class="d-none d-lg-block">&nbsp;</h3>
-              <p>&emsp;&emsp;使用者能自行選擇紀錄項目，如環保杯、環保餐具、環保袋的使用等等，
-                本平台會自動計算出該活動相對於非環保行為(例如：環保杯相對於塑膠杯)的所減少的碳足跡量。
-
-              </p>
-            </div>
-            <div class="col-lg-3 col-8  text-black text-center animate__animated animate__bounceIn caption">
-              <img class="ui" src="frontend/img/record2.png" alt="UI Image 1">
-              <p>&lt;路線描繪&gt;</p>
-            </div>
-            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
-              <h3 style="font-size:70px;"class="d-none d-lg-block">&nbsp;</h3>
-              <p>&emsp;&emsp;交通足跡的紀錄上，使用者只需簡單的點擊路線紀錄按鈕，
-                本系統就會開始自動偵測使用者位置並在地圖上顯示出經過的路線，
-                最後再選擇使用的交通工具（例如：公車、捷運、火車、高鐵等大眾運輸）
-                系統會自動計算相較於開車時所減少的碳排放。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class=" showSlider"  data-bs-interval="10000">
-        <div class="container">
-          <br>
-          <h3 class="text-white">&emsp;&emsp;記錄呈現</h3>
-          <div class="row">
-            <div class="col-lg-3 col-8  text-black text-center animate__animated animate__bounceIn caption">
-              <img class="ui" src="frontend/img/record3.png" alt="UI Image 1">
-              <p>&lt;歷史紀錄地標&gt;</p>
-            </div>
-            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
-              <h3 style="font-size:60px;"class="d-none d-lg-block">&nbsp;</h3>
-              <p>&emsp;&emsp;使用者的碳足跡能夠在地圖上視覺化、數據化地顯示，不僅可以看到自己的碳排放紀錄，
-                還可以通過地圖圖標和圖表來直觀地回顧自己的減碳行為，以及與日常生活中非環保行為的碳排放比較
-                ，並搭配Google Map來找到當下的減碳紀錄。
-                也可藉由點擊這些圖標直接刪除或修改過去的紀錄。
-
-                <!-- <img src="../static/frontend/img/bg4.jpg" height="5560" width="7945"/></p> -->
-            </div>
-            <div class="col-lg-3 col-8  text-black text-center animate__animated animate__bounceIn caption">
-              <img class="ui" src="frontend/img/record4.png" alt="UI Image 1">
-              <p>&lt;歷史紀錄圖表&gt;</p>
-            </div>
-            <div class="col-lg-3 col-8  text-white animate__animated animate__backInDown">
-              <h3 style="font-size:60px;"class="d-none d-lg-block">&nbsp;</h3>
-              <p>&emsp;&emsp; 本平台也提供圖表化的數據比對呈現，讓使用者了解當前環保行為相較於不環保的行為所
-                減少的碳足跡量，藉此更清楚地了解他們的日常行為對地球的影響，
-                讓使用者更加了解自己的行為帶來的效益並且進一步去加強、調整自己的行為，來達到更好的減碳效果。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 未來增加的介紹 -->
-      <!-- <div class="carousel-item" data-bs-interval="3000">
-
-      </div> -->
-    </div>
-    <!-- 切換按鈕 -->
-    <button class="carousel-control-prev d-none d-lg-block" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" style="margin-left: -70px;" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next d-none d-lg-block" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-      <span class="carousel-control-next-icon" style="margin-right: -70px;" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+<section  id="featuresRecord" class="featuresRecord">
+  <div class="recordSlogan fade-in-up" id="recordSlogan">
+    <div>留下<span>減碳足跡</span></div>
+    <div>讓地球不再EMO</div>
+  </div>
+  <img id="recordPhoto1" class="recordPhoto1 fade-in-up" src="/frontend/img/生活紀錄.png">
+  <img id="recordPhoto2" class="recordPhoto2 fade-in-up" src="/frontend/img/路線紀錄.png">
+  <div class="recordDescription fade-in-up" id="recordDescription">
+    <div>隨時記錄環保行為，</div>
+    <div>出行路線一點即可查詢，</div>
+    <div>每天一小步，累積成一大步。</div>
   </div>
 </section>
-
-<section  id="resources">
-  <h3 style="color:red;font-size:100px;"class="d-none d-lg-block">&nbsp</h3>
-  <div class="container ">
-    <div class="row">
-      <div class="col-lg-12 text-center text-white mb-2">
-        <h2>碳足跡計算相關資料來源</h2>
-      </div>
-      <div class="col-lg-5 col-11 transparent-box">
-        <h2>
-          <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 960 960" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="45px" height="45px" fill="black">
-                            <g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
-            <g id="SVGRepo_iconCarrier">
-                              <g> <g>
-                                <path d="M791.942 1023.906H152.072a7.94 7.94 0 0 1-5.78-2.484 7.946 7.946 0 0 1-2.21-5.876l31.994-703.862a8 8 0 0 1 4.412-6.794c3.446-1.726 34.19-16.84 51.568-16.84 9.888 0 18.878 4.498 27.572 8.842 7.358 3.678 14.302 7.154 20.41 7.154 6.108 0 13.06-3.476 20.416-7.154 8.702-4.344 17.692-8.842 27.574-8.842 9.88 0 18.872 4.498 27.572 8.842 7.358 3.678 14.308 7.154 20.416 7.154s13.06-3.476 20.418-7.154c8.702-4.344 17.692-8.842 27.572-8.842s18.872 4.49 27.572 8.842c7.358 3.678 14.318 7.154 20.426 7.154s13.06-3.476 20.416-7.154c8.694-4.344 17.684-8.842 27.572-8.842s18.872 4.498 27.572 8.842c7.358 3.678 14.31 7.154 20.418 7.154s13.06-3.476 20.418-7.154c8.702-4.344 17.684-8.842 27.572-8.842s18.872 4.498 27.572 8.842c7.358 3.678 14.31 7.154 20.418 7.154s13.06-3.476 20.418-7.154c8.702-4.344 17.684-8.842 27.572-8.842 17.386 0 48.116 15.114 51.566 16.84a7.98 7.98 0 0 1 4.406 6.794l31.992 703.862a7.91 7.91 0 0 1-2.202 5.876 7.904 7.904 0 0 1-5.772 2.484z m-631.496-15.998h623.12l-31.398-690.732c-10.56-4.936-30.212-13.13-40.21-13.13-6.11 0-13.06 3.476-20.418 7.154-8.702 4.344-17.684 8.842-27.572 8.842s-18.872-4.498-27.572-8.842c-7.358-3.678-14.308-7.154-20.418-7.154-6.108 0-13.058 3.476-20.418 7.154-8.702 4.344-17.684 8.842-27.572 8.842s-18.872-4.498-27.572-8.842c-7.358-3.678-14.308-7.154-20.418-7.154-6.108 0-13.058 3.476-20.416 7.154-8.694 4.344-17.684 8.842-27.572 8.842-9.888 0-18.878-4.498-27.582-8.842-7.358-3.678-14.308-7.154-20.416-7.154s-13.06 3.476-20.416 7.154c-8.702 4.344-17.692 8.842-27.574 8.842-9.88 0-18.872-4.498-27.572-8.842-7.358-3.678-14.31-7.154-20.416-7.154-6.11 0-13.06 3.476-20.418 7.154-8.702 4.344-17.692 8.842-27.572 8.842s-18.872-4.49-27.564-8.842c-7.358-3.678-14.31-7.154-20.418-7.154-9.154 0-27.94 7.374-40.218 13.122l-31.398 690.74z"></path>
-                                <path d="M759.948 991.912H184.066a7.994 7.994 0 0 1-7.998-7.998 7.994 7.994 0 0 1 7.998-7.998h575.88a7.994 7.994 0 0 1 7.998 7.998 7.992 7.992 0 0 1-7.996 7.998zM532.916 272.052a7.99 7.99 0 0 1-7.514-10.732l75.828-208.332C609.4 30.518 628.24 13.608 654.282 5.36c25.322-8.006 54.488-6.85 82.248 3.248 59.8 21.746 75.016 77.32 59.144 120.976l-33.698 136.394a7.978 7.978 0 0 1-9.684 5.842 8.004 8.004 0 0 1-5.844-9.686l33.948-137.206c12.996-35.882 2.92-82.28-49.334-101.292-24.464-8.896-50.006-9.944-71.954-3.024-21.2 6.708-36.414 20.152-42.852 37.844l-75.828 208.332a8 8 0 0 1-7.512 5.264z"></path>
-                                <path d="M748.668 165.702a7.97 7.97 0 0 1-6.748-3.71c-0.11-0.156-13.482-20.168-49.146-33.126-35.648-12.974-58.754-6.256-59.004-6.202-4.108 1.274-8.67-1.062-9.982-5.288a7.972 7.972 0 0 1 5.218-9.974c1.108-0.368 28.134-8.56 69.236 6.436 41.162 14.958 56.55 38.578 57.174 39.578a7.996 7.996 0 0 1-2.452 11.038 8.08 8.08 0 0 1-4.296 1.248zM715.832 255.9a7.976 7.976 0 0 1-6.75-3.71c-0.11-0.156-13.48-20.168-49.128-33.142-35.712-12.99-58.754-6.248-59.004-6.186-4.062 1.28-8.67-1.054-9.982-5.282a7.976 7.976 0 0 1 5.216-9.982c1.124-0.344 28.12-8.53 69.236 6.42 41.146 14.974 56.536 38.594 57.16 39.594a7.994 7.994 0 0 1-6.748 12.288zM216.052 272.052a7.998 7.998 0 0 1-7.912-6.866L176.146 41.234a8 8 0 0 1 6.788-9.052c4.39-0.664 8.428 2.414 9.052 6.788l31.994 223.954a8 8 0 0 1-7.928 9.128z"></path>
-                                <path d="M264.042 272.052a7.994 7.994 0 0 1-7.772-6.146c-0.398-1.664-40.084-167.082-78.708-221.158a7.994 7.994 0 0 1 1.858-11.154 7.986 7.986 0 0 1 11.154 1.858c40.438 56.614 79.61 219.83 81.258 226.75a7.996 7.996 0 0 1-7.79 9.85zM312.032 272.052a7.994 7.994 0 0 1-7.764-6.124c-35.812-148.296-78.648-221-79.078-221.72a8 8 0 0 1 2.756-10.966 7.988 7.988 0 0 1 10.966 2.75c1.804 3 44.444 75.204 80.898 226.188a7.986 7.986 0 0 1-5.898 9.646 7.734 7.734 0 0 1-1.88 0.226z"></path>
-                                <path d="M224.066 80.094c-0.64 0-1.296-0.078-1.946-0.242a7.988 7.988 0 0 1-5.82-9.694l8-31.994a7.958 7.958 0 0 1 9.694-5.818 7.986 7.986 0 0 1 5.818 9.694l-7.998 31.994a7.988 7.988 0 0 1-7.748 6.06zM504 272.052a7.994 7.994 0 0 1-7.998-7.998v-55.988h-143.97v55.988c0 4.422-3.578 7.998-7.998 7.998s-7.998-3.576-7.998-7.998v-63.986a7.994 7.994 0 0 1 7.998-7.998H504a7.994 7.994 0 0 1 7.998 7.998v63.986a7.994 7.994 0 0 1-7.998 7.998z"></path>
-                                <path d="M456.01 272.052a7.994 7.994 0 0 1-7.998-7.998c0-13.232-10.764-23.994-23.996-23.994s-23.996 10.762-23.996 23.994a7.994 7.994 0 0 1-7.998 7.998 7.992 7.992 0 0 1-7.998-7.998c0-22.05 17.942-39.992 39.992-39.992s39.992 17.942 39.992 39.992a7.994 7.994 0 0 1-7.998 7.998zM344.034 192.07a7.996 7.996 0 0 1-5.656-13.654l15.998-15.996a7.996 7.996 0 1 1 11.31 11.31l-15.998 15.996a7.964 7.964 0 0 1-5.654 2.344z"></path>
-                                <path d="M488.004 176.074h-127.974c-4.42 0-7.998-3.578-7.998-7.998s3.578-8 7.998-8h127.974c4.42 0 7.998 3.578 7.998 8s-3.578 7.998-7.998 7.998z"></path>
-                                <path d="M504 192.07a7.98 7.98 0 0 1-5.656-2.344l-15.998-15.996a7.996 7.996 0 1 1 11.31-11.31l15.998 15.996A7.996 7.996 0 0 1 504 192.07zM376.402 779.614a8.02 8.02 0 0 1-5.312-2.016c-32.446-28.838-51.052-70.236-51.052-113.618 0-83.794 68.172-151.976 151.968-151.976 11.348 0 22.66 1.258 33.626 3.726a7.994 7.994 0 0 1 6.044 9.558c-0.976 4.312-5.294 7.032-9.56 6.046a137.7 137.7 0 0 0-30.11-3.328c-74.978 0-135.972 60.988-135.972 135.972a136.104 136.104 0 0 0 45.678 101.65 8.006 8.006 0 0 1-5.31 13.986zM472.006 815.95a152.81 152.81 0 0 1-33.79-3.782 7.994 7.994 0 0 1-6.022-9.576c0.976-4.31 5.25-7.044 9.568-6.014a136.964 136.964 0 0 0 30.244 3.374c74.97 0 135.972-61.002 135.972-135.97a136.184 136.184 0 0 0-45.302-101.34 8 8 0 0 1-0.64-11.292c2.984-3.296 8.06-3.562 11.294-0.624a152.126 152.126 0 0 1 50.644 113.258c0 83.792-68.174 151.966-151.968 151.966z"></path>
-                                <path d="M504 703.972a7.98 7.98 0 0 1-5.656-2.344l-63.986-63.988a7.996 7.996 0 1 1 11.31-11.308l63.988 63.986a7.996 7.996 0 0 1-5.656 13.654z"></path>
-                                <path d="M440.014 639.984a7.994 7.994 0 0 1-5.656-13.652l159.966-159.974a7.996 7.996 0 1 1 11.31 11.31l-159.966 159.974a7.97 7.97 0 0 1-5.654 2.342zM360.03 847.942a7.994 7.994 0 0 1-5.654-13.652l143.97-143.97a7.996 7.996 0 1 1 11.31 11.31l-143.97 143.968a7.976 7.976 0 0 1-5.656 2.344zM759.948 320.042a7.988 7.988 0 0 1-6.404-3.202 8.006 8.006 0 0 1 1.608-11.192l63.986-47.99a7.99 7.99 0 0 1 11.202 1.602 8.006 8.006 0 0 1-1.608 11.192l-63.988 47.99c-1.44 1.078-3.124 1.6-4.796 1.6zM807.938 991.912a8.176 8.176 0 0 1-3.578-0.844 8.008 8.008 0 0 1-3.578-10.732l31.994-63.986c1.984-3.966 6.794-5.53 10.732-3.578a8.002 8.002 0 0 1 3.578 10.732l-31.994 63.988a8.016 8.016 0 0 1-7.154 4.42z"></path>
-                                <path d="M850.584 943.906a7.992 7.992 0 0 1-6.654-3.562l-10.654-15.98a7.996 7.996 0 0 1 2.218-11.092c3.624-2.452 8.624-1.482 11.092 2.218l10.652 15.982a8 8 0 0 1-6.654 12.434zM871.908 975.916a8.01 8.01 0 0 1-7.966-7.452L815.952 264.6a8.008 8.008 0 0 1 7.436-8.53c4.204-0.266 8.216 3.024 8.53 7.436l47.99 703.864a8.02 8.02 0 0 1-7.436 8.53c-0.188 0-0.376 0.016-0.564 0.016z"></path>
-                                <path d="M791.942 1023.906a8.004 8.004 0 0 1-6.86-3.89 7.976 7.976 0 0 1 2.75-10.966l79.984-47.99a7.994 7.994 0 1 1 8.214 13.716l-79.982 47.99c-1.28 0.766-2.702 1.14-4.106 1.14z"></path>
-                                <path d="M823.934 272.052h-31.992c-4.422 0-8-3.576-8-7.998a7.994 7.994 0 0 1 8-7.998h31.992a7.994 7.994 0 0 1 7.998 7.998 7.992 7.992 0 0 1-7.998 7.998z"></path>
-                              </g> </g>
-                            </g>
-                        </svg>
-          生活用品類</h2>
-        <p>每樣物品排放量計算方式為排放係數x重量<br>
-          (係數參考來源：
-          <a class="link" href="https://data.moenv.gov.tw/dataset/detail/CFP_P_02" target="_blank">環境部碳足跡排放係數</a>
-          <br>
-          <a class="link" href="https://tccdaka.com/tw/project/lowCarbonTravel/report/減碳計算機.pdf" target="_blank">減碳計算機</a>)
-        </p>
-      </div>
-      <div class="col-lg-1 col-12"></div> <!-- Empty column -->
-      <div class="col-lg-5 col-11 transparent-box">
-        <h2>
-          <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 260 260" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="45px" height="45px" fill="black">
-                        <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
-            <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
-            <g id="SVGRepo_iconCarrier">
-                          <path d="M188,28H68A28.03146,28.03146,0,0,0,40,56V184a28.03146,28.03146,0,0,0,28,28H87.99951L68.7998,237.59961a4.00039,4.00039,0,0,0,6.4004,4.80078L98.00049,212h59.999l22.80029,30.40039a4.00039,4.00039,0,1,0,6.4004-4.80078L168.00049,212H188a28.03146,28.03146,0,0,0,28-28V56A28.03146,28.03146,0,0,0,188,28ZM48,124V76h76v48Zm84-48h76v48H132ZM68,36H188a20.02229,20.02229,0,0,1,20,20V68H48V56A20.02229,20.02229,0,0,1,68,36ZM188,204H68a20.02229,20.02229,0,0,1-20-20V132H208v52A20.02229,20.02229,0,0,1,188,204ZM92,172a8,8,0,1,1-8-8A8.00917,8.00917,0,0,1,92,172Zm88,0a8,8,0,1,1-8-8A8.00917,8.00917,0,0,1,180,172Z"></path>
-                        </g>
-                      </svg>交通類</h2>
-        <p>交通類碳排放以每公里的碳排放量KgCO2e為單位<br>
-          （係數參考來源：
-          <a class="link" href="https://edesg.com/?p=5771" target="_blank">台灣大眾交通碳排放</a> ）
-          <br><br>
-        </p>
-      </div>
-    </div>
+<section  id="featuresHistory" class="featuresHistory">
+  <div class="historySlogan fade-in-up" id="historySlogan">
+    <div>量化數據</div>
+    <div>讓減碳行為<span>更直觀</span></div>
+  </div>
+  <video  autoplay muted loop class="historyVideo fade-in-up" id="historyVideo">
+    <source src="/frontend/img/歷史及量化記錄.webm" type="video/webm">
+  </video>
+  <div class="historyDescription fade-in-up" id="historyDescription">
+    <div>減碳量太抽象，我們幫你轉換成更生活化的單位，</div>
+    <div>客製化篩選紀錄，曾經的足跡一覽無遺。</div>
   </div>
 </section>
-<section  id="qa">
-  <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
-  <h3 style="color:red;font-size:50px;"class="d-none d-lg-block">&nbsp</h3>
-  <div class="container ">
-    <div class="row">
-      <div class="col-lg-5 text-center text-white mb-2">
-        <br><br>
-        <h1>常見Q & A</h1>
-      </div>
-      <div class="col-lg-7 transparent-box">
-        <!-- <h2>
-          生活用品類</h2> -->
-        <div class="faq">
-          <div class="question">
-            本平台和其他環保app的差別？
-            <span class="arrow"></span>
-          </div>
-          <div class="answer">
-            目前市面上許多環保碳足跡app都是以綁定悠遊卡或信用卡的方式直接進行計算，
-            本平臺則支援實際計算路線更為彈性。此外有別於其他app多為直接計算碳排放總量，
-            本平台提供的數據是減少的碳排放量，更為直觀。
-          </div>
-        </div>
-        <div class="faq">
-          <div class="question">
-            平台在紀錄路線時會取用使用者的位置與足跡是否有隱私疑慮？
-            <span class="arrow"></span>
-          </div>
-          <div class="answer">
-            使用者所有的數據資料與足跡本平台只會用於優化平台之用途並且會嚴格保密，決不外洩，請使用者放心使用。
-          </div>
-        </div>
-        <!-- <p><h4><strong>Ｑ：本平台和其他環保app的差別？<br><br></strong></h4>
-        目前市面上許多環保碳足跡app都是以綁定悠遊卡或信用卡的方式直接進行計算，
-        本平臺則支援實際計算路線更為彈性。此外有別於其他app多為直接計算碳排放總量，
-        本平台提供的數據是減少的碳排放量，更為直觀。
-        </p> -->
-      </div>
-      <!-- <div class="col-lg-1 col-12"></div> Empty column -->
-      <!-- <div class="col-lg-5 col-11 transparent-box">
-        <p><h4><strong>Ｑ：平台在紀錄路線時會取用使用者的位置與足跡，此部分是否有隱私疑慮？<br><br></strong></h4>
-        使用者所有的數據資料與足跡本平台只會用於優化平台之用途並且會嚴格保密，決不外洩，請使用者放心使用。
-        </p>
-      </div> -->
-    </div>
-  </div>
-  <h3 style="font-size:50px;"class="d-none d-lg-block">&nbsp</h3> <!-- 留白 -->
+<section  id="featuresAchievementNRanking" class="featuresAchievementNRanking">
 </section>
-<section  id="contact">
+<section id="comment" class="comment">
+  <div class="totalFPDescription fade-in-up" id="totalFPDescription">截至目前<br>EMOapp的使用者已累積為地球減少</div>
+  <div class="totalFPCounter fade-in-up" id="totalFP">
+      <div id="totalFPCounter"></div>
+      <span style="font-size: 20px">gCO2e</span>
+  </div>
+  <button class="login" id="commentLogin">
+    <div class="txt">立即加入我們！</div>
+    <div class="gradient"></div>
+  </button>
+  <object data="/frontend/img/joinUS.svg" type="image/svg+xml" class="joinUS" id="joinUS"></object>
+</section>
+<section  id="qa" class="qa">
+  <div class="qaTitle">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48px" height="48px" viewBox="0,0,256,256"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="none" stroke-linejoin="none" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.33333,5.33333)"><path d="M35,22.1c6.6,0 11.9,5.3 11.9,11.9c0,2.1 -0.6,4.1 -1.5,5.8l1.5,5.3c0.1,0.5 -0.3,0.9 -0.8,0.8l-5.3,-1.5c-1.7,1 -3.7,1.5 -5.8,1.5c-6.6,0 -11.9,-5.3 -11.9,-11.9c0,-6.6 5.3,-11.9 11.9,-11.9z" fill="#62ac71" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"></path><path d="M20.3,36.4c-1.1,-1.9 -1.8,-4.1 -1.8,-6.4c0,-6.9 5.6,-12.5 12.5,-12.5c4.3,0 8.1,2.2 10.4,5.5" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M43.5,30c0,2.2 -0.6,4.3 -1.6,6.1l1.6,5.6c0.1,0.5 -0.3,1 -0.8,0.8l-5.6,-1.6c-1.8,1 -3.9,1.6 -6.1,1.6c-1.4,0 -2.7,-0.2 -4,-0.7" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M27,10.5c-2.3,-3 -5.9,-5 -10,-5c-6.9,0 -12.5,5.6 -12.5,12.5c0,2.2 0.6,4.3 1.6,6.1l-1.6,5.6c-0.1,0.5 0.3,1 0.8,0.8l5.6,-1.6c0.9,0.5 1.9,0.9 2.9,1.2" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12.5,23.5l4.5,-11" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14,20.5h6.3l-3.3,-8" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M31,34.5v0c-1.9,0 -3.5,-1.6 -3.5,-3.5v-3c0,-1.9 1.6,-3.5 3.5,-3.5v0c1.9,0 3.5,1.6 3.5,3.5v3c0,1.9 -1.6,3.5 -3.5,3.5z" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M31,34.5c0,0 1.5,2.5 4,2.5" fill="none" stroke="#3d3c3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g></g></svg>
+    <div>常見Q&A</div>
+  </div>
+  <div class="qaDetails">
+    <details class="ts-accordion">
+      <summary>本平台與其他環保APP的差別？</summary>
+      <div class="qaContent">
+        目前市面上許多環保碳足跡APP都是以綁定悠遊卡或信用卡的方式直接進行計算，本平臺則支援<span>實際計算路線更為彈性</span>。
+        <br>
+        此外，有別於其他APP多為直接計算碳排放總量，本平台提供的數據是<span>減少的碳排放量</span>，更為直觀。
+      </div>
+    </details>
+    <details class="ts-accordion">
+      <summary>平台在記錄路線時會取用使用者的位置與足跡，是否有隱私疑慮？</summary>
+      <div class="qaContent">
+        使用者所有的數據資料與足跡本平台<span>只會用於優化之用途，並且會嚴格保密絕不外洩</span>，請使用者放心使用。
+      </div>
+    </details>
+    <details class="ts-accordion">
+      <summary>參考來源</summary>
+      <div class="qaContent">
+        <span>生活用品：</span>減碳量計算方式為重量×(該品項排放係數-比較對象排放係數)
+        <br>
+        (係數參考來源：
+        <a class="resourceLink" href="https://data.moenv.gov.tw/dataset/detail/CFP_P_02" target="_blank">環境部碳足跡排放係數</a>
+        、
+        <a class="resourceLink" href="https://tccdaka.com/tw/project/lowCarbonTravel/report/減碳計算機.pdf" target="_blank">減碳計算機</a>)
+        <br>
+        <span>交通：</span>減碳量計算方式為公里數×(該交通工具排放係數-比較對象排放係數)
+        <br>
+        (係數參考來源：
+        <a class="resourceLink" href="https://edesg.com/?p=5771" target="_blank">台灣大眾交通碳排放</a>)
+      </div>
+    </details>
+  </div>
+</section>
+<section  id="contact" class="contact">
   <h3 style="font-size:80px;"class="d-block">&nbsp</h3> <!-- 留白 -->
   <div class="container">
     <div class="row">
@@ -536,8 +199,7 @@
               </svg>
                 &nbsp;emoapp@gmail.com</p>
 
-              <p class="copyright">Copyright &copy; 2024 EMO App Team All rights reserved.
-                <!-- <a target="_blank" href="http://guantaow.taobao.com/">ntou</a><a target="_blank" href="http://www.moobnn.com">cse</a></p> -->
+              <p>Copyright &copy; 2024 EMO App Team All rights reserved.
 
             </div>
           </div>
@@ -547,88 +209,6 @@
   </div>
   <h3 style="font-size:80px;"class="d-block">&nbsp</h3>
 </section>
-<script>
-     $(document).ready(function () {
-      // 切換到登入頁面
-      $('#goto-login').click(function (e) {
-          e.preventDefault();
-          window.location.href = 'login';
-      });
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        // 監聽滾動事件
-        window.addEventListener("scroll", function () {
-            // 取得滾動的垂直位置
-            var scrollPosition = window.scrollY || document.documentElement.scrollTop;
-
-            // 設定滾動位置的閾值
-            var scrollThreshold = 20;
-
-            // 判斷是否超過閾值，超過則增加底色，否則移除底色
-            if (scrollPosition > scrollThreshold) {
-                document.getElementById("navbar").style.backgroundColor = "#01310b";
-            } else {
-                document.getElementById("navbar").style.backgroundColor = "transparent";
-            }
-        });
-    });
-
-    //navbar背景顏色
-    // var checkNavbar = true;
-    function toggleNavbarColor() {
-        // checkNavbar = ! checkNavbar;
-        // document.getElementById("navbar").style.backgroundColor =  checkNavbar ? "transparent": "#01310b";
-        document.getElementById("navbar").style.backgroundColor = "#01310b";
-    }
-
-    // 手機模式不要用slider
-    document.addEventListener('DOMContentLoaded', function () {
-        function checkScreenWidth() {
-            var screenWidth = window.innerWidth || document.documentElement.clientWidth;
-            var elements = document.querySelectorAll(".showSlider");
-
-            elements.forEach(function(element) {
-                if (screenWidth > 700) {
-                    element.classList.add("carousel-item");
-                } else {
-                    element.classList.remove("carousel-item");
-                }
-            });
-            // console.log(screenWidth);
-        }
-
-        // 初次加載時檢查一次
-        checkScreenWidth();
-
-        // 窗口大小變化時檢查
-        window.addEventListener('resize', checkScreenWidth);
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-    const questions = document.querySelectorAll('.question');
-
-        questions.forEach(question => {
-            question.addEventListener('click', function() {
-                const answer = this.nextElementSibling;
-                const arrow = this.querySelector('.arrow');
-
-                if (answer.style.display === 'block') {
-                    answer.style.display = 'none';
-                    arrow.classList.remove('down');
-                } else {
-                    answer.style.display = 'block';
-                    arrow.classList.add('down');
-                }
-            });
-        });
-    });
-
-    $('.navbar-nav>li>a').on('click', function(){
-      $('.navbar-collapse').collapse('hide');
-    });
-
-
-</script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
