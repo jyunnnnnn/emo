@@ -99,14 +99,26 @@ summary{
 }
 
 /* section:home */
+#login{
+    width: 20%;
+    top: 50%;
+}
+.homeSlogan{
+    font-size: 60px;
+    top: 30%;
+}
 .home {
     background: #b8eecc;
     position: relative;
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
 }
 .homeBG{
-    position: relative;
+    position: absolute;
     bottom: 50px;
+    bottom: -30%;
 }
 
 /* section:features */
@@ -436,11 +448,17 @@ summary{
         margin-right: 8%;
     }
     /* section:home */
+    .homeSlogan{
+        font-size: 25px;
+    }
+    #login{
+        width: 70%;
+        top: 40%;
+    }
     .homeBG{
-        left: -150px;
-        top: 100px;
+        top: 70px;
         height: 100vh;
-        position: relative;
+        position: absolute;
         transform: scale(0.8);
     }
 

@@ -47,8 +47,8 @@ window.addEventListener('scroll', () => {
     let sloganSymbolRight = document.querySelector('.sloganSymbolRight');
     let scrollPosition = window.scrollY;
 
-    let homePosition = $('#home').offset().top - window.innerHeight/2;
-    if (scrollPosition > homePosition) {
+    let featuresPosition = $('#features').offset().top - window.innerHeight/2;
+    if (scrollPosition > featuresPosition) {
         sloganTyping1.classList.add('active');
         sloganSymbolLeft.classList.add('active');
         sloganSymbolRight.classList.add('active');
@@ -99,7 +99,7 @@ window.addEventListener('scroll', () => {
 });
 
 // navbar背景顏色
-$('#navbarBtn'),$('#navbarHome'),$('#navbarFeatures'),$('#navbarQA'),$('#navbarContact').on('click',function(){
+$('#navbarBtn, #navbarHome, #navbarFeatures, #navbarQA, #navbarContact').on('click',function(){
     console.log($('#navbar').css('backgroundColor').toString())
     if($('#navbar').css('backgroundColor').toString() === 'rgb(98, 172, 113)'){
         $('#navbar').css('backgroundColor', 'rgba(0, 0, 0, 0)');
@@ -131,35 +131,22 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', checkScreenWidth);
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    const questions = document.querySelectorAll('.question');
-
-    questions.forEach(question => {
-        question.addEventListener('click', function() {
-            const answer = this.nextElementSibling;
-            const arrow = this.querySelector('.arrow');
-
-            if (answer.style.display === 'block') {
-                answer.style.display = 'none';
-                arrow.classList.remove('down');
-            } else {
-                answer.style.display = 'block';
-                arrow.classList.add('down');
-            }
-        });
-    });
-});
-
+// 導覽列點擊後關閉
 $('.navbar-nav>li>a').on('click', function(){
     $('.navbar-collapse').collapse('hide');
 });
 
 $(document).ready(function () {
     // 切換到登入頁面
-    $('#commentLogin').click(function (e) {
+    $('#login, #commentLogin').click(function (e) {
         e.preventDefault();
         window.location.href = 'login';
     });
+    $('#homeSlogan').addClass('active');
+    setTimeout(() => {
+        $('#login').addClass('active');
+    }, 500);
+
     // 載入navBar
     $('#navbarHome').html("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
         "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
