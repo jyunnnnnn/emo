@@ -30,7 +30,7 @@ summary{
     font-size: 20px;
 }
 section{
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* LoginBtn */
