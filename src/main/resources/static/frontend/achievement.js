@@ -470,7 +470,7 @@ function firstTimeAchieve(target){
             'flex-direction': 'row',
             'justify-content': 'center'
         });
-    buttonDiv.append(closeBtn, shareLink);
+    buttonDiv.append(shareLink, closeBtn);
 
 
     $('#firstTimeAchieveFW').append(buttonDiv);
