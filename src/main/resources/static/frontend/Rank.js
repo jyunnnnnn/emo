@@ -86,7 +86,9 @@ function showRankByRankType(rankType,all){
         $('#myRankNumber').text("不在此位階");
     }else{
         $('#myRankNumber').text(myIndex);
-        $('#myRankPhoto').attr("src",myRankData.photo);
+        if(myRankData.photo){
+            $('#myRankPhoto').attr("src",myRankData.photo);
+        }
         $('#MyRankName').text(myRankData.nickname);
         $('#myRankCarbon').text("我的總減碳量: "+convertRankToPresent(myRankData.rankType, myRankData.totalFP));
     }
@@ -132,7 +134,14 @@ function showRankByRankType(rankType,all){
                 .addClass("rank-div")
                 .css("border-color", rankOption.rankColor)
                 .appendTo(rowDiv);
-
+            const photoDiv = $("<div>")
+                 .addClass("photoDiv")
+                 .css("border-color", rankOption.rankColor)
+                 .appendTo(rankDiv);
+            const nameAndFPDiv = $("<div>")
+                 .addClass("nameAndFPDiv")
+                 .css("border-color", rankOption.rankColor)
+                 .appendTo(rankDiv);
             // 創建使用者照片
             if (user.photo !== null) {
                 const photoImg = $('<img>')
@@ -140,22 +149,22 @@ function showRankByRankType(rankType,all){
                         src: user.photo,
                         alt: `${user.nickname}'s Profile Photo`
                     })
-                    .appendTo(rankDiv);
+                    .appendTo(photoDiv);
             } else {
-                const svgIcon = $('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="black" class="bi bi-person-circle" id="userIcon" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/> <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/> </svg>');
-                rankDiv.append(svgIcon);
+                const svgIcon = $('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="black" class="bi bi-person-circle" id="userIcon" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/> <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/> </svg>');
+                photoDiv.append(svgIcon);
             }
             // 創建使用者暱稱
-            const usernameSpan = $('<span>')
+            const usernameSpan = $('<div>')
                 .addClass("username")
                 .text(user.nickname)
-                .appendTo(rankDiv);
+                .appendTo(nameAndFPDiv);
 
             // 創建使用者總減碳量
-            const carbonOffsetSpan = $('<span>')
+            const carbonOffsetSpan = $('<div>')
                 .addClass("carbon-offset")
-                .text(`總減碳量: ${convertRankToPresent(user.rankType,user.totalFP)}`)
-                .appendTo(rankDiv);
+                .text(`減碳量: ${convertRankToPresent(user.rankType,user.totalFP)}`)
+                .appendTo(nameAndFPDiv);
         });
     }
 }

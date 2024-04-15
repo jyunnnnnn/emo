@@ -574,6 +574,8 @@ function modifyNickname() {
             localStorage.setItem('EmoAppUser', updatedUserDataString);
             $('#user').text(User.nickname);
             alert("修改成功");
+            const index = AllUsersFp.findIndex(user => user.userId === User.userId);
+            AllUsersFp[index].nickname = User.nickname ;
             document.getElementById('renameFW').style.display = 'none';
             $.ajax({
                 type: 'PUT',

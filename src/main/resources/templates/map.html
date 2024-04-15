@@ -545,14 +545,15 @@
         </div>
         <!--自己的排行-->
         <div class="rank-div" style="border:none;padding: 0px; margin-top:10px">
-            <div style="margin:15px">
-                <img id="myRankPhoto" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='black' class='bi bi-person-circle' id='userIcon' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E" alt="User's Photo">
+            <div style="margin:15px;flex:20%">
+                <img id="myRankPhoto" style="margin-right:0" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='black' class='bi bi-person-circle' id='userIcon' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E" alt="User's Photo">
                 <div id="MyRankName" style="font-size:20px"></div>
             </div>
-            <div style="text-align:left; flex: 1;">
+            <div style="text-align:center;flex:40%;max-width: 40%;">
                 <div id="myRankCarbon" class="carbon-offset"></div>
             </div>
-            <div style="font-size:20px">我的排名:<strong id="myRankNumber" style="margin-left:10px"></strong></div>
+            <div style="font-size: 20px;text-align: center;padding: 10px;flex:40% ;white-space: nowrap;">
+                我的排名:<strong id="myRankNumber" style="margin: 3px;"></strong></div>
         </div>
         <div class="ranking-container" id="rankingContent" >
             <div class="row-container" id="rowContainer" ></div>
