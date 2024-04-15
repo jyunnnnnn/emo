@@ -24,16 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // comment joinUS
 $('#commentLogin').on('mouseenter', function() {
-    if(window.innerWidth < 900){
-        $('#joinUS').css('transform', 'scale(0.6)');
-    } else {
+    if(window.innerWidth > 900){
         $('#joinUS').css('transform', 'scale(1.3)');
     }
 });
 $('#commentLogin').on('mouseleave', function() {
     if(window.innerWidth < 900){
-        $('#joinUS').css('transform', 'scale(1.2)');
-    } else {
         $('#joinUS').css('transform', 'scale(3)');
     }
 });
@@ -94,7 +90,7 @@ window.addEventListener('scroll', () => {
             totalFP.start();
             firstTime = false;
         }
-
+        $('#joinUS').css('transform', 'scale(0.6)');
     }
 });
 

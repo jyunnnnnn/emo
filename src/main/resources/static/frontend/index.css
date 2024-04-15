@@ -29,6 +29,9 @@ details{
 summary{
     font-size: 20px;
 }
+section{
+    overflow-x: hidden;
+}
 
 /* LoginBtn */
 .login {
@@ -494,8 +497,8 @@ summary{
         top: 10%;
     }
     .recordPhoto1{
-        position: relative;
-        top: 25%;
+        position: absolute;
+        top: 35vh;
         left: 5vw;
     }
     .recordPhoto2{
@@ -545,11 +548,13 @@ summary{
     }
     .totalFPDescription{
         font-size: 15px;
+        z-index: 10;
+        top: 8vh;
     }
     .totalFPCounter{
         font-size: 30px;
         padding-top: 230px;
-        top: 10vh;
+        top: 13vh;
     }
 
     /* section:qa */
