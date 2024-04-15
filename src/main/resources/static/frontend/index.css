@@ -459,7 +459,7 @@ section{
         top: 40%;
     }
     .homeBG{
-        top: 70px;
+        top: 80px;
         height: 100vh;
         position: absolute;
         transform: scale(0.8);
