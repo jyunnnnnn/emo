@@ -50,10 +50,10 @@ window.addEventListener('scroll', () => {
     if (scrollPosition > historyPosition) {
         $('#historySlogan').addClass('active');
         setTimeout(() => {
-            $('#historyVideo').addClass('active');
+            $('#historyDescription').addClass('active');
         }, 500);
         setTimeout(() => {
-            $('#historyDescription').addClass('active');
+            $('#historyVideo').addClass('active');
         }, 1000);
     }
 });

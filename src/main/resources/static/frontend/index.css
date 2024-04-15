@@ -319,10 +319,15 @@ span{
         max-height: 45vh;
         max-width: 45vw;
     }
+    video {
+        max-height: 65vh;
+        max-width: 80vw;
+    }
     /* navBar */
     .navbar {
         text-align: center;
         padding: 0;
+        top: -3%;
     }
     .EMOapp{
         transform: scale(0.8);
@@ -392,6 +397,28 @@ span{
         left: 38%;
         top: 80%;
         text-align: right;
+    }
+    /* section:featureHistory */
+    .featuresHistory{
+        height: 100vh;
+        position: relative;
+    }
+    .historySlogan {
+        font-size: 25px;
+        position: relative;
+        left: 10%;
+        top: 10%;
+    }
+    .historyDescription {
+        position: absolute;
+        font-size: 13px;
+        left: 10%;
+        top: 22%;
+        text-align: left;
+    }
+    #historyVideo{
+        left: 18vw;
+        top: 30vh;
     }
 
     .youtube {
