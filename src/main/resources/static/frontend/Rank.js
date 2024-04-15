@@ -48,7 +48,7 @@ function initUserData() {
      const optionElement = $('<a class="item"></a>').text("所有階級");
      optionElement.attr('id', 'all');
      optionElement.on("click", function() {
-         $('#selectedRank').text("全部");
+         $('#selectedRank').text("所有階級");
          showRankByRankType("",1);
      });
      dropdownElement.append(optionElement);
