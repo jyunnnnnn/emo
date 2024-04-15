@@ -23,6 +23,59 @@ video{
 span{
     color: rgb(98, 172, 113);
 }
+details{
+    padding: 10px 20px 10px 20px;
+}
+summary{
+    font-size: 20px;
+}
+
+/* LoginBtn */
+.login {
+    z-index: 101;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    height: 3.3em;
+    width: 12em;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: .4s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 40vw;
+    top: 60vh;
+}
+.login .gradient {
+    height: 100%;
+    width: 350%;
+    background: linear-gradient(to right, #62AC71FF 25%, #64EAE7 65%, #16a085 90%);
+    position: absolute;
+    top: 0;
+    left: 60%;
+    transform: translateX(-50%);
+    z-index: -1;
+    transition: .4s ease;
+}
+.login .txt {
+    transition: .4s ease .5s;
+}
+.login:hover .gradient {
+    transition: .4s ease;
+    transform: translateX(-40%);
+}
+.login:focus .gradient {
+    background-size: 200%;
+    background-position: right;
+    transform: translateX(-88%);
+    transition: 1s ease;
+}
+
 
 /* 導航列 */
 .EMOapp{
@@ -34,6 +87,17 @@ span{
 #features{
     scroll-margin-top: 130px;
 }
+.navbarJustify{
+    justify-content: right;
+    padding-right: 50px;
+}
+.navbar a:active{
+    transform: scale(0.9);
+    transition: transform 0.1s linear;
+}
+.nav-item{
+    padding: 20px;
+}
 
 /* section:home */
 .home {
@@ -44,22 +108,6 @@ span{
 .homeBG{
     position: relative;
     bottom: 50px;
-}
-.totalFPCounter{
-    font-size: 80px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    padding-top: 250px;
-    color: #3d3c3c;
-}
-.totalFPDescription{
-    font-size: 30px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    padding-top: 200px;
-    color: #3d3c3c;
 }
 
 /* section:features */
@@ -105,7 +153,7 @@ span{
     color: #7a7979;
     position: absolute;
     right: 25%;
-    top: 37%;
+    top: 48%;
 }
 .sloganDescription{
     color: #7a7979;
@@ -164,32 +212,79 @@ span{
     left: 15%;
     top: 38%;
 }
+/* section:featuresAchievementNRanking */
+.featuresAchievementNRanking{
+    background: #dafee2;
+    height: 100vh;
+    position: relative;
+}
 
-.resources{
-    background: #b8eecc;
-    height: 700px;
-}
-.qa{
+/* section:comment */
+.comment{
     background: #caf5d9;
-    height: 700px;
+    height: 100vh;
+    position: relative;
 }
+.totalFPCounter{
+    font-size: 80px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding-top: 250px;
+    color: rgb(98, 172, 113);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.totalFPDescription{
+    font-size: 30px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding-top: 200px;
+    color: #3d3c3c;
+}
+
+/* section:qa */
+.qa{
+    background: #dafee2;
+    height: 80vh;
+    position: relative;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+}
+.qaTitle{
+    display: flex;
+    font-size: 40px;
+    width: 50%;
+    color: #3d3c3c;
+    justify-content: center;
+}
+.qaDetails{
+    background: rgba(255, 255, 255, 0.61);
+    width: 80vw;
+    height: fit-content;
+    border-radius: 20px;
+    margin-right: 5%;
+}
+.qaContent{
+    border-radius: 20px;
+    background: rgba(236, 236, 236, 0.61);
+    padding: 10px 20px 10px 20px;
+}
+.resourceLink {
+    text-decoration: none;
+    color: #000000;
+    text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
+}
+
+/* section:contact */
 .contact{
     background-color: rgb(98, 172, 113);
 }
 
 
-.navbarJustify{
-    justify-content: right;
-    padding-right: 50px;
-}
-.navLink{
-    width: 100px;
-    height: 100px;
-}
-.navbar a:active{
-    transform: scale(0.9);
-    transition: transform 0.1s linear;
-}
 
 
 
@@ -198,13 +293,9 @@ span{
 
 
 
-.btn{
-    border-radius: 40px;
-}
-.nav-item{
-    padding: 20px;
 
-}
+
+
 .loginpage-btn{
     background-color: #166a29;
     color: white;
@@ -313,16 +404,19 @@ span{
         font-size: 140px;
     }
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 900px) {
     /* 共用 */
     img{
-        max-height: 45vh;
         max-width: 45vw;
     }
     video {
         max-height: 65vh;
         max-width: 80vw;
     }
+    summary{
+        font-size: 15px;
+    }
+
     /* navBar */
     .navbar {
         text-align: center;
@@ -419,6 +513,35 @@ span{
     #historyVideo{
         left: 18vw;
         top: 30vh;
+    }
+    /* section:featuresAchievementNRanking */
+    .featuresAchievementNRanking{
+        height: 100vh;
+        position: relative;
+    }
+
+    /* section:qa */
+    .qa{
+        height: fit-content;
+        position: relative;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+    }
+    .qaTitle{
+        width: 100vh;
+        justify-content: center;
+        font-size: 30px;
+        margin-top: 10%;
+        margin-bottom: 2%;
+    }
+    .qaDetails{
+        width: 95vw;
+        margin: 0;
+        margin-bottom: 10%;
+    }
+    .qaContent{
+        font-size: 13px;
     }
 
     .youtube {

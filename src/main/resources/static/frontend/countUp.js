@@ -19,7 +19,7 @@ var CountUp = /** @class */ (function () {
         this.defaults = {
             startVal: 0,
             decimalPlaces: 0,
-            duration: 2,
+            duration: 4,
             useEasing: true,
             useGrouping: true,
             useIndianSeparators: false,
@@ -30,7 +30,7 @@ var CountUp = /** @class */ (function () {
             prefix: '',
             suffix: '',
             enableScrollSpy: false,
-            scrollSpyDelay: 200,
+            scrollSpyDelay: 0,
             scrollSpyOnce: false,
         };
         this.finalEndVal = null; // for smart easing

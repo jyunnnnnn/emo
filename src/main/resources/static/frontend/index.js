@@ -1,25 +1,36 @@
 import { CountUp } from '/frontend/countUp.js';
+let totalFP;
+let AllUsersFp;
+function loadAllUsersFp(){
+    $.ajax({
+        url: '/rank/getRankObj',
+        type: 'GET',
+        success: function(response) {
+            console.log(response);
+            AllUsersFp = response;
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
 document.addEventListener("DOMContentLoaded", function () {
-    let totalFP = new CountUp('totalFPCounter', 20909008098);
-    if (!totalFP.error) {
-        totalFP.start();
-    } else {
-        console.error(totalFP.error);
-    }
+    loadAllUsersFp();
 
     // featureHistory影片速度
     $('#historyVideo').get(0).playbackRate = 2.0;
 });
 
 // feature typing
+let firstTime = true;
 window.addEventListener('scroll', () => {
     let sloganTyping1 = document.querySelector('.sloganTyping1');
     let sloganTyping2 = document.querySelector('.sloganTyping2');
     let sloganSymbolLeft = document.querySelector('.sloganSymbolLeft');
     let sloganSymbolRight = document.querySelector('.sloganSymbolRight');
     let scrollPosition = window.scrollY;
-    let homePosition = window.innerHeight/2;
 
+    let homePosition = $('#home').offset().top - window.innerHeight/2;
     if (scrollPosition > homePosition) {
         sloganTyping1.classList.add('active');
         sloganSymbolLeft.classList.add('active');
@@ -32,7 +43,7 @@ window.addEventListener('scroll', () => {
         }, 2000);
     }
 
-    let recordPosition = window.innerHeight;
+    let recordPosition = $('#featuresRecord').offset().top - window.innerHeight/2;
     if (scrollPosition > recordPosition) {
         $('#recordSlogan').addClass('active');
         setTimeout(() => {
@@ -46,7 +57,7 @@ window.addEventListener('scroll', () => {
         }, 1500);
     }
 
-    let historyPosition = window.innerHeight * 2;
+    let historyPosition = $('#featuresHistory').offset().top - window.innerHeight/2;
     if (scrollPosition > historyPosition) {
         $('#historySlogan').addClass('active');
         setTimeout(() => {
@@ -55,6 +66,18 @@ window.addEventListener('scroll', () => {
         setTimeout(() => {
             $('#historyVideo').addClass('active');
         }, 1000);
+    }
+
+    let commentPosition = $('#comment').offset().top - window.innerHeight/2;
+    if (scrollPosition > commentPosition) {
+        $('#totalFPDescription').addClass('active');
+        $('#totalFP').addClass('active');
+        if(firstTime){
+            totalFP = new CountUp('totalFPCounter', 20909008098);
+            totalFP.start();
+            firstTime = false;
+        }
+
     }
 });
 
