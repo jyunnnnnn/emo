@@ -1,13 +1,15 @@
 import { CountUp } from '/frontend/countUp.js';
 let totalFP;
-let AllUsersFp;
+let totalFPnum = 0;
 function loadAllUsersFp(){
     $.ajax({
         url: '/rank/getRankObj',
         type: 'GET',
         success: function(response) {
             console.log(response);
-            AllUsersFp = response;
+            for(let i=0; i<response.length; i++){
+                totalFPnum += response[i].totalFP;
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -16,9 +18,24 @@ function loadAllUsersFp(){
 }
 document.addEventListener("DOMContentLoaded", function () {
     loadAllUsersFp();
-
     // featureHistory影片速度
     $('#historyVideo').get(0).playbackRate = 2.0;
+});
+
+// comment joinUS
+$('#commentLogin').on('mouseenter', function() {
+    if(window.innerWidth < 900){
+        $('#joinUS').css('transform', 'scale(0.6)');
+    } else {
+        $('#joinUS').css('transform', 'scale(1.3)');
+    }
+});
+$('#commentLogin').on('mouseleave', function() {
+    if(window.innerWidth < 900){
+        $('#joinUS').css('transform', 'scale(1.2)');
+    } else {
+        $('#joinUS').css('transform', 'scale(3)');
+    }
 });
 
 // feature typing
@@ -73,7 +90,7 @@ window.addEventListener('scroll', () => {
         $('#totalFPDescription').addClass('active');
         $('#totalFP').addClass('active');
         if(firstTime){
-            totalFP = new CountUp('totalFPCounter', 20909008098);
+            totalFP = new CountUp('totalFPCounter', totalFPnum);
             totalFP.start();
             firstTime = false;
         }
@@ -82,7 +99,7 @@ window.addEventListener('scroll', () => {
 });
 
 // navbar背景顏色
-$('#navbarBtn').on('click',function(){
+$('#navbarBtn'),$('#navbarHome'),$('#navbarFeatures'),$('#navbarQA'),$('#navbarContact').on('click',function(){
     console.log($('#navbar').css('backgroundColor').toString())
     if($('#navbar').css('backgroundColor').toString() === 'rgb(98, 172, 113)'){
         $('#navbar').css('backgroundColor', 'rgba(0, 0, 0, 0)');
@@ -137,11 +154,9 @@ $('.navbar-nav>li>a').on('click', function(){
     $('.navbar-collapse').collapse('hide');
 });
 
-
-
 $(document).ready(function () {
     // 切換到登入頁面
-    $('#goto-login').click(function (e) {
+    $('#commentLogin').click(function (e) {
         e.preventDefault();
         window.location.href = 'login';
     });

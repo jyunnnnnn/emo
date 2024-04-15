@@ -42,13 +42,12 @@ summary{
     border-radius: 25px;
     cursor: pointer;
     transition: .4s ease;
-    position: relative;
+    position: absolute;
     overflow: hidden;
     text-transform: uppercase;
     display: flex;
     justify-content: center;
     align-items: center;
-    left: 40vw;
     top: 60vh;
 }
 .login .gradient {
@@ -224,13 +223,20 @@ summary{
     background: #caf5d9;
     height: 100vh;
     position: relative;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+.joinUS{
+    transform: scale(3);
+    transition: transform 1.5s;
 }
 .totalFPCounter{
     font-size: 80px;
     position: absolute;
     width: 100%;
     text-align: center;
-    padding-top: 250px;
+    padding-top: 270px;
     color: rgb(98, 172, 113);
     display: flex;
     justify-content: center;
@@ -437,13 +443,7 @@ summary{
         position: relative;
         transform: scale(0.8);
     }
-    .totalFPDescription{
-        font-size: 15px;
-    }
-    .totalFPCounter{
-        font-size: 30px;
-        padding-top: 230px;
-    }
+
     /* section:feature */
     .features{
         height: 50vh;
@@ -518,6 +518,20 @@ summary{
     .featuresAchievementNRanking{
         height: 100vh;
         position: relative;
+    }
+
+    /* section:comment */
+    .joinUS{
+        rotate: 90deg;
+        transform: scale(1.2);
+    }
+    .totalFPDescription{
+        font-size: 15px;
+    }
+    .totalFPCounter{
+        font-size: 30px;
+        padding-top: 230px;
+        top: 10vh;
     }
 
     /* section:qa */
