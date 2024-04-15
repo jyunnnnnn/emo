@@ -29,7 +29,7 @@ $('#commentLogin').on('mouseenter', function() {
     }
 });
 $('#commentLogin').on('mouseleave', function() {
-    if(window.innerWidth < 900){
+    if(window.innerWidth > 900){
         $('#joinUS').css('transform', 'scale(3)');
     }
 });
