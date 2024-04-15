@@ -173,7 +173,57 @@ function achievementClick(achievementId){
             .text("表揚你" + target[0].achievementDescription)
             .attr('class', 'achievementDescription');
 
-        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2);
+        let downloadLink = $("<button>")
+            .text("下載圖片")
+            .click(function (){
+                let $this = $(this);
+                $this.prop('disabled', true); // 按鈕點擊後設為不可用
+                $this.css('color', 'white'); // 修改文字顏色為白色
+
+                generatePhoto(target);
+                downlodACPhoto();
+            })
+            .attr('class','changePhoto')
+            .attr('id','downloadLink')
+            .css({
+                'margin':'5px',
+                'background-color': 'lightgray'
+            })
+            .hover(function() {
+                $(this).css('background-color', '#b7bcbd'); // 滑鼠移入時改變背景顏色
+            }, function() {
+                $(this).css('background-color', 'lightgray'); // 滑鼠移出時恢復原來的背景顏色
+            });
+        let shareLink = $("<button>")
+            .text("分享圖片")
+            .click(function (){
+                let $this = $(this);
+                $this.prop('disabled', true); // 按鈕點擊後設為不可用
+                $this.css('color', 'white'); // 修改文字顏色為白色
+                generatePhoto(target);
+                shareImage();
+
+            })
+            .attr('class','changePhoto')
+            .attr('id','shareLink')
+            .css({
+                'margin':'5px',
+                'background-color': 'lightgray'
+            })
+            .hover(function() {
+                $(this).css('background-color', '#b7bcbd'); // 滑鼠移入時改變背景顏色
+            }, function() {
+                $(this).css('background-color', 'lightgray'); // 滑鼠移出時恢復原來的背景顏色
+            });
+
+        let buttonDiv = $("<div>")
+            .css({
+                'display': 'flex',
+                'flex-direction': 'row',
+                'justify-content': 'center'
+            });
+        buttonDiv.append(downloadLink, shareLink);
+        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2, buttonDiv);
     } else {
         let achievementName = $("<div>")
             .text(target[0].achievementName)
@@ -389,4 +439,145 @@ function firstTimeAchieve(target){
             }
         });
     }
+}
+
+function generatePhoto(target) {
+    let achievementName = $("<div>")
+        .text(target[0].achievementName)
+        .attr({'class': 'eachAchievementName', 'style': 'text-align: center;'});
+    let achievementDiv = $("<div>")
+        .attr({
+            'class': 'achievementCard',
+            'id': 'achievementCard'
+        });
+    let cardInner = $("<div>")
+        .attr({
+            'class': 'cardInner',
+            'style': 'text-align: center;'
+        });
+    let frontDiv = $("<div>")
+        .attr({
+            'style': 'align-content: center;\n' +
+                '    width: 190px;\n' +
+                '    height: 190px;\n' +
+                '    background: white;\n' +
+                '    border-radius: 50%;\n' +
+                '    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),\n' +
+                '    0 0  0 2px rgb(190, 190, 190),\n' +
+                '    0.3em 0.3em 1em rgba(0,0,0,0.3);\n' +
+                '    position: relative;\n' +
+                '    margin-left: 95px;\n' +
+                '    margin-top: 20px;\n' +
+                '    margin-bottom: 20px;'});
+
+    // 轉乘img，html2canvas無法正確轉換svg圖
+    let img = new Image();
+    img.src = 'data:image/svg+xml;base64,' + btoa(target[0].unLockedSvg);
+    img.style.position='absolute';
+    img.style.top='0';
+    img.style.right='0';
+    img.style.left='0';
+    img.style.bottom='0';
+    img.style.margin='auto';
+
+    frontDiv.append(img);
+
+    time = (target[0].current.toFixed(2) * 100 / 100).toString()
+
+    let datePart = target[0].accomplishTime.substring(0, 10).split("-");
+    let achievementText2 = $("<div>")
+        .text(datePart[0] + "年" + datePart[1] + "月" + datePart[2] + "日")
+        .attr({'class': 'achievementText', 'style': 'text-align: center;'});
+
+    cardInner.append(frontDiv);
+    achievementDiv.append(cardInner);
+    time = parseInt(target[0].current / target[0].target, 10).toString();
+    let achieveTime = time.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    let achieveDescription1 = $("<div>")
+        .text("你贏得此獎章" + achieveTime + "次")
+        .attr({'class': 'achievementDescription','style':'color: black;'});
+    let achieveDescription2 = $("<div>")
+        .text("表揚你" + target[0].achievementDescription)
+        .attr({'class': 'achievementDescription','style':'color: black;'});
+
+    $('#ACPhoto').append(achievementName, frontDiv, achievementText2, achieveDescription1, achieveDescription2);
+
+    if (achievementName && frontDiv && achievementText2 && achieveDescription1 && achieveDescription2) {
+        let ACPhoto2Png = document.getElementById('ACPhoto');
+
+        ACPhoto2Png.style.backgroundColor='#fff'
+        ACPhoto2Png.style.display = 'block';
+        ACPhoto2Png.style.position = 'fixed';
+        ACPhoto2Png.style.zIndex = -1000;
+
+
+    } else {
+        console.error("One or more elements are not found or undefined.");
+    }
+}
+function downlodACPhoto(){
+    let ACPhoto2Png = document.getElementById('ACPhoto');
+    // 使用 dom-to-image 轉html為png
+    domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
+        let img = new Image();
+        img.src = dataUrl;
+
+        let link = document.createElement('a');
+        link.download = 'image.png';
+        link.href = dataUrl;
+        link.click();
+        $('#ACPhoto').empty();
+        $('#ACPhoto').css("display","none");
+        $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+        $('#downloadLink').css('color', 'black'); // 恢復文字顏色為黑色
+    }).catch(function (error) {
+        console.error('dom-to-image error:', error);
+    });
+}
+
+async function shareImage() {
+
+    let ACPhoto2Png = document.getElementById('ACPhoto');
+    // 使用 dom-to-image 轉html為png
+    domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
+        const blob = dataURItoBlob(dataUrl);
+        const filesArray = [
+            new File(
+                [blob],
+                'meme.jpg',
+                {
+                    type: "image/jpeg",
+                    lastModified: new Date().getTime()
+                }
+            )
+        ];
+        const shareData = {
+            files: filesArray,
+        };
+        navigator.share(shareData);
+        $('#ACPhoto').empty();
+        $('#ACPhoto').css("display","none");
+        $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+        $('#shareLink').css('color', 'black'); // 恢復文字顏色為黑色
+    }).catch(function (error) {
+        console.error('dom-to-image error:', error);
+    });
+
+}
+
+function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    let byteString = atob(dataURI.split(',')[1]);
+
+    // write the bytes of the string to an ArrayBuffer
+    let ab = new ArrayBuffer(byteString.length);
+    let ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    let bb = new Blob([ab]);
+    return bb;
 }

@@ -50,6 +50,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         lineOnMap: currentInfoWindowRecord.lineOnMap,
     };
     if(record.userId) {
+
         modifyRecordToBackend(record);
         updateRecordInArray(newClassType, newType, newDataValue,footprint);//更新record[]
         updateMarkerContent(record);

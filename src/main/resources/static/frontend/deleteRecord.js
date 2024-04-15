@@ -30,7 +30,7 @@ function deleteMultiRecord(){
                 return recordDate >= new Date(startDate) && recordDate <= new Date(endDate);
             });
             showNewChart(records, "全部");
-            showNewRecord(sortedRecords, nowType);
+            sortRecordsBySelectedOption($('#selectedMethod').text());
 
             // 更新外面的最新紀錄
             console.log(records[records.length - 1]);

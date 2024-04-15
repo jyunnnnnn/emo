@@ -13,9 +13,9 @@
       "content": [
         {
           "option": {
-            "小": 5.0,
+            "大": 15.0,
             "中": 10.0,
-            "大": 15.0
+            "小": 5.0
           },
           "index": "cup",
           "name": "環保杯",
@@ -104,6 +104,24 @@
           "baseline": "car",
           "color": "#87e1c7",
           "description": "比較對象為開車 當前公里數×排放係數(開車[110]-高鐵[32])"
+        },
+        {
+          "index": "walk",
+          "name": "走路",
+          "coefficient": 0.0,
+          "unit": "gCO2e/km",
+          "baseline": "scooter",
+          "color": "#a265c3",
+          "description": "比較對象為騎車 當前公里數×排放係數(騎車[100]-走路[0])"
+        },
+        {
+          "index": "bicycle",
+          "name": "腳踏車",
+          "coefficient": 0.0,
+          "unit": "gCO2e/km",
+          "baseline": "scooter",
+          "color": "#eeb4d6",
+          "description": "比較對象為騎車 當前公里數×排放係數(騎車[100]-腳踏車[0])"
         }
       ],
       "name": "交通"

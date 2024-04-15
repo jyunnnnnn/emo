@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,9 +33,11 @@ class EcoRecordServiceTest {
     @MockBean
     private UserRecordCounterRepository userRecordCounterRepository;
     //虛假紀錄資料庫，用以模擬資料庫運作，並非實際與資料庫互動，能避免mongoDB出問題時導致service測試失敗的問題
+
+
     @Mock
-    private static RecordRepository recordRepository;
-    private static List<EcoRecord> testList = new ArrayList<>();
+    private RecordRepository recordRepository;
+    private List<EcoRecord> testList = new ArrayList<>();
 
     //    建置測試環境
     @BeforeEach
@@ -44,7 +47,7 @@ class EcoRecordServiceTest {
         for (int i = 1; i <= 3; i++) {
             EcoRecord tmp = tmp = new EcoRecord(
                     "testUserId",
-                    "testClassType",
+                    "生活用品",
                     "testType",
                     i * 5,
                     i * 0.1,
@@ -75,7 +78,8 @@ class EcoRecordServiceTest {
 
         //設置資料庫運作模式
         when(this.recordRepository.save(target)).thenReturn(target);
-        when(userRecordCounterRepository.findByUserId(any(String.class))).thenReturn(userAchievementEntity);
+        when(this.userRecordCounterRepository.findByUserId(any(String.class))).thenReturn(UserAchievementEntity.getTestEntity());
+
         EcoRecord result = ecoRecordService.addRecord(target);
         assertEquals(target.getRecordId(), result.getRecordId());
     }
@@ -90,6 +94,9 @@ class EcoRecordServiceTest {
         EcoRecord newTarget = target;
         newTarget.setData_value(999);
         when(recordRepository.save(newTarget)).thenReturn(newTarget);
+        when(this.userRecordCounterRepository.findByUserId(any(String.class))).thenReturn(UserAchievementEntity.getTestEntity());
+        when(this.recordRepository.findByRecordId(anyString())).thenReturn(target);
+
         EcoRecord result = this.ecoRecordService.updateRecord(newTarget);
         assertEquals(result.getData_value(), newTarget.getData_value());
     }

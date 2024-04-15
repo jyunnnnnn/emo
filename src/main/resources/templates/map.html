@@ -37,6 +37,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
+    <!--下載成就圖-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
         @font-face {
@@ -130,6 +133,13 @@
                 <path d="m9.78654,8c0,-1.02213 0.62119,-1.80842 1.52628,-1.80842c0.89179,0 1.52628,0.81086 1.52628,1.80842c0,1.01722 -0.61675,1.80842 -1.52628,1.80842c-0.90066,0 -1.52628,-0.7912 -1.52628,-1.80842zm2.36054,0c0,-0.59467 -0.27961,-1.13022 -0.83426,-1.13022c-0.55465,0 -0.83412,0.53555 -0.83412,1.13022c0,0.59942 0.2706,1.13038 0.83412,1.13038c0.56352,0 0.83426,-0.53096 0.83426,-1.13038z"/>
             </svg>
         </div>
+
+    </div>
+    <div style="position: absolute; top: calc(8% + 50px); right: 8%">
+        <!-- 排行按鈕 -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill=black
+             class="bi bi-gear-wide-connected" id="rankingButton" viewBox="0 0 1024 1024">
+            <path d="M730.240133 261.207481h109.371431v469.56712h-109.371431zM511.498296 118.295615h109.371431v612.477962h-109.371431zM292.755435 337.038476h109.371431v393.736125h-109.371431zM117.762171 796.397459h787.472251v109.371431H117.762171z" fill="#74E8AE" /><path d="M861.48585 708.900315h-4.031037c2.451181-6.87539 4.031037-14.166477 4.031037-21.874286v-382.073048c0-36.186155-29.436703-65.622858-65.622859-65.622858H664.617275c-7.707809 0-14.998896 1.579855-21.874286 4.031037v-81.316973c0-36.186155-29.436703-65.622858-65.622858-65.622858H445.875438c-36.186155 0-65.622858 29.436703-65.622858 65.622858v162.982066c-6.87539-2.451181-14.166477-4.031037-21.874286-4.031036H227.133601c-36.186155 0-65.622858 29.436703-65.622858 65.622858v300.407954c0 7.707809 1.580879 14.998896 4.03206 21.874286h-4.03206c-36.186155 0-65.622858 29.436703-65.622858 65.622858v87.497145c0 36.186155 29.436703 65.622858 65.622858 65.622858h699.975107c36.186155 0 65.622858-29.436703 65.622858-65.622858v-87.497145c0-36.187179-29.436703-65.622858-65.622858-65.622858zM642.744013 304.952981c0-12.058297 9.804726-21.874286 21.874286-21.874286h131.245716c12.06956 0 21.874286 9.815989 21.874286 21.874286v382.073048c0 12.058297-9.804726 21.874286-21.874286 21.874286H664.617275c-12.06956 0-21.874286-9.815989-21.874286-21.874286v-382.073048z m-218.742861 81.665094V162.044187c0-12.058297 9.815989-21.874286 21.874286-21.874286h131.245716c12.06956 0 21.874286 9.815989 21.874287 21.874286v524.981842c0 12.058297-9.804726 21.874286-21.874287 21.874286H445.875438c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-300.407954z m-218.741837 0c0-12.058297 9.815989-21.874286 21.874286-21.874286h131.245717c12.058297 0 21.874286 9.815989 21.874286 21.874286v300.407954c0 12.058297-9.815989 21.874286-21.874286 21.874286H227.133601c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-300.407954zM883.360136 862.019294c0 12.058297-9.804726 21.874286-21.874286 21.874286H161.510743c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-87.497144c0-12.058297 9.815989-21.874286 21.874286-21.874287h699.977154c12.06956 0 21.874286 9.815989 21.874286 21.874287v87.497144z"/></svg>
     </div>
     <!-- 主按鈕區 -->
     <div id="recordBtns">
@@ -448,8 +458,13 @@
                 <button class="item" type="button" id="FP2">多到少</button>
             </div>
         </div>
-        <div class="selectDiv">
-            <div class="selectClass" id="selectClass">
+
+        <div class="ts-select is-fluid" data-dropdown="selectClass" style="padding: 5px; height: fit-content;">
+            <div class="content" id="selectedClass" style="overflow-x: auto; min-height: 30px;">
+                <div class="ts-chip is-circular" id="allClass">全部</div>
+            </div>
+            <div class="ts-dropdown is-bottom-right" data-name="selectClass" id="classNType" style="z-index: 101; width: 82%;max-height: 30%;overflow-y: scroll;">
+                <a class="item is-selected" id="all">- 全部</a>
             </div>
         </div>
 
@@ -502,6 +517,48 @@
                 style="background-color: rgb(255, 69, 69); width: 125px; margin-top: 10px;">
             <div class="setText" style="right: 12%">關閉</div>
         </button>
+    </div>
+</div>
+
+<!-- 懸浮窗：排行 -->
+<div id="rankingFW" onclick="closeFW(event)">
+    <div class="historyContainer">
+        <!-- 關閉 -->
+        <button class="btn" id="closeRankModal" style="right: 5%; top:4%;">
+            <svg viewBox="0 0 20 20" height="20" width="20" xmlns="http://www.w3.org/2000/svg" class="icon">
+                <g>
+                    <line x1="16.9999" y1="7" x2="7.00001" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                    <line x1="7.00006" y1="7" x2="17" y2="16.9999" id="Path" stroke="#0C0310" stroke-width="2"
+                          stroke-linecap="round"></line>
+                </g>
+            </svg>
+        </button>
+
+        <div class="historyHeading">排行</div>
+
+        <div class="ts-select" data-dropdown="rank" id="rankChoose" style="width: 100%">
+            <div class="content" id="selectedRank" style="font-size:20px">所有階級</div>
+        </div>
+        <div class="ts-dropdown is-bottom-right" data-name="rank" id="rankNType" style="font-size:20px; z-index: 101; width: 82%;max-height: 30%;overflow-y: scroll;">
+            <a class="item is-selected" id="rankType"></a>
+        </div>
+        <!--自己的排行-->
+        <div class="rank-div" style="border:none;padding: 0px; margin-top:10px">
+            <div style="margin:15px;flex:20%">
+                <img id="myRankPhoto" style="margin-right:0" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='black' class='bi bi-person-circle' id='userIcon' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E" alt="User's Photo">
+                <div id="MyRankName" style="font-size:20px"></div>
+            </div>
+            <div style="text-align:center;flex:40%;max-width: 40%;">
+                <div id="myRankCarbon" class="carbon-offset"></div>
+            </div>
+            <div style="font-size: 20px;text-align: center;padding: 10px;flex:40% ;white-space: nowrap;">
+                我的排名:<strong id="myRankNumber" style="margin: 3px;"></strong></div>
+        </div>
+        <div class="ranking-container" id="rankingContent" >
+            <div class="row-container" id="rowContainer" ></div>
+        </div>
+
     </div>
 </div>
 
@@ -579,7 +636,7 @@
         <div id="FPTransferTree" style="margin-top: 20px; text-align: center;"></div>
     </div>
 </div>
-
+<div id="ACPhoto" style="flex-direction: column; display: none; top: 0; left: 0;padding: 10px; width: 400px;height: 400px; padding-top: 30px"></div>
 </body>
 <script src="/frontend/init.js"></script>
 <script src="/frontend/saveRecord.js"></script>
@@ -591,9 +648,18 @@
 <script src="/frontend/deleteRecord.js"></script>
 <script src="/frontend/recordList.js"></script>
 <script src="/frontend/achievement.js"></script>
+<script src="/frontend/Rank.js"></script>
 
 
 <!-- 初始化地圖 -->
-<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}"></script>
+<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}">
+    $(document).on("keypress", "form", function (e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
 
 </html>

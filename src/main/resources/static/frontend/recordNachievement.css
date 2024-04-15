@@ -2,7 +2,8 @@
 #recordListFW,
 #achievementFW,
 #eachAchievementFW,
-#firstTimeAchieveFW{
+#firstTimeAchieveFW,
+#rankingFW{
     display: none;
     position: fixed;
     top: 0;
@@ -18,8 +19,8 @@
 }
 .parent {
     width: 100%;
-    height: 45vh;
-    max-height: 45vh;
+    height: 55%;
+    max-height: 55%;
     overflow-y: scroll;
 }
 
@@ -96,7 +97,9 @@
     padding: 7px;
 }
 
-
+.plusHover:Hover{
+    background: rgba(235, 237, 239, 0.87);
+}
 .historyChart {
     background: rgba(235, 237, 239, 0.87);
     border-radius: 20px;
@@ -336,8 +339,8 @@
 
 @media only screen and (max-width: 700px) {
     .parent {
-        max-height: 54%;
-        height: 54%;
+        max-height: 57%;
+        height: 57%;
     }
 
     .historyContainer {

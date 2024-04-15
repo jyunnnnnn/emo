@@ -62,7 +62,7 @@ public class ConfigController {
 
     //刪除特定content
     @DeleteMapping("/deleteRecordContent")
-    public ResponseEntity<?> deleteRecordContent(@RequestParam("index") String index) {
+    public ResponseEntity<?> deleteRecordContent(@RequestParam("index") String index) throws FileNotFoundException {
         this.configService.deleteRecordContent(index);
         return ResponseEntity.ok(Collections.singletonMap("message", "Update　Success"));
     }
