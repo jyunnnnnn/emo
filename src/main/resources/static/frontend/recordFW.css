@@ -645,6 +645,7 @@ svg:hover .detail {
 
 .ranking-container {
     overflow-y: auto;
+    overflow-x: hidden;
     height: auto;
     height: 65%;
 }

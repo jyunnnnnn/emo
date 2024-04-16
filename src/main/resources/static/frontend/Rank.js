@@ -27,7 +27,7 @@ function convertRankToPresent(rankType, total) {
     if (rankType <= 2) {
         totalFPString = (total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")) + "gCO2e";
     } else {
-        if ((total / 1000.0) > 100000) {
+        if ((total / 1000.0) > 10000) {
             let exponent = Math.floor(Math.log10(Math.abs((total / 1000.0)))); // Get exponent
             let mantissa = (total / 1000.0) / Math.pow(10, exponent); // Get mantissa
             let notation = mantissa.toFixed(2) + "E" + exponent; // Format in scientific notation with 2 decimal places

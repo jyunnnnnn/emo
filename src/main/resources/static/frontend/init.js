@@ -675,6 +675,8 @@ function uploadPhoto() {
             contentType: false,  // 不設定內容類型，讓瀏覽器自動設定
             success: function(response) {
                 User.photo = croppedImageUrl;
+                const index = AllUsersFp.findIndex(user => user.userId === User.userId);
+                AllUsersFp[index].photo = User.photo ;
                 $('#photoContainer').css("display","block");
                 $('#photoDisplay').attr('src', User.photo);
                 $('#originalPhoto').attr('src', User.photo);
