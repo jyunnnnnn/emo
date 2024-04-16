@@ -595,33 +595,38 @@ function downlodACPhoto(){
 }
 
 async function shareImage() {
-    let ACPhoto2toJpeg = document.getElementById('ACPhoto');
-    // 使用 dom-to-image 轉html為png
-    domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrlTmp) {
-        domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
-            const blob = dataURItoBlob(dataUrl);
-            const filesArray = [
-                new File(
-                    [blob],
-                    'meme.jpg',
-                    {
-                        type: "image/jpeg",
-                        lastModified: new Date().getTime()
-                    }
-                )
-            ];
-            const shareData = {
-                files: filesArray,
-            };
-            navigator.share(shareData);
-            $('#ACPhoto').empty();
-            $('#ACPhoto').css("display","none");
-            $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-        }).catch(function (error) {
-            // 若不支援跳道歉懸浮窗
-            console.error('dom-to-image error:', error);
+    if(navigator.share) {
+        let ACPhoto2toJpeg = document.getElementById('ACPhoto');
+        // 使用 dom-to-image 轉html為png
+        domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrlTmp) {
+            domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
+                const blob = dataURItoBlob(dataUrl);
+                const filesArray = [
+                    new File(
+                        [blob],
+                        'meme.jpg',
+                        {
+                            type: "image/jpeg",
+                            lastModified: new Date().getTime()
+                        }
+                    )
+                ];
+                const shareData = {
+                    files: filesArray,
+                };
+                navigator.share(shareData);
+                $('#ACPhoto').empty();
+                $('#ACPhoto').css("display", "none");
+                $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+            }).catch(function (error) {
+                // 若不支援跳道歉懸浮窗
+                $('#shareError').css("display","flex");
+                console.error('dom-to-image error:', error);
+            });
         });
-    });
+    }else{
+        $('#shareError').css("display","flex");
+    }
 
 }
 

@@ -202,7 +202,8 @@ svg:hover .detail {
 #closeAuthFW,
 #recordFW,
 #uploadUserPhotoFW,
-#FPTransferFW{
+#FPTransferFW,
+#shareError{
     display: none;
     position: fixed;
     top: 0;
