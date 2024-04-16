@@ -545,10 +545,17 @@ section{
     .joinUS{
         rotate: 90deg;
         width: 250vw;
+        opacity: 0;
     }
     @keyframes zoom {
-        from { width: 250vw;}
-        to { width: 70vw; }
+        from {
+            width: 250vw;
+            opacity: 0;
+        }
+        to {
+            width: 70vw;
+            opacity: 1;
+        }
     }
     .totalFPDescription{
         font-size: 15px;
