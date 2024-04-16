@@ -639,10 +639,12 @@
 </div>
 <div id="ACPhoto" style="flex-direction: column; display: none; top: 0; left: 0;padding: 10px; width: 400px;height: 400px; padding-top: 30px"></div>
 <!--分享失敗提示-->
-<div id="shareError" >
+<div id="shareError" onclick="closeFW(event)">
     <div class="ts-notice is-negative" style="position: fixed;margin: 10px;padding: 10px;top: 0;left: 0;right: 0;">
-        <div class="title">分享失敗</div>
-        <div class="content">當前瀏覽器不支援分享，正在開發中請等等我們>< !!~</div>
+        <div style="display:flex;align-items: center;">
+            <div class="title">分享失敗</div>
+            <div class="content">當前瀏覽器不支援分享，正在開發中請等等我們>< !!~</div>
+        </div>
     </div>
 </div>
 
