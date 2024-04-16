@@ -544,10 +544,11 @@ section{
     /* section:comment */
     .joinUS{
         rotate: 90deg;
+        width: 250vw;
     }
     @keyframes zoom {
-        from { width: 200vw;}
-        to { width: 60vw; }
+        from { width: 250vw;}
+        to { width: 70vw; }
     }
     .totalFPDescription{
         font-size: 15px;
