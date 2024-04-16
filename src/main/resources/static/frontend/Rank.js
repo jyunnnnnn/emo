@@ -1,3 +1,6 @@
+let no1SVG=
+
+
 // 點擊排行按鈕
 $('#rankingButton').on('click', function () {
     initUserData()
@@ -112,7 +115,7 @@ function showRankByRankType(rankType,all){
             if (count <= 3) {
                 const rankNum = $('<img>')
                     .attr({
-                        src: `frontend/img/no${count}.png`,
+                        src: `frontend/img/no${count}.svg`,
                         alt: `${user.nickname}'s Profile Photo`
                     })
                     .appendTo(rowDiv)

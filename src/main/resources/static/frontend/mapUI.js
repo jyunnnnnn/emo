@@ -423,8 +423,11 @@ function closeFW(event){
     }else if(event.target.id === 'FPTransferFW') {
         $('#FPTransferFW').css("display", "none");
     }else if(event.target.id === 'rankingFW') {
-             $('#rankingFW').css("display", "none");
-         }
+        $('#rankingFW').css("display", "none");
+    }else if(event.target.id === 'shareError') {
+        $('#shareError').css("display", "none");
+    }
+
 }
 
 // 關閉紀錄懸浮窗
