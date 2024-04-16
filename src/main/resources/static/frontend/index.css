@@ -549,17 +549,11 @@ section{
     }
     @keyframes zoom {
         from {
-            width: 100vw;
-        }
-        to {
-            width: 70vw;
-        }
-    }
-    @keyframes opacity {
-        from {
+            width: 200vw;
             opacity: 0;
         }
         to {
+            width: 70vw;
             opacity: 1;
         }
     }

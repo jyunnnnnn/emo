@@ -662,7 +662,7 @@ svg:hover .detail {
         margin-top: 15px;
         padding: 10px;
         text-align: center;
-         background: rgba(235, 237, 239, 0.87);
+        background: rgba(235, 237, 239, 0.87);
         border: 3px solid;
         flex: 90%;
     }
@@ -688,7 +688,7 @@ svg:hover .detail {
     .rank-div .username {
         flex: 1;
         margin-right: 10px;
-        text-align: center;
+        text-align: left;
         font-size:20px;
     }
 
@@ -699,6 +699,6 @@ svg:hover .detail {
     }
     .nameAndFPDiv{
         white-space: nowrap;
-        text-align: center;
+        text-align: left;
         width:100%;
     }
