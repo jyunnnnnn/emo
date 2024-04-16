@@ -574,49 +574,53 @@ function generatePhoto(target) {
     }
 }
 function downlodACPhoto(){
-    let ACPhoto2Png = document.getElementById('ACPhoto');
-    // 使用 dom-to-image 轉html為png
-    domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
-        let img = new Image();
-        img.src = dataUrl;
+    let ACPhoto2toJpeg = document.getElementById('ACPhoto');
+    // 使用 dom-to-image 轉html為png //轉兩次，ios svg下載太慢問題
+    domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl){
+        domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
+            let img = new Image();
+            img.src = dataUrl;
 
-        let link = document.createElement('a');
-        link.download = 'image.png';
-        link.href = dataUrl;
-        link.click();
-        $('#ACPhoto').empty();
-        $('#ACPhoto').css("display","none");
-        $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-    }).catch(function (error) {
-        console.error('dom-to-image error:', error);
+            let link = document.createElement('a');
+            link.download = 'image.jpg';
+            link.href = dataUrl;
+            link.click();
+            $('#ACPhoto').empty();
+            $('#ACPhoto').css("display","none");
+            $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+        }).catch(function (error) {
+            console.error('dom-to-image error:', error);
+        });
     });
 }
 
 async function shareImage() {
-
-    let ACPhoto2Png = document.getElementById('ACPhoto');
+    let ACPhoto2toJpeg = document.getElementById('ACPhoto');
     // 使用 dom-to-image 轉html為png
-    domtoimage.toPng(ACPhoto2Png).then(function (dataUrl) {
-        const blob = dataURItoBlob(dataUrl);
-        const filesArray = [
-            new File(
-                [blob],
-                'meme.jpg',
-                {
-                    type: "image/jpeg",
-                    lastModified: new Date().getTime()
-                }
-            )
-        ];
-        const shareData = {
-            files: filesArray,
-        };
-        navigator.share(shareData);
-        $('#ACPhoto').empty();
-        $('#ACPhoto').css("display","none");
-        $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-    }).catch(function (error) {
-        console.error('dom-to-image error:', error);
+    domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrlTmp) {
+        domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
+            const blob = dataURItoBlob(dataUrl);
+            const filesArray = [
+                new File(
+                    [blob],
+                    'meme.jpg',
+                    {
+                        type: "image/jpeg",
+                        lastModified: new Date().getTime()
+                    }
+                )
+            ];
+            const shareData = {
+                files: filesArray,
+            };
+            navigator.share(shareData);
+            $('#ACPhoto').empty();
+            $('#ACPhoto').css("display","none");
+            $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+        }).catch(function (error) {
+            // 若不支援跳道歉懸浮窗
+            console.error('dom-to-image error:', error);
+        });
     });
 
 }
