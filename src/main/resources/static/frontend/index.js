@@ -98,36 +98,30 @@ window.addEventListener('scroll', () => {
 
 // navbar背景顏色
 $('#navbarBtn, #navbarHome, #navbarFeatures, #navbarQA, #navbarContact').on('click',function(){
-    console.log($('#navbar').css('backgroundColor').toString())
-    if($('#navbar').css('backgroundColor').toString() === 'rgb(98, 172, 113)'){
-        $('#navbar').css('backgroundColor', 'rgba(0, 0, 0, 0)');
-    } else {
-        $('#navbar').css('backgroundColor', 'rgb(98, 172, 113)')
+    if(window.innerWidth < 900){
+        if($('#navbar').css('backgroundColor').toString() === 'rgb(98, 172, 113)'){
+            $('#navbar').css('backgroundColor', 'rgba(0, 0, 0, 0)');
+        } else {
+            $('#navbar').css('backgroundColor', 'rgb(98, 172, 113)')
+        }
     }
 })
 
-// 手機模式不要用slider
-document.addEventListener('DOMContentLoaded', function () {
-    function checkScreenWidth() {
-        var screenWidth = window.innerWidth || document.documentElement.clientWidth;
-        var elements = document.querySelectorAll(".showSlider");
+// 監聽輪播
+let carouselText = document.getElementById('carouselText');
+let carouselInstance = new bootstrap.Carousel(document.getElementById('carouselExampleSlidesOnly'));
+carouselInstance._element.addEventListener('slid.bs.carousel', function () {
+    let activeSlide = carouselInstance._element.querySelector('.carousel-item.active');
+    let imageId = activeSlide.querySelector('img').id;
+    let description = imageId.split('-')[1];
 
-        elements.forEach(function(element) {
-            if (screenWidth > 700) {
-                element.classList.add("carousel-item");
-            } else {
-                element.classList.remove("carousel-item");
-            }
-        });
-        // console.log(screenWidth);
-    }
-
-    // 初次加載時檢查一次
-    checkScreenWidth();
-
-    // 窗口大小變化時檢查
-    window.addEventListener('resize', checkScreenWidth);
+    let oldElements = document.querySelectorAll('.achievementText .active');
+    oldElements.forEach(function(element) {
+        element.classList.remove('active');
+    });
+    $('#text' + description).addClass('active');
 });
+
 
 // 導覽列點擊後關閉
 $('.navbar-nav>li>a').on('click', function(){

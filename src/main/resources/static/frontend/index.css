@@ -229,8 +229,50 @@ section{
 /* section:featuresAchievementNRanking */
 .featuresAchievementNRanking{
     background: #dafee2;
-    height: 100vh;
+    height: 130vh;
+    width: 100vw;
     position: relative;
+    display: flex;
+    overflow-x: scroll;
+    justify-content: center;
+    align-items: center;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1) grayscale(100);
+}
+.achievementText{
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.achievementObj{
+    text-align: center;
+    justify-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100vw;
+}
+#text1,
+#text2,
+#text3,
+#text4{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+.achievementSlogan {
+    font-size: 50px;
+    text-align: center;
+    color: rgb(98, 172, 113);
+}
+.achievementDescription {
+    font-size: 30px;
+    text-align: center;
+    padding-bottom: 20px;
 }
 
 /* section:comment */
@@ -331,47 +373,8 @@ section{
     color: white;
 }
 @media (prefers-reduced-motion: reduce) {
-
-    .transparent-box {
-        background-color: rgba(255, 255, 255, 0.7); /* Use rgba to set the background color with alpha (transparency) */
-        border-radius: 20px; /* Adjust the border-radius to control the roundness of the box */
-        padding: 20px; /* Adjust padding as needed */
-        text-align: center; /* Center content */
-    }
-
-    .row {
-        justify-content: center;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    .link {
-        text-decoration: none;
-        color: #000000;
-        text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
-
-    }
-
-    .caption {
-        font-size: 13px;
-        color: #000000;
-        text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px -1px 0 #ffffff, 1px 1px 0 #ffffff;
-    }
-
-    .link:hover {
-        text-decoration: underline;
-        text-shadow: none;
-    }
-
     #navbar {
         transition: background-color 0.3s ease;
-    }
-
-    .youtube {
-        width: 560px;
-        height: 315px;
     }
 
     /* 將切換按鈕的背景顏色設置為白色 */
@@ -384,45 +387,6 @@ section{
     /* 將切換按鈕的圖標顏色設置為黑色（或其他適合的顏色） */
     .navbar-toggler-icon {
         color: #fff;
-    }
-
-    .faq {
-        /* border: 1px solid #ccc; */
-        margin-bottom: 10px;
-    }
-
-    .question {
-        /* background-color: #f0f0f0; */
-        padding: 10px;
-        cursor: pointer;
-        position: relative;
-        font-weight: bolder; /* 更加粗的字体 */
-    }
-
-    .arrow {
-        border: solid #000;
-        border-width: 0 2px 2px 0;
-        display: inline-block;
-        padding: 3px;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%) rotate(45deg);
-    }
-
-    .arrow.down {
-        transform: translateY(-50%) rotate(225deg);
-    }
-
-    .answer {
-        display: none;
-        padding: 10px;
-        background: rgba(143, 188, 143, 0.614);
-        border-radius: 20px;
-    }
-
-    .top {
-        font-size: 140px;
     }
 }
 @media only screen and (max-width: 900px) {
@@ -450,6 +414,7 @@ section{
     #navbarBtn{
         margin-right: 8%;
     }
+
     /* section:home */
     .homeSlogan{
         font-size: 25px;
@@ -539,7 +504,31 @@ section{
     .featuresAchievementNRanking{
         height: 100vh;
         position: relative;
+        display: flex;
     }
+    .carousel-control-prev,
+    .carousel-control-next{
+        display: none;
+    }
+    .achievementObj{
+        grid-template-rows: 80% 20%;
+        grid-template-columns: none;
+        width: 100vw;
+        height: 100vh;
+    }
+    #carouselExampleSlidesOnly{
+        align-content: end;
+    }
+    .achievementSlogan{
+        font-size: 30px;
+    }
+    .achievementDescription {
+        font-size: 15px;
+    }
+    .carousel-inner img{
+        max-width: 75vw;
+    }
+
 
     /* section:comment */
     .joinUS{
