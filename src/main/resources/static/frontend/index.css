@@ -544,16 +544,22 @@ section{
     /* section:comment */
     .joinUS{
         rotate: 90deg;
-        width: 250vw;
+        width: 100vw;
         opacity: 0;
     }
     @keyframes zoom {
         from {
-            width: 250vw;
-            opacity: 0;
+            width: 100vw;
         }
         to {
             width: 70vw;
+        }
+    }
+    @keyframes opacity {
+        from {
+            opacity: 0;
+        }
+        to {
             opacity: 1;
         }
     }
