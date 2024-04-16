@@ -546,8 +546,8 @@ section{
         rotate: 90deg;
     }
     @keyframes zoom {
-        from { width: 200vh;}
-        to { width: 80vw; }
+        from { width: 200vw;}
+        to { width: 60vw; }
     }
     .totalFPDescription{
         font-size: 15px;

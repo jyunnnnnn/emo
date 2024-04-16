@@ -91,7 +91,7 @@ window.addEventListener('scroll', () => {
             firstTime = false;
         }
         if(window.innerWidth < 1000){
-            $('#joinUS').css('animation', 'zoom 1s forwards');
+            $('#joinUS').css('animation', 'zoom 2s forwards');
         }
     }
 });
