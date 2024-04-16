@@ -545,6 +545,7 @@ section{
     .joinUS{
         rotate: 90deg;
         transform: scale(1.2);
+        --webkit-transform: scale(1.2);
     }
     .totalFPDescription{
         font-size: 15px;
