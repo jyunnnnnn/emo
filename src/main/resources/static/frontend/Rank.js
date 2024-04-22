@@ -1,9 +1,8 @@
-let no1SVG=
-
 
 // 點擊排行按鈕
 $('#rankingButton').on('click', function () {
     initUserData()
+    $('#selectedRank').text('所有階級');
     // 顯示懸浮窗
     $('#rankingFW').css("display", "flex");
     $('#rankingFW').css("position", "fixed");
