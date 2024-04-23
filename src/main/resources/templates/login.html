@@ -28,17 +28,23 @@
     <!--    <link rel="stylesheet" href="/frontend/login.css">-->
 
     <style>
+        @font-face {
+            font-family: 'HunInn';
+            src: url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.eot); /* IE9 Compat Modes */
+            src: url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.eot?#iefix) format("embedded-opentype"), /* IE6-IE8 */
+            url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.woff) format("woff"), /* Modern Browsers */
+            url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.ttf) format("truetype"), /* Safari, Android, iOS */
+            url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.svg#SealmemoryHeader) format("svg"); /* Legacy iOS */
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
 
     .a2a_svg, .a2a_count { border-radius: 99em !important; }
     body {
-            font-family: 'Crimson Pro', serif;
-            background-image: url(frontend/img/bg4.png);
+            font-family: 'HunInn', 'Mandali', sans-serif;
+            background: #b8eecc;
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
-            /* 背景圖片半透明 */
-            /*background-color: rgba(0, 0, 0, 0.55);
-            background-blend-mode: multiply;*/
 
             display: flex;
             justify-content: center;
@@ -96,8 +102,50 @@
         .form-group {
              position: relative;
         }
-
-        @media (prefers-reduced-motion: reduce) {
+        /* LoginBtn */
+        .login {
+            z-index: 101;
+            background-color: transparent;
+            color: white;
+            font-weight: bold;
+            height: 3.3em;
+            width: 100%;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: .4s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login .gradient {
+            height: 100%;
+            width: 350%;
+            background: linear-gradient(to right, #62AC71FF 25%, #64EAE7 65%, #16a085 90%);
+            position: absolute;
+            top: 0;
+            left: 60%;
+            transform: translateX(-50%);
+            z-index: -1;
+            transition: .4s ease;
+        }
+        .login .txt {
+            transition: .4s ease .5s;
+        }
+        .login:hover .gradient {
+            transition: .4s ease;
+            transform: translateX(-40%);
+        }
+        .login:focus .gradient {
+            background-size: 200%;
+            background-position: right;
+            transform: translateX(-88%);
+            transition: 1s ease;
+        }
+    @media (prefers-reduced-motion: reduce) {
         .form-control {
             -webkit-transition: none;
             -o-transition: none;
@@ -125,15 +173,30 @@
         .form-control.btn:focus {
             background-color: #0f491b;
         }
-        .emo{   /*標題的字型顏色*/
-            text-align: center;
-            font-family: 'Black Ops One', serif;
-            font-size:400%;
-            color: white;
-            padding-top: 50px;
-            text-shadow: 1px 1px 0 #000000, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 1px 1px 0 black;
+        .emo{
+            width: 100%;
+        }
+        .homeBG{
+            position: absolute;
+            width: 100%;
+            z-index: -100;
+        }
+        #login-container,
+        #signup-container{
+            background: rgb(25 135 84 / 16%);
         }
         @media only screen and (max-width: 700px) {
+            .homeBG{
+                display: flex;
+                top: 55%;
+                position: absolute;
+                align-self: flex-end;
+                transform: scale(2);
+            }
+            #login-container,
+            #signup-container{
+                background: none;
+            }
             .form-control{
                 height: 50px;
                 font-size: 1.2rem;
@@ -141,9 +204,6 @@
             }
             .form-control.btn{
                 font-size: 1.2rem;
-            }
-            .emo{
-                font-size: 400%;
             }
             .container{
                 max-width: 950px;
@@ -164,42 +224,13 @@
                 margin-left:15px;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </style>
-
-
 </head>
 <body class="img js-fullheight">
+<object data="/frontend/img/indexBackground.svg" type="image/svg+xml" class="homeBG"></object>
 <!--登入區塊-->
-<div class="container text-white" id="login-container">
+<div class="container text-white" id="login-container" style="height: 100%; padding: 30px;">
     <!--    登入錯誤訊息顯示-->
-
-
     <div class="row">
         <div class="col-12 a">
             <form id="login-form" action="/user/login" method="post">
@@ -208,8 +239,7 @@
                     <path fill-rule="evenodd"
                           d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
                 </svg>
-                <h1 class="emo">EMO app</h1>
-                <!-- <h1 style="text-align: center">Login</h1> -->
+                <object class="emo" data="/frontend/img/EMOapp.svg" type="image/svg+xml"></object>
                 <div class="form-group">
                     <label for="exampleInputAccount1">帳號</label>
                     <input class="form-control" name="username" id="exampleInputAccount1" aria-describedby="emailHelp"
@@ -227,11 +257,14 @@
                 <div style="text-align: center; font-weight: bold; color: #FA6958;" th:if="${errorMessage}"
                      th:text="${errorMessage}"></div>
 
-                <button type="submit" class="form-control btn" id="login-button">登入</button>
+                <button type="submit" class="form-control btn login" id="login-button">
+                    <div class="txt">登入</div>
+                    <div class="gradient"></div>
+                </button>
 
 
                 <br><br>
-                <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <label style="display: flex; justify-content: space-between; align-items: center; width: 100%; text-decoration: none; color: #05240d; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">
                     沒有帳號？ &nbsp;
                     <a href="#" id="switch-to-signup">註冊</a>
                     &nbsp;&nbsp;
@@ -275,7 +308,7 @@
 </div>
 
 <!--註冊區塊-->
-<div class="container p-3 my-3 text-white d-none" id="signup-container">
+<div class="container p-3 my-3 text-white d-none" id="signup-container" style="height: 100%; padding: 30px;">
     <form id="signup-form">
         <div class="form-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
@@ -283,7 +316,7 @@
                 <path fill-rule="evenodd"
                       d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
             </svg>
-            <h2 style="text-align: center">Sign up</h2>
+            <h2 style="text-align: center">註冊</h2>
         </div>
         <br>
 
@@ -308,7 +341,10 @@
             <div class="input-group">
                 <input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email">
                 <span class="input-group-btn">
-                    <button class="form-control btn btn-primary submit px-3" type="button" id="sendVerifyingCodeButton">發送</button>
+                    <button type="submit" class="form-control btn btn-primary submit px-3 login" id="sendVerifyingCodeButton">
+                        <div class="txt">發送</div>
+                        <div class="gradient"></div>
+                    </button>
                 </span>
             </div>
             <br>
@@ -319,7 +355,10 @@
         </div>
         <br>
 
-        <button type="submit" class="form-control btn btn-primary submit px-3" id="return-to-login">註冊</button>
+        <button type="submit" class="form-control btn btn-primary submit px-3 login" id="return-to-login">
+            <div class="txt">註冊</div>
+            <div class="gradient"></div>
+        </button>
     </form>
 </div>
 
