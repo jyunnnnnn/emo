@@ -64,6 +64,9 @@ function initUserData() {
          dropdownElement.append(optionElement);
      });
     showRankByRankType("",1);
+
+    // loader關掉
+    $('#preloader').fadeOut(1500);
 }
 
 function showRankByRankType(rankType,all){
@@ -112,9 +115,9 @@ function showRankByRankType(rankType,all){
                 .addClass("row-container")
                 .appendTo(rankingContainer);
             if (count <= 3) {
-                const rankNum = $('<img>')
+                const rankNum = $('<object>')
                     .attr({
-                        src: `frontend/img/no${count}.svg`,
+                        data: `frontend/img/no${count}.svg`,
                         alt: `${user.nickname}'s Profile Photo`
                     })
                     .appendTo(rowDiv)

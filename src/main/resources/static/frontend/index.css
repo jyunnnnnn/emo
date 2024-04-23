@@ -555,6 +555,7 @@ section{
         font-size: 30px;
         padding-top: 230px;
         top: 13vh;
+        z-index: 101;
     }
 
     /* section:qa */

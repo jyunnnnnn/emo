@@ -261,7 +261,6 @@ function systemInit(){
     }else {
         $('#userPhoto').css("display", "block");
     }
-
 }
 //更新現在位置
 function updateCurrentCircle() {
