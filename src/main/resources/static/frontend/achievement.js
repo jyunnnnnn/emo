@@ -13,6 +13,7 @@ $('#achievementReturn').on('click', function (){
 function reloadAchievement(){
     $('#achievementContainer').empty();
 
+
     let finish = AchievementObj.filter(achievement => achievement.achieve === true);
     let unfinish = AchievementObj.filter(achievement => achievement.achieve === false);
     let outside = 6;
@@ -64,7 +65,7 @@ function reloadAchievement(){
         let achievementName = $("<div>")
             .text(unfinish[i].achievementName)
             .attr('class', 'achievementName');
-        let time = (unfinish[i].current.toFixed(2)/100*100);
+        let time = ((unfinish[i].current.toFixed(2)*100)/100);
         let achieveDescription = $("<div>")
             .text(time.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +  ' / ' + unfinish[i].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
             .attr('class', 'achieveDescription');

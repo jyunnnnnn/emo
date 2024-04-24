@@ -18,7 +18,7 @@ function showTotalFP(){
         }
     }
     result=convertTotalFPtoRankColor(totalFP);
-    console.log(result);
+    //console.log(result);
     if(AllUsersFp.length!=0){
          const index = AllUsersFp.findIndex(user => user.userId === User.userId);
          AllUsersFp[index].totalFP = totalFP ;
