@@ -105,10 +105,12 @@ function stopRecording() {
 
     // 打開路線記錄懸浮窗
     $('#recordCalculate').text("0 gCO2e");
-    $("#routeDetail").html("<span style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
+    $("#routeDetail").html("<span id=\"routeCompare\" style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
         "                        選擇行為以獲得基準值\n" +
         "                        </span>\n" +
-        "                        <span style=\"display: block; text-align: center;\">\n" +
+        "<span style=\"font-weight: bold; font-size: 15px; margin-left: 5px;\">"+
+        "                            計算公式如下</span>"+
+        "                        <span id=\"routeFormula\" style=\"display: block; text-align: center;\">\n" +
         "                        選擇行為以獲得計算公式\n" +
         "                        </span>");
     $('#routeFW').css("display", "flex");
@@ -122,7 +124,6 @@ function stopRecording() {
     let data_value = $('#kilometer').val();
     let showExpectedFP = 0;
     $('#routeCalculate').text(showExpectedFP + " gCO2e");
-
     let checked = $('input[name="engine"]:checked');
     let checkedVal = $('input[name="engine"]:checked').val();
     if(checkedVal != undefined){

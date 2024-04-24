@@ -135,6 +135,7 @@ function typeChange(selected){
     gram.append(label);
     let target = FootprintData.find(item => item.type === selected);
     let description = questionMark[target.type].split(" ");
+
     $("#recordCompare").text(description[0]);
     $("#recordFormula").text(description[1]);
     //console.log(description[0],description[1]);
