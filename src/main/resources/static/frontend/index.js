@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // comment joinUS
 $('#commentLogin').on('mouseenter', function() {
-    if(window.innerWidth > 900){
+    if(window.innerWidth > 1024){
         $('#joinUS').css('transform', 'scale(1.3)');
     }
 });
 $('#commentLogin').on('mouseleave', function() {
-    if(window.innerWidth > 900){
+    if(window.innerWidth > 1024){
         $('#joinUS').css('transform', 'scale(3)');
     }
 });
@@ -90,7 +90,7 @@ window.addEventListener('scroll', () => {
             totalFP.start();
             firstTime = false;
         }
-        if(window.innerWidth < 1000){
+        if(window.innerWidth <= 1024){
             $('#joinUS').css('animation', 'zoom 2s forwards');
         }
     }
