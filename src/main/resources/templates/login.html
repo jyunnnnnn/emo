@@ -180,10 +180,13 @@
             position: absolute;
             width: 100%;
             z-index: -100;
+            bottom: 0;
         }
         #login-container,
-        #signup-container{
+        #signup-container,
+        #forgetPassword-container{
             background: rgb(25 135 84 / 16%);
+            border-radius: 40px;
         }
         @media only screen and (max-width: 700px) {
             .homeBG{
@@ -192,10 +195,16 @@
                 position: absolute;
                 align-self: flex-end;
                 transform: scale(2);
+                bottom: auto;
+            }
+            #login-container,
+            #signup-container,
+            #forgetPassword-container{
+                background: none;
             }
             #login-container,
             #signup-container{
-                background: none;
+                height: 100%;
             }
             .form-control{
                 height: 50px;
@@ -229,7 +238,7 @@
 <body class="img js-fullheight">
 <object data="/frontend/img/indexBackground.svg" type="image/svg+xml" class="homeBG"></object>
 <!--登入區塊-->
-<div class="container text-white" id="login-container" style="height: 100%; padding: 30px;">
+<div class="container text-white" id="login-container" style=" padding: 30px;">
     <!--    登入錯誤訊息顯示-->
     <div class="row">
         <div class="col-12 a">
@@ -296,7 +305,7 @@
 </div>
 
 <!--註冊區塊-->
-<div class="container p-3 my-3 text-white d-none" id="signup-container" style="height: 100%; padding: 30px;">
+<div class="container p-3 my-3 text-white d-none" id="signup-container" style="padding: 30px;">
     <form id="signup-form">
         <div class="form-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"

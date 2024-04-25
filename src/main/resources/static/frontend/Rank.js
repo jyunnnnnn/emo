@@ -11,7 +11,7 @@ $('#rankingButton').on('click', function () {
 $('#closeRankModal').on('click', function () {
     $('#rankingFW').css("display", "none");
 });
-//點擊更新排行案紐
+//點擊更新排行按鈕
 $('#updateRanking').on('click', function () {
     loadAllUsersFp(1);
     
