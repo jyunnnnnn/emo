@@ -553,7 +553,7 @@ function generatePhoto(target) {
     time = parseInt(target[0].current / target[0].target, 10).toString();
     let achieveTime = time.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     let achieveDescription1 = $("<div>")
-        .text("你贏得此獎章" + achieveTime + "次")
+        .text(User.nickname+" 贏得此獎章" + achieveTime + "次")
         .attr({'class': 'achievementDescription','style':'color: black;'});
     let achieveDescription2 = $("<div>")
         .text("表揚你" + target[0].achievementDescription)
