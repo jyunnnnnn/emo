@@ -186,8 +186,15 @@
         #signup-container,
         #forgetPassword-container{
             background: rgb(25 135 84 / 16%);
-            border-radius: 40px;
+            border-radius: 30px;
+            padding: 30px;
         }
+
+        svg{
+            width: 30px;
+            height: 30px;
+        }
+<!--        rwd-->
         @media only screen and (max-width: 700px) {
             .homeBG{
                 display: flex;
@@ -238,7 +245,7 @@
 <body class="img js-fullheight">
 <object data="/frontend/img/indexBackground.svg" type="image/svg+xml" class="homeBG"></object>
 <!--登入區塊-->
-<div class="container text-white" id="login-container" style=" padding: 30px;">
+<div id="login-container" class="container text-white" >
     <!--    登入錯誤訊息顯示-->
     <div class="row">
         <div class="col-12 a">
@@ -305,7 +312,7 @@
 </div>
 
 <!--註冊區塊-->
-<div class="container p-3 my-3 text-white d-none" id="signup-container" style="padding: 30px;">
+<div id="signup-container" class="container p-3 my-3 text-white d-none" >
     <form id="signup-form">
         <div class="form-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
@@ -360,7 +367,7 @@
 </div>
 
 <!--忘記密碼區塊-->
-<div class="container p-3 my-3 text-white d-none" id="forgetPassword-container">
+<div id="forgetPassword-container" class="container p-3 my-3 text-white d-none" >
     <form id="verify-form">
         <div class="form-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
@@ -368,7 +375,7 @@
                 <path fill-rule="evenodd"
                       d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
             </svg>
-            <h2 style="text-align: center">Forgot Password</h2>
+            <h2 style="text-align: center">忘記密碼</h2>
         </div>
         <br>
         <div class="form-group">
@@ -380,8 +387,9 @@
                 </span> -->
             </div>
             <br>
-            <button class="form-control btn btn-primary submit px-3" type="button" id="send-email">
-                由註冊時的Email獲取驗證碼
+            <button class="form-control btn btn-primary submit px-3 login" type="button" id="send-email">
+                <div class="txt">由註冊時的Email獲取驗證碼</div>
+                <div class="gradient"></div>
             </button>
         </div>
         <div class="form-group">
@@ -389,8 +397,9 @@
             <div class="input-group">
                 <input type="text" class="form-control" id="Input-verify-code" placeholder="輸入驗證碼">
                 <span class="input-group-btn">
-                    <button class="form-control btn btn-primary submit px-3" type="button"
-                            id="verified-code">確認</button>
+                    <button class="form-control btn btn-primary submit px-3 login" type="button"
+                            id="verified-code"><div class="txt">確認</div>
+                    <div class="gradient"></div></button>
                 </span>
             </div>
         </div>
