@@ -49,7 +49,7 @@ function showNowRecordInFoWindow(nowRecord){
 
     // 找所有marker
     for (let i = 0; i < markers.length; i++) {
-        if (markers[i].getPosition().equals(centerPosition)) {
+        if (markers[i].id==nowRecord.recordId) {
             currentInfoWindowRecord = nowRecord;
             currentMarker=markers[i];
             markers[i].infoWindow.open(map,markers[i]);
