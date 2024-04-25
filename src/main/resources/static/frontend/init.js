@@ -237,7 +237,7 @@ function systemInit(){
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
     loadRank();
-    loadAllUsersFp();
+    loadAllUsersFp(0);
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -710,7 +710,7 @@ function loadAchievementObj(userId){
 
 
 
-function loadAllUsersFp(){
+function loadAllUsersFp(a){
     $.ajax({
         url: '/rank/getRankObj',
         type: 'GET',
@@ -720,6 +720,9 @@ function loadAllUsersFp(){
             loadEcoRecords(User.userId);//載入環保紀錄
             //console.log(AllUsersFp);
             initUserData();
+            if(a==1){
+                alert("排名更新成功");
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
