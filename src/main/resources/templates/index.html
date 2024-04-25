@@ -96,10 +96,18 @@
 </section>
 <section id="features" class="features">
   <div class="featuresSlogan">
-    <span class="sloganSymbolLeft fade-in-up">“</span>
-    <div class="sloganTyping1 fade-in-up">地球暖化加劇，</div>
-    <div class="sloganTyping2 fade-in-up">北極熊將無家可歸。</div>
-    <span class="sloganSymbolRight fade-in-up">”</span>
+    <div class="sloganGrid">
+      <div style="align-self: start; justify-self: right;">
+        <span class="sloganSymbolLeft fade-in-up">“</span>
+      </div>
+      <div>
+        <div class="sloganTyping1 fade-in-up">地球暖化加劇，</div>
+        <div class="sloganTyping2 fade-in-up">北極熊將無家可歸。</div>
+      </div>
+      <div style="align-self: center;">
+        <span class="sloganSymbolRight fade-in-up">”</span>
+      </div>
+    </div>
     <div class="fade-in-up" id="slogan2">
       <div class="sloganDescription" style="padding-top: 30px;">根據研究，</div>
       <div class="sloganDescription">北極氣候暖化速度是整個地球的2倍。</div>
@@ -107,29 +115,37 @@
   </div>
 </section>
 <section  id="featuresRecord" class="featuresRecord">
-  <div class="recordSlogan fade-in-up" id="recordSlogan">
-    <div>留下<span>減碳足跡</span></div>
-    <div>讓地球不再EMO</div>
+  <div style="justify-self: right; height: 100%;">
+    <div class="recordSlogan fade-in-up" id="recordSlogan">
+      <div>留下<span>減碳足跡</span></div>
+      <div>讓地球不再EMO</div>
+    </div>
+    <img id="recordPhoto1" class="recordPhoto1 fade-in-up" src="/frontend/img/生活紀錄.png">
   </div>
-  <img id="recordPhoto1" class="recordPhoto1 fade-in-up" src="/frontend/img/生活紀錄.png">
-  <img id="recordPhoto2" class="recordPhoto2 fade-in-up" src="/frontend/img/路線紀錄.png">
-  <div class="recordDescription fade-in-up" id="recordDescription">
-    <div>隨時記錄環保行為，</div>
-    <div>出行路線一點即可查詢，</div>
-    <div>每天一小步，累積成一大步。</div>
+  <div style="justify-self: left; height: 100%;">
+    <img id="recordPhoto2" class="recordPhoto2 fade-in-up" src="/frontend/img/路線紀錄.png">
+    <div class="recordDescription fade-in-up" id="recordDescription">
+      <div>隨時記錄環保行為，</div>
+      <div>出行路線一點即可查詢，</div>
+      <div>每天一小步，累積成一大步。</div>
+    </div>
   </div>
 </section>
 <section  id="featuresHistory" class="featuresHistory">
-  <div class="historySlogan fade-in-up" id="historySlogan">
-    <div>量化數據</div>
-    <div>讓減碳行為<span>更直觀</span></div>
+  <div class="historyChild1">
+    <div class="historySlogan fade-in-up" id="historySlogan">
+      <div>量化數據</div>
+      <div>讓減碳行為<span>更直觀</span></div>
+    </div>
+    <div class="historyDescription fade-in-up" id="historyDescription">
+      <div>減碳量太抽象，我們幫你轉換成更生活化的單位，</div>
+      <div>客製化篩選紀錄，曾經的足跡一覽無遺。</div>
+    </div>
   </div>
-  <video autoplay muted playsinline loop class="historyVideo fade-in-up" id="historyVideo">
-    <source src="/frontend/img/歷史及量化記錄.webm" type="video/webm">
-  </video>
-  <div class="historyDescription fade-in-up" id="historyDescription">
-    <div>減碳量太抽象，我們幫你轉換成更生活化的單位，</div>
-    <div>客製化篩選紀錄，曾經的足跡一覽無遺。</div>
+  <div class="historyChild2">
+    <video autoplay muted playsinline loop class="historyVideo fade-in-up" id="historyVideo">
+      <source src="/frontend/img/歷史及量化記錄.webm" type="video/webm">
+    </video>
   </div>
 </section>
 <section  id="featuresAchievementNRanking" class="featuresAchievementNRanking">
@@ -179,26 +195,30 @@
   </div>
 </section>
 <section id="comment" class="comment">
-  <div class="totalFPDescription fade-in-up" id="totalFPDescription">截至目前<br>EMOapp的使用者已累積為地球減少</div>
-  <div class="totalFPCounter fade-in-up" id="totalFP">
-      <div id="totalFPCounter"></div>
-      <span style="font-size: 20px">gCO2e</span>
+  <div style="display: grid; grid-template-rows: 50% 10% 10%; height: 100%; align-items: end; justify-content: center;">
+    <div>
+      <div class="totalFPDescription fade-in-up" id="totalFPDescription">截至目前<br>EMOapp的使用者已累積為地球減少</div>
+      <div class="totalFPCounter fade-in-up" id="totalFP">
+          <div id="totalFPCounter"></div>
+          <span style="font-size: 20px">gCO2e</span>
+      </div>
+    </div>
+    <button class="login" id="commentLogin">
+      <div class="txt">立即加入我們！</div>
+      <div class="gradient"></div>
+    </button>
+    <!-- 社群分享按鈕 BEGIN 參考官方文件設定https://www.addtoany.com/buttons/customize/-->
+    <!--            可使用css 的.a2a_svg, .a2a_count { border-radius: 99em !important; }調整icon邊緣弧度-->
+    <div class="a2a_kit a2a_kit_size_32 a2a_default_style"
+         data-a2a-url="https://emoapp-test-b6a07cfc6992.herokuapp.com/" data-a2a-title="EMO APP" style="position: relative; display: flex; z-index: 101; justify-content: center; transform: scale(1.5);">
+      <a class="a2a_button_facebook"></a>
+      <a class="a2a_button_threads"></a>
+      <a class="a2a_button_line"></a>
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+    </div>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+    <!-- 社群分享按鈕 END -->
   </div>
-  <button class="login" id="commentLogin">
-    <div class="txt">立即加入我們！</div>
-    <div class="gradient"></div>
-  </button>
-  <!-- 社群分享按鈕 BEGIN 參考官方文件設定https://www.addtoany.com/buttons/customize/-->
-  <!--            可使用css 的.a2a_svg, .a2a_count { border-radius: 99em !important; }調整icon邊緣弧度-->
-  <div class="a2a_kit a2a_kit_size_32 a2a_default_style"
-       data-a2a-url="https://emoapp-test-b6a07cfc6992.herokuapp.com/" data-a2a-title="EMO APP" style="position: absolute; display: flex; top: 70vh; z-index: 101;">
-    <a class="a2a_button_facebook"></a>
-    <a class="a2a_button_threads"></a>
-    <a class="a2a_button_line"></a>
-    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-  </div>
-  <script async src="https://static.addtoany.com/menu/page.js"></script>
-  <!-- 社群分享按鈕 END -->
   <object data="/frontend/img/joinUS.svg" type="image/svg+xml" class="joinUS" id="joinUS"></object>
 </section>
 <section  id="qa" class="qa">
