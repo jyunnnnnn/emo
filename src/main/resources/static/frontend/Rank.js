@@ -11,6 +11,11 @@ $('#rankingButton').on('click', function () {
 $('#closeRankModal').on('click', function () {
     $('#rankingFW').css("display", "none");
 });
+//點擊更新排行案紐
+$('#updateRanking').on('click', function () {
+    initUserData();
+    alert("排名更新成功");
+});
 function convertTotalFPtoRankColor(total) {
      let result={
         color:null,
