@@ -13,6 +13,8 @@ $('#closeRankModal').on('click', function () {
 });
 //點擊更新排行案紐
 $('#updateRanking').on('click', function () {
+    loadRank();
+    loadAllUsersFp();
     initUserData();
     alert("排名更新成功");
 });

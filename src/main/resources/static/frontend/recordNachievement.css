@@ -376,5 +376,12 @@
     }
 }
 #updateRanking{
-    padding-top: 10px;
+    padding-top: 15px;
+    transition: transform 0.3s ease;
+}
+#updateRanking:hover {
+  transform: scale(1.2);
+}
+#updateRanking:hover path {
+  fill: #000000;
 }
