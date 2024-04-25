@@ -189,12 +189,15 @@
             border-radius: 30px;
             padding: 30px;
         }
-
         svg{
             width: 30px;
             height: 30px;
         }
-<!--        rwd-->
+        @media only screen and (min-width: 1000px) {
+            #signup-container{
+                transform: scale(0.95);
+            }
+        }
         @media only screen and (max-width: 700px) {
             .homeBG{
                 display: flex;
