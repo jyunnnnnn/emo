@@ -385,3 +385,24 @@
 #updateRanking:hover path {
   fill: #000000;
 }
+
+#updateRanking:disabled:hover {
+    transform: none;
+}
+
+#updateRanking:disabled:hover path {
+    fill: rgb(123, 125, 127);
+}
+
+.rotateUpdateBtn {
+    animation: rotateUpdateBtnAnimation 1s linear infinite;
+}
+
+@keyframes rotateUpdateBtnAnimation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}

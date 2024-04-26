@@ -721,6 +721,8 @@ function loadAllUsersFp(a){
             //console.log(AllUsersFp);
             initUserData();
             if(a==1){
+                $("#rotateURBtn").removeClass("rotateUpdateBtn");
+                $('#updateRanking').prop("disabled", false);
                 alert("排名更新成功");
             }
         },

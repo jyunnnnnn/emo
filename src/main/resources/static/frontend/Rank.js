@@ -13,8 +13,10 @@ $('#closeRankModal').on('click', function () {
 });
 //點擊更新排行按鈕
 $('#updateRanking').on('click', function () {
+    $('#rotateURBtn').addClass('rotateUpdateBtn');
+    $(this).prop("disabled", true);
     loadAllUsersFp(1);
-    
+    $('#selectedRank').text('所有階級');
 });
 function convertTotalFPtoRankColor(total) {
      let result={
