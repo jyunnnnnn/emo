@@ -328,11 +328,12 @@ section{
 /* section:qa */
 .qa{
     background: #dafee2;
-    height: 80vh;
+    /*height: 80vh;*/
     position: relative;
     flex-direction: row;
     display: flex;
     align-items: center;
+    padding: 50px;
 }
 .qaTitle{
     display: flex;
