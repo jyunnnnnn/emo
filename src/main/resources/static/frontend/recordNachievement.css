@@ -19,8 +19,8 @@
 }
 .parent {
     width: 100%;
-    height: 110vmin;
-    max-height: 110vmin;
+    height: 75vmin;
+    max-height: 75vmin;
     overflow-y: scroll;
 }
 
