@@ -122,7 +122,7 @@ function showRankByRankType(rankType,all){
             if (count <= 3) {
                 const rankNum = $('<object>')
                     .attr({
-                        data: `frontend/img/no${count}.svg`,
+                        data: `frontend/img/${count}.png`,
                         alt: `${user.nickname}'s Profile Photo`
                     })
                     .appendTo(rowDiv)
