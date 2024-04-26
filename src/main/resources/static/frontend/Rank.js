@@ -1,4 +1,3 @@
-
 // 點擊排行按鈕
 $('#rankingButton').on('click', function () {
     initUserData()
@@ -122,10 +121,18 @@ function showRankByRankType(rankType,all){
                 .addClass("row-container")
                 .appendTo(rankingContainer);
             if (count <= 3) {
-                const rankNum = $('<object>')
+                let base64Image;
+                if (count === 1) {
+                    base64Image = base64no1;
+                } else if (count === 2) {
+                    base64Image = base64no2;
+                } else if (count === 3) {
+                    base64Image = base64no3;
+                }
+                const rankNum = $('<img>')
                     .attr({
-                        data: `frontend/img/${count}.png`,
-                        alt: `${user.nickname}'s Profile Photo`
+                        src:  base64Image,
+                        alt: `no${count}.png`
                     })
                     .appendTo(rowDiv)
                     .css({
@@ -184,4 +191,3 @@ function showRankByRankType(rankType,all){
         });
     }
 }
-

@@ -21,6 +21,10 @@ let questionMark = {};
 let AchievementObj={};
 let Rank={};//減碳量等級判定物件
 let AllUsersFp={};//所有使用者排行物件陣列
+let no1="frontend/img/1.png";
+let no2="frontend/img/2.png";
+let no3="frontend/img/3.png";
+let base64no1, base64no2, base64no3;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -261,6 +265,19 @@ function systemInit(){
     }else {
         $('#userPhoto').css("display", "block");
     }
+    //排行照片123照片
+    Promise.all([
+        imageToBase64(no1),
+        imageToBase64(no2),
+        imageToBase64(no3)
+    ]).then(base64Images => {
+        base64no1 = base64Images[0];
+        base64no2 = base64Images[1];
+        base64no3 = base64Images[2];
+        // 現在可以在這裡使用 base64Image1、base64Image2、base64Image3
+    }).catch(error => {
+        console.error("An error occurred:", error);
+    });
 }
 //更新現在位置
 function updateCurrentCircle() {
@@ -744,5 +761,17 @@ function loadRank(){
         error: function(xhr, status, error) {
             console.error('Error:', error);
         }
+    });
+}
+
+// 將圖片轉換為 Base64 編碼的函數
+async function imageToBase64(url) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
     });
 }
