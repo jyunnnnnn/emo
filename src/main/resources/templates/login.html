@@ -51,6 +51,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow-x: hidden;
         }
 
         .container {
@@ -197,6 +198,12 @@
             #signup-container{
                 transform: scale(0.95);
             }
+            body{
+               overflow: hidden;
+            }
+            .homeBG{
+                bottom: -50px;
+            }
         }
         @media only screen and (max-width: 700px) {
             .homeBG{
@@ -315,7 +322,7 @@
 </div>
 
 <!--註冊區塊-->
-<div id="signup-container" class="container p-3 my-3 text-white d-none" >
+<div id="signup-container" class="container text-white d-none" >
     <form id="signup-form">
         <div class="form-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
@@ -370,7 +377,7 @@
 </div>
 
 <!--忘記密碼區塊-->
-<div id="forgetPassword-container" class="container p-3 my-3 text-white d-none" >
+<div id="forgetPassword-container" class="container text-white d-none" >
     <form id="verify-form">
         <div class="form-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
@@ -395,6 +402,7 @@
                 <div class="gradient"></div>
             </button>
         </div>
+        <br>
         <div class="form-group">
             <label for="exampleInputCheckCode">驗證碼</label>
             <div class="input-group">
@@ -406,7 +414,7 @@
                 </span>
             </div>
         </div>
-
+        <br>
         <!-- 按下確認重設新密碼 -->
         <div class="container p-3 my-3 text-white d-none" id="set-password-container">
             <form id="new-password-form">
