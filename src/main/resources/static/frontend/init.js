@@ -25,24 +25,26 @@ let no1="frontend/img/1.png";
 let no2="frontend/img/2.png";
 let no3="frontend/img/3.png";
 let base64no1, base64no2, base64no3;
+let  MAP_OK=0;
+let DATA_OK=0;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
-    $.ajax({
-       type:'GET',
-       url:'/user/init?username='+localStorage.getItem("username")+"",
-       success: function(response){
-            //console.log(response.user);
-           let userData=response.user;
-           localStorage.setItem("EmoAppUser",userData);
+   $.ajax({
+         type:'GET',
+         url:'/user/init?username='+localStorage.getItem("username")+"",
+         success: function(response){
+              //console.log(response.user);
+             let userData=response.user;
+             localStorage.setItem("EmoAppUser",userData);
 
-           console.log("獲取使用者資料成功");
-           systemInit();
-       },
-       error: function(response){
-           console.log("獲取使用者資料失敗");
-       }
-   });
+             console.log("獲取使用者資料成功");
+             systemInit();
+         },
+         error: function(response){
+             console.log("獲取使用者資料失敗");
+         }
+     });
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async function(position) {
@@ -223,7 +225,12 @@ function initMap() {
                     }
                 });
                 console.log("map finish");
+                MAP_OK=1;
+                console.log(MAP_OK,DATA_OK,"map");
+                if(MAP_OK && DATA_OK){
 
+                    $('#preloader').fadeOut(1500);
+                }
 
             },
             function(error){ console.error('Error getting geolocation:', error);}
@@ -753,7 +760,11 @@ function loadRank(){
             // console.log(response);
             Rank=response;
             loadEcoRecords(User.userId);//載入環保紀錄
-            $('#preloader').fadeOut(1500);
+            DATA_OK=1;
+            console.log(MAP_OK,DATA_OK,"DATA");
+            if(MAP_OK && DATA_OK){
+                $('#preloader').fadeOut(1500);
+            }
             //console.log(Rank);
             // 調用生成使用者資料函數
         },
