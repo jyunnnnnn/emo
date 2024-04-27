@@ -72,7 +72,7 @@ function initUserData() {
     showRankByRankType("",1);
 
     // loader關掉
-    $('#preloader').fadeOut(1500);
+
 }
 
 function showRankByRankType(rankType,all){

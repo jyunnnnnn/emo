@@ -28,9 +28,25 @@ let base64no1, base64no2, base64no3;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
+    $.ajax({
+       type:'GET',
+       url:'/user/init?username='+localStorage.getItem("username")+"",
+       success: function(response){
+            //console.log(response.user);
+           let userData=response.user;
+           localStorage.setItem("EmoAppUser",userData);
+
+           console.log("獲取使用者資料成功");
+           systemInit();
+       },
+       error: function(response){
+           console.log("獲取使用者資料失敗");
+       }
+   });
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async function(position) {
+
                 currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -207,21 +223,6 @@ function initMap() {
                     }
                 });
                 console.log("map finish");
-               $.ajax({
-                   type:'GET',
-                   url:'/user/init?username='+localStorage.getItem("username")+"",
-                   success: function(response){
-                        //console.log(response.user);
-                       let userData=response.user;
-                       localStorage.setItem("EmoAppUser",userData);
-
-                       console.log("獲取使用者資料成功");
-                       systemInit();
-                   },
-                   error: function(response){
-                       console.log("獲取使用者資料失敗");
-                   }
-               });
 
 
             },
@@ -233,15 +234,14 @@ function initMap() {
     }
 }
 
- 
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
-    watchId = navigator.geolocation.watchPosition(success, error, options);
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
     loadRank();
     loadAllUsersFp(0);
+    watchId = navigator.geolocation.watchPosition(success, error, options);
     $('#user').text( User.nickname);
     $('#logoutAccount').click(logoutAccount);//登出
     $('#deleteAccount_delete').click(deleteAccount);//刪除帳號
@@ -254,6 +254,7 @@ function systemInit(){
     $('#renameBtn').click(modifyNickname);
     $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
+    $('#upLoadUserPhoto').click(uploadPhoto);
     // 幫current初始化
     currentInfoWindowRecord = undefined;
     currentMarker = undefined;
@@ -266,11 +267,7 @@ function systemInit(){
         $('#userPhoto').css("display", "block");
     }
     //排行照片123照片
-    Promise.all([
-        imageToBase64(no1),
-        imageToBase64(no2),
-        imageToBase64(no3)
-    ]).then(base64Images => {
+    Promise.all([imageToBase64(no1),imageToBase64(no2),imageToBase64(no3)]).then(base64Images => {
         base64no1 = base64Images[0];
         base64no2 = base64Images[1];
         base64no3 = base64Images[2];
@@ -310,6 +307,7 @@ function loadSVG(){
             alert(errorMessage);
         }
     });
+
 }
 //載入碳足跡計算係數
 function loadFootprintData() {
@@ -671,7 +669,7 @@ function removeDirections() {
 }
 
 
-$('#upLoadUserPhoto').click(uploadPhoto);
+
 function uploadPhoto() {
         if (!croppedImageUrl) {
             alert('請選擇檔案');
@@ -734,7 +732,6 @@ function loadAllUsersFp(a){
         success: function(response) {
             //console.log(response);
             AllUsersFp=response;
-            loadEcoRecords(User.userId);//載入環保紀錄
             //console.log(AllUsersFp);
             initUserData();
             if(a==1){
@@ -755,6 +752,8 @@ function loadRank(){
         success: function(response) {
             // console.log(response);
             Rank=response;
+            loadEcoRecords(User.userId);//載入環保紀錄
+            $('#preloader').fadeOut(1500);
             //console.log(Rank);
             // 調用生成使用者資料函數
         },
