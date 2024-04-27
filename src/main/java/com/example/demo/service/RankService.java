@@ -42,12 +42,26 @@ public class RankService {
 
         List<RankInitReturnEntity> result = new ArrayList<>();
 
+        List<UserInfo> userList = this.userRepository.findAll();
+
         for (UserAchievementEntity user : users) {
             //初始化該使用者的rank物件
             RankInitReturnEntity rankInitReturnEntity = new RankInitReturnEntity();
 
             //獲取使用者id
             String userId = user.getUserId();
+            //找到該使用者的資料
+            UserInfo userInfo = null;
+            for (UserInfo tmp : userList) {
+                if (tmp.getUserId().equals(userId)) {
+                    userInfo = tmp;
+                    break;
+                }
+            }
+
+            if (userInfo == null)
+                continue;
+
             rankInitReturnEntity.setUserId(userId);
 
             double totalFP = 0.0;
@@ -66,15 +80,9 @@ public class RankService {
             int rankType = this.findRank(totalFP);
             rankInitReturnEntity.setRankType(rankType);
 
-            //找到該使用者的資料
-            UserInfo userInfo = this.userRepository.findByUserId(userId);
-            if (userInfo != null) {
-                rankInitReturnEntity.setNickname(userInfo.getNickname());
-                rankInitReturnEntity.setPhoto(userInfo.getPhoto());
-            } else {
-                //沒有此使用者就跳過
-                continue;
-            }
+
+            rankInitReturnEntity.setNickname(userInfo.getNickname());
+            rankInitReturnEntity.setPhoto(userInfo.getPhoto());
 
 
             result.add(rankInitReturnEntity);
