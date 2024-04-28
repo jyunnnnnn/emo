@@ -14,6 +14,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="frontend/login.js"></script>
+    <script src="/frontend/browserSetting.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -42,7 +43,7 @@
 
 
     html,body {
-            overflow-y: hidden;
+            overflow: hidden;
             font-family: 'HunInn', 'Mandali', sans-serif;
             background: #b8eecc;
             background-size: cover;
@@ -52,12 +53,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             margin: 0;
-            overflow-x: hidden;
             touch-action: manipulation;
             user-select: none;
-
+            height:100vh;
+            height: calc(var(--vh, 1vh) * 100);
         }
 
         .container {
