@@ -439,30 +439,17 @@
     }
 }
 
+
 html,body{
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none; /* Chrome Safari */
-            -moz-user-select: none;    /* Firefox */
-            overflow-y: hidden;
-}
-.modal {
-  .modal-dialog {
-    height: 100%;
-    width: 100%;
-    .modal-content {
-      height: 100%;
-      .modal-body {
-        position: absolute;
-        top: 63px;
-        bottom: 71px;
-        overflow-y: auto;
-      }
-      .modal-footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-      }
-    }
-  }
+             background-color: white;
+             justify-content: center;
+             align-items: center;
+             font-family: 'HunInn', 'Mandali', sans-serif;
+             touch-action: manipulation;
+             user-select: none;
+             -webkit-user-select: none; /* Chrome Safari */
+             -moz-user-select: none;    /* Firefox */
+             overflow-y: hidden;
+             overflow-x: hidden;
+             display: flex;
 }

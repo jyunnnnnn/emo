@@ -52,15 +52,7 @@
             url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.ttf) format("truetype"), /* Safari, Android, iOS */
             url(https://cdn.jsdelivr.net/gh/marsnow/open-huninn-font@1.1/font/jf-openhuninn.svg#SealmemoryHeader) format("svg"); /* Legacy iOS */
         }
-        body{
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow-y:hidden;
-            font-family: 'HunInn', 'Mandali', sans-serif;
-        }
+
 
         #map {
             height: 100%;
@@ -75,7 +67,8 @@
         }
         .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
             width: 100%;
-            height:100%;
+            height:100vh;
+            height: calc(var(--vh, 1vh) * 100);
             padding-right: 0px;
             padding-left: 0px;
             margin-right: auto;
@@ -107,6 +100,7 @@
     </style>
 </head>
 <body>
+
 <div class="container">
     <!-- Google Map -->
     <div style="display:flex;" id="map"></div>
@@ -159,7 +153,6 @@
         <button class="recordButton" id="recordListButton"> 紀錄與成就</button>
     </div>
 </div>
-
 <!-- 懸浮窗：設定 -->
 <div id="settingFW" onclick="closeFW(event)">
     <div id="settingModal" class="settingContainer">
