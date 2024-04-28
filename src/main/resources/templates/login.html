@@ -39,20 +39,25 @@
         @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fredoka:wght@300..700&family=Madimi+One&family=Mandali&display=swap');
 
     .a2a_svg, .a2a_count { border-radius: 99em !important; }
-    body {
+
+
+    html,body {
             overflow-y: hidden;
             font-family: 'HunInn', 'Mandali', sans-serif;
             background: #b8eecc;
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
-
+            z-index:-1;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             overflow-x: hidden;
+            touch-action: manipulation;
+            user-select: none;
+
         }
 
         .container {
@@ -247,8 +252,7 @@
             }
 
             .googleLoginWrapper{
-                transform:scale(1.5,1.5);
-                margin-left:15px;
+                /*transform:scale(1.5,1.5);*/
             }
         }
     </style>
@@ -314,7 +318,7 @@
                         >
                         </div>
                     </div>
-                    <a href="#" id="no-account" style="margin-left: auto;">忘記密碼？</a>
+                    <a href="#" id="no-account" >忘記密碼？</a>
                 </label>
 
             </form>

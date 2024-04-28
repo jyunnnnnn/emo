@@ -446,3 +446,23 @@ html,body{
             -moz-user-select: none;    /* Firefox */
             overflow-y: hidden;
 }
+.modal {
+  .modal-dialog {
+    height: 100%;
+    width: 100%;
+    .modal-content {
+      height: 100%;
+      .modal-body {
+        position: absolute;
+        top: 63px;
+        bottom: 71px;
+        overflow-y: auto;
+      }
+      .modal-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+  }
+}
