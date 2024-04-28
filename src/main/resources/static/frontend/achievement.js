@@ -176,11 +176,10 @@ function achievementClick(achievementId){
 
         let downloadLink = $("<button>")
             .click(function (){
-                let $this = $(this);
-                $this.prop('disabled', true); // 按鈕點擊後設為不可用
-
+                $(this).prop('disabled', true); // 按鈕點擊後設為不可用
                 generatePhoto(target);
                 downlodACPhoto();
+                $('#downloadLinkTxt').text('').addClass('downloadLoader');
             })
             .attr({
                 'id':'downloadLink',
@@ -196,6 +195,7 @@ function achievementClick(achievementId){
         let downloadBtnText = $("<div>")
             .text("下載")
             .attr({
+                'id': 'downloadLinkTxt',
                 'class': 'setText'
             })
             .css({
@@ -206,11 +206,10 @@ function achievementClick(achievementId){
 
         let shareLink = $("<button>")
             .click(function (){
-                let $this = $(this);
-                $this.prop('disabled', true); // 按鈕點擊後設為不可用
+                $(this).prop('disabled', true); // 按鈕點擊後設為不可用
                 generatePhoto(target);
                 shareImage();
-
+                $('#shareLinkTxt').text('').addClass('downloadLoader');
             })
             .attr({
                 'id':'shareLink',
@@ -226,6 +225,7 @@ function achievementClick(achievementId){
         let shareBtnText = $("<div>")
             .text("分享")
             .attr({
+                'id': 'shareLinkTxt',
                 'class': 'setText'
             })
             .css({
@@ -442,7 +442,7 @@ function firstTimeAchieve(target){
             $this.prop('disabled', true); // 按鈕點擊後設為不可用
             generatePhoto(target);
             shareImage();
-
+            $('#shareLinkTxt').text('').addClass('downloadLoader');
         })
         .attr({
             'id':'shareLink',
@@ -458,13 +458,14 @@ function firstTimeAchieve(target){
     let shareBtnText = $("<div>")
         .text("分享")
         .attr({
+            'id': 'shareLinkTxt',
             'class': 'setText'
         })
         .css({
             'right': '10%',
             'font-size': '15px'
         });
-    shareLink.append(shareBtnText)
+    shareLink.append(shareBtnText);
     let buttonDiv = $("<div>")
         .css({
             'display': 'flex',
@@ -501,6 +502,7 @@ function firstTimeAchieve(target){
 }
 
 function generatePhoto(target) {
+    $('#ACPhoto').empty();
     let achievementName = $("<div>")
         .text(target[0].achievementName)
         .attr({'class': 'eachAchievementName', 'style': 'text-align: center;'});
@@ -568,8 +570,6 @@ function generatePhoto(target) {
         ACPhoto2Png.style.display = 'block';
         ACPhoto2Png.style.position = 'fixed';
         ACPhoto2Png.style.zIndex = -1000;
-
-
     } else {
         console.error("One or more elements are not found or undefined.");
     }
@@ -586,11 +586,14 @@ function downlodACPhoto(){
             link.download = 'image.jpg';
             link.href = dataUrl;
             link.click();
-            $('#ACPhoto').empty();
+            //為甚麼要放裡面，因為domtoimage是非同步，放在function最後會執行不到...
             $('#ACPhoto').css("display","none");
             $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+            $('#downloadLinkTxt').removeClass('downloadLoader').text('下載');
         }).catch(function (error) {
             console.error('dom-to-image error:', error);
+            $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+            $('#downloadLinkTxt').removeClass('downloadLoader').text('下載');
         });
     });
 }
@@ -616,19 +619,22 @@ async function shareImage() {
                     files: filesArray,
                 };
                 navigator.share(shareData);
-                $('#ACPhoto').empty();
-                $('#ACPhoto').css("display", "none");
+                $('#ACPhoto').css("display","none");
                 $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+                $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
             }).catch(function (error) {
                 // 若不支援跳道歉懸浮窗
                 $('#shareError').css("display","flex");
+                $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+                $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
                 console.error('dom-to-image error:', error);
             });
         });
     }else{
         $('#shareError').css("display","flex");
+        $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+        $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
     }
-
 }
 
 function dataURItoBlob(dataURI) {

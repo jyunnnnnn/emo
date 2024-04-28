@@ -67,6 +67,7 @@ function initMap() {
                         streetViewControl: false,
                         rotateControl: false,
                         fullscreenControl: false,
+                        gestureHanding: "greedy",
                         //mapId: "92b0df6f653781da",
                         styles: [
                                 {
