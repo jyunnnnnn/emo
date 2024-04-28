@@ -25,7 +25,7 @@ let no1="frontend/img/1.png";
 let no2="frontend/img/2.png";
 let no3="frontend/img/3.png";
 let base64no1, base64no2, base64no3;
-let  MAP_OK=0;
+let MAP_OK=0;
 let DATA_OK=0;
 // 初始化Google Map
 function initMap() {
@@ -229,7 +229,7 @@ function initMap() {
                 MAP_OK=1;
                 console.log(MAP_OK,DATA_OK,"map");
                 if(MAP_OK && DATA_OK){
-
+                    loadEcoRecords(User.userId);//載入環保紀錄
                     $('#preloader').fadeOut(1500);
                 }
 
@@ -760,10 +760,10 @@ function loadRank(){
         success: function(response) {
             // console.log(response);
             Rank=response;
-            loadEcoRecords(User.userId);//載入環保紀錄
             DATA_OK=1;
             console.log(MAP_OK,DATA_OK,"DATA");
             if(MAP_OK && DATA_OK){
+                loadEcoRecords(User.userId);//載入環保紀錄
                 $('#preloader').fadeOut(1500);
             }
             //console.log(Rank);
