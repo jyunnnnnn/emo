@@ -62,6 +62,7 @@ public class RankService {
             if (userInfo == null)
                 continue;
 
+            rankInitReturnEntity.setUserId(userId);
 
             double totalFP = 0.0;
             //計算總減碳量
