@@ -439,9 +439,10 @@
     }
 }
 
-html{
+html,body{
             touch-action: manipulation;
             user-select: none;
-              -webkit-user-select: none; /* Chrome Safari */
-              -moz-user-select: none;    /* Firefox */
+            -webkit-user-select: none; /* Chrome Safari */
+            -moz-user-select: none;    /* Firefox */
+            overflow-y: hidden;
 }
