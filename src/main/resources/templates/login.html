@@ -81,6 +81,7 @@
             text-decoration: none;
             color:#05240d;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white ;  /* 白色框線 */
+            padding-left: 10px;
         }
         a#no-account:hover{
             text-decoration:underline;
@@ -199,7 +200,23 @@
             width: 30px;
             height: 30px;
         }
-        @media only screen and (min-width: 1000px) {
+        .bottom-text{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            text-decoration: none;
+            color: #05240d;
+            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+        }
+        /*針對狹窄手機的設定*/
+        @media only screen and (max-width: 360px) {
+            .bottom-text{
+               font-size: 14px;
+            }
+        }
+        /*針對平板*/
+        @media only screen and (min-width: 800px) {
             #signup-container{
                 transform: scale(0.95);
             }
@@ -210,7 +227,8 @@
                 bottom: -50px;
             }*/
         }
-        @media only screen and (max-width: 700px) {
+         /*針對一般手機*/
+        @media only screen and (max-width: 500px) {
             .homeBG{
                 display: flex;
                 top: 55%;
@@ -294,7 +312,7 @@
 
 
                 <br><br>
-                <label style="display: flex; justify-content: space-between; align-items: center; width: 100%; text-decoration: none; color: #05240d; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">
+                <label class="bottom-text">
                     沒有帳號？ &nbsp;
                     <a href="#" id="switch-to-signup">註冊</a>
                     &nbsp;&nbsp;

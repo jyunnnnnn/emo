@@ -78,7 +78,10 @@ $(document).ready(function () {
         let inputConfirmedPassword = $('#exampleInputPasswordcheck').val();
 
         // userID
-
+        if (inputAccount.length > 10) {
+            alert("請輸入十個字以內的帳號");
+            return;
+        }
         //檢查是否輸入帳號
         if (!inputAccount) {
             alert("請輸入帳號");
