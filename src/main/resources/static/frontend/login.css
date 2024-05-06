@@ -223,10 +223,10 @@
         #forgetPassword-container{
             background: none;
         }
-        #login-container,
+       /* #login-container,
         #signup-container{
             height: 100%;
-        }
+        }*/
         .form-control{
             height: 50px;
             font-size: 1.2rem;
