@@ -188,7 +188,11 @@ $('#saveRecord').on('click', function () {
     }else if(data_value <= 0){
        alert("請輸入正數");
        return;
+    }else if(data_value>=100000000){ //待改
+        alert("請輸入合理重量!")
+        return;
     }else{
+
         saveRecord(classType, type.text(), data_value);
         $('#recordFW').css("display", "none");
     }

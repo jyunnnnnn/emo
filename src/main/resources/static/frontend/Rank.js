@@ -87,9 +87,11 @@ function showRankByRankType(rankType,all){
     else{
         findUsers= AllUsersFp.filter(user => user.rankType === rankType);
     }
+    findUsers= AllUsersFp.filter(user => user.totalFP > 0);
     findUsers.sort((a, b) => b.totalFP - a.totalFP);
+
 //    console.log(Rank);
-//    console.log(findUsers);
+    console.log(findUsers);
     let myRankData=findUsers.find(user => user.userId === User.userId);
     let myIndex = findUsers.indexOf(myRankData)+1;
 
