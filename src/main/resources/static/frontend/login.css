@@ -207,6 +207,9 @@
     }
      /*針對一般手機*/
     @media only screen and (max-width: 500px) {
+        body{
+             overflow: auto;
+        }
         .homeBG{
             display: flex;
             top: 55%;
