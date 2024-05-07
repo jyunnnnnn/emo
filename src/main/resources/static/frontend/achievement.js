@@ -1,3 +1,5 @@
+let emoLogo="frontend/img/emoLogo.svg";
+let emoLogoUnlock="frontend/img/emoLogoUnlock.svg"
 // 顯示更多成就
 $('#moreAchievement').on('click', function (){
     $('#achievementFW').css("display", "flex");
@@ -124,8 +126,29 @@ function achievementClick(achievementId){
                 'class': 'front',
             });
         let achievementSvg = $("<svg>")
-            .html(target[0].unLockedSvg);
-        frontDiv.append(achievementSvg);
+            .html(target[0].unLockedSvg)
+            .css('top','20px');
+        let femoSvg = $("<img>")
+            .attr("src", emoLogo)
+            .css({
+                'margin-right': '2px',
+                'top': '17px'
+            });
+
+        let femoIcon = $("<span>").text("EMO")
+            .attr('class', 'achievementText')
+            .css({
+            'font-weight': 'bold',
+            'color': 'gray',
+            'margin-top': '10px',
+            'font-size': '10px',
+            'top': '20px'
+        });
+
+        let femoDiv = $("<div>")
+            .css('top','12px');
+        femoDiv.append(femoSvg,femoIcon);
+        frontDiv.append(achievementSvg,femoDiv);
         let backDiv = $("<div>")
             .attr({
                 'class': 'back',
@@ -150,8 +173,15 @@ function achievementClick(achievementId){
         let achievementText2 = $("<div>")
             .text(datePart[0] + "年" + datePart[1] + "月" + datePart[2] + "日")
             .attr('class', 'achievementText');
-        let emoIcon = $("<div>")
-            .text("EMO")
+
+        let emoSvg = $("<img>")
+            .attr("src", emoLogo)
+            .css({
+                'margin-right': '2px',
+                'top': '17px'
+            });
+
+        let emoIcon = $("<span>").text("EMO")
             .attr('class', 'achievementText')
             .css({
                 'font-weight': 'bold',
@@ -159,8 +189,13 @@ function achievementClick(achievementId){
                 'margin-top': '10px',
                 'font-size': '10px',
                 'top': '20px'
-            })
-        textDiv.append(userName, achievementText1, achievementText2, emoIcon);
+            });
+
+        let emoDiv = $("<div>")
+            .css('top','10px');
+        emoDiv.append(emoSvg,emoIcon);
+
+        textDiv.append(userName, achievementText1, achievementText2,emoDiv);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
@@ -260,8 +295,29 @@ function achievementClick(achievementId){
                 'class': 'front',
             });
         let achievementSvg = $("<svg>")
-            .html(target[0].lockedSvg);
-        frontDiv.append(achievementSvg);
+            .html(target[0].lockedSvg)
+            .css('top','20px');
+        let femoSvg = $("<img>")
+            .attr("src", emoLogoUnlock)
+            .css({
+                'margin-right': '2px',
+                'top': '17px'
+            });
+
+        let femoIcon = $("<span>").text("EMO")
+            .attr('class', 'achievementText')
+            .css({
+                'font-weight': 'bold',
+                'color': 'gray',
+                'margin-top': '10px',
+                'font-size': '10px',
+                'top': '20px'
+            });
+
+        let femoDiv = $("<div>")
+            .css('top','10px');
+        femoDiv.append(femoSvg,femoIcon);
+        frontDiv.append(achievementSvg,femoDiv);
         let backDiv = $("<div>")
             .attr({
                 'class': 'back',
@@ -284,8 +340,14 @@ function achievementClick(achievementId){
         let achievementText2 = $("<div>")
             .text(time.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " / " + target[0].target.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
             .attr('class', 'achievementText');
-        let emoIcon = $("<div>")
-            .text("EMO")
+        let emoSvg = $("<img>")
+            .attr("src", emoLogoUnlock)
+            .css({
+                'margin-right': '2px',
+                'top': '17px'
+            });
+
+        let emoIcon = $("<span>").text("EMO")
             .attr('class', 'achievementText')
             .css({
                 'font-weight': 'bold',
@@ -293,8 +355,13 @@ function achievementClick(achievementId){
                 'margin-top': '10px',
                 'font-size': '10px',
                 'top': '20px'
-            })
-        textDiv.append(userName, achievementText1, achievementText2, emoIcon);
+            });
+
+        let emoDiv = $("<div>")
+            .css('top','10px');
+        emoDiv.append(emoSvg,emoIcon);
+
+        textDiv.append(userName, achievementText1, achievementText2, emoDiv);
         backDiv.append(textDiv);
 
         cardInner.append(frontDiv, backDiv);
@@ -346,7 +413,27 @@ function firstTimeAchieve(target){
         });
     let achievementSvg = $("<svg>")
         .html(target[now].unLockedSvg);
-    frontDiv.append(achievementSvg);
+    let femoSvg = $("<img>")
+        .attr("src", emoLogo)
+        .css({
+            'margin-right': '2px',
+            'top': '17px'
+        });
+
+    let femoIcon = $("<span>").text("EMO")
+        .attr('class', 'achievementText')
+        .css({
+            'font-weight': 'bold',
+            'color': 'gray',
+            'margin-top': '10px',
+            'font-size': '10px',
+            'top': '20px'
+        });
+
+    let femoDiv = $("<div>")
+        .css('top','12px');
+    femoDiv.append(femoSvg,femoIcon);
+    frontDiv.append(achievementSvg,femoDiv);
     let backDiv = $("<div>")
         .attr({
             'class': 'back',
@@ -371,8 +458,14 @@ function firstTimeAchieve(target){
     let achievementText2 = $("<div>")
         .text(datePart[0] + "年" + datePart[1] + "月" + datePart[2] + "日")
         .attr('class', 'achievementText');
-    let emoIcon = $("<div>")
-        .text("EMO")
+    let emoSvg = $("<img>")
+        .attr("src", emoLogo)
+        .css({
+            'margin-right': '2px',
+            'top': '17px'
+        });
+
+    let emoIcon = $("<span>").text("EMO")
         .attr('class', 'achievementText')
         .css({
             'font-weight': 'bold',
@@ -381,6 +474,10 @@ function firstTimeAchieve(target){
             'font-size': '10px',
             'top': '20px'
         });
+
+    let emoDiv = $("<div>")
+        .css('top','10px');
+    emoDiv.append(emoSvg,emoIcon);
 
     let radiance = $("<div>")
         .html("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 100000 100000\" x=\"0px\" y=\"0px\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" width=\"250px\" height=\"250px\" style=\"&#10;\"><defs><style type=\"text/css\">\n" +
@@ -398,7 +495,7 @@ function firstTimeAchieve(target){
             'z-index': '-1',
             'position': 'absolute'
         })
-    textDiv.append(userName, achievementText1, achievementText2, emoIcon);
+    textDiv.append(userName, achievementText1, achievementText2, emoDiv);
     backDiv.append(textDiv);
 
     cardInner.append(frontDiv, backDiv);
@@ -541,7 +638,31 @@ function generatePhoto(target) {
     img.style.bottom='0';
     img.style.margin='auto';
 
-    frontDiv.append(img);
+    let emoSvg = $("<img>")
+        .attr("src", emoLogo)
+        .css({
+            'margin-right': '2px',
+            'top': '17px'
+        });
+
+    let emoIcon = $("<span>").text("EMO")
+        .attr('class', 'achievementText')
+        .css({
+            'font-weight': 'bold',
+            'color': 'gray',
+            'margin-top': '10px',
+            'font-size': '10px',
+            'top': '20px'
+        });
+
+    let emoDiv = $("<div>")
+        .css({
+            'top': '50px',
+            'text-align': 'center'
+        });
+    emoDiv.append(emoSvg,emoIcon);
+
+    frontDiv.append(img,emoDiv);
 
     time = (target[0].current.toFixed(2) * 100 / 100).toString()
 
