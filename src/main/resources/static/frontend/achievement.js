@@ -412,7 +412,8 @@ function firstTimeAchieve(target){
             'class': 'front',
         });
     let achievementSvg = $("<svg>")
-        .html(target[now].unLockedSvg);
+        .html(target[now].unLockedSvg)
+        .css('top','20px');
     let femoSvg = $("<img>")
         .attr("src", emoLogo)
         .css({
