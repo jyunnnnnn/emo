@@ -107,6 +107,8 @@ function achievementClick(achievementId){
     $('#eachAchievementFW').css("display", "flex");
     $('#eachAchievementFW').empty();
     let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
+    $('#ACPhoto').empty();
+    generatePhoto(target);
 
     if(target[0].achieve === true){
         let achievementName = $("<div>")
@@ -212,7 +214,6 @@ function achievementClick(achievementId){
         let downloadLink = $("<button>")
             .click(function (){
                 $(this).prop('disabled', true); // 按鈕點擊後設為不可用
-                generatePhoto(target);
                 downlodACPhoto();
                 $('#downloadLinkTxt').text('').addClass('downloadLoader');
             })
@@ -241,9 +242,8 @@ function achievementClick(achievementId){
 
         let shareLink = $("<button>")
             .click(function (){
-                $(this).prop('disabled', true); // 按鈕點擊後設為不可用
-                generatePhoto(target);
                 shareImage();
+                $(this).prop('disabled', true); // 按鈕點擊後設為不可用
                 $('#shareLinkTxt').text('').addClass('downloadLoader');
             })
             .attr({
@@ -391,6 +391,8 @@ function achievementClick(achievementId){
 let now = 0
 function firstTimeAchieve(target){
     $('#firstTimeAchieveFW').empty();
+    $('#ACPhoto').empty();
+    generatePhoto(target);
 
     let achievementName = $("<div>")
         .text(target[now].achievementName)
@@ -536,10 +538,8 @@ function firstTimeAchieve(target){
 
     let shareLink = $("<button>")
         .click(function (){
-            let $this = $(this);
-            $this.prop('disabled', true); // 按鈕點擊後設為不可用
-            generatePhoto(target);
             shareImage();
+            $(this).prop('disabled', true); // 按鈕點擊後設為不可用
             $('#shareLinkTxt').text('').addClass('downloadLoader');
         })
         .attr({
@@ -564,6 +564,7 @@ function firstTimeAchieve(target){
             'font-size': '15px'
         });
     shareLink.append(shareBtnText);
+
     let buttonDiv = $("<div>")
         .css({
             'display': 'flex',
@@ -600,7 +601,6 @@ function firstTimeAchieve(target){
 }
 
 function generatePhoto(target) {
-    $('#ACPhoto').empty();
     let achievementName = $("<div>")
         .text(target[0].achievementName)
         .attr({'class': 'eachAchievementName', 'style': 'text-align: center;'});
@@ -709,7 +709,6 @@ function downlodACPhoto(){
             link.href = dataUrl;
             link.click();
             //為甚麼要放裡面，因為domtoimage是非同步，放在function最後會執行不到...
-            $('#ACPhoto').css("display","none");
             $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
             $('#downloadLinkTxt').removeClass('downloadLoader').text('下載');
         }).catch(function (error) {
@@ -740,8 +739,13 @@ async function shareImage() {
                 const shareData = {
                     files: filesArray,
                 };
-                navigator.share(shareData);
-                $('#ACPhoto').css("display","none");
+
+                navigator.share(shareData).catch(function (error) {
+                    $('#shareError').css("display", "flex");
+                    $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
+                    $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
+                    console.error('dom-to-image error:', error);
+                });
                 $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
                 $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
             }).catch(function (error) {
