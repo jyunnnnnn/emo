@@ -643,7 +643,6 @@ function generatePhoto(target) {
         .attr("src", emoLogo)
         .css({
             'margin-right': '2px',
-            'top': '17px'
         });
 
     let emoIcon = $("<span>").text("EMO")
@@ -653,12 +652,12 @@ function generatePhoto(target) {
             'color': 'gray',
             'margin-top': '10px',
             'font-size': '10px',
-            'top': '20px'
+            'top': '2px'
         });
 
     let emoDiv = $("<div>")
         .css({
-            'top': '50px',
+            'top': '37%',
             'text-align': 'center'
         });
     emoDiv.append(emoSvg,emoIcon);
