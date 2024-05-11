@@ -1,5 +1,5 @@
-let emoLogo="frontend/img/emoLogo.svg";
-let emoLogoUnlock="frontend/img/emoLogoUnlock.svg"
+let emoLogo="frontend/img/emoLogo.png";
+let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
 // 顯示更多成就
 $('#moreAchievement').on('click', function (){
     $('#achievementFW').css("display", "flex");
@@ -108,7 +108,16 @@ function achievementClick(achievementId){
     $('#eachAchievementFW').empty();
     let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
     $('#ACPhoto').empty();
-    generatePhoto(target);
+    if(target[0].accomplishTime!=null) generatePhoto(target);
+    let IMGdataUrl;
+    domtoIMG().then(imgDU => {
+        IMGdataUrl=imgDU;
+        $('#shareLink').prop('disabled', false);
+        $('#downloadLink').prop('disabled', false);
+    }).catch(error => {
+        // 還不知道放甚麼
+        console.error(error);
+    });
 
     if(target[0].achieve === true){
         let achievementName = $("<div>")
@@ -134,7 +143,8 @@ function achievementClick(achievementId){
             .attr("src", emoLogo)
             .css({
                 'margin-right': '2px',
-                'top': '17px'
+                'top': '18px',
+                'width': '15px'
             });
 
         let femoIcon = $("<span>").text("EMO")
@@ -180,7 +190,8 @@ function achievementClick(achievementId){
             .attr("src", emoLogo)
             .css({
                 'margin-right': '2px',
-                'top': '17px'
+                'top': '18px',
+                'width': '15px'
             });
 
         let emoIcon = $("<span>").text("EMO")
@@ -213,14 +224,13 @@ function achievementClick(achievementId){
 
         let downloadLink = $("<button>")
             .click(function (){
-                $(this).prop('disabled', true); // 按鈕點擊後設為不可用
-                downlodACPhoto();
-                $('#downloadLinkTxt').text('').addClass('downloadLoader');
+                downlodACPhoto(IMGdataUrl);
             })
             .attr({
                 'id':'downloadLink',
                 'class': 'setBtn'
             })
+            .prop('disabled', true)
             .css({
                 'background-color': 'rgba(183,188,189,0.3)',
                 'width': '70px',
@@ -242,14 +252,13 @@ function achievementClick(achievementId){
 
         let shareLink = $("<button>")
             .click(function (){
-                shareImage();
-                $(this).prop('disabled', true); // 按鈕點擊後設為不可用
-                $('#shareLinkTxt').text('').addClass('downloadLoader');
+                shareImage(IMGdataUrl);
             })
             .attr({
                 'id':'shareLink',
                 'class': 'setBtn'
             })
+            .prop('disabled', true)
             .css({
                 'background-color': 'rgba(183,188,189,0.3)',
                 'width': '70px',
@@ -301,7 +310,8 @@ function achievementClick(achievementId){
             .attr("src", emoLogoUnlock)
             .css({
                 'margin-right': '2px',
-                'top': '17px'
+                'top': '18px',
+                'width': '15px'
             });
 
         let femoIcon = $("<span>").text("EMO")
@@ -344,7 +354,8 @@ function achievementClick(achievementId){
             .attr("src", emoLogoUnlock)
             .css({
                 'margin-right': '2px',
-                'top': '17px'
+                'top': '18px',
+                'width': '15px'
             });
 
         let emoIcon = $("<span>").text("EMO")
@@ -392,7 +403,15 @@ let now = 0
 function firstTimeAchieve(target){
     $('#firstTimeAchieveFW').empty();
     $('#ACPhoto').empty();
-    generatePhoto(target);
+    if(target[0].accomplishTime!=null) generatePhoto(target);
+    let IMGdataUrl;
+    domtoIMG().then(imgDU => {
+        IMGdataUrl=imgDU;
+        $('#shareLink').prop('disabled', false);
+    }).catch(error => {
+        // 還不知道放甚麼
+        console.error(error);
+    });
 
     let achievementName = $("<div>")
         .text(target[now].achievementName)
@@ -420,7 +439,8 @@ function firstTimeAchieve(target){
         .attr("src", emoLogo)
         .css({
             'margin-right': '2px',
-            'top': '17px'
+            'top': '18px',
+            'width': '15px'
         });
 
     let femoIcon = $("<span>").text("EMO")
@@ -465,7 +485,8 @@ function firstTimeAchieve(target){
         .attr("src", emoLogo)
         .css({
             'margin-right': '2px',
-            'top': '17px'
+            'top': '18px',
+            'width': '15px'
         });
 
     let emoIcon = $("<span>").text("EMO")
@@ -538,14 +559,13 @@ function firstTimeAchieve(target){
 
     let shareLink = $("<button>")
         .click(function (){
-            shareImage();
-            $(this).prop('disabled', true); // 按鈕點擊後設為不可用
-            $('#shareLinkTxt').text('').addClass('downloadLoader');
+            shareImage(IMGdataUrl);
         })
         .attr({
             'id':'shareLink',
             'class': 'setBtn'
         })
+        .prop('disabled', true)
         .css({
             'background-color': 'rgba(183,188,189,0.3)',
             'width': '70px',
@@ -643,7 +663,8 @@ function generatePhoto(target) {
         .attr("src", emoLogo)
         .css({
             'margin-right': '2px',
-            'top': '17px'
+            'top': '18px',
+            'width': '15px'
         });
 
     let emoIcon = $("<span>").text("EMO")
@@ -696,71 +717,48 @@ function generatePhoto(target) {
         console.error("One or more elements are not found or undefined.");
     }
 }
-function downlodACPhoto(){
-    let ACPhoto2toJpeg = document.getElementById('ACPhoto');
-    // 使用 dom-to-image 轉html為png //轉兩次，ios svg下載太慢問題
-    domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl){
-        domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
-            let img = new Image();
-            img.src = dataUrl;
-
-            let link = document.createElement('a');
-            link.download = 'image.jpg';
-            link.href = dataUrl;
-            link.click();
-            //為甚麼要放裡面，因為domtoimage是非同步，放在function最後會執行不到...
-            $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-            $('#downloadLinkTxt').removeClass('downloadLoader').text('下載');
-        }).catch(function (error) {
-            console.error('dom-to-image error:', error);
-            $('#downloadLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-            $('#downloadLinkTxt').removeClass('downloadLoader').text('下載');
-        });
-    });
+function downlodACPhoto(dataUrl){
+    let img = new Image();
+    img.src = dataUrl;
+    let link = document.createElement('a');
+    link.download = 'image.jpg';
+    link.href = dataUrl;
+    link.click();
 }
 
-async function shareImage() {
-    if(navigator.share) {
+function domtoIMG() {
+    return new Promise((resolve, reject) => {
         let ACPhoto2toJpeg = document.getElementById('ACPhoto');
         // 使用 dom-to-image 轉html為png
         domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrlTmp) {
             domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
-                const blob = dataURItoBlob(dataUrl);
-                const filesArray = [
-                    new File(
-                        [blob],
-                        'meme.jpg',
-                        {
-                            type: "image/jpeg",
-                            lastModified: new Date().getTime()
-                        }
-                    )
-                ];
-                const shareData = {
-                    files: filesArray,
-                };
-
-                navigator.share(shareData).catch(function (error) {
-                    $('#shareError').css("display", "flex");
-                    $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-                    $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
-                    console.error('dom-to-image error:', error);
-                });
-                $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-                $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
+                resolve(dataUrl);
             }).catch(function (error) {
-                // 若不支援跳道歉懸浮窗
-                $('#shareError').css("display","flex");
-                $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-                $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
-                console.error('dom-to-image error:', error);
+                reject(error);
             });
         });
-    }else{
-        $('#shareError').css("display","flex");
-        $('#shareLink').prop('disabled', false); // 函式執行完畢後按鈕恢復可用
-        $('#shareLinkTxt').removeClass("downloadLoader").text('分享');
-    }
+    });
+}
+
+function shareImage(dataUrl) {
+    const blob = dataURItoBlob(dataUrl);
+    const filesArray = [
+        new File(
+            [blob],
+            'meme.jpg',
+            {
+                type: "image/jpeg",
+                lastModified: new Date().getTime()
+            }
+        )
+    ];
+    const shareData = {
+        files: filesArray,
+    };
+    navigator.share(shareData).catch(function (error) {
+        $('#shareError').css("display", "flex");
+        console.error('dom-to-image error:', error);
+    });
 }
 
 function dataURItoBlob(dataURI) {
