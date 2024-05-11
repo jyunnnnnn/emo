@@ -1,5 +1,3 @@
-let emoLogo="frontend/img/emoLogo.png";
-let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
 // 顯示更多成就
 $('#moreAchievement').on('click', function (){
     $('#achievementFW').css("display", "flex");
@@ -113,7 +111,9 @@ function achievementClick(achievementId){
     domtoIMG().then(imgDU => {
         IMGdataUrl=imgDU;
         $('#shareLink').prop('disabled', false);
+        $('#shareLinkTxt').removeClass('downloadLoader').text('分享');
         $('#downloadLink').prop('disabled', false);
+        $('#downloadLinkTxt').removeClass('downloadLoader').text('下載');
     }).catch(error => {
         // 還不知道放甚麼
         console.error(error);
@@ -239,10 +239,10 @@ function achievementClick(achievementId){
             });
 
         let downloadBtnText = $("<div>")
-            .text("下載")
+            .text("")
             .attr({
                 'id': 'downloadLinkTxt',
-                'class': 'setText'
+                'class': 'setText downloadLoader'
             })
             .css({
                 'right': '10%',
@@ -267,10 +267,10 @@ function achievementClick(achievementId){
             });
 
         let shareBtnText = $("<div>")
-            .text("分享")
+            .text("")
             .attr({
                 'id': 'shareLinkTxt',
-                'class': 'setText'
+                'class': 'setText  downloadLoader'
             })
             .css({
                 'right': '10%',
@@ -408,6 +408,7 @@ function firstTimeAchieve(target){
     domtoIMG().then(imgDU => {
         IMGdataUrl=imgDU;
         $('#shareLink').prop('disabled', false);
+        $('#shareLinkTxt').removeClass('downloadLoader').text('分享');
     }).catch(error => {
         // 還不知道放甚麼
         console.error(error);
@@ -574,10 +575,10 @@ function firstTimeAchieve(target){
         });
 
     let shareBtnText = $("<div>")
-        .text("分享")
+        .text("")
         .attr({
             'id': 'shareLinkTxt',
-            'class': 'setText'
+            'class': 'setText downloadLoader'
         })
         .css({
             'right': '10%',
@@ -734,6 +735,7 @@ function domtoIMG() {
             domtoimage.toJpeg(ACPhoto2toJpeg).then(function (dataUrl) {
                 resolve(dataUrl);
             }).catch(function (error) {
+                alert("暫不支援此功能，請在等等><")
                 reject(error);
             });
         });
@@ -756,8 +758,10 @@ function shareImage(dataUrl) {
         files: filesArray,
     };
     navigator.share(shareData).catch(function (error) {
-        $('#shareError').css("display", "flex");
-        console.error('dom-to-image error:', error);
+        if (!error.toString().includes('AbortError')) {
+            $('#shareError').css("display", "flex");
+            console.error('dom-to-image error:', error);
+        }
     });
 }
 
