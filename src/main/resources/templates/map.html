@@ -11,6 +11,8 @@
     <link rel="icon" href="/frontend/img/emoLogo.svg" type="image/svg+xml">
     <!--引入 flatpickr日期選擇器-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- loader -->
+    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -706,6 +708,9 @@
 </div>
 </body>
 
+
+
+
 <script src="/frontend/browserSetting.js"></script>
 <script src="/frontend/init.js"></script>
 <script src="/frontend/saveRecord.js"></script>
@@ -718,8 +723,6 @@
 <script src="/frontend/recordList.js"></script>
 <script src="/frontend/achievement.js"></script>
 <script src="/frontend/Rank.js"></script>
-
-
 <!-- 初始化地圖 -->
 <script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}">
     $(document).on("keypress", "form", function (e) {
@@ -730,7 +733,5 @@
         }
     });
 </script>
-<!-- loader -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
 
 </html>
