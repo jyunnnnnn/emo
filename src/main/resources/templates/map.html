@@ -299,27 +299,24 @@
                 <div>不知道怎麼選？</div>
                 <div class = "questionMark" >
                         <!--顯示-->
-                    <span id="choiceDetail" class="detail" style="width: 400px; z-index: 4;">
+                    <span id="choiceDetail" class="detail" style="width: 373px; margin-left:36px; z-index: 4;">
                         <!-- 比較對象 -->
-                        <span id="choice-references" style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 3px; padding-left: 8px;">
-                            選擇行為以獲得大中小比較基準
-                        </span>
-                        <span style="font-weight: bold; font-size: 15px; margin-left: 5px;">
-                            參考實例如下
-                        </span>
-                        <br>
+                        <div style="margin-bottom: 4px">
+                            <span id="choice-references" style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 3px; padding-left: 8px; padding-right: 8px;">
+                                選擇行為以獲得大中小比較基準
+                            </span>
+                            <span style="font-weight: bold; font-size: 15px; margin-left: 5px;">
+                                參考實例如下
+                            </span>
+                        </div>
                         <span id="not-choose" style="margin-left: 5px;" >請先選擇行為</span>
                         <!-- 比較圖片 -->
                         <!-- <img id="compareImage" class="d-block"src="/frontend/img/塑膠杯.jpg" alt="Default Image"> -->
                         <span id="hidden-when-not-choose" style="display: none">
-                            <span style="margin-left: 5px;">
                                 以市面上
+                            <span id="compare-object" style="background-color: #166a29; color: #ffffff; border-radius: 20px;padding: 3px; padding-left: 8px;padding-right: 8px;">
                             </span>
-                            <span id="compare-object" style="background-color: #166a29; color: #ffffff; border-radius: 20px;padding: 3px; padding-left: 8px;">
-                            </span>
-                            <span style=" margin-left: 5px;">
-                                為「中」的基準<br> 相比較較大者建議選擇「大」較小者建議選擇「小」
-                            </span>
+                                為「中」的基準<br>相比較較大者建議選擇「大」較小者建議選擇「小」
                         </span>
                     </span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -336,7 +333,7 @@
                 <div>計算減碳量：</div>
                 <div id="recordCalculate">0 gCO2e</div>
                 <div class="questionMark">
-                    <span class="detail" id="recordDetail">
+                    <span class="detail" id="recordDetail" style="z-index: 4;">
                         <span id="recordCompare" style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;">
                             選擇行為以獲得基準值
                         </span>
