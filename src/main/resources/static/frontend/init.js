@@ -27,6 +27,8 @@ let no3="frontend/img/3.png";
 let base64no1, base64no2, base64no3;
 let MAP_OK=0;
 let DATA_OK=0;
+let emoLogo="frontend/img/emoLogo.png";
+let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -275,10 +277,12 @@ function systemInit(){
         $('#userPhoto').css("display", "block");
     }
     //排行照片123照片
-    Promise.all([imageToBase64(no1),imageToBase64(no2),imageToBase64(no3)]).then(base64Images => {
+    Promise.all([imageToBase64(no1),imageToBase64(no2),imageToBase64(no3),imageToBase64(emoLogo),imageToBase64(emoLogoUnlock)]).then(base64Images => {
         base64no1 = base64Images[0];
         base64no2 = base64Images[1];
         base64no3 = base64Images[2];
+        emoLogo = base64Images[3];
+        emoLogoUnlock = base64Images[4];
         // 現在可以在這裡使用 base64Image1、base64Image2、base64Image3
     }).catch(error => {
         console.error("An error occurred:", error);
