@@ -1,6 +1,11 @@
 let selectDatas;
 let cropper; // 上傳的照片
 let croppedImageUrl;// 裁好的照片
+const middleCompare = { //中的比較基準
+    "環保杯": "手搖杯的中杯(約500ml)",
+    "環保餐具": "便當店餐盒(約10cm*16cm)",
+    "環保袋": "全聯購物袋(約15L)"
+};
 // 一般記錄按鈕
 $('#openRecordModal').on('click', function() {
     //關閉上一個打開的infoWindow，及清除路線
@@ -20,7 +25,9 @@ $('#openRecordModal').on('click', function() {
     $('#saveRecord').css("display", "block");
     $('#updateRecord').css("display", "none");
     $('#deleteRecord').css("display", "none");
-
+    //大中小小問號初始化
+    $('#hidden-when-not-choose').css('display', 'none');
+    $('#not-choose').css('display', 'block');
     // 初始化行為選單
     $('#select').attr('class', 'ts-select is-disabled');
     $('#selectedType').text("請先選擇類別");
@@ -138,6 +145,11 @@ function typeChange(selected){
     $("#recordCompare").text(description[0]);
     $("#recordFormula").text(description[1]);
     //console.log(description[0],description[1]);
+    //大中小小問號
+    $("#choice-references").text(description[0]);
+    $("#compare-object").text(middleCompare[target.type]);
+    $('#hidden-when-not-choose').css('display', 'block');
+    $('#not-choose').css('display', 'none');
 }
 // 監聽克數變化
 $('#gramRadios').on('change', 'input[type="radio"]', function() {
@@ -172,6 +184,11 @@ $('#gram').on('input', function(event) {
     let description = questionMark[target.type].split(" ");
     $("#recordCompare").text(description[0]);
     $("#recordFormula").text(description[1]);
+    //大中小小問號
+    $("#choice-references").text(description[0]);
+    $("#compare-object").text(middleCompare[target.type]);
+    $('#hidden-when-not-choose').css('display', 'block');
+    $('#not-choose').css('display', 'none');
 });
 // 一般記錄儲存
 $('#saveRecord').on('click', function () {
@@ -645,6 +662,11 @@ function recordModal(){
         let description = questionMark[target.type].split(" ");
         $("#recordCompare").text(description[0]);
         $("#recordFormula").text(description[1]);
+        //大中小小問號
+        $("#choice-references").text(description[0]);
+        $("#compare-object").text(middleCompare[target.type]);
+        $('#hidden-when-not-choose').css('display', 'block');
+        $('#not-choose').css('display', 'none');
     }
 }
 
