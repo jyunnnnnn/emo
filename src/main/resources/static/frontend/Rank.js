@@ -87,7 +87,7 @@ function showRankByRankType(rankType,all){
     else{
         findUsers= AllUsersFp.filter(user => user.rankType === rankType);
     }
-    findUsers= AllUsersFp.filter(user => user.totalFP > 0);
+    findUsers= findUsers.filter(user => user.totalFP > 0);
     findUsers.sort((a, b) => b.totalFP - a.totalFP);
 
 //    console.log(Rank);
