@@ -9,11 +9,13 @@ import com.example.demo.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,6 +38,8 @@ public class UserService {
     private UserRecordCounterRepository userRecordCounterRepository;
     private RecordRepository recordRepository;
 
+
+
     private Map<String, Boolean> passwordChangable;//檢查該帳號是否可以更改密碼 (之後可以改成用重設密碼連結)
 
     public UserService() {
@@ -47,6 +51,7 @@ public class UserService {
         passwordChangable = new HashMap<>();
         this.userRecordCounterRepository = userRecordCounterRepository;
         this.recordRepository = recordRepository;
+
     }
 
 
@@ -59,7 +64,11 @@ public class UserService {
         newUserInfo.setPassword(SecurityConfig.passwordEncoder().encode(newUserInfo.getPassword()));
         //設定新帳戶為一般使用者
         newUserInfo.setAuthority(Authority.NORMAL.name());
+        //儲存至雲端伺服器
         this.repository.save(newUserInfo);
+
+
+
         return OK;
     }
 
@@ -222,4 +231,5 @@ public class UserService {
         }
         return FAIL;
     }
+
 }

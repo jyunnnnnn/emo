@@ -11,7 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Indexes.ascending;
 
@@ -24,6 +26,9 @@ public class RankService {
     private UserRepository userRepository;
     private UserRecordCounterRepository userRecordCounterRepository;
     private List<RankEntity> ranks;
+    private List<UserInfo> userList;
+    private List<UserAchievementEntity> users;
+
 
     @Autowired
     public RankService(RankRepository rankRepository, RecordRepository recordRepository, UserRepository userRepository, UserRecordCounterRepository userRecordCounterRepository) {
@@ -31,76 +36,73 @@ public class RankService {
         this.recordRepository = recordRepository;
         this.userRepository = userRepository;
         this.userRecordCounterRepository = userRecordCounterRepository;
+        //排行物件只需要系統啟動時載入就好
+        ranks = this.rankRepository.findAll(Sort.by(Sort.Direction.ASC, "rankType"));
+        userList = this.userRepository.findAll();
+        users = this.userRecordCounterRepository.findAll();
+    }
+
+    //更新使用者成就物件和使用者名單物件
+    public void updateRankObject() {
+        userList = this.userRepository.findAll();
+        users = this.userRecordCounterRepository.findAll();
     }
 
 
     public List<RankInitReturnEntity> getUsersRankingInfo() {
-        ranks = this.rankRepository.findAll(Sort.by(Sort.Direction.ASC, "rankType"));
-
-        //抓出所有使用者的總減碳量
-        List<UserAchievementEntity> users = this.userRecordCounterRepository.findAll();
-
         List<RankInitReturnEntity> result = new ArrayList<>();
 
-        List<UserInfo> userList = this.userRepository.findAll();
 
-        for (UserAchievementEntity user : users) {
-            //初始化該使用者的rank物件
-            RankInitReturnEntity rankInitReturnEntity = new RankInitReturnEntity();
+        Map<String, UserInfo> userInfoMap = new HashMap<>();
 
-            //獲取使用者id
-            String userId = user.getUserId();
-            //找到該使用者的資料
-            UserInfo userInfo = null;
-            for (UserInfo tmp : userList) {
-                if (tmp.getUserId().equals(userId)) {
-                    userInfo = tmp;
-                    break;
-                }
-            }
-
-            if (userInfo == null)
-                continue;
-
-            rankInitReturnEntity.setUserId(userId);
-
-            double totalFP = 0.0;
-            //計算總減碳量
-            if (user.getClassRecordCarbonCounter().containsKey("生活用品")) {
-                totalFP += user.getClassRecordCarbonCounter().get("生活用品");
-            }
-
-            if (user.getClassRecordCarbonCounter().containsKey("交通")) {
-                totalFP += user.getClassRecordCarbonCounter().get("交通");
-            }
-
-            rankInitReturnEntity.setTotalFP(totalFP);
-
-            //找到此使用者所屬的rank
-            int rankType = this.findRank(totalFP);
-            rankInitReturnEntity.setRankType(rankType);
+//        List<UserInfo> userList = this.userRepository.findAll();
 
 
-            rankInitReturnEntity.setNickname(userInfo.getNickname());
-            rankInitReturnEntity.setPhoto(userInfo.getPhoto());
-
-
-            result.add(rankInitReturnEntity);
+        for (UserInfo userInfo : userList) {
+            userInfoMap.put(userInfo.getUserId(), userInfo);
         }
 
 
+//        List<UserAchievementEntity> users = this.userRecordCounterRepository.findAll();
+
+        for (UserAchievementEntity user : users) {
+            String userId = user.getUserId();
+            UserInfo userInfo = userInfoMap.get(userId);
+            if (userInfo == null) {
+                continue;
+            }
+
+            RankInitReturnEntity rankInitReturnEntity = new RankInitReturnEntity();
+            rankInitReturnEntity.setUserId(userId);
+            rankInitReturnEntity.setNickname(userInfo.getNickname());
+            rankInitReturnEntity.setPhoto(userInfo.getPhoto());
+
+            double totalFP = 0.0;
+            Map<String, Double> classRecordCarbonCounter = user.getClassRecordCarbonCounter();
+            if (classRecordCarbonCounter.containsKey("生活用品")) {
+                totalFP += classRecordCarbonCounter.get("生活用品");
+            }
+            if (classRecordCarbonCounter.containsKey("交通")) {
+                totalFP += classRecordCarbonCounter.get("交通");
+            }
+            rankInitReturnEntity.setTotalFP(totalFP);
+
+            int rankType = this.findRank(totalFP);
+            rankInitReturnEntity.setRankType(rankType);
+
+            result.add(rankInitReturnEntity);
+        }
         return result;
     }
 
     //新增rank
     public void addRank(RankEntity rankEntity) {
         this.rankRepository.save(rankEntity);
-        return;
     }
 
 
     public List<RankEntity> getAllRank() {
-        return this.rankRepository.findAll();
+        return ranks;
     }
 
     //找出該總減碳量所屬的牌位

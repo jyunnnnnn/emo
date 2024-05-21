@@ -26,6 +26,8 @@ public class AchievementService {
     @Autowired
     private UserRecordCounterRepository userRecordCounterRepository;
 
+    //所有成就物件
+    private List<Achievement> allAchievements;
 
     public static int OK = 1;
     public static int BAD = 0;
@@ -37,6 +39,7 @@ public class AchievementService {
         this.recordRepository = recordRepository;
         this.configService = configService;
         this.userRecordCounterRepository = userRecordCounterRepository;
+        allAchievements=this.repository.findAll();
     }
 
 
@@ -67,8 +70,7 @@ public class AchievementService {
     //處理使用者的成就達成狀態並回傳一個成就LIST，裡面包含成就相關資訊以及使用者達成狀態
     public List<UserAchievement> userAchievementsHandler(String userId) throws FileNotFoundException, InterruptedException {
 
-        //獲取所有成就
-        List<Achievement> allAchievements = this.getAllAchievement();
+
 
         //預先獲取該使用者的所有紀錄
         List<EcoRecord> records = this.recordRepository.findAllByUserId(userId);

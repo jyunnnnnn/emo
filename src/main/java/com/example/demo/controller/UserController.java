@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.UserAchievementEntity;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.repository.UserRecordCounterRepository;
+import com.example.demo.service.RankService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -35,13 +38,16 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private RankService rankService;
+
+    @Autowired
     private UserRecordCounterRepository userRecordCounterRepository;
 
     @Autowired
     private AuthenticationManager authenticationManagerBean;
 
     @Autowired
-    public UserController(UserService userService, UserRecordCounterRepository userRecordCounterRepository) {
+    public UserController(UserService userService, UserRecordCounterRepository userRecordCounterRepository, RankService rankService) {
         this.userService = userService;
         this.userRecordCounterRepository = userRecordCounterRepository;
     }
@@ -49,6 +55,21 @@ public class UserController {
     public UserController() {
     }
 
+
+    //Thread Pool
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+
+    //非同步執行緒更新排行榜物件
+    public void initRankObjThread() {
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                //登入之後，系統需要更新使用者排行榜物件
+                rankService.updateRankObject();
+//                System.out.println("更新成功");
+            }
+        });
+    }
 
     //新的使用者須創立一個成就紀錄物件到資料庫內
 
@@ -74,6 +95,7 @@ public class UserController {
         if (result == UserService.OK) {
             //創建新的使用者成就物件
             createNewUserAchievementCollection(request.getUserId());
+            //有新的使用者註冊，須更新排行的物件
             return ResponseEntity.ok(Collections.singletonMap("message", "帳號註冊成功"));
         }
 
@@ -84,13 +106,23 @@ public class UserController {
     //登入後初始化map頁面使用者資訊
     @GetMapping("/init")
     public ResponseEntity<?> loginUser(@RequestParam("username") String username) throws JsonProcessingException {
+
+        //非同步執行排行榜物件更新
+        this.initRankObjThread();
+
+
+        //抓取使用者資料
         UserInfo userInfoData = this.userService.findUserDataFromUsername(username);
-        userInfoData.setPassword("不給你看");
-        System.out.println(userInfoData);
+        userInfoData.setPassword("");
+
+//        System.out.println(userInfoData);
+
+        //將使用者物件轉乘Json檔回傳
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(userInfoData);
         Map<String, String> response = new HashMap<>();
         response.put("user", userDataJson);
+
         return ResponseEntity.ok(response);
     }
 
@@ -208,7 +240,6 @@ public class UserController {
         ObjectMapper objectMapper = new ObjectMapper();
         String userDataJson = objectMapper.writeValueAsString(result);
 
-        System.out.println(userDataJson);
 
         UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(result.getUsername(), "dummy");
 
@@ -224,6 +255,8 @@ public class UserController {
         response.put("message", "登入成功!");
         response.put("location", "map");
         response.put("username", result.getUsername());
+        //登入之後，系統需要更新使用者排行榜物件
+        rankService.updateRankObject();
         return ResponseEntity.ok(response);
     }
 

@@ -738,24 +738,47 @@ function loadAchievementObj(userId){
 
 
 function loadAllUsersFp(a){
-    $.ajax({
-        url: '/rank/getRankObj',
-        type: 'GET',
-        success: function(response) {
-            //console.log(response);
-            AllUsersFp=response;
-            //console.log(AllUsersFp);
-            initUserData();
-            if(a==1){
-                $("#rotateURBtn").removeClass("rotateUpdateBtn");
-                $('#updateRanking').prop("disabled", false);
-                alert("排名更新成功");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-        }
-    });
+    //使用者欲更新排行狀態
+    if(a==1){
+        $.ajax({
+                url: '/rank/updateRankObj',
+                type: 'PUT',
+                success: function(response) {
+                    //console.log(response);
+                    AllUsersFp=response;
+                    //console.log(AllUsersFp);
+                    initUserData();
+                    if(a==1){
+                        $("#rotateURBtn").removeClass("rotateUpdateBtn");
+                        $('#updateRanking').prop("disabled", false);
+                        alert("排名更新成功");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+    }else{
+        $.ajax({
+                url: '/rank/getRankObj',
+                type: 'GET',
+                success: function(response) {
+                    //console.log(response);
+                    AllUsersFp=response;
+                    //console.log(AllUsersFp);
+                    initUserData();
+                    if(a==1){
+                        $("#rotateURBtn").removeClass("rotateUpdateBtn");
+                        $('#updateRanking').prop("disabled", false);
+                        alert("排名更新成功");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+    }
+
 }
 function loadRank(){
     $.ajax({

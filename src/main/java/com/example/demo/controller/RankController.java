@@ -9,10 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +32,24 @@ public class RankController {
 
     @GetMapping("/getRankObj")
     public ResponseEntity<?> getRankInitObj() throws JsonProcessingException {
+
+        List<RankInitReturnEntity> res = this.rankService.getUsersRankingInfo();
+
+        return ResponseEntity.ok(res);
+    }
+
+    @PutMapping("/updateRankObj")
+    public ResponseEntity<?> updateRankObj() {
+        //回傳物件之前先做物件更新
+        this.rankService.updateRankObject();
         //回傳rank物件和rank使用者物件
         List<RankInitReturnEntity> res = this.rankService.getUsersRankingInfo();
 
         return ResponseEntity.ok(res);
     }
 
+
+    //回傳排行等級物件陣列
     @GetMapping("/getUsersRankData")
     public ResponseEntity<?> getUsersRankData() {
         return ResponseEntity.ok(this.rankService.getAllRank());
