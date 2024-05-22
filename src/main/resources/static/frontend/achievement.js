@@ -771,7 +771,7 @@ function shareImage(dataUrl) {
             let result=JSON.parse(response)
             let link=result.data.link;
             navigator.clipboard.writeText(link).then(function() {
-                alert('成就圖片連結以複製到剪貼簿！');
+                alert('成就圖片連結已複製到剪貼簿！');
             }).catch(function(error) {
                 console.error('系統錯誤，請稍後再試。', error);
             });
