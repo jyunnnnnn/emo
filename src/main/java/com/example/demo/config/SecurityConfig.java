@@ -124,6 +124,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/user/init").hasAuthority("NORMAL")
                                 .requestMatchers("/user/**").permitAll()
                                 .requestMatchers("/mail/**").permitAll()
+                                .requestMatchers("/imgur/**").permitAll()
                                 .requestMatchers("/map").hasAnyAuthority("NORMAL")
                                 .requestMatchers("/admin").hasAuthority("ADMIN")
                                 .requestMatchers("/api/**").hasAnyAuthority("NORMAL", "ADMIN")
