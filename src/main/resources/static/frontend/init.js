@@ -15,7 +15,8 @@ let markers =[];//所有marker
 let categories = {};
 let recordedPositions = [];//路線紀錄(點)
 let testFixPoints=[]; // 路線修正後的點點
-let mapLines = [];//紀錄的路線線段們(紀錄時用[line]
+let showNowLines; //紀錄的路線線段們(紀錄時用[line]  記錄時用的線段
+let mapLines = [];// 點擊紀錄的路線
 let directionsDisplay;
 let questionMark = {};
 let AchievementObj={};
