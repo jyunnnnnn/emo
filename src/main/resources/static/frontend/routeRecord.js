@@ -62,19 +62,19 @@ function startRecording() {
     $('#startRecording').text('結束');
     isRecording = true;
 
+    kilometer = 0; //清除上一次距離
     recordedPositions = []; // 清空上一個路線紀錄
+    showNowLines=[];// 清空上一個路線紀錄[line]
     if (typeof currentMarker!='undefined') {
         currentMarker.infoWindow.close();
         removeDirections();
         clearMapLines();
+        clearNowLines();
     }
-
-    //清除上一次距離
-    kilometer = 0;
 
     // 每1秒記錄一次
     intervalId = setInterval(function () {
-        // 減少記憶體浪費
+        // 減少記憶體浪費 後來我沒做很精細:)
         lastPosition = recordedPositions.slice(-1)[0];
         if(lastPosition) lp = lastPosition;
         else {
@@ -99,7 +99,12 @@ function stopRecording() {
     clearInterval(intervalId);
     // 清空位置紀錄
     // 移除地圖上的線條
-    clearMapLines();
+    if (typeof currentMarker!='undefined') {
+        currentMarker.infoWindow.close();
+        removeDirections();
+        clearMapLines();
+        clearNowLines();
+    }
     // 修正路線
     processAllPoints(recordedPositions);
 
@@ -153,13 +158,13 @@ function recordLocation() {
         });
 
         line.setMap(map);
-        mapLines.push(line);
+        showNowLines.push(line);
         //累加計算兩點之間距離 KM
         kilometer += (google.maps.geometry.spherical.computeDistanceBetween(lastTwoPoints[0],lastTwoPoints[1])/1000);
     }
 }
 
-//畫路線圖
+//點擊紀錄時畫路線圖
 function drawLine(cRecord){
     //console.log(tracking);
     let tracking = cRecord.lineOnMap;
@@ -174,11 +179,17 @@ function drawLine(cRecord){
     mapLines.push(path);
 }
 
-//清線
+//清線(除了正在紀錄的)
 function clearMapLines() {
     for (let i = 0; i < mapLines.length; i++) {
         mapLines[i].setMap(null);
     }
     mapLines=[];
 }
-
+//清除正在紀錄的路線
+function clearNowLines() {
+    for (let i = 0; i < showNowLines.length; i++) {
+        showNowLines[i].setMap(null);
+    }
+    showNowLines=[];
+}
