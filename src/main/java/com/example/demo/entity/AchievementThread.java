@@ -56,6 +56,7 @@ public class AchievementThread extends Thread {
     private void totalNumberOfRecord() {
 
 
+
         //獲取該使用者所有紀錄次數
         int total = 0;
         if (userAchievementEntity.getClassRecordCounter().get("生活用品") != null) {

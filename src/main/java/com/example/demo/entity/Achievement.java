@@ -55,9 +55,26 @@ public class Achievement {
      */
     private String achievementClass;
 
+    //影響該成就的項目類別
+    @JsonProperty("factorList")
+    private List<String> factorList;
+
     public Achievement() {
     }
 
+    public Achievement(String achievementId, String achievementName, String achievementDescription, String unLockedSvg, String lockedSvg, int target, double current, boolean achieve, int type, String achievementClass, List<String> factorList) {
+        this.achievementId = achievementId;
+        this.achievementName = achievementName;
+        this.achievementDescription = achievementDescription;
+        this.unLockedSvg = unLockedSvg;
+        this.lockedSvg = lockedSvg;
+        this.target = target;
+        this.current = current;
+        this.achieve = achieve;
+        this.type = type;
+        this.achievementClass = achievementClass;
+        this.factorList = factorList;
+    }
 
     public Achievement(String achievementId, String achievementName, String achievementDescription, String unLockedSvg, String lockedSvg, int target, double current, boolean achieve, int type, String achievementClass) {
         this.achievementId = achievementId;
@@ -83,7 +100,19 @@ public class Achievement {
         this.achieve = achievement.getAchieve();
         this.type = achievement.getType();
         this.achievementClass = achievement.getAchievementClass();
+        this.factorList = achievement.getFactorList();
+    }
 
+    public boolean isAchieve() {
+        return achieve;
+    }
+
+    public List<String> getFactorList() {
+        return factorList;
+    }
+
+    public void setFactorList(List<String> factorList) {
+        this.factorList = factorList;
     }
 
     public String getAchievementId() {

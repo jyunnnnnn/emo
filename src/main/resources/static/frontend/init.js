@@ -724,7 +724,8 @@ function loadAchievementObj(userId){
         success: function(response) {
             AchievementObj=response;
 
-            //console.log(AchievementObj);
+
+            console.log(AchievementObj);
             /*
             let target = AchievementObj.filter(achievement => achievement.accomplishTime != null);
             firstTimeAchieve(target);
