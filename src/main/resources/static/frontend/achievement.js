@@ -285,7 +285,34 @@ function achievementClick(achievementId){
                 'justify-content': 'center'
             });
         buttonDiv.append(downloadLink, shareLink);
-        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2, buttonDiv);
+
+        let checkRecordBtn = $("<div>")
+            .text("查看歷程")
+            .attr({
+                'id': 'checkRecordBtn' + target[0].achievementId,
+                'class': 'setBtn'
+            })
+            .css({
+                'background-color': 'rgba(183,188,189,0.3)',
+                'width': '80px',
+                'height': '30px',
+                'margin':'10px',
+                'font-size': '15px',
+                'color': 'white',
+                'justify-content': 'center'
+            })
+            .on('click', function() {
+                openAchievementRecord(target[0].achievementId);
+            });
+
+        let checkRecordDiv = $("<div>")
+            .css({
+                'display': 'flex',
+                'flex-direction': 'row',
+                'justify-content': 'center'
+            });
+        checkRecordDiv.append(checkRecordBtn);
+        $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription1, achieveDescription2, buttonDiv, checkRecordDiv);
     } else {
         let achievementName = $("<div>")
             .text(target[0].achievementName)
@@ -397,6 +424,33 @@ function achievementClick(achievementId){
 
         $('#eachAchievementFW').append(achievementName, achievementDiv, achieveDescription, progress);
     }
+}
+
+// 打開成就的歷史紀錄
+function openAchievementRecord(achievementId){
+    let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
+    console.log(target);
+
+    $('#eachAchievementFW').css('display', 'none');
+    $('#moreRecord').trigger('click');
+
+    let formattedDate = target[0].accomplishTime.slice(0, 10);
+    let datePart;
+    if(records.length>0){
+        datePart = records[0].time.slice(0, 10);
+    }else{
+        datePart = formattedDate;
+    }
+    $('#startDate').val(datePart);
+    $('#endDate').val(formattedDate);
+
+    /*
+    target[0].factorList.forEach(function(index, factor) {
+        console.log(index, factor);
+    });
+  
+     */
+
 }
 
 let now = 0
