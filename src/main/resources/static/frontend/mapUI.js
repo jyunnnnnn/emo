@@ -261,8 +261,27 @@ $('#recordListButton').on('click', function () {
     }else{
         datePart = formattedDate;
     }
-    $('#startDate').val(datePart);
-    $('#endDate').val(formattedDate);
+
+    flatpickr("#startDate", {
+        mode: "range", // 選擇模式
+        dateFormat: "Y-m-d", // 日期格式
+        defaultDate: [datePart, formattedDate], // 日期範圍
+        minDate: datePart,
+        maxDate: formattedDate,
+        allowInput: false,
+        onChange: function(selectedDates,dateStr){
+            if(dateStr.includes('to')){
+                dateArray = dateStr.split(' to ');
+                //console.log(dateArray);
+            }
+            else{
+                dateArray[0] = dateStr;
+                dateArray[1] = dateStr;
+                //console.log(dateStr,dateArray);
+            }
+            //console.log(dateStr,dateArray);
+        }
+    });
 });
 $('#sortByTime, #sortByFP').on('click', function() {
     $('#method').attr('class', 'ts-select');

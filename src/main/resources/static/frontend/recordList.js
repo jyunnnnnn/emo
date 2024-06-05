@@ -397,7 +397,6 @@ function sortRecordsBySelectedOption(method) {
     }
 
     if (method === "遠到近") {
-        console.log("遠到近")
         sortedRecords.sort((a, b) => new Date(b.time) - new Date(a.time));
     } else if (method === "近到遠") {
         sortedRecords.sort((a, b) => new Date(a.time) - new Date(b.time));

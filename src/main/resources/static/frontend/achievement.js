@@ -429,7 +429,6 @@ function achievementClick(achievementId){
 // 打開成就的歷史紀錄
 function openAchievementRecord(achievementId){
     let target = AchievementObj.filter(achievement => achievement.achievementId === achievementId);
-    console.log(target);
 
     $('#eachAchievementFW').css('display', 'none');
     $('#moreRecord').trigger('click');
@@ -441,16 +440,43 @@ function openAchievementRecord(achievementId){
     }else{
         datePart = formattedDate;
     }
-    $('#startDate').val(datePart);
-    $('#endDate').val(formattedDate);
-
-    /*
-    target[0].factorList.forEach(function(index, factor) {
-        console.log(index, factor);
+    dateArray[0] = datePart;
+    dateArray[1] = formattedDate;
+    flatpickr("#startDate", {
+        mode: "range", // 選擇模式
+        dateFormat: "Y-m-d", // 日期格式
+        defaultDate: [datePart, formattedDate], // 日期範圍
+        minDate: datePart,
+        maxDate: formattedDate,
+        allowInput: false,
+        onChange: function(selectedDates,dateStr){
+            if(dateStr.includes('to')){
+                dateArray = dateStr.split(' to ');
+            }
+            else{
+                dateArray[0] = dateStr;
+                dateArray[1] = dateStr;
+            }
+        }
     });
-  
-     */
+    sortRecordsBySelectedOption("近到遠");
 
+    target[0].factorList.forEach(function(factor, index) {
+        $("#classNType .item").each(function() {
+            if ($(this).text().includes(factor)) {
+                $(this).addClass('is-selected');
+            } else {
+                $(this).removeClass('is-selected');
+            }
+        });
+        $("#selectedClass .ts-chip").each(function() {
+            if ($(this).text().includes(factor)) {
+                $(this).css('display', 'flex');
+            } else {
+                $(this).css('display', 'none');
+            }
+        });
+    });
 }
 
 let now = 0
