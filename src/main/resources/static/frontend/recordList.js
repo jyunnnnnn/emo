@@ -55,7 +55,9 @@ function showNowRecordInFoWindow(nowRecord){
             markers[i].infoWindow.open(map,markers[i]);
             // 從紀錄列表點開也要呈現路線
             if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
-                directionsDraw(currentInfoWindowRecord.lineOnMap);
+                directionsDraw(currentInfoWindowRecord.lineOnMap,'SUBWAY');
+            }else if (currentInfoWindowRecord.type=="火車"){
+                directionsDraw(currentInfoWindowRecord.lineOnMap,'TRAIN');
             }
             else if(currentInfoWindowRecord.classType=="交通"){
                 drawLine(currentInfoWindowRecord);

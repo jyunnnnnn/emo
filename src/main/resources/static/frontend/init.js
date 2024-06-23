@@ -638,21 +638,23 @@ function logoutAccount(){
     localStorage.removeItem("username");
     google.accounts.id.disableAutoSelect();
 }
-function directionsDraw(rec){
+function directionsDraw(rec, mode){
+    console.log("mode ",mode);
     let directionsService = new google.maps.DirectionsService();
     let request = {
         origin: {lat:rec[0].lat,lng:rec[0].lng},
         destination: {lat:rec[rec.length-1].lat,lng:rec[rec.length-1].lng},
         travelMode: 'TRANSIT',
         transitOptions: {
-            modes: ['SUBWAY']
+            modes: [mode]
         },
         provideRouteAlternatives: true, //多條路徑
     };
     directionsService.route(request, function(response, status) {
         if (status === 'OK') {
             console.log(response.routes);
-            response.routes.forEach(route => {
+            route =response.routes[0];
+            // response.routes.forEach(route => {
                 // 移除步行部分，只保留乘坐大眾運輸工具的路線
                 let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
 
@@ -686,7 +688,7 @@ function directionsDraw(rec){
                         strokeWeight: 4
                     }
                 });
-            });
+            // });
         } else {
             console.error('Directions request failed due to ' + status);
         }

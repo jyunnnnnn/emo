@@ -27,7 +27,9 @@ function updateRecord(event, updateFW){
     }
     // 畫新的
     if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
-        directionsDraw(currentInfoWindowRecord.lineOnMap);
+        directionsDraw(currentInfoWindowRecord.lineOnMap,'SUBWAY');
+    }else if (currentInfoWindowRecord.type=="火車"){
+        directionsDraw(currentInfoWindowRecord.lineOnMap,'TRAIN');
     }
     else if(currentInfoWindowRecord.classType=="交通"){
         drawLine(currentInfoWindowRecord);
