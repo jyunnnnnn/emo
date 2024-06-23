@@ -641,6 +641,13 @@ function logoutAccount(){
 function directionsDraw(rec, mode){
     console.log("mode ",mode);
     let directionsService = new google.maps.DirectionsService();
+    let waypoints = [];
+    if (rec.length > 3) { //中途點最少要加兩個:((
+        waypoints = rec.slice(1, rec.length-1).map(point => ({
+            location: { lat: point.lat, lng: point.lng },
+            stopover: true
+        }));
+    }
     let request = {
         origin: {lat:rec[0].lat,lng:rec[0].lng},
         destination: {lat:rec[rec.length-1].lat,lng:rec[rec.length-1].lng},
@@ -648,8 +655,9 @@ function directionsDraw(rec, mode){
         transitOptions: {
             modes: [mode]
         },
-        provideRouteAlternatives: true, //多條路徑
+        waypoints:waypoints,
     };
+    console.log(waypoints);
     directionsService.route(request, function(response, status) {
         if (status === 'OK') {
             console.log(response.routes);
