@@ -193,26 +193,3 @@ function clearNowLines() {
     }
     showNowLines=[];
 }
-
-function toggleDrawingMode() {
-    if (isDrawingEnabled) {
-        // 停止繪製
-        drawingManager.setDrawingMode(null);
-        isDrawingEnabled = false;
-
-        //輸出座標
-        polylines.forEach(function(polyline, index) {
-            const path = polyline.getPath();
-            const coordinates = [];
-            for (let i = 0; i < path.getLength(); i++) {
-                const latLng = path.getAt(i);
-                coordinates.push({ lat: latLng.lat(), lng: latLng.lng() });
-            }
-            console.log('繪製座標:', coordinates);
-        });
-    } else {
-        // 啟用繪製
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
-        isDrawingEnabled = true;
-    }
-}

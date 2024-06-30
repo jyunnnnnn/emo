@@ -30,11 +30,6 @@ let MAP_OK=0;
 let DATA_OK=0;
 let emoLogo="frontend/img/emoLogo.png";
 let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
-
-let drawingManager;
-let isDrawingEnabled = false;
-let polylines = [];
-let currentPolyline;
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -240,22 +235,6 @@ function initMap() {
                     loadEcoRecords(User.userId);//載入環保紀錄
                     $('#preloader').fadeOut(1500);
                 }
-                drawingManager = new google.maps.drawing.DrawingManager({
-                    drawingMode: null, // 初始不启用绘制模式
-                    drawingControl: false, // 隐藏默认的绘制工具控件
-                    polylineOptions: {
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2
-                    }
-                });
-
-                drawingManager.setMap(map);
-
-                google.maps.event.addListener(drawingManager, 'polylinecomplete', function(polyline) {
-                    polylines.push(polyline);
-                    currentPolyline = null;
-                });
 
             },
             function(error){ console.error('Error getting geolocation:', error);}
@@ -287,7 +266,6 @@ function systemInit(){
     $('#deleteEditRecord').click(deleteMultiRecord);//刪除多筆紀錄
     $('#startRecording').click(checkIsRecording);// 路線紀錄(開始/停止)
     $('#upLoadUserPhoto').click(uploadPhoto);
-    $('#enableDrawing').click(toggleDrawingMode);
     // 幫current初始化
     currentInfoWindowRecord = undefined;
     currentMarker = undefined;
