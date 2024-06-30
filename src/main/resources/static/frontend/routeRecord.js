@@ -209,19 +209,7 @@ function toggleDrawingMode() {
                 coordinates.push({ lat: latLng.lat(), lng: latLng.lng() });
             }
             console.log('繪製座標:', coordinates);
-            processAllPoints(coordinates);
-            let tracking = recordedPositions;
-            let pathh = new google.maps.Polyline({
-                path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
-                geodesic: true,
-                strokeColor: '#166a29',
-                strokeOpacity: 1,
-                strokeWeight: 4
-            });
-            pathh.setMap(map);
-            mapLines.push(pathh);
         });
-
     } else {
         // 啟用繪製
         drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
