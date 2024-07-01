@@ -166,4 +166,5 @@ public class FriendService {
     public Map<String, FriendInfo> getAllFriend(String userId) {
         return friendEntityListIndex.containsKey(userId) ? friendEntityList.get(friendEntityListIndex.get(userId)).getFriendList() : null;
     }
+
 }
