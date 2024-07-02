@@ -7,6 +7,8 @@ EventEmitter.on('userInitialized', function(user) {
     websocketInit();
 });
 
+
+//websocket初始化
 function websocketInit() {
     return new Promise((resolve, reject) => {
         socket = new SockJS('/ws?userId=' + User.userId);
@@ -36,8 +38,9 @@ function websocketInit() {
     });
 }
 
-//發送好友邀請的function target為目標使用者的userId
+//即時發送好友邀請通知的function target為目標使用者的userId
 function sendFriendRequest(target) {
+    //檢驗websocket連接狀態
     if (!stompClient || !stompClient.connected) {
         console.error("WebSocket 連接尚未建立或已斷開");
         return;
@@ -49,7 +52,7 @@ function sendFriendRequest(target) {
         senderName:User.nickname,
         receiver: target
     };
-
+    //發送請求給後端伺服器
     stompClient.send("/app/friendRequest", {}, JSON.stringify(msg));
 }
 
