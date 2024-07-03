@@ -349,10 +349,19 @@ function loadSVG(){
 function loadFriendObj(userId){
     console.log('get')
     $.ajax({
-        url: '/FR/getFriend?userId='+userId,
+        url: '/FR/getFriendData?userId='+userId,
         method: 'GET',
         success: function(response) {
-            FriendObj=response;
+            FriendObj=response.data;
+
+            /*
+                回傳格式:
+                userId : 當前使用者userId,
+                friendList: 當前使用者的好友列表,
+                requestingList: 當前使用者發出好友邀請對象,
+                requestedList: 發送給當前使用者好友邀請的對象
+            */
+
             console.log(FriendObj);
         },
         error: function(xhr, status, error) {

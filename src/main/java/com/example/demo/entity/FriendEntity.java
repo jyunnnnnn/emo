@@ -4,10 +4,7 @@ package com.example.demo.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /*
     Friend List of a user
@@ -31,7 +28,7 @@ public class FriendEntity {
 
     @Id
     private String userId;
-    private Map<String, FriendInfo> friendList;
+    private List<FriendInfo> friendList;
     private Set<String> requestingList;
 
     private Set<String> requestedList;
@@ -41,15 +38,15 @@ public class FriendEntity {
 
     public FriendEntity(String userId) {
         this.userId = userId;
-        friendList = new HashMap<>();
+        friendList = new ArrayList<>();
         requestedList = new HashSet<>();
         requestingList = new HashSet<>();
     }
 
 
     //新增加好友資訊
-    public void addNewFriendInfo(String targetId, FriendInfo targetInfo) {
-        friendList.put(targetId, targetInfo);
+    public void addNewFriendInfo(FriendInfo targetInfo) {
+        friendList.add(targetInfo);
     }
 
     //新增邀請對象userId (我發送邀請給其他人)
@@ -87,11 +84,12 @@ public class FriendEntity {
         this.userId = userId;
     }
 
-    public Map<String, FriendInfo> getFriendList() {
+
+    public List<FriendInfo> getFriendList() {
         return friendList;
     }
 
-    public void setFriendList(Map<String, FriendInfo> friendList) {
+    public void setFriendList(List<FriendInfo> friendList) {
         this.friendList = friendList;
     }
 

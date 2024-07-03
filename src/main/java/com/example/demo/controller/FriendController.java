@@ -67,9 +67,9 @@ public class FriendController {
     //獲取某位使用者的所有好友資訊
     //包括好友列表、發出好友邀請列表、尚未回覆其他使用者好友邀請列表
     // url: /FR/getFriend?userId=testUserId
-    @GetMapping("/getFriend")
+    @GetMapping("/getFriendData")
     public ResponseEntity<?> getFriend(@RequestParam("userId") String userId) {
-        return ResponseEntity.ok(Collections.singletonMap("data", this.friendService.getAllFriend(userId)));
+        return ResponseEntity.ok(Collections.singletonMap("data", this.friendService.getFriendData(userId)));
     }
 
 

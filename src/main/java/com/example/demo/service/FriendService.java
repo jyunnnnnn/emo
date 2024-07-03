@@ -131,8 +131,8 @@ public class FriendService {
         //userId和target使用者互相為彼此的好友 兩者互相擁有彼此的某些資訊
 
         // * new FriendInfo() 需要修改成實際資訊 未來需要考慮即時性問題(好友可能會隨時更新數據)
-        user1.addNewFriendInfo(target, new FriendInfo());
-        user2.addNewFriendInfo(target, new FriendInfo());
+        user1.addNewFriendInfo(new FriendInfo(target));
+        user2.addNewFriendInfo(new FriendInfo(target));
 
         //userId使用者需要刪除尚未回覆列表內的內容
         user1.removeRequested(target);
@@ -163,8 +163,35 @@ public class FriendService {
     }
 
     //獲取某位使用者的所有好友
-    public Map<String, FriendInfo> getAllFriend(String userId) {
-        return friendEntityListIndex.containsKey(userId) ? friendEntityList.get(friendEntityListIndex.get(userId)).getFriendList() : null;
+    public FriendEntity getFriendData(String userId) {
+
+        //回傳測試用資料 測試版本結束後註解這行
+        if (!friendEntityListIndex.containsKey(userId))
+            return getTestFriendData();
+
+        return friendEntityList.get(friendEntityListIndex.get(userId));
+    }
+
+    //測試資料
+    private FriendEntity getTestFriendData() {
+        //建立測試資料
+        FriendEntity user = new FriendEntity("1714997093687");
+        //建立測試用好友名單
+        user.addNewFriendInfo(new FriendInfo("1714038743812"));
+        user.addNewFriendInfo(new FriendInfo("1714993712835"));
+
+        //建立正在邀請好友名單
+        user.addNewRequesting("1714149099003");
+        user.addNewRequesting("1713973819396");
+
+        //建立尚未回覆對方好友邀請名單
+        user.addNewRequsted("1714997405296");
+        user.addNewRequsted("1714997093687");
+
+        //將測試用資料放入資料庫
+        this.FriendRepositoryThread(user);
+
+        return user;
     }
 
 }
