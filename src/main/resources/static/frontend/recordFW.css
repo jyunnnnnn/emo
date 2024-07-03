@@ -531,7 +531,17 @@ svg:hover .detail {
 }
 
 #rankingButton{
-        transform:scale(1.5);
+    transform:scale(1.5);
+}
+
+#friendButton{
+    transform:scale(1.5);
+}
+#friendButton:hover{
+    cursor: pointer;
+}
+#friendButton:hover svg {
+    stroke: gray;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -561,6 +571,9 @@ svg:hover .detail {
     }
     #rankingButton{
         transform:scale(1);
+    }
+    #friendButton{
+        transform:scale(1.2);
     }
     #settingButton{
         transform:scale(1.2);

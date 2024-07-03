@@ -20,6 +20,7 @@ let mapLines = [];// 點擊紀錄的路線
 let directionsDisplay;
 let questionMark = {};
 let AchievementObj={};
+let FriendObj={};
 let Rank={};//減碳量等級判定物件
 let AllUsersFp={};//所有使用者排行物件陣列
 let no1="frontend/img/1.png";
@@ -268,8 +269,10 @@ function systemInit(){
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
     // 發出用戶已初始化的事件
     EventEmitter.emit('userInitialized', User);
+    $('#myUserID').text('我的ID：' + User.userId);
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
+    loadFriendObj(User.userId);
     loadRank();
     loadAllUsersFp(0);
     watchId = navigator.geolocation.watchPosition(success, error, options);
@@ -341,6 +344,21 @@ function loadSVG(){
         }
     });
 
+}
+//載入好友列表
+function loadFriendObj(userId){
+    console.log('get')
+    $.ajax({
+        url: '/FR/getFriend?userId='+userId,
+        method: 'GET',
+        success: function(response) {
+            FriendObj=response;
+            console.log(FriendObj);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
 }
 //載入碳足跡計算係數
 function loadFootprintData() {

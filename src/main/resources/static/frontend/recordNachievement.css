@@ -3,7 +3,10 @@
 #achievementFW,
 #eachAchievementFW,
 #firstTimeAchieveFW,
-#rankingFW{
+#rankingFW,
+#friendFW,
+#addFriendFW,
+#friendRequestFW{
     display: none;
     position: fixed;
     top: 0;
