@@ -30,6 +30,23 @@ let MAP_OK=0;
 let DATA_OK=0;
 let emoLogo="frontend/img/emoLogo.png";
 let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
+
+// 定義一個事件發射器
+const EventEmitter = {
+    events: {},
+    on(event, listener) {
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        this.events[event].push(listener);
+    },
+    emit(event, data) {
+        if (this.events[event]) {
+            this.events[event].forEach(listener => listener(data));
+        }
+    }
+};
+
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -39,6 +56,7 @@ function initMap() {
          success: function(response){
               //console.log(response.user);
              let userData=response.user;
+
              localStorage.setItem("EmoAppUser",userData);
 
              console.log("獲取使用者資料成功");
@@ -248,6 +266,8 @@ function initMap() {
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
+    // 發出用戶已初始化的事件
+    EventEmitter.emit('userInitialized', User);
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
     loadRank();

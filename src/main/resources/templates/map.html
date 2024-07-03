@@ -16,12 +16,20 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!--    websocket-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"
+            integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--CryptoJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- 圓餅圖 -->
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <!-- 下拉式選單 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -30,10 +38,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
 
     <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Bootstrap Icons CSS
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.19.0/font/bootstrap-icons.css">-->
-<!--    <link rel="stylesheet" href="/frontend/boostrap.min.css">-->
+    <!--    <link rel="stylesheet" href="/frontend/boostrap.min.css">-->
     <link rel="stylesheet" href="/frontend/recordFW.css">
     <link rel="stylesheet" href="/frontend/setting.css">
     <link rel="stylesheet" href="/frontend/recordNachievement.css">
@@ -99,6 +107,8 @@
             }
         }
 
+
+
     </style>
 </head>
 <body>
@@ -124,14 +134,16 @@
             </div>
             <div style="display: block; ">
                 <p id="user"></p>
-                <p id="totalFootprint" style="font-size: 12px; border-radius: 20px; padding-left: 5px; padding-right: 5px;"></p>
+                <p id="totalFootprint"
+                   style="font-size: 12px; border-radius: 20px; padding-left: 5px; padding-right: 5px;"></p>
             </div>
         </div>
         <div style="right: 8%">
             <!-- 設定按鈕 -->
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill=black
                  class="bi bi-gear-wide-connected" id="settingButton" viewBox="0 0 16 16">
-                <path d="m8.932,0.727c-0.243,-0.97 -1.62,-0.97 -1.864,0l-0.071,0.286a0.96,0.96 0 0 1 -1.622,0.434l-0.205,-0.211c-0.695,-0.719 -1.888,-0.03 -1.613,0.931l0.08,0.284a0.96,0.96 0 0 1 -1.186,1.187l-0.284,-0.081c-0.96,-0.275 -1.65,0.918 -0.931,1.613l0.211,0.205a0.96,0.96 0 0 1 -0.434,1.622l-0.286,0.071c-0.97,0.243 -0.97,1.62 0,1.864l0.286,0.071a0.96,0.96 0 0 1 0.434,1.622l-0.211,0.205c-0.719,0.695 -0.03,1.888 0.931,1.613l0.284,-0.08a0.96,0.96 0 0 1 1.187,1.187l-0.081,0.283c-0.275,0.96 0.918,1.65 1.613,0.931l0.205,-0.211a0.96,0.96 0 0 1 1.622,0.434l0.071,0.286c0.243,0.97 1.62,0.97 1.864,0l0.071,-0.286a0.96,0.96 0 0 1 1.622,-0.434l0.205,0.211c0.695,0.719 1.888,0.03 1.613,-0.931l-0.08,-0.284a0.96,0.96 0 0 1 1.187,-1.187l0.283,0.081c0.96,0.275 1.65,-0.918 0.931,-1.613l-0.211,-0.205a0.96,0.96 0 0 1 0.434,-1.622l0.286,-0.071c0.97,-0.243 0.97,-1.62 0,-1.864l-0.286,-0.071a0.96,0.96 0 0 1 -0.434,-1.622l0.211,-0.205c0.719,-0.695 0.03,-1.888 -0.931,-1.613l-0.284,0.08a0.96,0.96 0 0 1 -1.187,-1.186l0.081,-0.284c0.275,-0.96 -0.918,-1.65 -1.613,-0.931l-0.205,0.211a0.96,0.96 0 0 1 -1.622,-0.434l-0.071,-0.286zm-0.932,12.27a4.998,4.998 0 1 1 0,-9.995a4.998,4.998 0 0 1 0,9.996l0,-0.001z" id="svg_1"/>
+                <path d="m8.932,0.727c-0.243,-0.97 -1.62,-0.97 -1.864,0l-0.071,0.286a0.96,0.96 0 0 1 -1.622,0.434l-0.205,-0.211c-0.695,-0.719 -1.888,-0.03 -1.613,0.931l0.08,0.284a0.96,0.96 0 0 1 -1.186,1.187l-0.284,-0.081c-0.96,-0.275 -1.65,0.918 -0.931,1.613l0.211,0.205a0.96,0.96 0 0 1 -0.434,1.622l-0.286,0.071c-0.97,0.243 -0.97,1.62 0,1.864l0.286,0.071a0.96,0.96 0 0 1 0.434,1.622l-0.211,0.205c-0.719,0.695 -0.03,1.888 0.931,1.613l0.284,-0.08a0.96,0.96 0 0 1 1.187,1.187l-0.081,0.283c-0.275,0.96 0.918,1.65 1.613,0.931l0.205,-0.211a0.96,0.96 0 0 1 1.622,0.434l0.071,0.286c0.243,0.97 1.62,0.97 1.864,0l0.071,-0.286a0.96,0.96 0 0 1 1.622,-0.434l0.205,0.211c0.695,0.719 1.888,0.03 1.613,-0.931l-0.08,-0.284a0.96,0.96 0 0 1 1.187,-1.187l0.283,0.081c0.96,0.275 1.65,-0.918 0.931,-1.613l-0.211,-0.205a0.96,0.96 0 0 1 0.434,-1.622l0.286,-0.071c0.97,-0.243 0.97,-1.62 0,-1.864l-0.286,-0.071a0.96,0.96 0 0 1 -0.434,-1.622l0.211,-0.205c0.719,-0.695 0.03,-1.888 -0.931,-1.613l-0.284,0.08a0.96,0.96 0 0 1 -1.187,-1.186l0.081,-0.284c0.275,-0.96 -0.918,-1.65 -1.613,-0.931l-0.205,0.211a0.96,0.96 0 0 1 -1.622,-0.434l-0.071,-0.286zm-0.932,12.27a4.998,4.998 0 1 1 0,-9.995a4.998,4.998 0 0 1 0,9.996l0,-0.001z"
+                      id="svg_1"/>
                 <path d="m3.38545,6.70548c0,-0.24053 0.14086,-0.41852 0.43947,-0.41852l1.39747,0c0.27044,0 0.40021,0.16356 0.40021,0.33209c0,0.16356 -0.13522,0.33193 -0.40021,0.33193l-0.99162,0l0,0.70251l0.92419,0c0.27626,0 0.41148,0.16356 0.41148,0.33209c0,0.16356 -0.14086,0.33193 -0.41148,0.33193l-0.92419,0l0,0.73137l1.04251,0c0.27044,0 0.40003,0.16372 0.40003,0.33209c0,0.16372 -0.13522,0.33209 -0.40003,0.33209l-1.45381,0c-0.24791,0 -0.43383,-0.14432 -0.43383,-0.3608l0,-2.64677l-0.00018,0z"/>
                 <path d="m6.22677,6.6255c0.02967,-0.17358 0.22254,-0.37127 0.4848,-0.37127c0.24727,0 0.44029,0.17358 0.49469,0.34716l0.58371,1.90971l0.00989,0l0.58339,-1.90971c0.0544,-0.17358 0.24727,-0.34716 0.49469,-0.34716c0.26194,0 0.45497,0.19769 0.4848,0.37127l0.45992,2.69114c0.00495,0.02893 0.00495,0.05786 0.00495,0.08181c0,0.21231 -0.15825,0.34716 -0.35606,0.34716c-0.25237,0 -0.35112,-0.1109 -0.38574,-0.33752l-0.29193,-1.96275l-0.00989,0l-0.5936,2.02061c-0.03462,0.11572 -0.12842,0.27966 -0.39563,0.27966c-0.26705,0 -0.36101,-0.16394 -0.39563,-0.27966l-0.5936,-2.02061l-0.00989,0l-0.29193,1.9629c-0.03462,0.22662 -0.13352,0.33752 -0.38574,0.33752c-0.19781,0 -0.35606,-0.13485 -0.35606,-0.34716c0,-0.02395 0,-0.05304 0.00495,-0.08181l0.45992,-2.69129z"/>
                 <path d="m9.78654,8c0,-1.02213 0.62119,-1.80842 1.52628,-1.80842c0.89179,0 1.52628,0.81086 1.52628,1.80842c0,1.01722 -0.61675,1.80842 -1.52628,1.80842c-0.90066,0 -1.52628,-0.7912 -1.52628,-1.80842zm2.36054,0c0,-0.59467 -0.27961,-1.13022 -0.83426,-1.13022c-0.55465,0 -0.83412,0.53555 -0.83412,1.13022c0,0.59942 0.2706,1.13038 0.83412,1.13038c0.56352,0 0.83426,-0.53096 0.83426,-1.13038z"/>
@@ -143,8 +155,15 @@
         <!-- 排行按鈕 -->
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill=black
              class="bi bi-gear-wide-connected" id="rankingButton" viewBox="0 0 1024 1024">
-            <path d="M730.240133 261.207481h109.371431v469.56712h-109.371431zM511.498296 118.295615h109.371431v612.477962h-109.371431zM292.755435 337.038476h109.371431v393.736125h-109.371431zM117.762171 796.397459h787.472251v109.371431H117.762171z" fill="#74E8AE" /><path d="M861.48585 708.900315h-4.031037c2.451181-6.87539 4.031037-14.166477 4.031037-21.874286v-382.073048c0-36.186155-29.436703-65.622858-65.622859-65.622858H664.617275c-7.707809 0-14.998896 1.579855-21.874286 4.031037v-81.316973c0-36.186155-29.436703-65.622858-65.622858-65.622858H445.875438c-36.186155 0-65.622858 29.436703-65.622858 65.622858v162.982066c-6.87539-2.451181-14.166477-4.031037-21.874286-4.031036H227.133601c-36.186155 0-65.622858 29.436703-65.622858 65.622858v300.407954c0 7.707809 1.580879 14.998896 4.03206 21.874286h-4.03206c-36.186155 0-65.622858 29.436703-65.622858 65.622858v87.497145c0 36.186155 29.436703 65.622858 65.622858 65.622858h699.975107c36.186155 0 65.622858-29.436703 65.622858-65.622858v-87.497145c0-36.187179-29.436703-65.622858-65.622858-65.622858zM642.744013 304.952981c0-12.058297 9.804726-21.874286 21.874286-21.874286h131.245716c12.06956 0 21.874286 9.815989 21.874286 21.874286v382.073048c0 12.058297-9.804726 21.874286-21.874286 21.874286H664.617275c-12.06956 0-21.874286-9.815989-21.874286-21.874286v-382.073048z m-218.742861 81.665094V162.044187c0-12.058297 9.815989-21.874286 21.874286-21.874286h131.245716c12.06956 0 21.874286 9.815989 21.874287 21.874286v524.981842c0 12.058297-9.804726 21.874286-21.874287 21.874286H445.875438c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-300.407954z m-218.741837 0c0-12.058297 9.815989-21.874286 21.874286-21.874286h131.245717c12.058297 0 21.874286 9.815989 21.874286 21.874286v300.407954c0 12.058297-9.815989 21.874286-21.874286 21.874286H227.133601c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-300.407954zM883.360136 862.019294c0 12.058297-9.804726 21.874286-21.874286 21.874286H161.510743c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-87.497144c0-12.058297 9.815989-21.874286 21.874286-21.874287h699.977154c12.06956 0 21.874286 9.815989 21.874286 21.874287v87.497144z"/></svg>
+            <path d="M730.240133 261.207481h109.371431v469.56712h-109.371431zM511.498296 118.295615h109.371431v612.477962h-109.371431zM292.755435 337.038476h109.371431v393.736125h-109.371431zM117.762171 796.397459h787.472251v109.371431H117.762171z"
+                  fill="#74E8AE"/>
+            <path d="M861.48585 708.900315h-4.031037c2.451181-6.87539 4.031037-14.166477 4.031037-21.874286v-382.073048c0-36.186155-29.436703-65.622858-65.622859-65.622858H664.617275c-7.707809 0-14.998896 1.579855-21.874286 4.031037v-81.316973c0-36.186155-29.436703-65.622858-65.622858-65.622858H445.875438c-36.186155 0-65.622858 29.436703-65.622858 65.622858v162.982066c-6.87539-2.451181-14.166477-4.031037-21.874286-4.031036H227.133601c-36.186155 0-65.622858 29.436703-65.622858 65.622858v300.407954c0 7.707809 1.580879 14.998896 4.03206 21.874286h-4.03206c-36.186155 0-65.622858 29.436703-65.622858 65.622858v87.497145c0 36.186155 29.436703 65.622858 65.622858 65.622858h699.975107c36.186155 0 65.622858-29.436703 65.622858-65.622858v-87.497145c0-36.187179-29.436703-65.622858-65.622858-65.622858zM642.744013 304.952981c0-12.058297 9.804726-21.874286 21.874286-21.874286h131.245716c12.06956 0 21.874286 9.815989 21.874286 21.874286v382.073048c0 12.058297-9.804726 21.874286-21.874286 21.874286H664.617275c-12.06956 0-21.874286-9.815989-21.874286-21.874286v-382.073048z m-218.742861 81.665094V162.044187c0-12.058297 9.815989-21.874286 21.874286-21.874286h131.245716c12.06956 0 21.874286 9.815989 21.874287 21.874286v524.981842c0 12.058297-9.804726 21.874286-21.874287 21.874286H445.875438c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-300.407954z m-218.741837 0c0-12.058297 9.815989-21.874286 21.874286-21.874286h131.245717c12.058297 0 21.874286 9.815989 21.874286 21.874286v300.407954c0 12.058297-9.815989 21.874286-21.874286 21.874286H227.133601c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-300.407954zM883.360136 862.019294c0 12.058297-9.804726 21.874286-21.874286 21.874286H161.510743c-12.058297 0-21.874286-9.815989-21.874286-21.874286v-87.497144c0-12.058297 9.815989-21.874286 21.874286-21.874287h699.977154c12.06956 0 21.874286 9.815989 21.874286 21.874287v87.497144z"/>
+        </svg>
     </div>
+
+
+
+
     <!-- 主按鈕區 -->
     <div id="recordBtns">
         <!-- 一般記錄鈕 -->
@@ -290,40 +309,45 @@
                 <div class="content" id="selectedType">
                 </div>
             </div>
-            <div class="ts-dropdown is-bottom-right" style="width: 300px" data-name="select" data-position="bottom-start" id="type">
+            <div class="ts-dropdown is-bottom-right" style="width: 300px" data-name="select"
+                 data-position="bottom-start" id="type">
             </div>
             <!-- 克數選項 -->
             <div class="gram-inputs" id="gramRadios"></div>
             <!--克數參考小問號-->
             <div style="display: flex;justify-content: center; margin-top:15px; font-size:15px;">
                 <div>不知道怎麼選？</div>
-                <div class = "questionMark" >
-                        <!--顯示-->
+                <div class="questionMark">
+                    <!--顯示-->
                     <span id="choiceDetail" class="detail" style="width: 373px; margin-left:36px; z-index: 4;">
                         <!-- 比較對象 -->
                         <div style="margin-bottom: 4px">
-                            <span id="choice-references" style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 3px; padding-left: 8px; padding-right: 8px;">
+                            <span id="choice-references"
+                                  style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 3px; padding-left: 8px; padding-right: 8px;">
                                 選擇行為以獲得大中小比較基準
                             </span>
                             <span style="font-weight: bold; font-size: 15px; margin-left: 5px;">
                                 參考實例如下
                             </span>
                         </div>
-                        <span id="not-choose" style="margin-left: 5px;" >請先選擇行為</span>
+                        <span id="not-choose" style="margin-left: 5px;">請先選擇行為</span>
                         <!-- 比較圖片 -->
                         <!-- <img id="compareImage" class="d-block"src="/frontend/img/塑膠杯.jpg" alt="Default Image"> -->
                         <span id="hidden-when-not-choose" style="display: none">
                                 以市面上
-                            <span id="compare-object" style="background-color: #166a29; color: #ffffff; border-radius: 20px;padding: 3px; padding-left: 8px;padding-right: 8px;">
+                            <span id="compare-object"
+                                  style="background-color: #166a29; color: #ffffff; border-radius: 20px;padding: 3px; padding-left: 8px;padding-right: 8px;">
                             </span>
                                 為「中」的基準<br>相比較較大者建議選擇「大」較小者建議選擇「小」
                         </span>
                     </span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
-                    <circle cx="12" cy="16" r="1" fill="#000000"/>
-                    <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
-                     </svg>
+                        <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="12" cy="16" r="1" fill="#000000"/>
+                        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
                 </div>
             </div>
             <input id="gram" name="gram" class="input" type="number">
@@ -334,7 +358,8 @@
                 <div id="recordCalculate">0 gCO2e</div>
                 <div class="questionMark">
                     <span class="detail" id="recordDetail" style="z-index: 4;">
-                        <span id="recordCompare" style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;">
+                        <span id="recordCompare"
+                              style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;">
                             選擇行為以獲得基準值
                         </span>
                         <span style="font-weight: bold; font-size: 15px; margin-left: 5px;">
@@ -345,9 +370,11 @@
                         </span>
                     </span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
                         <circle cx="12" cy="16" r="1" fill="#000000"/>
-                        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                 </div>
             </div>
@@ -390,7 +417,8 @@
                 <div id="routeCalculate">0 gCO2e</div>
                 <div class="questionMark">
                     <span class="detail" id="routeDetail">
-                        <span id="routeCompare" style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;">
+                        <span id="routeCompare"
+                              style="background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;">
                             選擇行為以獲得基準值
                         </span>
                         <span style="font-weight: bold; font-size: 15px; margin-left: 5px;">
@@ -401,9 +429,11 @@
                         </span>
                     </span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
                         <circle cx="12" cy="16" r="1" fill="#000000"/>
-                        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                 </div>
             </div>
@@ -435,8 +465,10 @@
         <div style="font-size: 20px; margin-left: 10px;">圖表</div>
         <div class="historyChart">
             <div style="margin-left: 20px; font-size: 20px;">
-                <div>總減碳量<span style="color: #28a745; display: inline-block; width: 100%;" id="recordFP"></span></div>
-                <div>已解鎖成就<span id="achievementSum" style="color: #28a745; display: inline-block; width: 100%;"></span></div>
+                <div>總減碳量<span style="color: #28a745; display: inline-block; width: 100%;" id="recordFP"></span>
+                </div>
+                <div>已解鎖成就<span id="achievementSum"
+                                     style="color: #28a745; display: inline-block; width: 100%;"></span></div>
             </div>
             <div class="chart-box" id="chart" style="display: none; width: 230px; height: 230px;"></div>
         </div>
@@ -477,14 +509,16 @@
             <div class="ts-select" data-dropdown="sort" id="sortType" style="width: 50%">
                 <div class="content" id="selectedSortType">請選擇排序依據</div>
             </div>
-            <div class="ts-dropdown" style="width: 42%; left: 35px; top: 237px; z-index: 101;" data-name="sort" data-position="bottom-start" id="sortTypeBtn">
+            <div class="ts-dropdown" style="width: 42%; left: 35px; top: 237px; z-index: 101;" data-name="sort"
+                 data-position="bottom-start" id="sortTypeBtn">
                 <button class="item" type="button" value="time" id="sortByTime">時間</button>
                 <button class="item" type="button" value="footprint" id="sortByFP">減碳量</button>
             </div>
             <div class="ts-select" data-dropdown="method" id="method" style="width: 50%">
                 <div class="content" id="selectedMethod">請選擇排序方式</div>
             </div>
-            <div class="ts-dropdown" style="width: 42%; left: 35px; top: 237px; z-index: 101;" data-name="method" data-position="bottom-start" id="methodBtn">
+            <div class="ts-dropdown" style="width: 42%; left: 35px; top: 237px; z-index: 101;" data-name="method"
+                 data-position="bottom-start" id="methodBtn">
                 <button class="item" type="button" id="time1">近到遠</button>
                 <button class="item" type="button" id="time2">遠到近</button>
                 <button class="item" type="button" id="FP1">少到多</button>
@@ -496,7 +530,8 @@
             <div class="content" id="selectedClass" style="overflow-x: auto; min-height: 30px;">
                 <div class="ts-chip is-circular" id="allClass">全部</div>
             </div>
-            <div class="ts-dropdown is-bottom-right" data-name="selectClass" id="classNType" style="z-index: 101; width: 82%;max-height: 30%;overflow-y: scroll;">
+            <div class="ts-dropdown is-bottom-right" data-name="selectClass" id="classNType"
+                 style="z-index: 101; width: 82%;max-height: 30%;overflow-y: scroll;">
                 <a class="item is-selected" id="all">- 全部</a>
             </div>
         </div>
@@ -567,12 +602,18 @@
                 </g>
             </svg>
         </button>
-<!--        排行更新按鈕-->
-        <div class="d-flex" style="justify-content: space-between;padding-right: 50px;"> <span class="historyHeading">排行</span>
-            <span >
-                <button id="updateRanking"><svg id="rotateURBtn" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6C8.69 6 6 8.69 6 12H9L5 16L1 12H4C4 7.58 7.58 4 12 4C13.57 4 15.03 4.46 16.26 5.24L14.8 6.7C13.97 6.25 13.01 6 12 6ZM15 12L19 8L23 12H20C20 16.42 16.42 20 12 20C10.43 20 8.97 19.54 7.74 18.76L9.2 17.3C10.03 17.75 10.99 18 12 18C15.31 18 18 15.31 18 12H15Z" fill="rgb(123, 125, 127)">
+        <!--        排行更新按鈕-->
+        <div class="d-flex" style="justify-content: space-between;padding-right: 50px;"><span
+                class="historyHeading">排行</span>
+            <span>
+                <button id="updateRanking"><svg id="rotateURBtn" width="30px" height="30px" viewBox="0 0 24 24"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                                  stroke-linejoin="round"></g><g
+                        id="SVGRepo_iconCarrier">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M12 6C8.69 6 6 8.69 6 12H9L5 16L1 12H4C4 7.58 7.58 4 12 4C13.57 4 15.03 4.46 16.26 5.24L14.8 6.7C13.97 6.25 13.01 6 12 6ZM15 12L19 8L23 12H20C20 16.42 16.42 20 12 20C10.43 20 8.97 19.54 7.74 18.76L9.2 17.3C10.03 17.75 10.99 18 12 18C15.31 18 18 15.31 18 12H15Z"
+                      fill="rgb(123, 125, 127)">
                 </path> </g></svg>
                 </button>
             </span>
@@ -582,24 +623,28 @@
         <div class="ts-select" data-dropdown="rank" id="rankChoose" style="width: 100%">
             <div class="content" id="selectedRank" style="font-size:20px">所有階級</div>
         </div>
-        <div class="ts-dropdown is-bottom-right" data-name="rank" id="rankNType" style="font-size:20px; z-index: 101; width: 82%;max-height: 45%;overflow-y: scroll;">
+        <div class="ts-dropdown is-bottom-right" data-name="rank" id="rankNType"
+             style="font-size:20px; z-index: 101; width: 82%;max-height: 45%;overflow-y: scroll;">
             <a class="item is-selected" id="rankType"></a>
         </div>
         <!--自己的排行-->
         <div class="rank-div" style="border:none;padding: 0px; margin-top:10px">
             <div style="margin:10px; margin-right: 5px;flex:20%">
-                <img id="myRankPhoto" style="margin-right:0" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='black' class='bi bi-person-circle' id='userIcon' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E" alt="User's Photo">
+                <img id="myRankPhoto" style="margin-right:0"
+                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='black' class='bi bi-person-circle' id='userIcon' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E"
+                     alt="User's Photo">
                 <div id="MyRankName" style="font-size:20px"></div>
             </div>
             <div style="text-align:center;flex:40%;max-width: 40%;">
                 <div id="myRankCarbon" class="carbon-offset"></div>
             </div>
             <div style="font-size: 20px;text-align: center;padding: 10px;flex:40% ;white-space: nowrap;">
-                我的排名<div><strong id="myRankNumber" style="margin: 3px;"></strong></div>
+                我的排名
+                <div><strong id="myRankNumber" style="margin: 3px;"></strong></div>
             </div>
         </div>
-        <div class="ranking-container" id="rankingContent" >
-            <div class="row-container" id="rowContainer" ></div>
+        <div class="ranking-container" id="rankingContent">
+            <div class="row-container" id="rowContainer"></div>
         </div>
 
     </div>
@@ -624,7 +669,9 @@
         <input type="file" id="fileInput" style="display: none" accept="image/*">
         <label class="photo" id="fileInputLabel" for="fileInput" style="display: none">
           <span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> 選擇檔案
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none"
+                                                                                                     d="M0 0h24v24H0z"></path><path
+                    fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> 選擇檔案
           </span>
         </label>
         <img id="cropperContainer" src="" alt="選擇一個圖片進行裁切" style="max-width: 100%; display: none">
@@ -632,7 +679,7 @@
         <label class="changePhoto" id="cropImage" for="cropImageInput" style="display: none">
             <span>確認裁剪</span>
         </label>
-        <img id="croppedImage" class="originalPhoto" style="display: none"  src="" alt="裁切後的圖片">
+        <img id="croppedImage" class="originalPhoto" style="display: none" src="" alt="裁切後的圖片">
         <input id="upLoadUserPhotoInput" style="display: none" type="button">
         <label class="changePhoto" id="upLoadUserPhoto" for="upLoadUserPhotoInput" style="display: none">
             <span>確認上傳</span>
@@ -658,28 +705,53 @@
         <div style="margin: 10px">你共減少了...</div>
         <div style="display: inline-flex;">
             <div class="FPTransferUnit">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100.0 100.0" width="25px" height="25px">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100.0 100.0" width="25px"
+                     height="25px">
                     <circle cx="50" cy="50" r="50" fill="#55AD62"/>
-                    <path d="m63.895 51.516v-17.605c0-3.1836-2.0312-5.5977-3.9961-7.9375-1.7578-2.0898-3.418-4.0664-3.418-6.3594v-1.5156c0.67188-0.40234 1.125-1.1406 1.125-1.9805v-2.7852c0-1.2734-1.0352-2.3086-2.3086-2.3086l-10.59 0.003906c-1.2734 0-2.3086 1.0352-2.3086 2.3086v2.7852c0 0.83984 0.44922 1.5781 1.125 1.9805v1.5156c0 2.293-1.6602 4.2656-3.418 6.3594-1.9648 2.3359-3.9961 4.7539-3.9961 7.9375v17.605c0 1.5586 0.57031 2.5039 1.0273 3.2617 0.38672 0.63672 0.66406 1.0977 0.66406 1.8867 0 0.78125-0.27344 1.2422-0.65234 1.8828-0.46484 0.78125-1.0391 1.7539-1.0391 3.3828v22.656c0 2.418 1.9688 4.3867 4.3867 4.3867h19.016c2.418 0 4.3867-1.9688 4.3867-4.3867v-22.656c0-1.6289-0.57813-2.6016-1.0391-3.3828-0.37891-0.64062-0.65234-1.1016-0.65234-1.8828 0-0.78906 0.27734-1.25 0.66406-1.8867 0.45312-0.76172 1.0234-1.707 1.0234-3.2656zm-2-16.605v15.605h-23.789v-15.605zm-17.496-21.574c0-0.16797 0.14062-0.30859 0.30859-0.30859h10.586c0.16797 0 0.30859 0.14062 0.30859 0.30859v2.7852c0 0.16797-0.14062 0.30859-0.30859 0.30859h-10.586c-0.16797 0-0.30859-0.14063-0.30859-0.30859zm-2.7656 13.926c1.9102-2.2734 3.8867-4.625 3.8867-7.6445v-1.1875h8.957v1.1875c0 3.0195 1.9766 5.3711 3.8867 7.6445 1.5625 1.8594 3.0469 3.6289 3.4336 5.6484h-23.594c0.38281-2.0195 1.8672-3.7891 3.4297-5.6484zm17.875 59.711h-19.016c-1.3164 0-2.3867-1.0703-2.3867-2.3867v-22.656c0-1.082 0.35156-1.6758 0.75781-2.3633 0.4375-0.73828 0.93359-1.5742 0.93359-2.9023 0-1.3477-0.50391-2.1836-0.95312-2.9219-0.25391-0.41797-0.47266-0.78125-0.60547-1.2305h23.516c-0.13281 0.44531-0.35156 0.8125-0.60547 1.2305-0.44531 0.73828-0.95313 1.5781-0.95313 2.9219 0 1.3281 0.49609 2.1641 0.93359 2.9023 0.40625 0.6875 0.75781 1.2812 0.75781 2.3633v22.656c0.007812 1.3164-1.0625 2.3867-2.3789 2.3867z" fill="none" stroke="white" stroke-width="2"/>
+                    <path d="m63.895 51.516v-17.605c0-3.1836-2.0312-5.5977-3.9961-7.9375-1.7578-2.0898-3.418-4.0664-3.418-6.3594v-1.5156c0.67188-0.40234 1.125-1.1406 1.125-1.9805v-2.7852c0-1.2734-1.0352-2.3086-2.3086-2.3086l-10.59 0.003906c-1.2734 0-2.3086 1.0352-2.3086 2.3086v2.7852c0 0.83984 0.44922 1.5781 1.125 1.9805v1.5156c0 2.293-1.6602 4.2656-3.418 6.3594-1.9648 2.3359-3.9961 4.7539-3.9961 7.9375v17.605c0 1.5586 0.57031 2.5039 1.0273 3.2617 0.38672 0.63672 0.66406 1.0977 0.66406 1.8867 0 0.78125-0.27344 1.2422-0.65234 1.8828-0.46484 0.78125-1.0391 1.7539-1.0391 3.3828v22.656c0 2.418 1.9688 4.3867 4.3867 4.3867h19.016c2.418 0 4.3867-1.9688 4.3867-4.3867v-22.656c0-1.6289-0.57813-2.6016-1.0391-3.3828-0.37891-0.64062-0.65234-1.1016-0.65234-1.8828 0-0.78906 0.27734-1.25 0.66406-1.8867 0.45312-0.76172 1.0234-1.707 1.0234-3.2656zm-2-16.605v15.605h-23.789v-15.605zm-17.496-21.574c0-0.16797 0.14062-0.30859 0.30859-0.30859h10.586c0.16797 0 0.30859 0.14062 0.30859 0.30859v2.7852c0 0.16797-0.14062 0.30859-0.30859 0.30859h-10.586c-0.16797 0-0.30859-0.14063-0.30859-0.30859zm-2.7656 13.926c1.9102-2.2734 3.8867-4.625 3.8867-7.6445v-1.1875h8.957v1.1875c0 3.0195 1.9766 5.3711 3.8867 7.6445 1.5625 1.8594 3.0469 3.6289 3.4336 5.6484h-23.594c0.38281-2.0195 1.8672-3.7891 3.4297-5.6484zm17.875 59.711h-19.016c-1.3164 0-2.3867-1.0703-2.3867-2.3867v-22.656c0-1.082 0.35156-1.6758 0.75781-2.3633 0.4375-0.73828 0.93359-1.5742 0.93359-2.9023 0-1.3477-0.50391-2.1836-0.95312-2.9219-0.25391-0.41797-0.47266-0.78125-0.60547-1.2305h23.516c-0.13281 0.44531-0.35156 0.8125-0.60547 1.2305-0.44531 0.73828-0.95313 1.5781-0.95313 2.9219 0 1.3281 0.49609 2.1641 0.93359 2.9023 0.40625 0.6875 0.75781 1.2812 0.75781 2.3633v22.656c0.007812 1.3164-1.0625 2.3867-2.3789 2.3867z"
+                          fill="none" stroke="white" stroke-width="2"/>
                 </svg>
-                <div id="reduceToBottle"></div><div style="color: rgb(123, 125, 127); line-height:1.3;">塑膠瓶(瓶)</div></div>
+                <div id="reduceToBottle"></div>
+                <div style="color: rgb(123, 125, 127); line-height:1.3;">塑膠瓶(瓶)</div>
+            </div>
             <div class="FPTransferUnit" style="border-left: 0.5px solid">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-8 -10 110 110" style="enable-background:new 0 0 90 90;" xml:space="preserve" fill="white" width="25px" height="25px"><style type="text/css">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                     y="0px" viewBox="-8 -10 110 110" style="enable-background:new 0 0 90 90;" xml:space="preserve"
+                     fill="white" width="25px" height="25px"><style type="text/css">
 	.st0{fill:none;}
-</style><g><circle cx="47" cy="45" r="55" fill="#55AD62"/><path class="st0" d="M44.9,9.7l-1.2,5.6c0.7,0.2,1.3,0.5,1.9,1l4-3.8C48.4,11.3,46.8,10.3,44.9,9.7z"/><path class="st0" d="M36.1,10c-12.9,3.5-16.4,4.5-16.4,4.5l1.4,5.4c0,0,14.1-3.8,16.5-4.4L36.1,10z"/><path class="st0" d="M47,17.7c0.5,0.6,0.9,1.4,1.2,2.3c0,0,0,0,0.1,0l5.3-1.6c-0.4-1-1.2-2.7-2.6-4.5L47,17.7z"/><path class="st0" d="M42.9,9.3c-0.5-0.1-1.1-0.1-1.7-0.1c-0.9,0-2,0.1-3.1,0.3l1.4,5.5c0.5-0.1,1-0.1,1.5-0.1c0.2,0,0.4,0,0.6,0   L42.9,9.3z"/><path class="st0" d="M48.9,22L48.9,22c2.9,10.4,15.5,57.3,15.5,57.3l5.6-1.7c0,0-13.2-48.5-15.7-57.2L48.9,22z"/><path d="M73.9,76.5C68,55.1,58.2,18.9,57.7,17.6c-2.9-8-9-12.5-16.5-12.5c-1.9,0-3.9,0.3-5.9,0.8l-16.7,4.6   c-2.1,0.6-3.4,2.8-2.9,4.9l1.4,5.4c0.3,1.1,0.9,2,1.9,2.5c0.6,0.4,1.4,0.6,2.1,0.6c0.4,0,0.7,0,1.1-0.1c0,0,15.8-4.2,16.8-4.5   c0.3-0.1,1.2-0.3,2.1-0.3c1.6,0,2.9,0.5,3.6,3.1c2.2,7.9,15.6,57.7,15.7,58.2c0.3,1.1,1,2,2,2.5c0.6,0.3,1.3,0.5,2,0.5   c0.4,0,0.8-0.1,1.2-0.2l5.6-1.7C73.2,80.9,74.5,78.7,73.9,76.5z M53.6,18.4L48.3,20c0,0,0,0-0.1,0c-0.3-0.9-0.8-1.7-1.2-2.3l4-3.8   C52.4,15.7,53.2,17.5,53.6,18.4z M43.7,15.3l1.2-5.6c1.9,0.6,3.5,1.6,4.7,2.7l-4,3.8C45,15.8,44.3,15.5,43.7,15.3z M21,19.9   l-1.4-5.4c0,0,3.5-1,16.4-4.5l1.4,5.5C35.2,16.1,21,19.9,21,19.9z M39.6,15l-1.4-5.5c1.1-0.2,2.1-0.3,3.1-0.3c0.6,0,1.2,0,1.7,0.1   l-1.2,5.6c-0.2,0-0.4,0-0.6,0C40.5,14.9,40,15,39.6,15z M64.4,79.3c0,0-12.6-46.8-15.5-57.3l0,0l5.3-1.6   c2.5,8.7,15.7,57.2,15.7,57.2L64.4,79.3z"/></g>
+</style>
+                    <g><circle cx="47" cy="45" r="55" fill="#55AD62"/>
+                        <path class="st0"
+                              d="M44.9,9.7l-1.2,5.6c0.7,0.2,1.3,0.5,1.9,1l4-3.8C48.4,11.3,46.8,10.3,44.9,9.7z"/>
+                        <path class="st0"
+                              d="M36.1,10c-12.9,3.5-16.4,4.5-16.4,4.5l1.4,5.4c0,0,14.1-3.8,16.5-4.4L36.1,10z"/>
+                        <path class="st0"
+                              d="M47,17.7c0.5,0.6,0.9,1.4,1.2,2.3c0,0,0,0,0.1,0l5.3-1.6c-0.4-1-1.2-2.7-2.6-4.5L47,17.7z"/>
+                        <path class="st0"
+                              d="M42.9,9.3c-0.5-0.1-1.1-0.1-1.7-0.1c-0.9,0-2,0.1-3.1,0.3l1.4,5.5c0.5-0.1,1-0.1,1.5-0.1c0.2,0,0.4,0,0.6,0   L42.9,9.3z"/>
+                        <path class="st0"
+                              d="M48.9,22L48.9,22c2.9,10.4,15.5,57.3,15.5,57.3l5.6-1.7c0,0-13.2-48.5-15.7-57.2L48.9,22z"/>
+                        <path d="M73.9,76.5C68,55.1,58.2,18.9,57.7,17.6c-2.9-8-9-12.5-16.5-12.5c-1.9,0-3.9,0.3-5.9,0.8l-16.7,4.6   c-2.1,0.6-3.4,2.8-2.9,4.9l1.4,5.4c0.3,1.1,0.9,2,1.9,2.5c0.6,0.4,1.4,0.6,2.1,0.6c0.4,0,0.7,0,1.1-0.1c0,0,15.8-4.2,16.8-4.5   c0.3-0.1,1.2-0.3,2.1-0.3c1.6,0,2.9,0.5,3.6,3.1c2.2,7.9,15.6,57.7,15.7,58.2c0.3,1.1,1,2,2,2.5c0.6,0.3,1.3,0.5,2,0.5   c0.4,0,0.8-0.1,1.2-0.2l5.6-1.7C73.2,80.9,74.5,78.7,73.9,76.5z M53.6,18.4L48.3,20c0,0,0,0-0.1,0c-0.3-0.9-0.8-1.7-1.2-2.3l4-3.8   C52.4,15.7,53.2,17.5,53.6,18.4z M43.7,15.3l1.2-5.6c1.9,0.6,3.5,1.6,4.7,2.7l-4,3.8C45,15.8,44.3,15.5,43.7,15.3z M21,19.9   l-1.4-5.4c0,0,3.5-1,16.4-4.5l1.4,5.5C35.2,16.1,21,19.9,21,19.9z M39.6,15l-1.4-5.5c1.1-0.2,2.1-0.3,3.1-0.3c0.6,0,1.2,0,1.7,0.1   l-1.2,5.6c-0.2,0-0.4,0-0.6,0C40.5,14.9,40,15,39.6,15z M64.4,79.3c0,0-12.6-46.8-15.5-57.3l0,0l5.3-1.6   c2.5,8.7,15.7,57.2,15.7,57.2L64.4,79.3z"/></g>
                 </svg>
-                <div id="reduceToStraw"></div><div style="color: rgb(123, 125, 127); line-height:1.3;">塑膠吸管(支)</div></div>
+                <div id="reduceToStraw"></div>
+                <div style="color: rgb(123, 125, 127); line-height:1.3;">塑膠吸管(支)</div>
+            </div>
             <div class="FPTransferUnit" style="border-left: 0.5px solid">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 140 140" fill="white" width="25px" height="25px">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 140 140" fill="white" width="25px"
+                     height="25px">
                     <circle cx="50" cy="50" r="70" fill="#55AD62"/>
-                    <path d="M83.2,97.651a1.592,1.592,0,0,1-1.118-.458L2.146,18.743a1.6,1.6,0,0,1-.011-2.269l4.454-4.455a1.6,1.6,0,0,1,2.277.018l77.955,80.43a1.6,1.6,0,0,1-.018,2.241l-2.474,2.475A1.593,1.593,0,0,1,83.2,97.651ZM5.533,17.592,83.189,93.806l.244-.245L7.7,15.425Z"/><path d="M93.1,87.752a1.594,1.594,0,0,1-1.119-.458L12.045,8.843a1.6,1.6,0,0,1-.01-2.268L16.489,2.12a1.507,1.507,0,0,1,1.142-.468,1.6,1.6,0,0,1,1.134.486L96.72,82.568a1.6,1.6,0,0,1-.017,2.241l-2.475,2.475A1.591,1.591,0,0,1,93.1,87.752ZM15.433,7.693,93.089,83.907l.244-.245L17.6,5.526Z"/>
+                    <path d="M83.2,97.651a1.592,1.592,0,0,1-1.118-.458L2.146,18.743a1.6,1.6,0,0,1-.011-2.269l4.454-4.455a1.6,1.6,0,0,1,2.277.018l77.955,80.43a1.6,1.6,0,0,1-.018,2.241l-2.474,2.475A1.593,1.593,0,0,1,83.2,97.651ZM5.533,17.592,83.189,93.806l.244-.245L7.7,15.425Z"/>
+                    <path d="M93.1,87.752a1.594,1.594,0,0,1-1.119-.458L12.045,8.843a1.6,1.6,0,0,1-.01-2.268L16.489,2.12a1.507,1.507,0,0,1,1.142-.468,1.6,1.6,0,0,1,1.134.486L96.72,82.568a1.6,1.6,0,0,1-.017,2.241l-2.475,2.475A1.591,1.591,0,0,1,93.1,87.752ZM15.433,7.693,93.089,83.907l.244-.245L17.6,5.526Z"/>
                 </svg>
-                <div id="reduceToChopsticks"></div><div style="color: rgb(123, 125, 127); line-height:1.3;">免洗筷(雙)</div></div>
+                <div id="reduceToChopsticks"></div>
+                <div style="color: rgb(123, 125, 127); line-height:1.3;">免洗筷(雙)</div>
+            </div>
         </div>
         <div id="FPTransferTree" style="margin-top: 20px; text-align: center;"></div>
     </div>
 </div>
-<div id="ACPhoto" style="flex-direction: column; display: none; top: 0; left: 0;padding: 10px; width: 400px;height: 400px; padding-top: 30px"></div>
+<div id="ACPhoto"
+     style="flex-direction: column; display: none; top: 0; left: 0;padding: 10px; width: 400px;height: 400px; padding-top: 30px"></div>
 <!--分享失敗提示-->
 <div id="shareError" onclick="closeFW(event)">
     <div class="ts-notice is-negative" style="position: fixed;margin: 10px;padding: 10px;top: 0;left: 0;right: 0;">
@@ -705,7 +777,8 @@
                     </g>
                 </g>
                 <g transform="translate(24,19)">
-                    <g class="loader_pedals-spin" stroke-dasharray="25.133 25.133" stroke-dashoffset="-21.991" transform="rotate(67.5,0,0)">
+                    <g class="loader_pedals-spin" stroke-dasharray="25.133 25.133" stroke-dashoffset="-21.991"
+                       transform="rotate(67.5,0,0)">
                         <circle class="loader_pedals" r="4"></circle>
                         <circle class="loader_pedals" r="4" transform="rotate(180,0,0)"></circle>
                     </g>
@@ -718,7 +791,8 @@
                     </g>
                 </g>
                 <polyline class="loader_seat" points="14 3,18 3" stroke-dasharray="5 5"></polyline>
-                <polyline class="loader_body" points="16 3,24 19,9.5 19,18 8,34 7,24 19" stroke-dasharray="79 79"></polyline>
+                <polyline class="loader_body" points="16 3,24 19,9.5 19,18 8,34 7,24 19"
+                          stroke-dasharray="79 79"></polyline>
                 <path class="loader_handlebars" d="m30,2h6s1,0,1,1-1,1-1,1" stroke-dasharray="10 10"></path>
                 <polyline class="loader_front" points="32.5 2,38.5 19" stroke-dasharray="19 19"></polyline>
             </g>
@@ -739,8 +813,6 @@
 </body>
 
 
-
-
 <script src="/frontend/browserSetting.js"></script>
 <script src="/frontend/init.js"></script>
 <script src="/frontend/saveRecord.js"></script>
@@ -753,8 +825,10 @@
 <script src="/frontend/recordList.js"></script>
 <script src="/frontend/achievement.js"></script>
 <script src="/frontend/Rank.js"></script>
+<script src="/frontend/websocket.js"></script>
 <!-- 初始化地圖 -->
-<script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}">
+<script async defer
+        th:src="@{'https://maps.googleapis.com/maps/api/js?v=weekly&key=' + ${apiKey} + '&callback=initMap&libraries=places,drawing,geometry'}">
     $(document).on("keypress", "form", function (e) {
         var code = e.keyCode || e.which;
         if (code == 13) {
@@ -762,6 +836,8 @@
             return false;
         }
     });
+
+
 </script>
 
 </html>
