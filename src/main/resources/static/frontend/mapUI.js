@@ -12,7 +12,6 @@ $('#openRecordModal').on('click', function() {
     if (typeof currentMarker !='undefined') {
         currentMarker.infoWindow.close();
         if(currentInfoWindowRecord.classType=="交通"){
-            removeDirections();
             clearMapLines();
         }
     }
@@ -224,8 +223,27 @@ $('#saveTrafficRecord').on('click', function () {
     } else if(!type) {
         alert("請選擇行為");
     } else {
-        saveRecord("交通", type, data_value);
-        $('#routeFW').css("display", "none");
+        console.log('recordedPositions',recordedPositions);
+        console.log('recordedPositions', recordedPositions);
+        if (type === "捷運" || type === "高鐵") {
+            directionsDraw(recordedPositions, 'SUBWAY', 0, function (pathCoordinates) {
+                recordedPositions = pathCoordinates;
+                console.log('recordedPositions', recordedPositions);
+                saveRecord("交通", type, data_value);
+                $('#routeFW').css("display", "none");
+            });
+        } else if (type === "火車") {
+            directionsDraw(recordedPositions, 'TRAIN', 0, function (pathCoordinates) {
+                recordedPositions = pathCoordinates;
+                console.log('recordedPositions', recordedPositions);
+                saveRecord("交通", type, data_value);
+                $('#routeFW').css("display", "none");
+            });
+        }else{
+            console.log('recordedPositions',recordedPositions);
+            saveRecord("交通", type, data_value);
+            $('#routeFW').css("display", "none");
+        }
     }
 });
 
@@ -547,7 +565,6 @@ function recordModal(){
     if (typeof currentMarker !='undefined') {
         currentMarker.infoWindow.close();
         if(currentInfoWindowRecord.classType=="交通"){
-            removeDirections();
             clearMapLines();
         }
     }

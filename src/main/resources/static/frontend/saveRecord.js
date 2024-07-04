@@ -140,7 +140,6 @@ function addMarker(recordToAdd) {
            if (typeof currentMarker!=undefined) {
                currentMarker.infoWindow.close();
                if(currentInfoWindowRecord.classType=="交通"){
-                   removeDirections();
                    clearMapLines();
                }
            }
@@ -148,12 +147,7 @@ function addMarker(recordToAdd) {
            infoWindow.open(this.map, marker);
            currentInfoWindowRecord = recordToAdd;
            currentMarker = marker;
-           if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
-               directionsDraw(currentInfoWindowRecord.lineOnMap,'SUBWAY');
-           }else if (currentInfoWindowRecord.type=="火車"){
-               directionsDraw(currentInfoWindowRecord.lineOnMap,'TRAIN');
-           }
-           else if(currentInfoWindowRecord.classType=="交通"){
+           if(currentInfoWindowRecord.classType=="交通"){
                drawLine(currentInfoWindowRecord);
            }
        });
@@ -161,7 +155,6 @@ function addMarker(recordToAdd) {
         // 監聽 infoWindow 關閉事件
         infoWindow.addListener('closeclick', function() {
             if(currentInfoWindowRecord.classType=="交通"){
-                removeDirections();
                 clearMapLines();
             }
         });

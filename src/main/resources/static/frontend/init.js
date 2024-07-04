@@ -638,68 +638,6 @@ function logoutAccount(){
     localStorage.removeItem("username");
     google.accounts.id.disableAutoSelect();
 }
-function directionsDraw(rec, mode){
-    console.log("mode ",mode);
-    let directionsService = new google.maps.DirectionsService();
-    let request = {
-        origin: {lat:rec[0].lat,lng:rec[0].lng},
-        destination: {lat:rec[rec.length-1].lat,lng:rec[rec.length-1].lng},
-        travelMode: 'TRANSIT',
-        transitOptions: {
-            modes: [mode]
-        },
-        provideRouteAlternatives: true, //多條路徑
-    };
-    directionsService.route(request, function(response, status) {
-        if (status === 'OK') {
-            console.log(response.routes);
-            route =response.routes[0];
-            // response.routes.forEach(route => {
-                // 移除步行部分，只保留乘坐大眾運輸工具的路線
-                let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
-
-                // 重新構建路線
-                let newLeg = {
-                    steps: transitSteps,
-                    start_location: route.legs[0].start_location,
-                    end_location: route.legs[0].end_location,
-                    duration: transitSteps.reduce((sum, step) => sum + step.duration.value, 0),
-                    distance: transitSteps.reduce((sum, step) => sum + step.distance.value, 0),
-                    start_address: route.legs[0].start_address,
-                    end_address: route.legs[0].end_address
-                };
-
-                let newRoute = {
-                    request: request,
-                    routes: [{
-                        legs: [newLeg],
-                        overview_path: route.overview_path,
-                        bounds: route.bounds
-                    }]
-                };
-
-                directionsDisplay = new google.maps.DirectionsRenderer({
-                    map: map,
-                    directions: newRoute,
-                    suppressMarkers: true,
-                    polylineOptions: {
-                        strokeColor: '#166a29',
-                        strokeOpacity: 1,
-                        strokeWeight: 4
-                    }
-                });
-            // });
-        } else {
-            console.error('Directions request failed due to ' + status);
-        }
-    });
-}
-function removeDirections() {
-    if (directionsDisplay) {
-        directionsDisplay.setMap(null);
-    }
-}
-
 function uploadPhoto() {
         if (!croppedImageUrl) {
             alert('請選擇檔案');

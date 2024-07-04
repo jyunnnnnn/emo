@@ -103,3 +103,39 @@ function processAllPoints(points) {
             });
     });
 }
+
+//------------------------------------------------------------------------------------------
+//大眾運輸  direction api
+function directionsDraw(rec, mode, whichRoad, callback) {
+    console.log("mode ", mode);
+    let directionsService = new google.maps.DirectionsService();
+    let request = {
+        origin: {lat: rec[0].lat, lng: rec[0].lng},
+        destination: {lat: rec[rec.length - 1].lat, lng: rec[rec.length - 1].lng},
+        travelMode: 'TRANSIT',
+        transitOptions: {
+            modes: [mode]
+        },
+        provideRouteAlternatives: true, //多條路徑
+    };
+    directionsService.route(request, function (response, status) {
+        if (status === 'OK') {
+            console.log(response.routes);
+            let route = response.routes[whichRoad];
+            // 移除步行部分，只保留乘坐大眾運輸工具的路線
+            let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
+            // 行經路線經緯度
+            let pathCoordinates = [];
+            transitSteps.forEach(step => {
+                step.path.forEach(coord => {
+                    pathCoordinates.push({lat: coord.lat(), lng: coord.lng()});
+                });
+            });
+            console.log('Path coordinates:', pathCoordinates);
+            callback(pathCoordinates);
+        } else {
+            console.error('Directions request failed due to ' + status);
+            callback([]);
+        }
+    });
+}

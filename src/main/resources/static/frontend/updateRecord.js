@@ -13,6 +13,13 @@ function updateRecord(event, updateFW){
         type = $('#type').find('.item.is-selected').text();
         data_value = $('#gram').val();
     }
+    let newLine =currentInfoWindowRecord.lineOnMap;
+    if(type=="捷運"||type=="高鐵"){
+        newLine = directionsDraw(newLine,'SUBWAY',0);
+    }else if(type=="火車"){
+        newLine = directionsDraw(newLine,'TRAIN',0);
+    }
+    currentInfoWindowRecord.lineOnMap=newLine;
 
     if(classType && type && data_value && data_value > 0) {
         updateRecordToBackend(classType, type, data_value);
@@ -22,16 +29,10 @@ function updateRecord(event, updateFW){
     }
     // 清掉原本的線
     if(currentInfoWindowRecord.classType=="交通"){
-        removeDirections();
         clearMapLines();
     }
     // 畫新的
-    if (currentInfoWindowRecord.type=="捷運" || currentInfoWindowRecord.type=="高鐵"){
-        directionsDraw(currentInfoWindowRecord.lineOnMap,'SUBWAY');
-    }else if (currentInfoWindowRecord.type=="火車"){
-        directionsDraw(currentInfoWindowRecord.lineOnMap,'TRAIN');
-    }
-    else if(currentInfoWindowRecord.classType=="交通"){
+    if(currentInfoWindowRecord.classType=="交通"){
         drawLine(currentInfoWindowRecord);
     }
 }

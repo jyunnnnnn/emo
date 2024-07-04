@@ -67,7 +67,6 @@ function startRecording() {
     showNowLines=[];// 清空上一個路線紀錄[line]
     if (typeof currentMarker!='undefined') {
         currentMarker.infoWindow.close();
-        removeDirections();
         clearMapLines();
         clearNowLines();
     }
@@ -101,13 +100,12 @@ function stopRecording() {
     // 移除地圖上的線條
     if (typeof currentMarker!='undefined') {
         currentMarker.infoWindow.close();
-        removeDirections();
         clearMapLines();
         clearNowLines();
     }
+
     // 修正路線
     processAllPoints(recordedPositions);
-
     // 打開路線記錄懸浮窗
     $('#recordCalculate').text("0 gCO2e");
     $("#routeDetail").html("<span id=\"routeCompare\" style=\"background-color: #166a29; color: #ffffff; border-radius: 20px; font-weight: bold; padding: 5px; padding-left: 8px;\">\n" +
@@ -125,12 +123,15 @@ function stopRecording() {
     $('#saveTrafficRecord').css("display", "block");
     $('#updateTrafficRecord').css("display", "none");
     $('#deleteTrafficRecord').css("display", "none");
-    let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
-    let data_value = $('#kilometer').val();
+    // let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
+    //console.log('type',type); type 會是之前的紀錄
+    // let data_value = $('#kilometer').val();
+    //console.log('data_value',data_value)
+    //下面是不是也用不到嗎?
     let showExpectedFP = 0;
     $('#routeCalculate').text(showExpectedFP + " gCO2e");
     let checked = $('input[name="engine"]:checked');
-    let checkedVal = $('input[name="engine"]:checked').val();
+    let checkedVal = $('input[name="engine"]:checked').val();//checkedVal 會是之前的紀錄
     if(checkedVal != undefined){
         $('#' + checkedVal + 'Icon').html(svgData.svgImages.transportation[checkedVal + 'Icon']);
         checked.prop('checked', false);
