@@ -90,6 +90,9 @@ function showRankByRankType(rankType,all){
     findUsers= findUsers.filter(user => user.totalFP > 0);
     findUsers.sort((a, b) => b.totalFP - a.totalFP);
 
+    //傳到好友列表
+    showFriendList(findUsers);
+
 //    console.log(Rank);
     console.log(findUsers);
     let myRankData=findUsers.find(user => user.userId === User.userId);

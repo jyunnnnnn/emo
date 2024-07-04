@@ -670,9 +670,10 @@
         <span class="historyHeading">好友與排名</span>
         <div class="ts-input is-circular is-start-icon">
             <span class="ts-icon is-magnifying-glass-icon"></span>
-            <input type="text" placeholder="搜尋好友列表…">
+            <input type="text" placeholder="搜尋好友列表…" id="searchFriendList">
         </div>
-        <div id="friendList"></div>
+        <div class="ts-grid is-center-aligned is-compact is-stacked" id="friendList" style="margin-top: 5%; max-height: 75vh; overflow: scroll">
+        </div>
 
         <!-- 新增 / 尚未回覆 -->
         <div style="column-gap: 3em; display: flex; justify-content: center; bottom: 5%; position: fixed; width: 85%;">
@@ -706,13 +707,28 @@
             <button class="item is-active" data-tab="addNew">搜尋ID</button>
             <button class="item" data-tab="sent">已寄出的邀請</button>
         </div>
-        <div class="ts-segment" data-name="addNew">
+        <div data-name="addNew" class="ts-grid is-center-aligned is-compact is-stacked" style="margin-top: 5%;">
             <div class="ts-input is-circular is-start-icon">
                 <span class="ts-icon is-magnifying-glass-icon"></span>
-                <input type="text" placeholder="搜尋好友ID…">
+                <input type="number" placeholder="搜尋好友ID…" id="searchNewFriend">
+            </div>
+            <div id="find" class="ts-content is-center-aligned" style="display: none; height: 70vh; width: 100%; align-content: center;">
+                <div class="ts-image is-bordered is-circular is-small column is-centered">
+                    <img src="user.png" id="searchPhoto">
+                </div>
+                <span class="ts-icon is-heading is-circular is-user-icon column" id="searchPhotoNull"></span>
+                <span class="ts-text is-center-aligned is-massive column" id="searchName" style="margin-top: 5%"></span>
+                <button class="ts-button is-start-labeled-icon" style="margin-top: 5%">
+                    <span class="ts-icon is-paper-plane-icon"></span>
+                    送出邀請
+                </button>
+            </div>
+            <div id="unfind" class="ts-content is-center-aligned" style="display: none; height: 70vh; width: 100%; align-content: center;">
+                <span class="ts-icon is-center-aligned is-heading is-negative is-person-circle-question-icon" id="searchIcon"></span>
+                <span class="ts-text is-center-aligned is-massive column" id="searchError" style="color: var(--ts-negative-500);">查無此ID</span>
             </div>
         </div>
-        <div class="ts-segment" data-name="sent">
+        <div data-name="sent" id="sentRequest" class="ts-grid is-center-aligned is-compact is-stacked" style="margin-top: 5%;">
             沒有任何已寄出的好友邀請。
         </div>
 
@@ -735,7 +751,7 @@
             </svg>
         </button>
         <span class="historyHeading">好友邀請</span>
-        <div id="friendRequestList"></div>
+        <div id="friendRequestList" class="ts-grid is-center-aligned is-compact is-stacked" style="margin-top: 5%;"></div>
     </div>
 </div>
 
