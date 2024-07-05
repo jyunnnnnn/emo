@@ -244,6 +244,13 @@ $('#saveTrafficRecord').on('click', function () {
     }
 });
 
+//自訂義路線:選六路線
+$('#userDefinedRoute').on('click', function () {
+    event.preventDefault();
+    $('#routeFW').css("display", "none");
+    //跳一個可移動懸浮窗
+
+});
 // 查看按鈕
 $('#recordListButton').on('click', function () {
     reloadAchievement();
@@ -571,6 +578,18 @@ function recordModal(){
         $('#routeFW').css("display", "flex");
         $('#routeFW').css("position", "fixed");
         $('#saveTrafficRecord').css("display", "none");
+        if(currentInfoWindowRecord.type=="捷運"||currentInfoWindowRecord.type=="火車"||currentInfoWindowRecord.type=="高鐵"){
+            $('#userDefinedRoute').css({
+                "display": "block",
+                'margin': '10px auto'
+            });
+            $('#updateTrafficRecord').css("margin", '10px auto');
+            $('#deleteTrafficRecord').css("margin", '10px auto');
+        }else{
+            $('#userDefinedRoute').css("display", "none");
+            $('#updateTrafficRecord').css("margin", '20px auto');
+            $('#deleteTrafficRecord').css("margin", '20px auto');
+        }
         $('#updateTrafficRecord').css("display", "block");
         $('#deleteTrafficRecord').css("display", "block");
 

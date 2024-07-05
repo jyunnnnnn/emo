@@ -121,6 +121,7 @@ function stopRecording() {
     $('#kilometer').val(kilometer.toFixed(3));
 
     $('#saveTrafficRecord').css("display", "block");
+    $('#userDefinedRoute').css("display", "none");
     $('#updateTrafficRecord').css("display", "none");
     $('#deleteTrafficRecord').css("display", "none");
     // let type = $('input[name="engine"]:checked').next().find('.radio-label').text();
