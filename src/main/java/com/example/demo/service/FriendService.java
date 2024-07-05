@@ -126,6 +126,7 @@ public class FriendService {
         int idx1 = friendEntityListIndex.containsKey(userId) ? friendEntityListIndex.get(userId) : -1;
 
         int idx2 = friendEntityListIndex.containsKey(target) ? friendEntityListIndex.get(target) : -1;
+
         System.out.println(userId + "確認" + target + "的好友邀請");
 
         FriendEntity user1 = friendEntityList.get(idx1);
@@ -136,7 +137,7 @@ public class FriendService {
 
         // * new FriendInfo() 需要修改成實際資訊 未來需要考慮即時性問題(好友可能會隨時更新數據)
         user1.addNewFriendInfo(new FriendInfo(target));
-        user2.addNewFriendInfo(new FriendInfo(target));
+        user2.addNewFriendInfo(new FriendInfo(userId));
 
         //userId使用者需要刪除尚未回覆列表內的內容
         user1.removeRequested(target);
@@ -192,6 +193,7 @@ public class FriendService {
         friendEntityList.get(idx1).deleteFriend(target);
         friendEntityList.get(idx2).deleteFriend(userId);
 
+
         //非同步更新發送者和接受者的好友資料庫內容
         this.FriendRepositoryThread(friendEntityList.get(idx1));
         this.FriendRepositoryThread(friendEntityList.get(idx2));
@@ -203,8 +205,19 @@ public class FriendService {
         //回傳測試用資料 測試版本結束後註解這行
 //        if (!friendEntityListIndex.containsKey(userId))
 //            return getTestFriendData();
+        if (friendEntityListIndex.containsKey(userId))
+            return friendEntityList.get(friendEntityListIndex.get(userId));
 
-        return friendEntityList.get(friendEntityListIndex.get(userId));
+
+        //此人還沒有好友物件在資料庫內
+        FriendEntity newFriendEntity = new FriendEntity(userId);
+        friendEntityList.add(newFriendEntity);
+        friendEntityListIndex.put(userId, friendEntityList.size() - 1);
+
+        //加入資料庫
+        this.FriendRepositoryThread(newFriendEntity);
+
+        return newFriendEntity;
     }
 
     //測試資料

@@ -72,7 +72,12 @@ public class FriendEntity {
 
     //刪除targetId這名好友
     public void deleteFriend(String targetId) {
-        friendList.remove(targetId);
+        for (int i = 0; i < friendList.size(); i++) {
+            if (friendList.get(i).getUserId().equals(targetId)) {
+                friendList.remove(i);
+                break;
+            }
+        }
     }
 
 
