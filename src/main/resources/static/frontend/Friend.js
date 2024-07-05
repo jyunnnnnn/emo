@@ -191,6 +191,7 @@ function showSentRequest(sentRequest){
             });
             cancelButton.on('click', function() {
                 let target = this.id.replace('cancel', '');
+                $(this).addClass('is-loading');
                 cancelRequestButton(target);
             });
             let cancelSpan = $('<span>', { class: 'ts-icon is-small is-x-icon is-end-spaced' });
@@ -212,8 +213,6 @@ function showSentRequest(sentRequest){
 }
 // 取消已寄出的邀請
 function cancelRequestButton(target){
-    $('#sendRequestButton').addClass('is-loading');
-
     $.ajax({
         url: '/FR/cancelFriend?sender=' + User.userId +'&receiver=' + target,
         method: 'PUT',
@@ -245,6 +244,8 @@ function showRequestedUser(requestedUser){
     requestedDiv.empty();
 
     if(strangers.length != 0){
+        $('#requestedNum').css('display', '');
+        $('#requestedNum').text(strangers.length);
         strangers.forEach(stranger => {
             let UserDiv = $('<div>', {
                 class: 'ts-segment column ts-grid is-4-columns is-middle-aligned',
@@ -265,13 +266,29 @@ function showRequestedUser(requestedUser){
             UserNameDiv.append(UserName);
 
             let acceptDiv = $('<div>', { class: 'column is-2-wide' });
-            let acceptButton = $('<button>', { class: 'ts-button is-ghost is-icon' });
+            let acceptButton = $('<button>', {
+                class: 'ts-button is-ghost is-icon',
+                id: 'accept' + stranger.userId
+            });
+            acceptButton.on('click', function() {
+                let target = this.id.replace('accept', '');
+                $(this).addClass('is-loading');
+                acceptRequestButton(target);
+            });
             let acceptSpan = $('<span>', { class: 'ts-icon is-large is-user-check-icon'})
                 .css('color', 'var(--ts-positive-500)');
             acceptButton.append(acceptSpan);
             acceptDiv.append(acceptButton);
             let refuseDiv = $('<div>', { class: 'column is-2-wide' });
-            let refuseButton = $('<button>', { class: 'ts-button is-ghost is-icon' });
+            let refuseButton = $('<button>', {
+                class: 'ts-button is-ghost is-icon',
+                id: 'refuse' + stranger.userId
+            });
+            refuseButton.on('click', function() {
+                let target = this.id.replace('refuse', '');
+                $(this).addClass('is-loading');
+                refuseRequestButton(target);
+            });
             let refuseSpan = $('<span>', { class: 'ts-icon is-large is-user-xmark-icon is-negative' });
             refuseButton.append(refuseSpan);
             refuseDiv.append(refuseButton);
@@ -280,6 +297,7 @@ function showRequestedUser(requestedUser){
             requestedDiv.append(UserDiv);
         });
     } else {
+        $('#requestedNum').css('display', 'none');
         let textDiv = $('<div>', {
             class: 'ts-segment column ts-grid is-middle-aligned',
             css: { display: 'flex' }
@@ -287,4 +305,20 @@ function showRequestedUser(requestedUser){
             .text('沒有任何待確認的好友邀請');
         requestedDiv.append(textDiv);
     }
+}
+// 批准好友邀請
+function acceptRequestButton(target){
+    $.ajax({
+        url: '/FR/confirmFriend?sender=' + User.userId +'&receiver=' + target,
+        method: 'PUT',
+        success: function(response) {
+            loadFriendObj(User.userId, 'change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+// 拒絕好友邀請
+function refuseRequestButton(target){
 }
