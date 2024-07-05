@@ -41,6 +41,21 @@ function showFriendList(rankedUser){
             const friendFP = $('<div>').text(convertRankToPresent(friend.rankType, friend.totalFP));
             friendNameFP.append(friendName, friendFP);
 
+            // 刪除按鈕
+            let deleteDiv = $('<div>', { class: 'column is-2-wide' });
+            let deleteButton = $('<button>', {
+                class: 'ts-button is-ghost is-icon',
+                id: 'delete' + friend.userId
+            });
+            deleteButton.on('click', function() {
+                let target = this.id.replace('delete', '');
+                $(this).addClass('is-loading');
+                deleteFriendButton(target);
+            });
+            let deleteSpan = $('<span>', { class: 'ts-icon is-large is-trash-icon is-negative' });
+            deleteButton.append(deleteSpan);
+            deleteDiv.append(deleteButton);
+            // 好友成就
             let friendAchievement = $('<div>', { class: 'column is-2-wide' });
             let moreButton = $('<button>', {
                 class: 'ts-button is-ghost is-icon',
@@ -49,25 +64,39 @@ function showFriendList(rankedUser){
             moreButton.on('click', function() {
                 let target = this.id.split('MORE');
                 $(this).addClass('is-loading');
-                $('#friendAchievementReturn').text('〈' + target[0]);
+                $('#friendAchievementReturn').text('〈 ' + target[0]);
                 loadAchievementObj(target[1], 'friend');
             });
             let moreSpan = $('<span>', { class: 'ts-icon is-large is-eye-icon' });
             moreButton.append(moreSpan);
             friendAchievement.append(moreButton);
+            // 戳一下
             let friendAlert = $('<div>', { class: 'column is-2-wide' });
             let alertButton = $('<button>', { class: 'ts-button is-ghost is-icon' });
             let alertSpan = $('<span>', { class: 'ts-icon is-large is-hand-point-left-icon' });
             alertButton.append(alertSpan);
             friendAlert.append(alertButton);
 
-            friendDiv.append(friendPhoto, friendNameFP, friendAchievement, friendAlert);
+            friendDiv.append(friendPhoto, friendNameFP, deleteDiv, friendAchievement, friendAlert);
             friendListDiv.append(friendDiv);
         });
     } else {
         friendListDiv.css('display', 'none');
         $('#noFriend').css('display', '');
     }
+}
+// 刪除好友
+function deleteFriendButton(target){
+    $.ajax({
+        url: '/FR/deleteFriend?sender=' + User.userId +'&receiver=' + target,
+        method: 'PUT',
+        success: function(response) {
+            loadFriendObj(User.userId, 'change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
 }
 // 點擊好友成就圖鑑
 function moreButtonClick(userId){
@@ -393,4 +422,14 @@ function acceptRequestButton(target){
 }
 // 拒絕好友邀請
 function refuseRequestButton(target){
+    $.ajax({
+        url: '/FR/rejectFriend?sender=' + User.userId +'&receiver=' + target,
+        method: 'PUT',
+        success: function(response) {
+            loadFriendObj(User.userId, 'change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
 }
