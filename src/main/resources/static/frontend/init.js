@@ -19,8 +19,10 @@ let showNowLines; //紀錄的路線線段們(紀錄時用[line]  記錄時用的
 let mapLines = [];// 點擊紀錄的路線
 let directionsDisplay;
 let questionMark = {};
-let AchievementObj={};
+let AchievementObj= {};
+let FriendAchievementObj = {};
 let FriendObj={};
+let findUsers={};
 let Rank={};//減碳量等級判定物件
 let AllUsersFp={};//所有使用者排行物件陣列
 let no1="frontend/img/1.png";
@@ -271,7 +273,7 @@ function systemInit(){
     EventEmitter.emit('userInitialized', User);
     $('#myUserID').text('我的ID：' + User.userId);
     loadSVG();//載入svg
-    loadAchievementObj(User.userId);
+    loadAchievementObj(User.userId, 'me');
     loadFriendObj(User.userId, 'init');
     loadRank();
     loadAllUsersFp(0);
@@ -365,6 +367,7 @@ function loadFriendObj(userId, situation){
             if(situation == 'change'){
                 showSentRequest(FriendObj.requestingList);
                 showRequestedUser(FriendObj.requestedList);
+                showFriendList(findUsers);
                 $('#searchNewFriend').trigger('input');
             }
         },
@@ -785,12 +788,17 @@ function uploadPhoto() {
         });
     $('#uploadUserPhotoFW').css("display", "none");
 }
-function loadAchievementObj(userId){
+function loadAchievementObj(userId, person){
     $.ajax({
         url: '/AC/getUserAchievementStateObj?userId='+userId,
         type: 'GET',
         success: function(response) {
-            AchievementObj=response;
+            if(person == 'friend'){
+                FriendAchievementObj = response;
+                moreButtonClick(userId);
+            } else {
+                AchievementObj = response;
+            }
 
 
             //console.log(AchievementObj);

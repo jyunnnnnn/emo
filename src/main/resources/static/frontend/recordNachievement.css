@@ -6,7 +6,8 @@
 #rankingFW,
 #friendFW,
 #addFriendFW,
-#friendRequestFW{
+#friendRequestFW,
+#friendAchievementFW{
     display: none;
     position: fixed;
     top: 0;

@@ -80,7 +80,6 @@ function showRankByRankType(rankType,all){
     const rankingContainer = $('#rankingContent');
     const rowContainer =$('#rowContainer');
     rankingContainer.empty();
-    let findUsers={};
     if(all){
         findUsers=AllUsersFp;//AllUsersFp全域變數 init獲得
     }
