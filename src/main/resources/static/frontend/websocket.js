@@ -56,6 +56,7 @@ function sendFriendRequest(target) {
     stompClient.send("/app/friendRequest", {}, JSON.stringify(msg));
 }
 
+
 // 使用方式
 function initializeWebSocket() {
     websocketInit().then(() => {

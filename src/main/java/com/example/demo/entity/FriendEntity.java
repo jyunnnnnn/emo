@@ -108,4 +108,14 @@ public class FriendEntity {
     public void setRequestedList(Set<String> requestedList) {
         this.requestedList = requestedList;
     }
+
+    @Override
+    public String toString() {
+        return "FriendEntity{" +
+                "userId='" + userId + '\'' +
+                ", friendList=" + friendList +
+                ", requestingList=" + requestingList +
+                ", requestedList=" + requestedList +
+                '}';
+    }
 }
