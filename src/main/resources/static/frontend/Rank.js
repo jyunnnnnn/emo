@@ -118,7 +118,7 @@ function showRankByRankType(rankType,all,friend){
        findUsers = findUsers.filter(user => FriendObj.friendList.includes(user.UserId)||user.userId===User.userId);
     }
     findUsers.sort((a, b) => b.totalFP - a.totalFP);
-    showFriendList(findUsers);
+
 //    console.log(Rank);
     console.log(findUsers);
     let myRankData=findUsers.find(user => user.userId === User.userId);

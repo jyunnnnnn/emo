@@ -36,8 +36,10 @@ function websocketInit() {
                 $('#snackbar').css('display', '');
 
                 setTimeout(function() {
-                    $('#newfriendMSG').remove();
-                    $('#snackbar').css('display', 'none');
+                    $('#snackbar').fadeOut(1000, function() {
+                        $('#newfriendMSG').remove();
+                        $('#snackbar').css('display', 'none');
+                    });
                 }, 3000);
 
             });

@@ -844,6 +844,8 @@ function loadAllUsersFp(a){
 
                     showSentRequest(FriendObj.requestingList);
                     showRequestedUser(FriendObj.requestedList);
+                    showFriendList(FriendObj.friendList);
+
                     if(a==1){
                         $("#rotateURBtn").removeClass("rotateUpdateBtn");
                         $('#updateRanking').prop("disabled", false);

@@ -17,6 +17,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+
     <!--    websocket-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"
             integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw=="
@@ -761,7 +762,7 @@
             </div>
             <div id="find" class="ts-content is-center-aligned" style="display: none; height: 70vh; width: 100%; align-content: center;">
                 <div class="ts-image is-bordered is-circular is-small column is-centered">
-                    <img src="user.png" id="searchPhoto">
+                    <img id="searchPhoto">
                 </div>
                 <div class="column" style="justify-content: center; display: grid;">
                     <span class="ts-icon is-heading is-circular is-user-icon" id="searchPhotoNull"></span>
@@ -780,9 +781,13 @@
             沒有任何已寄出的好友邀請。
         </div>
 
-        <div id="myUserID" style="display: flex; justify-content: center; bottom: 5%; position: fixed; width: 85%;">
+        <!-- style="display: flex; justify-content: center; bottom: 5%; position: fixed; width: 85%;" -->
+        <div class="ts-grid is-center-aligned is-middle-aligned is-compact" style="position: fixed; bottom: 5%; width: 90%;">
+            <div id="myUserID" class="column"></div>
+            <div class="ts-button is-ghost column is-icon" id="copyID">
+                <span class="ts-icon is-copy-icon"></span>
+            </div>
         </div>
-    </div>
 </div>
 <!-- 懸浮窗：好友邀請 -->
 <div id="friendRequestFW" onclick="closeFW(event)">

@@ -8,19 +8,45 @@ $('#friendButton').on('click', function () {
 $('#closeFriendModal').on('click', function () {
     $('#friendFW').css("display", "none");
 });
+// 監聽copyID
+$('#copyID').on('click', function(event) {
+    let textToCopy = $('#myUserID').text().replace('我的ID：','');
+
+    let snackbar = $('<div>', {
+        class: 'content',
+        id: 'copyMSG'
+    })
+    navigator.clipboard.writeText(textToCopy).then(function() {
+        snackbar.text('複製成功');
+    }).catch(function(error) {
+        snackbar.text('複製失敗');
+    });
+
+    $('#snackbar').append(snackbar);
+    $('#snackbar').css('display', '');
+
+    setTimeout(function() {
+        $('#snackbar').fadeOut(1000, function() {
+            $('#copyMSG').remove();
+            $('#snackbar').css('display', 'none');
+        });
+    }, 3000);
+})
+
 // 顯示好友列表
-function showFriendList(rankedUser){
+function showFriendList(friendList){
     $('#searchFriendList').val('');
     $('#searchFriendList').trigger('input');
     let friendListDiv = $('#friendList');
-    if(FriendObj.friendList.length != 0){
+    if(friendList.length != 0){
         let friendIds =  FriendObj.friendList.map(friend => friend.userId);
-        let rankedFriend = rankedUser.filter(user =>friendIds.includes(user.userId));
+        let friends = AllUsersFp.filter(user => friendIds.includes(user.userId));
+        console.log(friends)
         friendListDiv.empty();
 
         friendListDiv.css('display', '');
         $('#noFriend').css('display', 'none');
-        rankedFriend.forEach(friend => {
+        friends.forEach(friend => {
             let friendDiv = $('<div>', {
                 class: 'ts-segment column ts-grid is-4-columns is-middle-aligned',
                 css: { display: 'flex' }
@@ -194,13 +220,14 @@ $('#closeAddFriendModal').on('click', function () {
 $('#searchNewFriend').on('input', function(event) {
     let nowInput = $('#searchNewFriend').val();
     let target = AllUsersFp.filter(user =>nowInput.includes(user.userId));
+    let alreadyFriend = FriendObj.friendList.filter(user =>nowInput.includes(user.userId));
 
     if(nowInput == ""){
         $('#unfind').css('display', 'none');
         $('#find').css('display', 'none');
         return 0;
     } else if(target.length != 0){
-        if(target[0].userId == User.userId){
+        if(target[0].userId == User.userId || alreadyFriend.length != 0){
             $('#sendRequestButton').css('display', 'none');
         } else {
             $('#sendRequestButton').css('display', 'unset');
