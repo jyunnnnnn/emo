@@ -14,26 +14,29 @@ function updateRecord(event, updateFW){
         data_value = $('#gram').val();
     }
     let newLine =currentInfoWindowRecord.lineOnMap;
-    if(type=="捷運"||type=="高鐵"){
-        newLine = directionsDraw(newLine,'SUBWAY',0);
-    }else if(type=="火車"){
-        newLine = directionsDraw(newLine,'TRAIN',0);
-    }
-    currentInfoWindowRecord.lineOnMap=newLine;
+    function handleDirectionsResult(pathCoordinates) {
+        newLine = pathCoordinates;
+        currentInfoWindowRecord.lineOnMap = newLine;
 
-    if(classType && type && data_value && data_value > 0) {
-        updateRecordToBackend(classType, type, data_value);
-        showTotalFP();
+        if (classType && type && data_value && data_value > 0) {
+            updateRecordToBackend(classType, type, data_value);
+            showTotalFP();
+        } else {
+            alert("請輸入正數");
+        }
+
+        // 清掉原本的線
+        if (currentInfoWindowRecord.classType == "交通") {
+            clearMapLines();
+        }
+    }
+
+    if (type == "捷運" || type == "高鐵") {
+        directionsDraw(newLine, 'SUBWAY', 0, handleDirectionsResult);
+    } else if (type == "火車") {
+        directionsDraw(newLine, 'TRAIN', 0, handleDirectionsResult);
     } else {
-        alert("請輸入正數")
-    }
-    // 清掉原本的線
-    if(currentInfoWindowRecord.classType=="交通"){
-        clearMapLines();
-    }
-    // 畫新的
-    if(currentInfoWindowRecord.classType=="交通"){
-        drawLine(currentInfoWindowRecord);
+        handleDirectionsResult(newLine); // 若不是捷運或高鐵或火車，直接处理
     }
 }
 // 更新紀錄的函數
