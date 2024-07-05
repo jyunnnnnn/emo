@@ -4,6 +4,7 @@ import java.lang.reflect.*;
 
 import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
+import com.example.demo.entity.userDefined_line;
 import com.example.demo.repository.UserRecordCounterRepository;
 import com.example.demo.service.AchievementService;
 import com.example.demo.service.EcoRecordService;
@@ -72,6 +73,10 @@ class EcoControllerTest {
             Arrays.asList(
                     new DotOfLine(1.0, 1.0),
                     new DotOfLine(1.0, 3.0)
+            ),
+            Arrays.asList(
+                    new userDefined_line(1.0, 1.0),
+                    new userDefined_line(1.0, 3.0)
             )
     );
     private List<EcoRecord> testList = Arrays.asList(testRecord, testRecord);

@@ -1,5 +1,5 @@
 // 記錄按鈕事件處理
-function saveRecord(classType, type, data_value){
+function saveRecord(classType, type, data_value,userDefinedLine){
     let record={
         userId: User.userId, // 使用者 ID，這裡使用本地存儲的使用者名稱
         classType: null,
@@ -10,7 +10,8 @@ function saveRecord(classType, type, data_value){
         footprint:null,
         time: getFormattedDate(),
         recordId:null,
-        lineOnMap: []
+        lineOnMap: [],
+        userDefinedLine: []
     }
     let now = new Date();
     record.recordId = now.getTime();
@@ -22,6 +23,10 @@ function saveRecord(classType, type, data_value){
     if(record.classType=="交通"){
         record.lineOnMap=recordedPositions;
     }
+    if(record.classType=="捷運"||record.classType=="高鐵"||record.classType=="火車"||userDefinedLine!=null){
+        record.userDefinedLine = userDefinedLine;
+    }
+
     if(Object.values(record).includes(null)){
        alert("請重新登入");
        window.location.href = '/login';

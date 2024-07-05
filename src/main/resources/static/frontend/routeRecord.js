@@ -167,8 +167,13 @@ function recordLocation() {
 
 //點擊紀錄時畫路線圖
 function drawLine(cRecord){
-    //console.log(tracking);
-    let tracking = cRecord.lineOnMap;
+    let tracking;
+    if(cRecord.type=="捷運"||cRecord.type=="高鐵"||cRecord.type=="火車"){
+        tracking = cRecord.userDefinedLine;
+    }else{
+        tracking = cRecord.lineOnMap;
+    }
+    console.log('tracking',tracking);
     let path = new google.maps.Polyline({
         path: tracking.map(position => ({ lat: position.lat, lng: position.lng })),
         geodesic: true,

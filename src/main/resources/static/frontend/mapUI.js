@@ -209,7 +209,7 @@ $('#saveRecord').on('click', function () {
         return;
     }else{
 
-        saveRecord(classType, type.text(), data_value);
+        saveRecord(classType, type.text(), data_value,null);
         $('#recordFW').css("display", "none");
     }
 });
@@ -223,25 +223,22 @@ $('#saveTrafficRecord').on('click', function () {
     } else if(!type) {
         alert("請選擇行為");
     } else {
-        console.log('recordedPositions',recordedPositions);
-        console.log('recordedPositions', recordedPositions);
+        // console.log('recordedPositions',recordedPositions);
         if (type === "捷運" || type === "高鐵") {
             directionsDraw(recordedPositions, 'SUBWAY', 0, function (pathCoordinates) {
-                recordedPositions = pathCoordinates;
-                console.log('recordedPositions', recordedPositions);
-                saveRecord("交通", type, data_value);
+                console.log('recordedPositions', pathCoordinates);
+                saveRecord("交通", type, data_value,pathCoordinates);
                 $('#routeFW').css("display", "none");
             });
         } else if (type === "火車") {
             directionsDraw(recordedPositions, 'TRAIN', 0, function (pathCoordinates) {
-                recordedPositions = pathCoordinates;
-                console.log('recordedPositions', recordedPositions);
-                saveRecord("交通", type, data_value);
+                console.log('recordedPositions', pathCoordinates);
+                saveRecord("交通", type, data_value,pathCoordinates);
                 $('#routeFW').css("display", "none");
             });
         }else{
-            console.log('recordedPositions',recordedPositions);
-            saveRecord("交通", type, data_value);
+            // console.log('recordedPositions',recordedPositions);
+            saveRecord("交通", type, data_value,null);
             $('#routeFW').css("display", "none");
         }
     }

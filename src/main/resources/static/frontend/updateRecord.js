@@ -15,16 +15,13 @@ function updateRecord(event, updateFW){
     }
     let newLine =currentInfoWindowRecord.lineOnMap;
     function handleDirectionsResult(pathCoordinates) {
-        newLine = pathCoordinates;
-        currentInfoWindowRecord.lineOnMap = newLine;
-
+        currentInfoWindowRecord.userDefinedLine = pathCoordinates;
         if (classType && type && data_value && data_value > 0) {
             updateRecordToBackend(classType, type, data_value);
             showTotalFP();
         } else {
             alert("請輸入正數");
         }
-
         // 清掉原本的線
         if (currentInfoWindowRecord.classType == "交通") {
             clearMapLines();
@@ -54,6 +51,7 @@ function updateRecordToBackend(newClassType, newType, newDataValue) {
         time: currentInfoWindowRecord.time,
         recordId:currentInfoWindowRecord.recordId,
         lineOnMap: currentInfoWindowRecord.lineOnMap,
+        userDefinedLine: currentInfoWindowRecord.userDefinedLine
     };
     if(record.userId) {
 

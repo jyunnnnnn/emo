@@ -25,11 +25,12 @@ public class EcoRecord {
     private double footprint;//碳足跡
 
     private List<DotOfLine> lineOnMap; // 路線
+    private List<userDefined_line> userDefinedLine;
 
     private double trafficKM; // 路線距離
 
     //constructor
-    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId,List<DotOfLine> lineOnMap) {
+    public EcoRecord(String userId, String classType, String type, double data_value, double latitude, double longitude,double footprint,String time,String recordId,List<DotOfLine> lineOnMap,List<userDefined_line> userDefinedLine) {
         this.recordId = recordId; ;
         this.userId = userId;
         this.classType = classType;
@@ -40,6 +41,7 @@ public class EcoRecord {
         this.time = time;
         this.footprint = footprint;
         this.lineOnMap = lineOnMap;
+        this.userDefinedLine = userDefinedLine;
     }
 
     public String getRecordId() {
@@ -114,10 +116,17 @@ public class EcoRecord {
         return lineOnMap;
     }
 
+    public List<userDefined_line> getUserDefinedLine() {
+        return userDefinedLine;
+    }
+
     public void setLineOnMap(List<DotOfLine> lineOnMap) {
         this.lineOnMap = lineOnMap;
     }
 
+    public void setUserDefinedLine(List<userDefined_line> userDefinedLine) {
+        this.userDefinedLine = userDefinedLine;
+    }
 
     public String toString(){
         return "{" + '\n'+

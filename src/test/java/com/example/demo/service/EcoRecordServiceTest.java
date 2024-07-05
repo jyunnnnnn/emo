@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.DotOfLine;
 import com.example.demo.entity.EcoRecord;
 import com.example.demo.entity.UserAchievementEntity;
+import com.example.demo.entity.userDefined_line;
 import com.example.demo.repository.RecordRepository;
 import com.example.demo.repository.UserRecordCounterRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +59,10 @@ class EcoRecordServiceTest {
                     Arrays.asList(
                             new DotOfLine(1.0, 1.0),
                             new DotOfLine(1.0, 3.0)
+                    ),
+                    Arrays.asList(
+                            new userDefined_line(1.0, 1.0),
+                            new userDefined_line(1.0, 3.0)
                     )
             );
             testList.add(tmp);
