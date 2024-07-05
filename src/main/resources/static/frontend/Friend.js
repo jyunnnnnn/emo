@@ -12,13 +12,12 @@ $('#closeFriendModal').on('click', function () {
 function showFriendList(rankedUser){
     $('#searchFriendList').val('');
     $('#searchFriendList').trigger('input');
-
-    let friendIds =  FriendObj.friendList.map(friend => friend.userId);
-    let rankedFriend = rankedUser.filter(user =>friendIds.includes(user.userId));
     let friendListDiv = $('#friendList');
-    friendListDiv.empty();
+    if(FriendObj.friendList.length != 0){
+        let friendIds =  FriendObj.friendList.map(friend => friend.userId);
+        let rankedFriend = rankedUser.filter(user =>friendIds.includes(user.userId));
+        friendListDiv.empty();
 
-    if(rankedFriend.length != 0){
         friendListDiv.css('display', '');
         $('#noFriend').css('display', 'none');
         rankedFriend.forEach(friend => {
@@ -99,7 +98,7 @@ function deleteFriendButton(target){
 }
 // 點擊好友成就圖鑑
 function moreButtonClick(userId){
-    let target = FriendObj.friendList.filter(user => user.userId == userId);
+    let target = AllUsersFp.filter(user => user.userId == userId);
     console.log(target);
     $('#friendAchievementReturn').text('〈 ' + target[0].nickname);
     $('#MORE' + userId).removeClass('is-loading');
@@ -245,6 +244,7 @@ $('#searchNewFriend').on('input', function(event) {
 $('#sendRequestButton').on('click', function() {
     $('#sendRequestButton').addClass('is-loading');
     let targetID = $('#searchNewFriend').val();
+    sendFriendRequest(targetID);
 
     $.ajax({
         url: '/FR/addFriend?sender=' + User.userId +'&receiver=' + targetID,
