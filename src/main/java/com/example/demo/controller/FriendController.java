@@ -56,6 +56,14 @@ public class FriendController {
         return null;
     }
 
+
+    //拒絕好友邀請(收件者拒絕好友邀情) userId拒絕target的好友邀請
+    @PutMapping("/rejectFriend")
+    public ResponseEntity<?> rejectFriend(@RequestParam("sender") String userId, @RequestParam("receiver") String target) {
+        this.friendService.rejectFriend(userId, target);
+        return null;
+    }
+
     //刪除好友 (sender想刪掉receiver的好友)
     // url : /FR/deleteFriend?sender=testUserId&receiver=targetId
     @PutMapping("/deleteFriend")

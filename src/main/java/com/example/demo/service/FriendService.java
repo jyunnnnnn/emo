@@ -145,6 +145,35 @@ public class FriendService {
 
     }
 
+    //userId使用者拒絕target的好友邀請
+    public void rejectFriend(String userId, String target) {
+
+
+        int idx1 = friendEntityListIndex.containsKey(userId) ? friendEntityListIndex.get(userId) : -1;
+
+        int idx2 = friendEntityListIndex.containsKey(target) ? friendEntityListIndex.get(target) : -1;
+
+        FriendEntity user1 = friendEntityList.get(idx1);
+
+        FriendEntity user2 = friendEntityList.get(idx2);
+
+        //拒絕對方，兩者不需加入到對方的好友列表內
+
+
+        //刪除好友邀請請求
+
+        //userId使用者需要刪除尚未回覆列表內的內容
+        user1.removeRequested(target);
+        //target對象需要刪除發送好友邀請的內容
+        user2.removeRequesting(userId);
+
+        //非同步更新發送者和接受者的好友資料庫內容
+        this.FriendRepositoryThread(user1);
+        this.FriendRepositoryThread(user2);
+
+    }
+
+
     //刪除好友 userId使用者要刪除target使用者
     public void deleteFriend(String userId, String target) {
 
