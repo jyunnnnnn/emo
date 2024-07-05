@@ -272,7 +272,7 @@ function systemInit(){
     $('#myUserID').text('我的ID：' + User.userId);
     loadSVG();//載入svg
     loadAchievementObj(User.userId);
-    loadFriendObj(User.userId);
+    loadFriendObj(User.userId, 'init');
     loadRank();
     loadAllUsersFp(0);
     watchId = navigator.geolocation.watchPosition(success, error, options);
@@ -346,8 +346,7 @@ function loadSVG(){
 
 }
 //載入好友列表
-function loadFriendObj(userId){
-    console.log('get')
+function loadFriendObj(userId, situation){
     $.ajax({
         url: '/FR/getFriendData?userId='+userId,
         method: 'GET',
@@ -363,6 +362,11 @@ function loadFriendObj(userId){
             */
 
             console.log(FriendObj);
+            if(situation == 'change'){
+                showSentRequest(FriendObj.requestingList);
+                showRequestedUser(FriendObj.requestedList);
+                $('#searchNewFriend').trigger('input');
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);

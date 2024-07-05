@@ -674,6 +674,10 @@
         </div>
         <div class="ts-grid is-center-aligned is-compact is-stacked" id="friendList" style="margin-top: 5%; max-height: 75vh; overflow: scroll">
         </div>
+        <div id="noFriend" class="ts-grid is-center-aligned is-stacked" style="display: none; height: 70vh; width: 100%; align-content: center;">
+            <span class="ts-icon is-center-aligned is-heading is-people-group-icon"></span>
+            <span class="ts-text is-center-aligned is-huge column">快邀請你的好友使用Emo吧！</span>
+        </div>
 
         <!-- 新增 / 尚未回覆 -->
         <div style="column-gap: 3em; display: flex; justify-content: center; bottom: 5%; position: fixed; width: 85%;">
@@ -716,10 +720,11 @@
                 <div class="ts-image is-bordered is-circular is-small column is-centered">
                     <img src="user.png" id="searchPhoto">
                 </div>
-                <span class="ts-icon is-heading is-circular is-user-icon column" id="searchPhotoNull"></span>
+                <div class="column" style="justify-content: center; display: grid;">
+                    <span class="ts-icon is-heading is-circular is-user-icon" id="searchPhotoNull"></span>
+                </div>
                 <span class="ts-text is-center-aligned is-massive column" id="searchName" style="margin-top: 5%"></span>
-                <button class="ts-button is-start-labeled-icon" style="margin-top: 5%">
-                    <span class="ts-icon is-paper-plane-icon"></span>
+                <button id="sendRequestButton" class="ts-button is-start-labeled-icon" style="margin-top: 5%">
                     送出邀請
                 </button>
             </div>
