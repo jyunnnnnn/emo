@@ -59,13 +59,12 @@ function showFriendList(rankedUser){
             let friendAchievement = $('<div>', { class: 'column is-2-wide' });
             let moreButton = $('<button>', {
                 class: 'ts-button is-ghost is-icon',
-                id: friend.nickname + 'MORE' + friend.userId
+                id: 'MORE' + friend.userId
             });
             moreButton.on('click', function() {
-                let target = this.id.split('MORE');
+                let target = this.id.replace('MORE', '');
                 $(this).addClass('is-loading');
-                $('#friendAchievementReturn').text('〈 ' + target[0]);
-                loadAchievementObj(target[1], 'friend');
+                loadAchievementObj(target, 'friend');
             });
             let moreSpan = $('<span>', { class: 'ts-icon is-large is-eye-icon' });
             moreButton.append(moreSpan);
@@ -100,56 +99,61 @@ function deleteFriendButton(target){
 }
 // 點擊好友成就圖鑑
 function moreButtonClick(userId){
-    let name = $('#friendAchievementReturn').text().replace('〈','');
-    $('#' + name + 'MORE' + userId).removeClass('is-loading');
-    console.log('#' + name + 'more' + userId)
+    let target = FriendObj.friendList.filter(user => user.userId == userId);
+    console.log(target);
+    $('#friendAchievementReturn').text('〈 ' + target[0].nickname);
+    $('#MORE' + userId).removeClass('is-loading');
 
     $('#friendAchievementFW').css("display", "flex");
     $('#friendFW').css("display", "none");
 
     let friendAchievement = FriendAchievementObj.filter(achievement => achievement.accomplishTime != null);
-    friendAchievement.sort((a, b) => new Date(a.accomplishTime) - new Date(b.accomplishTime));
-    console.log(friendAchievement)
     let timelineDiv = $('#friendTimeline');
-    timelineDiv.empty();
-    friendAchievement.forEach(achievement => {
-        let item = $('<div>', { class: 'item' });
+    if(friendAchievement.length != 0){
+        friendAchievement.sort((a, b) => new Date(a.accomplishTime) - new Date(b.accomplishTime));
+        timelineDiv.empty();
+        friendAchievement.forEach(achievement => {
+            let item = $('<div>', { class: 'item' });
 
-        let date = achievement.accomplishTime.split(' ');
-        let time = date[1].split(':');
-        let timeDiv = $('<div>', { class: 'aside' });
-        let timeText = $('<div>', {
-            class: 'ts-text is-description',
-            html: date[0] + '<br>' + time[0] + ':' + time[1]
+            let date = achievement.accomplishTime.split(' ');
+            let time = date[1].split(':');
+            let timeDiv = $('<div>', { class: 'aside' });
+            let timeText = $('<div>', {
+                class: 'ts-text is-description',
+                html: date[0] + '<br>' + time[0] + ':' + time[1]
+            });
+            timeDiv.append(timeText);
+
+            let svgDiv = $('<div>', { class: 'indicator' });
+            let svgIcon = $('<span>', { class: 'ts-icon' });
+            achievement.unLockedSvg = achievement.unLockedSvg.replace('width="100px"', 'width="20px"');
+            achievement.unLockedSvg = achievement.unLockedSvg.replace('height="100px"', 'height="20px"');
+            let svg = $("<svg>")
+                .html(achievement.unLockedSvg)
+            svgIcon.append(svg);
+            svgDiv.append(svgIcon);
+
+            let achievementDiv = $('<div>', { class: 'content'});
+            let achievementClass = $('<span>', {
+                class: 'ts-text is-mark is-tiny',
+                text: achievement.achievementClass
+            })
+                .css('margin-right', '3%');
+            let achievementName = $('<span>', { class: 'ts-text is-heavy is-large'})
+                .html(achievement.achievementName + '<br>');
+            let achievementDescription = $('<span>', {
+                class: 'ts-text is-disabled is-small',
+                text: achievement.achievementDescription
+            });
+            achievementDiv.append(achievementClass, achievementName, achievementDescription)
+
+            item.append(timeDiv, svgDiv, achievementDiv);
+            timelineDiv.append(item);
         });
-        timeDiv.append(timeText);
-
-        let svgDiv = $('<div>', { class: 'indicator' });
-        let svgIcon = $('<span>', { class: 'ts-icon' });
-        achievement.unLockedSvg = achievement.unLockedSvg.replace('width="100px"', 'width="20px"');
-        achievement.unLockedSvg = achievement.unLockedSvg.replace('height="100px"', 'height="20px"');
-        let svg = $("<svg>")
-            .html(achievement.unLockedSvg)
-        svgIcon.append(svg);
-        svgDiv.append(svgIcon);
-
-        let achievementDiv = $('<div>', { class: 'content'});
-        let achievementClass = $('<span>', {
-            class: 'ts-text is-mark is-tiny',
-            text: achievement.achievementClass
-        })
-            .css('margin-right', '3%');
-        let achievementName = $('<span>', { class: 'ts-text is-heavy is-large'})
-            .html(achievement.achievementName + '<br>');
-        let achievementDescription = $('<span>', {
-            class: 'ts-text is-disabled is-small',
-            text: achievement.achievementDescription
-        });
-        achievementDiv.append(achievementClass, achievementName, achievementDescription)
-
-        item.append(timeDiv, svgDiv, achievementDiv);
-        timelineDiv.append(item);
-    });
+    } else {
+        timelineDiv.css('display', 'none');
+        $('#noAchievement').css('display', '');
+    }
 }
 // 關閉好友成就圖鑑
 $('#friendAchievementReturn').on('click', function () {
