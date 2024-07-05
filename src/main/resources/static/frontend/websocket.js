@@ -23,10 +23,22 @@ function websocketInit() {
             stompClient.subscribe('/user/queue/friendRequest', function(response) {
 
                 console.log( response.body);
-
                 //response.body為後端伺服器回傳的訊息(目前是預設為 好友請求來自 xxx: xxx想要與您成為好友~)
-
                 //收到來自伺服器的即時訊息之後的操作
+                loadFriendObj(User.userId, 'change');
+                let msg = response.body.split(' ');
+                let snackbar = $('<div>', {
+                    class: 'content',
+                    id: 'newfriendMSG'
+                })
+                    .text(msg[2]);
+                $('#snackbar').append(snackbar);
+                $('#snackbar').css('display', '');
+
+                setTimeout(function() {
+                    $('#newfriendMSG').remove();
+                    $('#snackbar').css('display', 'none');
+                }, 3000);
 
             });
 
@@ -49,12 +61,13 @@ function sendFriendRequest(target) {
     console.log("發送好友邀請給 :" + target);
 
     var msg = {
-        senderName:User.nickname,
+        senderName: User.nickname,
         receiver: target
     };
     //發送請求給後端伺服器
     stompClient.send("/app/friendRequest", {}, JSON.stringify(msg));
 }
+
 
 // 使用方式
 function initializeWebSocket() {

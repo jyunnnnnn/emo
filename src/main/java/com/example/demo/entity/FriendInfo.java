@@ -21,4 +21,9 @@ public class FriendInfo {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return userId;
+    }
 }
