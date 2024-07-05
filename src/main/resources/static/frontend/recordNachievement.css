@@ -48,6 +48,11 @@
     font-size: 50px;
     color: rgb(123, 125, 127);
 }
+.historyHeading2 {
+    font-weight: 900;
+    font-size: 30px;
+    color: rgb(123, 125, 127);
+}
 .recordListReturn {
     font-weight: 900;
     font-size: 30px;
@@ -380,7 +385,6 @@
     }
 }
 #updateRanking{
-    padding-top: 15px;
     transition: transform 0.3s ease;
 }
 #updateRanking:hover {

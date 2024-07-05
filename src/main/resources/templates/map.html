@@ -607,8 +607,11 @@
             </svg>
         </button>
         <!--        排行更新按鈕-->
-        <div class="d-flex" style="justify-content: space-between;padding-right: 50px;"><span
-                class="historyHeading">排行</span>
+        <div class="d-flex" style="justify-content: space-between;align-items: center; padding-right: 50px; margin:10px;">
+            <div id="rankingChoose" class="ts-tab is-fluid" style="width: 300px">
+                <button class="item is-active" data-tab="AllRank">全部排行</button>
+                <button class="item" data-tab="FriendRank">好友排行</button>
+            </div>
             <span>
                 <button id="updateRanking"><svg id="rotateURBtn" width="30px" height="30px" viewBox="0 0 24 24"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">

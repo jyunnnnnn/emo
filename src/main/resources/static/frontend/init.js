@@ -823,7 +823,6 @@ function loadAllUsersFp(a){
                     //console.log(response);
                     AllUsersFp=response;
                     //console.log(AllUsersFp);
-                    initUserData();
                     if(a==1){
                         $("#rotateURBtn").removeClass("rotateUpdateBtn");
                         $('#updateRanking').prop("disabled", false);
@@ -842,7 +841,7 @@ function loadAllUsersFp(a){
                     //console.log(response);
                     AllUsersFp=response;
                     //console.log(AllUsersFp);
-                    initUserData();
+
                     showSentRequest(FriendObj.requestingList);
                     showRequestedUser(FriendObj.requestedList);
                     if(a==1){
@@ -871,7 +870,7 @@ function loadRank(){
                 loadEcoRecords(User.userId);//載入環保紀錄
                 $('#preloader').fadeOut(1500);
             }
-            //console.log(Rank);
+            console.log(Rank);
             // 調用生成使用者資料函數
         },
         error: function(xhr, status, error) {
