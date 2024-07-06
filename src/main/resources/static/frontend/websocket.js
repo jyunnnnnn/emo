@@ -53,18 +53,18 @@ function websocketInit() {
 }
 
 //即時發送好友邀請通知的function target為目標使用者的userId
-function sendFriendRequest(target,message) {
+function sendFriendRequest(target) {
     //檢驗websocket連接狀態
     if (!stompClient || !stompClient.connected) {
         console.error("WebSocket 連接尚未建立或已斷開");
         return;
     }
 
+    console.log("發送好友邀請給 :" + target);
 
     var msg = {
         senderName: User.nickname,
-        receiver: target,
-        message:message
+        receiver: target
     };
     //發送請求給後端伺服器
     stompClient.send("/app/friendRequest", {}, JSON.stringify(msg));
