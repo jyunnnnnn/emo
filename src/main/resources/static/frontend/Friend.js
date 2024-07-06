@@ -41,7 +41,6 @@ function showFriendList(friendList){
     if(friendList.length != 0){
         let friendIds =  FriendObj.friendList.map(friend => friend.userId);
         let friends = AllUsersFp.filter(user => friendIds.includes(user.userId));
-        console.log(friends)
         friendListDiv.empty();
 
         friendListDiv.css('display', '');
@@ -116,6 +115,7 @@ function deleteFriendButton(target){
         method: 'PUT',
         success: function(response) {
             loadFriendObj(User.userId, 'change');
+            sendFriendInfo(target,4);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -125,7 +125,6 @@ function deleteFriendButton(target){
 // 點擊好友成就圖鑑
 function moreButtonClick(userId){
     let target = AllUsersFp.filter(user => user.userId == userId);
-    console.log(target);
     $('#friendAchievementReturn').text('〈 ' + target[0].nickname);
     $('#MORE' + userId).removeClass('is-loading');
 
@@ -351,6 +350,7 @@ function cancelRequestButton(target){
         method: 'PUT',
         success: function(response) {
             loadFriendObj(User.userId, 'change');
+            sendFriendInfo(target,5);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -446,6 +446,7 @@ function acceptRequestButton(target){
         method: 'PUT',
         success: function(response) {
             loadFriendObj(User.userId, 'change');
+            sendFriendInfo(target,2);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -459,6 +460,7 @@ function refuseRequestButton(target){
         method: 'PUT',
         success: function(response) {
             loadFriendObj(User.userId, 'change');
+            sendFriendInfo(target,3);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);

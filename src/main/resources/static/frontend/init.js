@@ -367,7 +367,7 @@ function loadFriendObj(userId, situation){
             if(situation == 'change'){
                 showSentRequest(FriendObj.requestingList);
                 showRequestedUser(FriendObj.requestedList);
-                showFriendList(findUsers);
+                showFriendList(FriendObj.friendList);
                 $('#searchNewFriend').trigger('input');
             }
         },

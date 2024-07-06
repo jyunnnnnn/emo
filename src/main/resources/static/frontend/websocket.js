@@ -47,11 +47,11 @@ function websocketInit() {
 
 //                console.log("flag: " + flag);
 //                console.log("message: " +message);
+                console.log(flag, message)
 
 
                 //新增好友
                 if(flag==1){
-
                     console.log(senderUserId+"發送好友邀請給您");
 
                     loadFriendObj(User.userId, 'change');
@@ -70,26 +70,35 @@ function websocketInit() {
                             $('#snackbar').css('display', 'none');
                         });
                     }, 3000);
-                }
-                else if(flag==2){
+                } else if(flag==2){
                    console.log(senderUserId+"接受您成為好友");
-                   
+
+                    loadFriendObj(User.userId, 'change');
+                    let msg = message;
+                    let snackbar = $('<div>', {
+                        class: 'content',
+                        id: 'acceptFriendMSG'
+                    })
+                        .text(msg);
+                    $('#snackbar').append(snackbar);
+                    $('#snackbar').css('display', '');
+
+                    setTimeout(function() {
+                        $('#snackbar').fadeOut(1000, function() {
+                            $('#acceptFriendMSG').remove();
+                            $('#snackbar').css('display', 'none');
+                        });
+                    }, 3000);
+                } else if(flag==3){
+                    // 被拒絕
+                    loadFriendObj(User.userId, 'change');
+                } else if(flag==4){
+                    // 被刪除
+                    loadFriendObj(User.userId, 'change');
+                } else if(flag==5){
+                    // 被取消好友邀請
+                    loadFriendObj(User.userId, 'change');
                 }
-                else if(flag==3){
-                    console.log(senderUserId+"拒絕與您成為好友");
-
-
-                }
-                else if(flag==4){
-                    console.log(senderUserId+"已將您從好友中刪除");
-
-                }
-                else if(flag==5){
-                    console.log(senderUserId+"已取消發送好友邀請給您");
-
-                }
-
-
             });
 
             resolve(stompClient);

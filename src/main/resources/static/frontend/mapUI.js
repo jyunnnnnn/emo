@@ -473,7 +473,7 @@ function closeFW(event){
         $('#friendRequestFW').css("display", "none");
         $('#friendFW').css("display", "flex");
     }else if(event.target.id === 'friendAchievementFW') {
-        $('#friendRequestFW').css("display", "none");
+        $('#friendAchievementFW').css("display", "none");
         $('#friendFW').css("display", "flex");
     }else if(event.target.id === 'shareError') {
         $('#shareError').css("display", "none");
