@@ -34,9 +34,11 @@ public class WebSocketController {
         String sender = principal.getName();
         String senderNickname = message.get("senderName");
         String receiver = message.get("receiver");
-        String content = senderNickname + "想要與您成為好友~";
 
-        System.out.println(senderNickname + "正在發送邀請給" + receiver);
+        //給對方的訊息內容
+        String content = message.get("message");
+
+        System.out.println(senderNickname + "正在發送通知給" + receiver);
 
         //這裡要 將receiver的動態消息加入到資料庫內
 
@@ -44,7 +46,7 @@ public class WebSocketController {
         simpMessagingTemplate.convertAndSendToUser(
                 receiver,
                 "/queue/friendRequest",  // 或使用 "/topic/friendRequest"
-                "好友請求來自 " + senderNickname + ": " + content
+                content
         );
     }
 }
