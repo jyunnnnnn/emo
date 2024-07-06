@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -28,23 +29,28 @@ public class WebSocketController {
 
 
     //接收前端websocket路徑為 /app/friendRequest的資訊 ， 前端使用者發送好友邀請給userId使用者
-    @MessageMapping("/friendRequest")
+    @MessageMapping("/sendFriendInfo")
     public void friendRequest(Principal principal, Map<String, String> message) {
 
         String sender = principal.getName();
+
         String senderNickname = message.get("senderName");
         String receiver = message.get("receiver");
-        String content = senderNickname + "想要與您成為好友~";
 
-        System.out.println(senderNickname + "正在發送邀請給" + receiver);
+        Map<String, String> content = new HashMap<>();
+        content.put("senderUserId",message.get("senderUserId"));
+        content.put("message", message.get("message"));
+        content.put("flag", message.get("flag"));
+
+        System.out.println(senderNickname + "正在發送訊息給" + receiver);
 
         //這裡要 將receiver的動態消息加入到資料庫內
 
         // 發送消息給特定使用者
         simpMessagingTemplate.convertAndSendToUser(
                 receiver,
-                "/queue/friendRequest",  // 或使用 "/topic/friendRequest"
-                "好友請求來自 " + senderNickname + ": " + content
+                "/queue/sendFriendInfo",  // 或使用 "/topic/friendRequest"
+                content
         );
     }
 }

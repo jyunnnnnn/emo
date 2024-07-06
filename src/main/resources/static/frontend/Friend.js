@@ -271,7 +271,8 @@ $('#searchNewFriend').on('input', function(event) {
 $('#sendRequestButton').on('click', function() {
     $('#sendRequestButton').addClass('is-loading');
     let targetID = $('#searchNewFriend').val();
-    sendFriendRequest(targetID);
+
+    sendFriendInfo(targetID,1);
 
     $.ajax({
         url: '/FR/addFriend?sender=' + User.userId +'&receiver=' + targetID,
