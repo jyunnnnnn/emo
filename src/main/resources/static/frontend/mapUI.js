@@ -881,19 +881,30 @@ $('.changeRouteBtn').on('click', function() {
     event.preventDefault();
     let whichRoad = parseInt($(this).data('route'));
     let type = currentInfoWindowRecord.type;
-    let recordedPositions = currentInfoWindowRecord;
+    let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
     let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
-    directionsDraw(recordedPositions.lineOnMap, mode, whichRoad, function(pathCoordinates) {
+    directionsDraw(positions.lineOnMap, mode, whichRoad, function(pathCoordinates) {
         clearMapLines();
-        recordedPositions.lineOnMap=pathCoordinates;
-        console.log('recordedPositions', pathCoordinates);
-        drawLine(recordedPositions);
+        positions.lineOnMap=pathCoordinates;
+        recordedPositions=pathCoordinates;
+        console.log("whichRoad",whichRoad)
+        console.log('positions', pathCoordinates);
+        drawLine(positions);
     });
+});
+
+$('#confirmChangeRouteBtn').on('click', function() {
+    event.preventDefault();
+    currentInfoWindowRecord.userDefinedLine=recordedPositions;
+    updateRecordToBackend(currentInfoWindowRecord.classType, currentInfoWindowRecord.type, currentInfoWindowRecord.data_value);
+    $('#ChangeRouteFW').css("display", "none");
+    clearMapLines();
 });
 
 //關閉自訂義路線
 $('#cancelChangeRouteBtn, #closeChangeRoute').on('click', function () {
     $('#ChangeRouteFW').css("display", "none");
+    clearMapLines();
 });
 
 //可拖曳漂浮窗
