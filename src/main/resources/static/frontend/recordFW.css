@@ -216,7 +216,77 @@ svg:hover .detail {
     align-content: center;
     align-items: center;
 }
+/* 路線拖曳懸浮窗 */
+.ChangeRouteFW {
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px;
+    display: none;
+}
 
+.ChangeRouteFW-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.ChangeRouteFW-body {
+    padding: 10px;
+    padding-top: 0;
+
+}
+
+#closeChangeRoute {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 25px;
+}
+
+.ChangeRouteButtons {
+    display: flex;
+    flex-direction: column;
+}
+
+.CRBtn_1_6{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+}
+
+.CRBtn_1_6 button,
+.CRBtn_CC{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 5px;
+}
+
+.CRBtn_Can_Con{
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.ChangeRouteButtons .cancelChangeRoute {
+    background-color: #f66;
+    color: white;
+}
+
+.ChangeRouteButtons .confirmChangeRoute {
+    background-color: #6cf;
+    color: white;
+}
 .recordContainer {
     max-width: 480px;
     background: #F8F9FD;

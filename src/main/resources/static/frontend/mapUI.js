@@ -244,13 +244,6 @@ $('#saveTrafficRecord').on('click', function () {
     }
 });
 
-//自訂義路線:選六路線
-$('#userDefinedRoute').on('click', function () {
-    event.preventDefault();
-    $('#routeFW').css("display", "none");
-    //跳一個可移動懸浮窗
-
-});
 // 查看按鈕
 $('#recordListButton').on('click', function () {
     reloadAchievement();
@@ -875,4 +868,79 @@ function convertToUnit(value) {
     }
 }
 
+//自訂義路線
+$('#userDefinedRoute').on('click', function () {
+    event.preventDefault();
+    $('#routeFW').css("display", "none");
+    //跳一個可移動懸浮窗
+    $('#ChangeRouteFW').css("display", "block");
+});
 
+//選六路線
+$('.changeRouteBtn').on('click', function() {
+    event.preventDefault();
+    let whichRoad = parseInt($(this).data('route'));
+    let type = currentInfoWindowRecord.type;
+    let recordedPositions = currentInfoWindowRecord;
+    let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
+    directionsDraw(recordedPositions.lineOnMap, mode, whichRoad, function(pathCoordinates) {
+        clearMapLines();
+        recordedPositions.lineOnMap=pathCoordinates;
+        console.log('recordedPositions', pathCoordinates);
+        drawLine(recordedPositions);
+    });
+});
+
+//關閉自訂義路線
+$('#cancelChangeRouteBtn, #closeChangeRoute').on('click', function () {
+    $('#ChangeRouteFW').css("display", "none");
+});
+
+//可拖曳漂浮窗
+dragElement(document.getElementById("ChangeRouteFW"));
+
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+    // 當滑鼠按下或觸摸開始時觸發
+    elmnt.querySelector('.ChangeRouteFW-header').onmousedown = dragMouseDown;
+    elmnt.querySelector('.ChangeRouteFW-header').ontouchstart = dragMouseDown;
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+
+        // 獲取初始位置
+        pos3 = e.clientX || e.touches[0].clientX;
+        pos4 = e.clientY || e.touches[0].clientY;
+
+        document.onmouseup = closeDragElement;
+        document.ontouchend = closeDragElement;
+
+        // 當滑鼠移動或觸摸移動時觸發
+        document.onmousemove = elementDrag;
+        document.ontouchmove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+
+        // 計算新的位置
+        pos1 = pos3 - (e.clientX || e.touches[0].clientX);
+        pos2 = pos4 - (e.clientY || e.touches[0].clientY);
+        pos3 = e.clientX || e.touches[0].clientX;
+        pos4 = e.clientY || e.touches[0].clientY;
+
+        // 設置新位置
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.ontouchend = null;
+        document.onmousemove = null;
+        document.ontouchmove = null;
+    }
+}

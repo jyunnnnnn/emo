@@ -680,6 +680,32 @@
         <div id="FPTransferTree" style="margin-top: 20px; text-align: center;"></div>
     </div>
 </div>
+
+<!-- 可拖曳懸浮窗：改變路線 -->
+<div id="ChangeRouteFW" class="ChangeRouteFW">
+    <div class="ChangeRouteFW-header">
+        <span style="margin-top:10px">更改路線</span>
+        <button id ="closeChangeRoute">×</button>
+    </div>
+    <div class="ChangeRouteFW-body">
+        <div class="ChangeRouteButtons">
+            <div class="CRBtn_1_6">
+                <button class="changeRouteBtn" data-route="0">1</button>
+                <button class="changeRouteBtn" data-route="1">2</button>
+                <button class="changeRouteBtn" data-route="2">3</button>
+                <button class="changeRouteBtn" data-route="3">4</button>
+                <button class="changeRouteBtn" data-route="4">5</button>
+                <button class="changeRouteBtn" data-route="5">6</button>
+            </div>
+            <button class="ChangeRoute CRBtn_CC">自訂義路線</button>
+            <div class="CRBtn_Can_Con">
+                <button class="cancelChangeRoute CRBtn_CC" id="cancelChangeRouteBtn">取消</button>
+                <button class="confirmChangeRoute CRBtn_CC" id="confirmChangeRouteBtn">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="ACPhoto" style="flex-direction: column; display: none; top: 0; left: 0;padding: 10px; width: 400px;height: 400px; padding-top: 30px"></div>
 <!--分享失敗提示-->
 <div id="shareError" onclick="closeFW(event)">
