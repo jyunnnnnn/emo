@@ -200,3 +200,6 @@ function clearNowLines() {
     }
     showNowLines=[];
 }
+function enableDrawingMode() {
+    drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
+}

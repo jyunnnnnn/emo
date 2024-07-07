@@ -217,7 +217,7 @@ svg:hover .detail {
     align-items: center;
 }
 /* 路線拖曳懸浮窗 */
-.ChangeRouteFW {
+.ChangeRouteFW, .CustomRouteFW {
     position: fixed;
     top: 80%;
     left: 50%;
@@ -232,27 +232,27 @@ svg:hover .detail {
     display: none;
 }
 
-.ChangeRouteFW-header {
+.ChangeRouteFW-header, .CustomRouteFW-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px;
 }
 
-.ChangeRouteFW-body {
+.ChangeRouteFW-body, .CustomRouteFW-body {
     padding: 10px;
     padding-top: 0;
 
 }
 
-#closeChangeRoute {
+#closeChangeRoute, #closeCustomRoute {
     cursor: pointer;
     background: none;
     border: none;
     font-size: 25px;
 }
 
-.ChangeRouteButtons {
+.ChangeRouteButtons, .CustomRouteButtons {
     display: flex;
     flex-direction: column;
 }
@@ -263,8 +263,7 @@ svg:hover .detail {
     gap: 5px;
 }
 
-.CRBtn_1_6 button,
-.CRBtn_CC{
+.CRBtn_1_6 button, .CRBtn_CC{
     border: 1px solid #ccc;
     border-radius: 10px;
     margin: 5px 0;
@@ -278,12 +277,12 @@ svg:hover .detail {
     gap: 10px;
 }
 
-.ChangeRouteButtons .cancelChangeRoute {
+.ChangeRouteButtons .cancelChangeRoute, .CustomRouteButtons .cancelCustomRoute {
     background-color: #f66;
     color: white;
 }
 
-.ChangeRouteButtons .confirmChangeRoute {
+.ChangeRouteButtons .confirmChangeRoute, .CustomRouteButtons .confirmCustomRoute {
     background-color: #6cf;
     color: white;
 }

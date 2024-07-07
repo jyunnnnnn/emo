@@ -30,6 +30,7 @@ let MAP_OK=0;
 let DATA_OK=0;
 let emoLogo="frontend/img/emoLogo.png";
 let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
+
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -235,6 +236,34 @@ function initMap() {
                     loadEcoRecords(User.userId);//載入環保紀錄
                     $('#preloader').fadeOut(1500);
                 }
+                //手繪路線
+                drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingMode: null,
+                    drawingControl: false,
+                    polylineOptions: {
+                        strokeColor: '#166a29',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 4
+                    }
+                });
+                drawingManager.setMap(map);
+
+                google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+                    if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
+                        showNowLines=event.overlay
+                        let path = showNowLines.getPath();
+                        let coordinates = [];
+                        for (let i = 0; i < path.getLength(); i++) {
+                            let latLng = path.getAt(i);
+                            coordinates.push({ lat: latLng.lat(), lng: latLng.lng() });
+                        }
+                        console.log('繪製座標:', coordinates);
+                        recordedPositions=coordinates;
+                        // 修正路線
+                        processAllPoints(recordedPositions);
+                        drawingManager.setDrawingMode(null);
+                    }
+                });
 
             },
             function(error){ console.error('Error getting geolocation:', error);}

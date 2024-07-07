@@ -871,7 +871,12 @@ function convertToUnit(value) {
 //自訂義路線
 $('#userDefinedRoute').on('click', function () {
     event.preventDefault();
+    recordedPositions=[];
     $('#routeFW').css("display", "none");
+    $('#openRecordModal').css("display", "none");
+    $('#startRecording').css("display", "none");
+    $('#recordListButton').css("display", "none");
+
     //跳一個可移動懸浮窗
     $('#ChangeRouteFW').css("display", "block");
 });
@@ -879,6 +884,7 @@ $('#userDefinedRoute').on('click', function () {
 //選六路線
 $('.changeRouteBtn').on('click', function() {
     event.preventDefault();
+    recordedPositions=[];
     let whichRoad = parseInt($(this).data('route'));
     let type = currentInfoWindowRecord.type;
     let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
@@ -899,36 +905,89 @@ $('#confirmChangeRouteBtn').on('click', function() {
     updateRecordToBackend(currentInfoWindowRecord.classType, currentInfoWindowRecord.type, currentInfoWindowRecord.data_value);
     $('#ChangeRouteFW').css("display", "none");
     clearMapLines();
+    recordedPositions=[];
+    $('#openRecordModal').css("display", "block");
+    $('#startRecording').css("display", "block");
+    $('#recordListButton').css("display", "block");
 });
 
 //關閉自訂義路線
 $('#cancelChangeRouteBtn, #closeChangeRoute').on('click', function () {
     $('#ChangeRouteFW').css("display", "none");
     clearMapLines();
+    recordedPositions=[];
+    $('#openRecordModal').css("display", "block");
+    $('#startRecording').css("display", "block");
+    $('#recordListButton').css("display", "block");
+});
+
+//開畫
+$('#customRoute').on('click', function() {
+    event.preventDefault();
+    recordedPositions=[];
+    clearMapLines();
+    $('#openRecordModal').css("display", "none");
+    $('#startRecording').css("display", "none");
+    $('#recordListButton').css("display", "none");
+    $('#ChangeRouteFW').css("display", "none");
+    $('#CustomRouteFW').css("display", "block");
+    enableDrawingMode();
+});
+//不畫
+$('#closeCustomRoute, .cancelCustomRoute').on('click', function() {
+    $('#CustomRouteFW').css("display", "none");
+    if(showNowLines){
+        showNowLines.setMap(null);
+    }
+    drawingManager.setDrawingMode(null);
+    recordedPositions=[];
+    $('#openRecordModal').css("display", "block");
+    $('#startRecording').css("display", "block");
+    $('#recordListButton').css("display", "block");
+});
+
+//畫好了
+$('.confirmCustomRoute').on('click', function() {
+    event.preventDefault();
+    if(recordedPositions.length>2) {
+        currentInfoWindowRecord.userDefinedLine = recordedPositions;
+        updateRecordToBackend(currentInfoWindowRecord.classType, currentInfoWindowRecord.type, currentInfoWindowRecord.data_value);
+    }else{
+        alert("不可不繪製路線!!!");
+    }
+    if (showNowLines) {
+        showNowLines.setMap(null);
+    }
+    recordedPositions = [];
+    drawingManager.setDrawingMode(null);
+    $('#CustomRouteFW').css("display", "none");
+    $('#openRecordModal').css("display", "block");
+    $('#startRecording').css("display", "block");
+    $('#recordListButton').css("display", "block");
 });
 
 //可拖曳漂浮窗
 dragElement(document.getElementById("ChangeRouteFW"));
+dragElement(document.getElementById("CustomRouteFW"));
 
 function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-    // 當滑鼠按下或觸摸開始時觸發
-    elmnt.querySelector('.ChangeRouteFW-header').onmousedown = dragMouseDown;
-    elmnt.querySelector('.ChangeRouteFW-header').ontouchstart = dragMouseDown;
+    elmnt.querySelector('.ChangeRouteFW-header')?.addEventListener('mousedown', dragMouseDown);
+    elmnt.querySelector('.ChangeRouteFW-header')?.addEventListener('touchstart', dragMouseDown);
+    elmnt.querySelector('.CustomRouteFW-header')?.addEventListener('mousedown', dragMouseDown);
+    elmnt.querySelector('.CustomRouteFW-header')?.addEventListener('touchstart', dragMouseDown);
 
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
 
-        // 獲取初始位置
         pos3 = e.clientX || e.touches[0].clientX;
         pos4 = e.clientY || e.touches[0].clientY;
 
         document.onmouseup = closeDragElement;
         document.ontouchend = closeDragElement;
 
-        // 當滑鼠移動或觸摸移動時觸發
         document.onmousemove = elementDrag;
         document.ontouchmove = elementDrag;
     }
@@ -937,13 +996,11 @@ function dragElement(elmnt) {
         e = e || window.event;
         e.preventDefault();
 
-        // 計算新的位置
         pos1 = pos3 - (e.clientX || e.touches[0].clientX);
         pos2 = pos4 - (e.clientY || e.touches[0].clientY);
         pos3 = e.clientX || e.touches[0].clientX;
         pos4 = e.clientY || e.touches[0].clientY;
 
-        // 設置新位置
         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
     }

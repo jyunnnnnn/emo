@@ -697,11 +697,25 @@
                 <button class="changeRouteBtn" data-route="4">5</button>
                 <button class="changeRouteBtn" data-route="5">6</button>
             </div>
-            <button class="ChangeRoute CRBtn_CC">自訂義路線</button>
+            <button class="ChangeRoute CRBtn_CC" id="customRoute">自訂義路線</button>
             <div class="CRBtn_Can_Con">
                 <button class="cancelChangeRoute CRBtn_CC" id="cancelChangeRouteBtn">取消</button>
                 <button class="confirmChangeRoute CRBtn_CC" id="confirmChangeRouteBtn">確定</button>
             </div>
+        </div>
+    </div>
+</div>
+<!-- 可拖曳懸浮窗：自己畫路線 -->
+<div id="CustomRouteFW" class="CustomRouteFW">
+    <div class="CustomRouteFW-header">
+        <span>請在地圖像標點繪製線段</span>
+        <button class="close-btn" id="closeCustomRoute">×</button>
+    </div>
+    <div class="CustomRouteFW-body">
+        <span>點兩下停止繪製...</span>
+        <div class="CustomRouteButtons CRBtn_Can_Con">
+            <button class="cancelCustomRoute">取消</button>
+            <button class="confirmCustomRoute">確定</button>
         </div>
     </div>
 </div>
