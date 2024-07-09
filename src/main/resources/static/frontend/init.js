@@ -19,7 +19,10 @@ let showNowLines; //紀錄的路線線段們(紀錄時用[line]  記錄時用的
 let mapLines = [];// 點擊紀錄的路線
 let directionsDisplay;
 let questionMark = {};
-let AchievementObj={};
+let AchievementObj= {};
+let FriendAchievementObj = {};
+let FriendObj={};
+let findUsers={};
 let Rank={};//減碳量等級判定物件
 let AllUsersFp={};//所有使用者排行物件陣列
 let no1="frontend/img/1.png";
@@ -31,6 +34,21 @@ let DATA_OK=0;
 let emoLogo="frontend/img/emoLogo.png";
 let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
 
+// 定義一個事件發射器
+const EventEmitter = {
+    events: {},
+    on(event, listener) {
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        this.events[event].push(listener);
+    },
+    emit(event, data) {
+        if (this.events[event]) {
+            this.events[event].forEach(listener => listener(data));
+        }
+    }
+};
 // 初始化Google Map
 function initMap() {
     console.log("進入init");
@@ -40,6 +58,7 @@ function initMap() {
          success: function(response){
               //console.log(response.user);
              let userData=response.user;
+
              localStorage.setItem("EmoAppUser",userData);
 
              console.log("獲取使用者資料成功");
@@ -277,8 +296,12 @@ function initMap() {
 function systemInit(){
     //watchPosition()=>裝置換位置就會自己動
     User =JSON.parse(localStorage.getItem('EmoAppUser'));
+    // 發出用戶已初始化的事件
+    EventEmitter.emit('userInitialized', User);
+    $('#myUserID').text('我的ID：' + User.userId);
     loadSVG();//載入svg
-    loadAchievementObj(User.userId);
+    loadAchievementObj(User.userId, 'me');
+    loadFriendObj(User.userId, 'init');
     loadRank();
     loadAllUsersFp(0);
     watchId = navigator.geolocation.watchPosition(success, error, options);
@@ -350,6 +373,35 @@ function loadSVG(){
         }
     });
 
+}
+//載入好友列表
+function loadFriendObj(userId, situation){
+    $.ajax({
+        url: '/FR/getFriendData?userId='+userId,
+        method: 'GET',
+        success: function(response) {
+            FriendObj=response.data;
+
+            /*
+                回傳格式:
+                userId : 當前使用者userId,
+                friendList: 當前使用者的好友列表,
+                requestingList: 當前使用者發出好友邀請對象,
+                requestedList: 發送給當前使用者好友邀請的對象
+            */
+
+            console.log(FriendObj);
+            if(situation == 'change'){
+                showSentRequest(FriendObj.requestingList);
+                showRequestedUser(FriendObj.requestedList);
+                showFriendList(FriendObj.friendList);
+                $('#searchNewFriend').trigger('input');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
 }
 //載入碳足跡計算係數
 function loadFootprintData() {
@@ -701,12 +753,17 @@ function uploadPhoto() {
         });
     $('#uploadUserPhotoFW').css("display", "none");
 }
-function loadAchievementObj(userId){
+function loadAchievementObj(userId, person){
     $.ajax({
         url: '/AC/getUserAchievementStateObj?userId='+userId,
         type: 'GET',
         success: function(response) {
-            AchievementObj=response;
+            if(person == 'friend'){
+                FriendAchievementObj = response;
+                moreButtonClick(userId);
+            } else {
+                AchievementObj = response;
+            }
 
 
             //console.log(AchievementObj);
@@ -731,7 +788,6 @@ function loadAllUsersFp(a){
                     //console.log(response);
                     AllUsersFp=response;
                     //console.log(AllUsersFp);
-                    initUserData();
                     if(a==1){
                         $("#rotateURBtn").removeClass("rotateUpdateBtn");
                         $('#updateRanking').prop("disabled", false);
@@ -750,7 +806,11 @@ function loadAllUsersFp(a){
                     //console.log(response);
                     AllUsersFp=response;
                     //console.log(AllUsersFp);
-                    initUserData();
+
+                    showSentRequest(FriendObj.requestingList);
+                    showRequestedUser(FriendObj.requestedList);
+                    showFriendList(FriendObj.friendList);
+
                     if(a==1){
                         $("#rotateURBtn").removeClass("rotateUpdateBtn");
                         $('#updateRanking').prop("disabled", false);
@@ -777,7 +837,7 @@ function loadRank(){
                 loadEcoRecords(User.userId);//載入環保紀錄
                 $('#preloader').fadeOut(1500);
             }
-            //console.log(Rank);
+            console.log(Rank);
             // 調用生成使用者資料函數
         },
         error: function(xhr, status, error) {

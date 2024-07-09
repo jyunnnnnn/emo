@@ -3,7 +3,11 @@
 #achievementFW,
 #eachAchievementFW,
 #firstTimeAchieveFW,
-#rankingFW{
+#rankingFW,
+#friendFW,
+#addFriendFW,
+#friendRequestFW,
+#friendAchievementFW{
     display: none;
     position: fixed;
     top: 0;
@@ -42,6 +46,11 @@
 .historyHeading {
     font-weight: 900;
     font-size: 50px;
+    color: rgb(123, 125, 127);
+}
+.historyHeading2 {
+    font-weight: 900;
+    font-size: 30px;
     color: rgb(123, 125, 127);
 }
 .recordListReturn {
@@ -376,7 +385,6 @@
     }
 }
 #updateRanking{
-    padding-top: 15px;
     transition: transform 0.3s ease;
 }
 #updateRanking:hover {

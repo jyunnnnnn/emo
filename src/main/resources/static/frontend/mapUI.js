@@ -479,6 +479,17 @@ function closeFW(event){
         $('#FPTransferFW').css("display", "none");
     }else if(event.target.id === 'rankingFW') {
         $('#rankingFW').css("display", "none");
+    }else if(event.target.id === 'friendFW') {
+        $('#friendFW').css("display", "none");
+    }else if(event.target.id === 'addFriendFW') {
+        $('#addFriendFW').css("display", "none");
+        $('#friendFW').css("display", "flex");
+    }else if(event.target.id === 'friendRequestFW') {
+        $('#friendRequestFW').css("display", "none");
+        $('#friendFW').css("display", "flex");
+    }else if(event.target.id === 'friendAchievementFW') {
+        $('#friendAchievementFW').css("display", "none");
+        $('#friendFW').css("display", "flex");
     }else if(event.target.id === 'shareError') {
         $('#shareError').css("display", "none");
     }

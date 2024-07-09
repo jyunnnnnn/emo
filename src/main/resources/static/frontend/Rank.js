@@ -15,6 +15,7 @@ $('#updateRanking').on('click', function () {
     $('#rotateURBtn').addClass('rotateUpdateBtn');
     $(this).prop("disabled", true);
     loadAllUsersFp(1);
+    initUserData()
     $('#selectedRank').text('所有階級');
 });
 function convertTotalFPtoRankColor(total) {
@@ -23,7 +24,18 @@ function convertTotalFPtoRankColor(total) {
         rankType:null,
         FPString:null
      };
-     const foundRank = Rank.find(rank => total >= rank.lowerBound);
+      const suitableRanks = Rank.filter(rank => total >= rank.lowerBound);
+
+     // 如果没有滿足條件的排名返回默認
+     if (suitableRanks.length === 0) {
+         result.color = "#000000"; // 默认颜色
+         result.rankType = -1; // 默认等级
+         result.FPString = convertRankToPresent(-1, total); // 默认FP字符串
+         return result;
+     }
+
+     // 找到最高等级的排名
+     const foundRank = suitableRanks[suitableRanks.length - 1];
      result.color=foundRank.rankColor;
      result.rankType=foundRank.rankType;
      result.FPString=convertRankToPresent(foundRank.rankType,total);
@@ -49,6 +61,25 @@ function convertRankToPresent(rankType, total) {
 }
 // 動態生成使用者資料
 function initUserData() {
+      let friend;
+      $('#rankingChoose .item').on('click', function() {
+            // 给当前按钮添加 is-active 类
+            $(this).addClass('is-active');
+
+            // 根据 data-tab 属性切换排行类型
+            const tab = $(this).data('tab');
+            if (tab === 'AllRank') {
+                showRankByRankType("", 1, 0);
+                RankReset(0);//全部
+            } else if (tab === 'FriendRank') {
+                showRankByRankType("", 1, 1);
+                RankReset(1);//好友
+            }
+     });
+     $('#rankingChoose [data-tab="AllRank"]').trigger('click');
+}
+function RankReset(friend){
+     $('#selectedRank').text('所有階級');
      const dropdownElement = $('#rankNType');
      // 清空原有的選項
      dropdownElement.empty();
@@ -57,7 +88,7 @@ function initUserData() {
      optionElement.attr('id', 'all');
      optionElement.on("click", function() {
          $('#selectedRank').text("所有階級");
-         showRankByRankType("",1);
+         showRankByRankType("",1,friend);
      });
      dropdownElement.append(optionElement);
      Rank.forEach(option => {//Rank全域變數 init獲得
@@ -65,22 +96,17 @@ function initUserData() {
          optionElement.attr('id', option.rankType);
          optionElement.on("click", function() {
             $('#selectedRank').text(option.rankName);
-             showRankByRankType(option.rankType,0);
+             showRankByRankType(option.rankType,0,friend);
          });
          dropdownElement.append(optionElement);
      });
-    showRankByRankType("",1);
-
-    // loader關掉
-
+    showRankByRankType("",1,friend);
 }
-
-function showRankByRankType(rankType,all){
+function showRankByRankType(rankType,all,friend){
     // 清空原有的使用者資料
     const rankingContainer = $('#rankingContent');
     const rowContainer =$('#rowContainer');
     rankingContainer.empty();
-    let findUsers={};
     if(all){
         findUsers=AllUsersFp;//AllUsersFp全域變數 init獲得
     }
@@ -88,6 +114,9 @@ function showRankByRankType(rankType,all){
         findUsers= AllUsersFp.filter(user => user.rankType === rankType);
     }
     findUsers= findUsers.filter(user => user.totalFP > 0);
+    if(friend){
+       findUsers = findUsers.filter(user => FriendObj.friendList.includes(user.UserId)||user.userId===User.userId);
+    }
     findUsers.sort((a, b) => b.totalFP - a.totalFP);
 
 //    console.log(Rank);

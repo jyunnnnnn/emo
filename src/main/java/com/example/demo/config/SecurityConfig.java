@@ -122,6 +122,7 @@ public class SecurityConfig {
                                 .requestMatchers("/AC/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/user/init").hasAuthority("NORMAL")
+                                .requestMatchers("/FR/**").permitAll()
                                 .requestMatchers("/user/**").permitAll()
                                 .requestMatchers("/mail/**").permitAll()
                                 .requestMatchers("/imgur/**").permitAll()
