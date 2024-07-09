@@ -55,7 +55,7 @@ function showNowRecordInFoWindow(nowRecord){
             markers[i].infoWindow.open(map,markers[i]);
             // 從紀錄列表點開也要呈現路線
             if(currentInfoWindowRecord.classType=="交通"){
-                drawLine(currentInfoWindowRecord);
+                drawLine(currentInfoWindowRecord,false);
             }
             //console.log("InFoWindow OK")
             break;

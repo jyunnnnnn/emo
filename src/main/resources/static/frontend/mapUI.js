@@ -869,8 +869,13 @@ function convertToUnit(value) {
 }
 
 //自訂義路線
-$('#userDefinedRoute').on('click', function () {
+$('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     event.preventDefault();
+    $('#CustomRouteFW').css('display', 'none');
+    if(showNowLines){
+        showNowLines.setMap(null);
+    }
+    drawingManager.setDrawingMode(null);
     recordedPositions=[];
     $('#routeFW').css("display", "none");
     $('#openRecordModal').css("display", "none");
@@ -895,7 +900,7 @@ $('.changeRouteBtn').on('click', function() {
         recordedPositions=pathCoordinates;
         console.log("whichRoad",whichRoad)
         console.log('positions', pathCoordinates);
-        drawLine(positions);
+        drawLine(positions,false);
     });
 });
 
@@ -920,7 +925,12 @@ $('#cancelChangeRouteBtn, #closeChangeRoute').on('click', function () {
     $('#startRecording').css("display", "block");
     $('#recordListButton').css("display", "block");
 });
-
+$('#initialRoute').on('click', function () {
+    event.preventDefault();
+    clearMapLines();
+    drawLine(currentInfoWindowRecord,true);
+    recordedPositions=JSON.parse(JSON.stringify(currentInfoWindowRecord.lineOnMap));
+})
 //開畫
 $('#customRoute').on('click', function() {
     event.preventDefault();
@@ -934,7 +944,7 @@ $('#customRoute').on('click', function() {
     enableDrawingMode();
 });
 //不畫
-$('#closeCustomRoute, .cancelCustomRoute').on('click', function() {
+$('#closeCustomRoute').on('click', function() {
     $('#CustomRouteFW').css("display", "none");
     if(showNowLines){
         showNowLines.setMap(null);
@@ -953,7 +963,8 @@ $('.confirmCustomRoute').on('click', function() {
         currentInfoWindowRecord.userDefinedLine = recordedPositions;
         updateRecordToBackend(currentInfoWindowRecord.classType, currentInfoWindowRecord.type, currentInfoWindowRecord.data_value);
     }else{
-        alert("不可不繪製路線!!!");
+        alert("請正常繪製路線!!!");
+        clearMapLines();
     }
     if (showNowLines) {
         showNowLines.setMap(null);

@@ -167,9 +167,9 @@ function recordLocation() {
 }
 
 //點擊紀錄時畫路線圖
-function drawLine(cRecord){
+function drawLine(cRecord,initial){
     let tracking;
-    if(cRecord.type=="捷運"||cRecord.type=="高鐵"||cRecord.type=="火車"){
+    if((cRecord.type=="捷運"||cRecord.type=="高鐵"||cRecord.type=="火車")&& !initial){
         tracking = cRecord.userDefinedLine;
     }else{
         tracking = cRecord.lineOnMap;

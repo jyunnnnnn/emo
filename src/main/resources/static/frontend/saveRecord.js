@@ -153,7 +153,7 @@ function addMarker(recordToAdd) {
            currentInfoWindowRecord = recordToAdd;
            currentMarker = marker;
            if(currentInfoWindowRecord.classType=="交通"){
-               drawLine(currentInfoWindowRecord);
+               drawLine(currentInfoWindowRecord,false);
            }
        });
 

@@ -13,7 +13,6 @@ function updateRecord(event, updateFW){
         type = $('#type').find('.item.is-selected').text();
         data_value = $('#gram').val();
     }
-    let newLine =currentInfoWindowRecord.lineOnMap;
     function handleDirectionsResult(pathCoordinates) {
         currentInfoWindowRecord.userDefinedLine = pathCoordinates;
         if (classType && type && data_value && data_value > 0) {
@@ -27,13 +26,19 @@ function updateRecord(event, updateFW){
             clearMapLines();
         }
     }
-
-    if (type == "捷運" || type == "高鐵") {
-        directionsDraw(newLine, 'SUBWAY', 0, handleDirectionsResult);
-    } else if (type == "火車") {
-        directionsDraw(newLine, 'TRAIN', 0, handleDirectionsResult);
-    } else {
-        handleDirectionsResult(newLine); // 若不是捷運或高鐵或火車，直接处理
+    let newLine =currentInfoWindowRecord.lineOnMap;
+    let initialLine;
+    if(currentInfoWindowRecord.userDefinedLine){
+         initialLine=JSON.parse(JSON.stringify(currentInfoWindowRecord.userDefinedLine));
+         handleDirectionsResult(initialLine);
+    }else{
+        if (type == "捷運" || type == "高鐵") {
+            directionsDraw(newLine, 'SUBWAY', 0, handleDirectionsResult);
+        } else if (type == "火車") {
+            directionsDraw(newLine, 'TRAIN', 0, handleDirectionsResult);
+        } else {
+            handleDirectionsResult(newLine); // 若不是捷運或高鐵或火車，直接處理
+        }
     }
 }
 // 更新紀錄的函數
