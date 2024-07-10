@@ -888,6 +888,16 @@ $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     }
     drawingManager.setDrawingMode(null);
     recordedPositions=[];
+    let type = currentInfoWindowRecord.type;
+    let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
+    let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
+    directionsDraw(positions.lineOnMap, mode, 0, function(pathCoordinates) {
+        clearMapLines();
+        positions.lineOnMap=pathCoordinates;
+        recordedPositions=pathCoordinates;
+        console.log('positions', pathCoordinates);
+        drawLine(positions,true);
+    });
     $('#routeFW').css("display", "none");
     $('#openRecordModal').css("display", "none");
     $('#startRecording').css("display", "none");
