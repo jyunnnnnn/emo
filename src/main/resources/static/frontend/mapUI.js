@@ -911,7 +911,7 @@ $('.changeRouteBtn').on('click', function() {
         recordedPositions=pathCoordinates;
         console.log("whichRoad",whichRoad)
         console.log('positions', pathCoordinates);
-        drawLine(positions,false);
+        drawLine(positions,true);
     });
 });
 
