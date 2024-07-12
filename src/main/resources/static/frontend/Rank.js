@@ -115,12 +115,11 @@ function showRankByRankType(rankType,all,friend){
     }
     findUsers= findUsers.filter(user => user.totalFP > 0);
     if(friend){
-       findUsers = findUsers.filter(user => FriendObj.friendList.includes(user.UserId)||user.userId===User.userId);
+       findUsers = findUsers.filter(user => FriendObj.friendList.some(friend => friend.userId === user.userId) || user.userId === User.userId);
     }
     findUsers.sort((a, b) => b.totalFP - a.totalFP);
-
 //    console.log(Rank);
-    console.log(findUsers);
+
     let myRankData=findUsers.find(user => user.userId === User.userId);
     let myIndex = findUsers.indexOf(myRankData)+1;
 
