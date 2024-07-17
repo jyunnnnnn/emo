@@ -168,6 +168,7 @@ button:focus {
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1;
 }
 .detail::before {
     position: absolute;
@@ -261,6 +262,7 @@ svg:hover .detail {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 5px;
+    flex-grow: 1;
 }
 
 .CRBtn_1_6 button, .CRBtn_CC{
@@ -290,6 +292,9 @@ svg:hover .detail {
 .changeRouteBtn.selected, #initialRoute.selected {
     background-color: gray;
     color: white;
+}
+.ChangeRoute{
+    flex-grow: 1;
 }
 
 .recordContainer {
