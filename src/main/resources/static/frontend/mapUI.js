@@ -883,6 +883,7 @@ function convertToUnit(value) {
 $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     event.preventDefault();
     $('#CustomRouteFW').css('display', 'none');
+    $('#initialRoute').removeClass('selected');
     if(showNowLines){
         showNowLines.setMap(null);
     }
@@ -891,6 +892,7 @@ $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     let type = currentInfoWindowRecord.type;
     let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
     let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
+    // 預設路線1
     directionsDraw(positions.lineOnMap, mode, 0, function(pathCoordinates) {
         clearMapLines();
         positions.lineOnMap=pathCoordinates;
@@ -905,23 +907,30 @@ $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
 
     //跳一個可移動懸浮窗
     $('#ChangeRouteFW').css("display", "block");
+    $('.changeRouteBtn').removeClass('selected');
+    $('.changeRouteBtn').first().addClass('selected'); // 預設第一條路線
 });
 
 //選六路線
-$('.changeRouteBtn').on('click', function() {
+$('.changeRouteBtn').on('click', function(event) {
     event.preventDefault();
     recordedPositions=[];
     let whichRoad = parseInt($(this).data('route'));
     let type = currentInfoWindowRecord.type;
     let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
     let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
+
     directionsDraw(positions.lineOnMap, mode, whichRoad, function(pathCoordinates) {
         clearMapLines();
         positions.lineOnMap=pathCoordinates;
         recordedPositions=pathCoordinates;
-        console.log("whichRoad",whichRoad)
+        console.log("whichRoad",whichRoad);
         console.log('positions', pathCoordinates);
         drawLine(positions,true);
+        // 按鈕狀態顏色
+        $('#initialRoute').removeClass('selected');
+        $('.changeRouteBtn').removeClass('selected');
+        $(event.currentTarget).addClass('selected');
     });
 });
 
@@ -945,9 +954,12 @@ $('#cancelChangeRouteBtn, #closeChangeRoute').on('click', function () {
     $('#openRecordModal').css("display", "block");
     $('#startRecording').css("display", "block");
     $('#recordListButton').css("display", "block");
+    $('#initialRoute').removeClass('selected');
 });
 $('#initialRoute').on('click', function () {
     event.preventDefault();
+    $('.changeRouteBtn').removeClass('selected');
+    $(this).addClass('selected');
     clearMapLines();
     drawLine(currentInfoWindowRecord,true);
     recordedPositions=JSON.parse(JSON.stringify(currentInfoWindowRecord.lineOnMap));

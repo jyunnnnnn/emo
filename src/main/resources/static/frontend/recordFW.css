@@ -286,6 +286,16 @@ svg:hover .detail {
     background-color: #6cf;
     color: white;
 }
+
+.changeRouteBtn.selected, #initialRoute.selected {
+    background-color: gray;
+    color: white;
+}
+
+.changeRouteBtn:hover, .ChangeRoute:hover {
+    background-color: lightgray;
+}
+
 .recordContainer {
     max-width: 480px;
     background: #F8F9FD;
