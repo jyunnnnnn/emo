@@ -26,16 +26,16 @@ function updateRecord(event, updateFW){
             clearMapLines();
         }
     }
-    let newLine =currentInfoWindowRecord.lineOnMap;
+    let newLine =JSON.parse(JSON.stringify(currentInfoWindowRecord.lineOnMap));
     let initialLine;
     if(currentInfoWindowRecord.userDefinedLine){
          initialLine=JSON.parse(JSON.stringify(currentInfoWindowRecord.userDefinedLine));
          handleDirectionsResult(initialLine);
     }else{
         if (type == "捷運" || type == "高鐵") {
-            directionsDraw(newLine, 'SUBWAY', 0, handleDirectionsResult);
+            directionsDraw(newLine, 'SUBWAY', handleDirectionsResult);
         } else if (type == "火車") {
-            directionsDraw(newLine, 'TRAIN', 0, handleDirectionsResult);
+            directionsDraw(newLine, 'TRAIN', handleDirectionsResult);
         } else {
             handleDirectionsResult(newLine); // 若不是捷運或高鐵或火車，直接處理
         }
