@@ -787,7 +787,7 @@ function loadAllUsersFp(a){
                 success: function(response) {
                     //console.log(response);
                     AllUsersFp=response;
-                    //console.log(AllUsersFp);
+                    console.log("AllUser",AllUsersFp);
                     if(a==1){
                         $("#rotateURBtn").removeClass("rotateUpdateBtn");
                         $('#updateRanking').prop("disabled", false);

@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +82,11 @@ public class RankService {
             rankInitReturnEntity.setPhoto(userInfo.getPhoto());
 
             double totalFP = 0.0;
+            double monthlyFP = 0.0;
+            double dailyFP = 0.0;
+            double weeklyFP = 0.0;
             Map<String, Double> classRecordCarbonCounter = user.getClassRecordCarbonCounter();
+
             if (classRecordCarbonCounter.containsKey("生活用品")) {
                 totalFP += classRecordCarbonCounter.get("生活用品");
             }
@@ -90,11 +98,57 @@ public class RankService {
             int rankType = this.findRank(totalFP);
             rankInitReturnEntity.setRankType(rankType);
 
+            List<EcoRecord> ecoRecords = recordRepository.findAllByUserId(userId);
+
+            for (EcoRecord ecoRecord : ecoRecords) {
+                double footprint = ecoRecord.getFootprint();
+
+
+                LocalDateTime dateTime = LocalDateTime.parse(ecoRecord.getTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                LocalDate date = dateTime.toLocalDate();
+
+                totalFP += footprint;
+
+                // 月日週减碳量
+                if (isWithinThisMonth(date)) {
+                    monthlyFP += footprint;
+                }
+                if (isWithinThisDay(date)) {
+                    dailyFP += footprint;
+                }
+                if (isWithinThisWeek(date)) {
+                    weeklyFP += footprint;
+                }
+            }
+
+
+            rankInitReturnEntity.setDailyFP(dailyFP);
+            rankInitReturnEntity.setMonthlyFP(monthlyFP);
+            rankInitReturnEntity.setWeeklyFP(weeklyFP);
+
             result.add(rankInitReturnEntity);
         }
         return result;
     }
+    // 计算本月的记录
+    private boolean isWithinThisMonth(LocalDate date) {
+        LocalDate now = LocalDate.now();
+        return date.getYear() == now.getYear() && date.getMonth() == now.getMonth();
+    }
 
+    // 计算本日的记录
+    private boolean isWithinThisDay(LocalDate date) {
+        LocalDate now = LocalDate.now();
+        return date.isEqual(now);
+    }
+
+    // 计算本周的记录
+    private boolean isWithinThisWeek(LocalDate date) {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfWeek = now.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = now.with(DayOfWeek.SUNDAY);
+        return !date.isBefore(startOfWeek) && !date.isAfter(endOfWeek);
+    }
     //新增rank
     public void addRank(RankEntity rankEntity) {
         this.rankRepository.save(rankEntity);

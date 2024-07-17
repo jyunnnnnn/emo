@@ -634,6 +634,13 @@
              style="font-size:20px; z-index: 101; width: 82%;max-height: 45%;overflow-y: scroll;">
             <a class="item is-selected" id="rankType"></a>
         </div>
+        <div class="ts-select" data-dropdown="time" id="TimeChoose" style="width: 100%">
+            <div class="content" id="selectedTime" style="font-size:20px">所有時間</div>
+        </div>
+        <div class="ts-dropdown is-bottom-right" data-name="time" id="timeNType"
+             style="font-size:20px; z-index: 101; width: 82%;max-height: 45%;overflow-y: scroll;">
+            <a class="item is-selected" id="allTime"></a>
+        </div>
         <!--自己的排行-->
         <div class="rank-div" style="border:none;padding: 0px; margin-top:10px">
             <div style="margin:10px; margin-right: 5px;flex:20%">
@@ -1021,9 +1028,9 @@
 <script src="/frontend/routeRecord.js"></script>
 <script src="/frontend/updateRecord.js"></script>
 <script src="/frontend/deleteRecord.js"></script>
+<script src="/frontend/Rank.js"></script>
 <script src="/frontend/recordList.js"></script>
 <script src="/frontend/achievement.js"></script>
-<script src="/frontend/Rank.js"></script>
 <script src="/frontend/Friend.js"></script>
 <script src="/frontend/websocket.js"></script>
 <!-- 初始化地圖 -->

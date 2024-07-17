@@ -14,6 +14,9 @@ public class RankInitReturnEntity {
     private String nickname;
     private Double totalFP;
     private int rankType;
+    private Double monthlyFP;
+    private Double weeklyFP;
+    private Double dailyFP;
 
 
     @Override
@@ -22,8 +25,11 @@ public class RankInitReturnEntity {
                 "photo='" + photo + '\'' +
                 ", userId='" + userId + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", totalFP=" + totalFP +
                 ", rankType=" + rankType +
+                ", totalFP=" + totalFP +
+                ", monthlyFP=" + monthlyFP +
+                ", weeklyFP=" + weeklyFP +
+                ", dailyFP=" + dailyFP +
                 '}';
     }
 }

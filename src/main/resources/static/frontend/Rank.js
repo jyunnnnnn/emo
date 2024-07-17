@@ -17,7 +17,9 @@ $('#updateRanking').on('click', function () {
     loadAllUsersFp(1);
     initUserData()
     $('#selectedRank').text('所有階級');
+    $('#selectedTime').text('所有時間');
 });
+let FpStringToShow;//總/月/週/日減碳量
 function convertTotalFPtoRankColor(total) {
      let result={
         color:null,
@@ -69,40 +71,69 @@ function initUserData() {
             // 根据 data-tab 属性切换排行类型
             const tab = $(this).data('tab');
             if (tab === 'AllRank') {
-                showRankByRankType("", 1, 0);
-                RankReset(0);//全部
+                showRankByRankTypeAndTimeType("","totalFP", 1, 0);
+                RankAndTimeReset(0);//全部
             } else if (tab === 'FriendRank') {
-                showRankByRankType("", 1, 1);
-                RankReset(1);//好友
+                showRankByRankTypeAndTimeType("","totalFP", 1, 1);
+                RankAndTimeReset(1);//好友
             }
      });
      $('#rankingChoose [data-tab="AllRank"]').trigger('click');
 }
-function RankReset(friend){
-     $('#selectedRank').text('所有階級');
-     const dropdownElement = $('#rankNType');
-     // 清空原有的選項
-     dropdownElement.empty();
-     // 迭代新的選項，並將它們動態添加到下拉列表中
-     const optionElement = $('<a class="item"></a>').text("所有階級");
-     optionElement.attr('id', 'all');
-     optionElement.on("click", function() {
-         $('#selectedRank').text("所有階級");
-         showRankByRankType("",1,friend);
-     });
-     dropdownElement.append(optionElement);
-     Rank.forEach(option => {//Rank全域變數 init獲得
-         const optionElement = $('<a class="item"></a>').text(option.rankName);
-         optionElement.attr('id', option.rankType);
-         optionElement.on("click", function() {
+function RankAndTimeReset(friend) {
+    $('#selectedRank').text('所有階級');
+    $('#selectedTime').text('所有時間');
+
+    const rankDropdownElement = $('#rankNType');
+    const timeDropdownElement = $('#timeNType');
+     // 添加 time 選項
+    const timeOptions = [
+        { timeName: "所有時間", timeType: "totalFP" },
+        { timeName: "本日", timeType: "dailyFP" },
+        { timeName: "本週", timeType: "weeklyFP" },
+        { timeName: "本月", timeType: "monthlyFP" }
+    ];
+    // 清空原有的選項
+    rankDropdownElement.empty();
+    timeDropdownElement.empty();
+    // 添加 rank 选项
+    const rankOptionElement = $('<a class="item"></a>').text("所有階級");
+    rankOptionElement.attr('id', 'all');
+    rankOptionElement.on("click", function() {
+        $('#selectedRank').text("所有階級");
+        $('#selectedTime').text("所有時間");
+        FpStringToShow="總減碳量";
+        showRankByRankTypeAndTimeType("", "totalFP", 1, friend);
+    });
+    rankDropdownElement.append(rankOptionElement);
+
+    Rank.forEach(option => {
+        const optionElement = $('<a class="item"></a>').text(option.rankName);
+        optionElement.attr('id', option.rankType);
+        optionElement.on("click", function() {
             $('#selectedRank').text(option.rankName);
-             showRankByRankType(option.rankType,0,friend);
-         });
-         dropdownElement.append(optionElement);
-     });
-    showRankByRankType("",1,friend);
+            $('#selectedTime').text("所有時間");
+            FpStringToShow="總減碳量";
+            showRankByRankTypeAndTimeType(option.rankType, "totalFP", 0, friend);
+        });
+        rankDropdownElement.append(optionElement);
+    });
+
+    timeOptions.forEach(option => {
+        const timeOptionElement = $('<a class="item"></a>').text(option.timeName);
+        timeOptionElement.attr('id', option.timeType);
+        timeOptionElement.on("click", function() {
+            $('#selectedTime').text(option.timeName);
+            $('#selectedRank').text("所有階級");
+            showRankByRankTypeAndTimeType("", option.timeType, 1, friend);
+        });
+        timeDropdownElement.append(timeOptionElement);
+    });
+
+    // 初始加載
+    showRankByRankTypeAndTimeType("", "totalFP", 1, friend);
 }
-function showRankByRankType(rankType,all,friend){
+function showRankByRankTypeAndTimeType(rankType,timeType,all,friend){
     // 清空原有的使用者資料
     const rankingContainer = $('#rankingContent');
     const rowContainer =$('#rowContainer');
@@ -113,11 +144,34 @@ function showRankByRankType(rankType,all,friend){
     else{
         findUsers= AllUsersFp.filter(user => user.rankType === rankType);
     }
-    findUsers= findUsers.filter(user => user.totalFP > 0);
     if(friend){
        findUsers = findUsers.filter(user => FriendObj.friendList.some(friend => friend.userId === user.userId) || user.userId === User.userId);
     }
-    findUsers.sort((a, b) => b.totalFP - a.totalFP);
+    switch(timeType) {
+        case 'dailyFP':
+             findUsers= findUsers.filter(user => user.dailyFP > 0);
+             findUsers.sort((a, b) => b.dailyFP - a.dailyFP);
+             FpStringToShow="日減碳量";
+            break;
+        case 'weeklyFP':
+             findUsers= findUsers.filter(user => user.weeklyFP > 0);
+             findUsers.sort((a, b) => b.weeklyFP - a.weeklyFP);
+             FpStringToShow="週減碳量";
+            break;
+        case 'monthlyFP':
+             findUsers= findUsers.filter(user => user.monthlyFP > 0);
+             findUsers.sort((a, b) => b.monthlyFP - a.monthlyFP);
+             FpStringToShow="月減碳量";
+            break;
+        case 'totalFP':
+             findUsers= findUsers.filter(user => user.totalFP > 0);
+             findUsers.sort((a, b) => b.totalFP - a.totalFP);
+             FpStringToShow="總減碳量";
+            break;
+    }
+
+
+
 //    console.log(Rank);
 
     let myRankData=findUsers.find(user => user.userId === User.userId);
@@ -212,12 +266,13 @@ function showRankByRankType(rankType,all,friend){
                 .addClass("username")
                 .text(user.nickname)
                 .appendTo(nameAndFPDiv);
+           // 創建使用者總減碳量
 
-            // 創建使用者總減碳量
-            const carbonOffsetSpan = $('<div>')
-                .addClass("carbon-offset")
-                .text(`減碳量: ${convertRankToPresent(user.rankType,user.totalFP)}`)
-                .appendTo(nameAndFPDiv);
+           const carbonOffsetSpan = $('<div>')
+               .addClass("carbon-offset")
+               .text(`${FpStringToShow} : ${convertRankToPresent(user.rankType, user[timeType])}`)
+               .appendTo(nameAndFPDiv);
+
         });
     }
 }
