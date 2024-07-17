@@ -886,7 +886,7 @@ $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     event.preventDefault();
     $('#CustomRouteFW').css('display', 'none');
     $('#initialRoute').removeClass('selected');
-    if(showNowLines.length){
+    if(showNowLines&&showNowLines.length){
         showNowLines.setMap(null);
     }
     drawingManager.setDrawingMode(null);
@@ -1006,7 +1006,7 @@ $('#customRoute').on('click', function() {
 //不畫
 $('#closeCustomRoute').on('click', function() {
     $('#CustomRouteFW').css("display", "none");
-    if(showNowLines.length){
+    if(showNowLines&&showNowLines.length){
         showNowLines.setMap(null);
     }
     drawingManager.setDrawingMode(null);
@@ -1026,7 +1026,7 @@ $('.confirmCustomRoute').on('click', function() {
         alert("請正常繪製路線!!!");
         clearMapLines();
     }
-    if (showNowLines.length) {
+    if (showNowLines&&showNowLines.length) {
         showNowLines.setMap(null);
     }
     recordedPositions = [];
