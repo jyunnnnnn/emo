@@ -225,13 +225,15 @@ $('#saveTrafficRecord').on('click', function () {
     } else {
         // console.log('recordedPositions',recordedPositions);
         if (type === "捷運" || type === "高鐵") {
-            directionsDraw(recordedPositions, 'SUBWAY', 0, function (pathCoordinates) {
+            directionsDraw(recordedPositions, 'SUBWAY', function (pathCoordinates) {
+                pathCoordinates = dealRouteforinit(pathCoordinates,0);
                 console.log('recordedPositions', pathCoordinates);
                 saveRecord("交通", type, data_value,pathCoordinates);
                 $('#routeFW').css("display", "none");
             });
         } else if (type === "火車") {
-            directionsDraw(recordedPositions, 'TRAIN', 0, function (pathCoordinates) {
+            directionsDraw(recordedPositions, 'TRAIN', function (pathCoordinates) {
+                pathCoordinates = dealRouteforinit(pathCoordinates,0);
                 console.log('recordedPositions', pathCoordinates);
                 saveRecord("交通", type, data_value,pathCoordinates);
                 $('#routeFW').css("display", "none");
@@ -878,13 +880,13 @@ function convertToUnit(value) {
         return "<strong>"+value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')+"</strong>";
     }
 }
-
+let sixRoute=[];
 //自訂義路線
 $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     event.preventDefault();
     $('#CustomRouteFW').css('display', 'none');
     $('#initialRoute').removeClass('selected');
-    if(showNowLines){
+    if(showNowLines&&showNowLines.length){
         showNowLines.setMap(null);
     }
     drawingManager.setDrawingMode(null);
@@ -893,8 +895,12 @@ $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
     let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
     // 預設路線1
-    directionsDraw(positions.lineOnMap, mode, 0, function(pathCoordinates) {
+    directionsDraw(positions.lineOnMap, mode, function(pathCoordinates) {
         clearMapLines();
+        sixRoute=JSON.parse(JSON.stringify(pathCoordinates));
+        // 根據 sixRoute 長度生成按鈕
+        generateRouteButtons(sixRoute.length);
+        pathCoordinates=dealRoute(sixRoute,0);
         positions.lineOnMap=pathCoordinates;
         recordedPositions=pathCoordinates;
         console.log('positions', pathCoordinates);
@@ -908,31 +914,52 @@ $('#userDefinedRoute, .cancelCustomRoute').on('click', function () {
     //跳一個可移動懸浮窗
     $('#ChangeRouteFW').css("display", "block");
     $('.changeRouteBtn').removeClass('selected');
-    $('.changeRouteBtn').first().addClass('selected'); // 預設第一條路線
 });
-
+function generateRouteButtons(numRoutes) {
+    let container = $('#routeButtonsContainer');
+    container.empty();
+    for (let i = 0; i < numRoutes; i++) {
+        let button = $('<button></button>')
+            .addClass('changeRouteBtn')
+            .attr('data-route', i)
+            .text(i + 1);
+        container.append(button);
+    }
+    attachRouteButtonClickEvent();
+    initButtonHoverEffect();
+    $('.changeRouteBtn').first().addClass('selected'); // 預設第一條路線
+}
 //選六路線
-$('.changeRouteBtn').on('click', function(event) {
-    event.preventDefault();
-    recordedPositions=[];
-    let whichRoad = parseInt($(this).data('route'));
-    let type = currentInfoWindowRecord.type;
-    let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
-    let mode = (type === "捷運" || type === "高鐵") ? 'SUBWAY' : (type === "火車" ? 'TRAIN' : '');
+function attachRouteButtonClickEvent() {
+    $('.changeRouteBtn').on('click', function (event) {
+        event.preventDefault();
+        recordedPositions = [];
+        let whichRoad = parseInt($(this).data('route'));
+        let positions = JSON.parse(JSON.stringify(currentInfoWindowRecord)); // 深拷貝
 
-    directionsDraw(positions.lineOnMap, mode, whichRoad, function(pathCoordinates) {
         clearMapLines();
-        positions.lineOnMap=pathCoordinates;
-        recordedPositions=pathCoordinates;
-        console.log("whichRoad",whichRoad);
+        pathCoordinates = dealRoute(sixRoute, whichRoad);
+        positions.lineOnMap = pathCoordinates;
+        recordedPositions = pathCoordinates;
+        console.log("whichRoad", whichRoad);
         console.log('positions', pathCoordinates);
-        drawLine(positions,true);
+        drawLine(positions, true);
         // 按鈕狀態顏色
         $('#initialRoute').removeClass('selected');
         $('.changeRouteBtn').removeClass('selected');
         $(event.currentTarget).addClass('selected');
     });
-});
+}
+function initButtonHoverEffect() {
+    $('.changeRouteBtn').hover(
+        function() {
+            $(this).css('background-color', 'lightgray');
+        },
+        function() {
+            $(this).css('background-color', '');
+        }
+    );
+}
 
 $('#confirmChangeRouteBtn').on('click', function() {
     event.preventDefault();
@@ -979,7 +1006,7 @@ $('#customRoute').on('click', function() {
 //不畫
 $('#closeCustomRoute').on('click', function() {
     $('#CustomRouteFW').css("display", "none");
-    if(showNowLines){
+    if(showNowLines&&showNowLines.length){
         showNowLines.setMap(null);
     }
     drawingManager.setDrawingMode(null);
@@ -999,7 +1026,7 @@ $('.confirmCustomRoute').on('click', function() {
         alert("請正常繪製路線!!!");
         clearMapLines();
     }
-    if (showNowLines) {
+    if (showNowLines&&showNowLines.length) {
         showNowLines.setMap(null);
     }
     recordedPositions = [];

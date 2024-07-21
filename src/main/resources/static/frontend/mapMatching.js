@@ -106,7 +106,7 @@ function processAllPoints(points) {
 
 //------------------------------------------------------------------------------------------
 //大眾運輸  direction api
-function directionsDraw(rec, mode, whichRoad, callback) {
+function directionsDraw(rec, mode, callback) {
     console.log("mode ", mode);
     let directionsService = new google.maps.DirectionsService();
     let request = {
@@ -120,22 +120,45 @@ function directionsDraw(rec, mode, whichRoad, callback) {
     };
     directionsService.route(request, function (response, status) {
         if (status === 'OK') {
-            console.log(response.routes);
-            let route = response.routes[whichRoad];
-            // 移除步行部分，只保留乘坐大眾運輸工具的路線
-            let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
-            // 行經路線經緯度
-            let pathCoordinates = [];
-            transitSteps.forEach(step => {
-                step.path.forEach(coord => {
-                    pathCoordinates.push({lat: coord.lat(), lng: coord.lng()});
-                });
+            //去掉重複路線
+            let uniqueRoutes = [];
+            let uniqueStepsSets = new Set();
+
+            response.routes.forEach(route => {
+                let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
+                let stepsKey = transitSteps.map(step => step.instructions).join('|');
+                if (!uniqueStepsSets.has(stepsKey)) {
+                    uniqueStepsSets.add(stepsKey);
+                    uniqueRoutes.push(route);
+                }
             });
-            console.log('Path coordinates:', pathCoordinates);
-            callback(pathCoordinates);
+            callback(uniqueRoutes);
         } else {
             console.error('Directions request failed due to ' + status);
             callback([]);
         }
     });
+}
+
+function dealRoute(routes,whichRoute){
+    let route = routes[whichRoute];
+// 移除步行部分，只保留乘坐大眾運輸工具的路線
+    let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
+// 行經路線經緯度
+    let pathCoordinates = transitSteps[0].path;
+    return pathCoordinates;
+}
+
+function dealRouteforinit(routes,whichRoute){
+    let route = routes[whichRoute];
+// 移除步行部分，只保留乘坐大眾運輸工具的路線
+    let transitSteps = route.legs[0].steps.filter(step => step.travel_mode !== 'WALKING');
+// 行經路線經緯度
+    let pathCoordinates =[];
+    transitSteps.forEach(step => {
+        step.path.forEach(coord => {
+            pathCoordinates.push({ lat: coord.lat(), lng: coord.lng() });
+        });
+    });
+    return pathCoordinates;
 }
