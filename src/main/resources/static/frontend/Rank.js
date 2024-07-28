@@ -63,24 +63,24 @@ function convertRankToPresent(rankType, total) {
 }
 // 動態生成使用者資料
 function initUserData() {
-      let friend;
-      $('#rankingChoose .item').on('click', function() {
-            // 给当前按钮添加 is-active 类
-            $(this).addClass('is-active');
+    let friend = 0;
+    let currentRankType = "";
+    let currentTimeType = "totalFP";
 
-            // 根据 data-tab 属性切换排行类型
-            const tab = $(this).data('tab');
-            if (tab === 'AllRank') {
-                showRankByRankTypeAndTimeType("","totalFP", 1, 0);
-                RankAndTimeReset(0);//全部
-            } else if (tab === 'FriendRank') {
-                showRankByRankTypeAndTimeType("","totalFP", 1, 1);
-                RankAndTimeReset(1);//好友
-            }
-     });
-     $('#rankingChoose [data-tab="AllRank"]').trigger('click');
+    $('#rankingChoose .item').on('click', function() {
+        $(this).addClass('is-active').siblings().removeClass('is-active');
+        
+        const tab = $(this).data('tab');
+        if (tab === 'AllRank') {
+            friend = 0;
+        } else if (tab === 'FriendRank') {
+            friend = 1;//好友
+        }
+        RankAndTimeReset(currentRankType, currentTimeType, friend);
+    });
+    $('#rankingChoose [data-tab="AllRank"]').trigger('click');
 }
-function RankAndTimeReset(friend) {
+function RankAndTimeReset(rankType, timeType,friend) {
     $('#selectedRank').text('所有階級');
     $('#selectedTime').text('所有時間');
 
@@ -101,9 +101,8 @@ function RankAndTimeReset(friend) {
     rankOptionElement.attr('id', 'all');
     rankOptionElement.on("click", function() {
         $('#selectedRank').text("所有階級");
-        $('#selectedTime').text("所有時間");
-        FpStringToShow="總減碳量";
-        showRankByRankTypeAndTimeType("", "totalFP", 1, friend);
+        rankType = "";
+        showRankByRankTypeAndTimeType(rankType, timeType, friend);
     });
     rankDropdownElement.append(rankOptionElement);
 
@@ -112,9 +111,8 @@ function RankAndTimeReset(friend) {
         optionElement.attr('id', option.rankType);
         optionElement.on("click", function() {
             $('#selectedRank').text(option.rankName);
-            $('#selectedTime').text("所有時間");
-            FpStringToShow="總減碳量";
-            showRankByRankTypeAndTimeType(option.rankType, "totalFP", 0, friend);
+            rankType  = option.rankType;
+            showRankByRankTypeAndTimeType(rankType , timeType, friend);
         });
         rankDropdownElement.append(optionElement);
     });
@@ -124,49 +122,45 @@ function RankAndTimeReset(friend) {
         timeOptionElement.attr('id', option.timeType);
         timeOptionElement.on("click", function() {
             $('#selectedTime').text(option.timeName);
-            $('#selectedRank').text("所有階級");
-            showRankByRankTypeAndTimeType("", option.timeType, 1, friend);
+            timeType  = option.timeType;
+            showRankByRankTypeAndTimeType(rankType, timeType , friend);
         });
         timeDropdownElement.append(timeOptionElement);
     });
 
     // 初始加載
-    showRankByRankTypeAndTimeType("", "totalFP", 1, friend);
+    showRankByRankTypeAndTimeType(rankType, timeType, friend);
 }
-function showRankByRankTypeAndTimeType(rankType,timeType,all,friend){
+function showRankByRankTypeAndTimeType(rankType,timeType,friend){
     // 清空原有的使用者資料
     const rankingContainer = $('#rankingContent');
-    const rowContainer =$('#rowContainer');
     rankingContainer.empty();
-    if(all){
-        findUsers=AllUsersFp;//AllUsersFp全域變數 init獲得
+    let findUsers = rankType === "" ? AllUsersFp : AllUsersFp.filter(user => user.rankType === rankType);
+
+    if (friend) {
+        findUsers = findUsers.filter(user => FriendObj.friendList.some(friend => friend.userId === user.userId) || user.userId === User.userId);
     }
-    else{
-        findUsers= AllUsersFp.filter(user => user.rankType === rankType);
-    }
-    if(friend){
-       findUsers = findUsers.filter(user => FriendObj.friendList.some(friend => friend.userId === user.userId) || user.userId === User.userId);
-    }
+
     switch(timeType) {
         case 'dailyFP':
-             findUsers= findUsers.filter(user => user.dailyFP > 0);
-             findUsers.sort((a, b) => b.dailyFP - a.dailyFP);
-             FpStringToShow="日減碳量";
+            findUsers = findUsers.filter(user => user.dailyFP > 0);
+            findUsers.sort((a, b) => b.dailyFP - a.dailyFP);
+            FpStringToShow = "日減碳量";
             break;
         case 'weeklyFP':
-             findUsers= findUsers.filter(user => user.weeklyFP > 0);
-             findUsers.sort((a, b) => b.weeklyFP - a.weeklyFP);
-             FpStringToShow="週減碳量";
+            findUsers = findUsers.filter(user => user.weeklyFP > 0);
+            findUsers.sort((a, b) => b.weeklyFP - a.weeklyFP);
+            FpStringToShow = "週減碳量";
             break;
         case 'monthlyFP':
-             findUsers= findUsers.filter(user => user.monthlyFP > 0);
-             findUsers.sort((a, b) => b.monthlyFP - a.monthlyFP);
-             FpStringToShow="月減碳量";
+            findUsers = findUsers.filter(user => user.monthlyFP > 0);
+            findUsers.sort((a, b) => b.monthlyFP - a.monthlyFP);
+            FpStringToShow = "月減碳量";
             break;
         case 'totalFP':
-             findUsers= findUsers.filter(user => user.totalFP > 0);
-             findUsers.sort((a, b) => b.totalFP - a.totalFP);
-             FpStringToShow="總減碳量";
+            findUsers = findUsers.filter(user => user.totalFP > 0);
+            findUsers.sort((a, b) => b.totalFP - a.totalFP);
+            FpStringToShow = "總減碳量";
             break;
     }
 
