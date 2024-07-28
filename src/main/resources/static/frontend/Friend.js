@@ -134,7 +134,7 @@ function moreButtonClick(userId){
     let friendAchievement = FriendAchievementObj.filter(achievement => achievement.accomplishTime != null);
     let timelineDiv = $('#friendTimeline');
     if(friendAchievement.length != 0){
-        friendAchievement.sort((a, b) => new Date(a.accomplishTime) - new Date(b.accomplishTime));
+        friendAchievement.sort((a, b) => new Date(b.accomplishTime) - new Date(a.accomplishTime));
         timelineDiv.empty();
         friendAchievement.forEach(achievement => {
             let item = $('<div>', { class: 'item' });
