@@ -749,51 +749,56 @@ svg:hover .detail {
     align-items: center;
 
 }
-    .rank-div{
-        display: flex;
-        align-items: center;
-        border-radius: 20px;
-        margin-bottom: 5px;
-        margin-top: 15px;
-        padding: 10px;
-        text-align: center;
-        background: rgba(235, 237, 239, 0.87);
-        border: 3px solid;
-        flex: 90%;
-    }
+.rank-div{
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    text-align: center;
+    background: rgba(235, 237, 239, 0.87);
+    border: 3px solid;
+    flex: 90%;
+}
 
-    .rankNum-div {
-        text-align: center;
-        margin-bottom: 5px;
-        margin-top: 25px;
-        align-items: center; /* 垂直居中 */
-        justify-content: center; /* 水平居中 */
-        font-size:25px;
-        font-weight: bold;
-    }
+.rankNum-div {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 25px;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    font-size:25px;
+    font-weight: bold;
+}
 
-    .rank-div img {
-        max-width: 50px;
-        max-height: 50px;
-        border: 2px solid black;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
+.rank-div img {
+    max-width: 50px;
+    max-height: 50px;
+    border: 2px solid black;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 
-    .rank-div .username {
-        flex: 1;
-        margin-right: 10px;
-        text-align: left;
-        font-size:20px;
-    }
+.rank-div .username {
+    flex: 1;
+    margin-right: 10px;
+    text-align: left;
+    font-size:20px;
+}
 
-    .rank-div .carbon-offset {
-        font-weight: bold;
-        font-size:18px;
+.rank-div .carbon-offset {
+    font-weight: bold;
+    font-size:18px;
 
-    }
-    .nameAndFPDiv{
-        white-space: nowrap;
-        text-align: left;
-        width:100%;
-    }
+}
+.nameAndFPDiv{
+    white-space: nowrap;
+    text-align: left;
+    width:100%;
+}
+
+/*chatbot*/
+#bp-web-widget{
+    bottom: 13%;
+}
