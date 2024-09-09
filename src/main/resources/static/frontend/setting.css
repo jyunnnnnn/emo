@@ -12,6 +12,7 @@
     justify-items: center;
     align-content: center;
     align-items: center;
+    z-index: 30;
 }
 
 #deleteAccount_matchVerifyCode{

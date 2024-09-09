@@ -216,6 +216,7 @@ svg:hover .detail {
     justify-items: center;
     align-content: center;
     align-items: center;
+    z-index: 30;
 }
 /* 路線拖曳懸浮窗 */
 .ChangeRouteFW, .CustomRouteFW {
@@ -639,6 +640,7 @@ svg:hover .detail {
         justify-items: center;
         align-content: center;
         align-items: center;
+        z-index: 30;
     }
 
     #openRecordModal,
@@ -800,5 +802,6 @@ svg:hover .detail {
 
 /*chatbot*/
 #bp-web-widget{
-    bottom: 13%;
+    bottom: 53%;
+    z-index: 0;
 }
