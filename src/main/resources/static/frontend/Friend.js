@@ -136,8 +136,8 @@ function alertFriendButton(target){
         url: '/FR/addNotification?sender=' + User.userId +'&receiver=' + target,
         method: 'POST',
         success: function(response) {
+            sendFriendInfo(target,6);
             $('#alert' + target).removeClass('is-loading');
-            console.log(response);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);

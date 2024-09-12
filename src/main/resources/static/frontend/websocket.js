@@ -39,6 +39,7 @@ function websocketInit() {
                 //flag = 3 被拒絕好友
                 //flag = 4 被刪除好友
                 //flag = 5 被取消發送好友邀請
+                //flag = 6 被戳了
                 let flag = responseData.flag;
                 //對應flag的訊息
                 let message = responseData.message;
@@ -98,6 +99,31 @@ function websocketInit() {
                 } else if(flag==5){
                     // 被取消好友邀請
                     loadFriendObj(User.userId, 'change');
+                } else if(flag==6){
+                    // 被戳了
+                    let person = AllUsersFp.find(user => senderUserId == user.userId);
+                    loadAlert(senderUserId);
+                    console.log(person)
+                    console.log(person.nickname + "戳了你" + FriendAlertMe[0].count + "下");
+
+                    /*
+                    loadFriendObj(User.userId, 'change');
+                    let msg = message;
+                    let snackbar = $('<div>', {
+                        class: 'content',
+                        id: 'alertMSG'
+                    })
+                        .text(msg);
+                    $('#snackbar').append(snackbar);
+                    $('#snackbar').css('display', '');
+
+                    setTimeout(function() {
+                        $('#snackbar').fadeOut(1000, function() {
+                            $('#acceptFriendMSG').remove();
+                            $('#snackbar').css('display', 'none');
+                        });
+                    }, 3000);
+                     */
                 }
             });
 

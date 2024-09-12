@@ -33,6 +33,7 @@ let MAP_OK=0;
 let DATA_OK=0;
 let emoLogo="frontend/img/emoLogo.png";
 let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
+let FriendAlertMe;
 
 // 定義一個事件發射器
 const EventEmitter = {
@@ -363,7 +364,28 @@ function loadAlert(){
         method: 'GET',
         success: function (data) {
             // 處理成功時的邏輯
-            console.log(data);
+            let sortedData = Object.values(data);
+            console.log(sortedData)
+
+            if(sortedData[0] != null){
+                let internalArray = sortedData[0];
+                let countMap = new Map();
+
+                internalArray.forEach(item => {
+                    if (countMap.has(item.userId)) {
+                        let existingItem = countMap.get(item.userId);
+                        existingItem.count++;
+                    } else {
+                        //新資料
+                        let newItem = { ...item, count: 1 };
+                        countMap.set(item.userId, newItem);
+                    }
+                });
+
+                //map轉array
+                sortedData = Array.from(countMap.values());
+                FriendAlertMe = sortedData;
+            }
         },
         error: function(xhr, status, error) {
             let errorData = JSON.parse(xhr.responseText);
