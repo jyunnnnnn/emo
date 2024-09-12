@@ -1,12 +1,13 @@
 var socket;
 var stompClient;
+var countTime = new Map();
+var timeoutId = "";
 
 // 監聽使用者初始化事件 當User變數初始化完後才進行websocket初始化的動作
 EventEmitter.on('userInitialized', function(user) {
 //    console.log('User initialized:', user);
     websocketInit();
 });
-
 
 //websocket初始化
 function websocketInit() {
@@ -101,14 +102,34 @@ function websocketInit() {
                     loadFriendObj(User.userId, 'change');
                 } else if(flag==6){
                     // 被戳了
-                    let person = AllUsersFp.find(user => senderUserId == user.userId);
+                    $('#alertMSG').remove();
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                    }
                     loadAlert(senderUserId);
-                    console.log(person)
-                    console.log(person.nickname + "戳了你" + FriendAlertMe[0].count + "下");
-
-                    /*
                     loadFriendObj(User.userId, 'change');
-                    let msg = message;
+
+                    let map2array=[];
+                    if(FriendAlertMe[0] != null || FriendAlertMe != null){
+                        let internalArray = FriendAlertMe;
+
+                        internalArray.forEach(item => {
+                            if (countTime.has(item.userId)) {
+                                let existingItem = countTime.get(item.userId);
+                                existingItem.count++;
+                            } else {
+                                //新資料
+                                let newItem = { ...item, count: 1 };
+                                countTime.set(item.userId, newItem);
+                            }
+                        });
+
+                        //map轉array
+                        map2array = Array.from(countTime.values());
+                    }
+                    console.log(map2array);
+
+                    let msg = map2array[0].nickname + "戳了" + map2array[0].count +"下";
                     let snackbar = $('<div>', {
                         class: 'content',
                         id: 'alertMSG'
@@ -117,13 +138,12 @@ function websocketInit() {
                     $('#snackbar').append(snackbar);
                     $('#snackbar').css('display', '');
 
-                    setTimeout(function() {
+                    timeoutId = setTimeout(function() {
                         $('#snackbar').fadeOut(1000, function() {
-                            $('#acceptFriendMSG').remove();
+                            $('#alertMSG').remove();
                             $('#snackbar').css('display', 'none');
                         });
                     }, 3000);
-                     */
                 }
             });
 

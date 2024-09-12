@@ -33,7 +33,7 @@ let MAP_OK=0;
 let DATA_OK=0;
 let emoLogo="frontend/img/emoLogo.png";
 let emoLogoUnlock="frontend/img/emoLogoUnlock.png"
-let FriendAlertMe;
+let FriendAlertMe = [];
 
 // 定義一個事件發射器
 const EventEmitter = {
@@ -365,7 +365,6 @@ function loadAlert(){
         success: function (data) {
             // 處理成功時的邏輯
             let sortedData = Object.values(data);
-            console.log(sortedData)
 
             if(sortedData[0] != null){
                 let internalArray = sortedData[0];
@@ -385,6 +384,7 @@ function loadAlert(){
                 //map轉array
                 sortedData = Array.from(countMap.values());
                 FriendAlertMe = sortedData;
+                console.log(FriendAlertMe);
             }
         },
         error: function(xhr, status, error) {
