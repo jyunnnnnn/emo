@@ -40,12 +40,12 @@ public class FriendService {
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Autowired
-    public FriendService(FriendRepository friendRepository,NotificationRepository notificationRepository,UserRepository userRepository) {
+    public FriendService(FriendRepository friendRepository, NotificationRepository notificationRepository, UserRepository userRepository) {
         this.friendRepository = friendRepository;
         this.userRepository = userRepository;
         friendEntityList = friendRepository.findAll();
         friendEntityListIndex = new HashMap<>();
-        this.notificationRepository= notificationRepository;
+        this.notificationRepository = notificationRepository;
         //Create Index Table
         for (int i = 0; i < friendEntityList.size(); i++) {
             friendEntityListIndex.put(friendEntityList.get(i).getUserId(), i);
@@ -250,43 +250,33 @@ public class FriendService {
     }
 
     //新增通知訊息到特定使用者資料庫中
-    public void addNotification(String sender,String receiver){
+    public void addNotification(String sender, String receiver) {
 
         NotificationEntity data = this.notificationRepository.findByUserId(receiver);
-        if(data == null)
-            data =new NotificationEntity(receiver);
+        if (data == null)
+            data = new NotificationEntity(receiver);
         List<String> notifyList = data.getNotifyList();
 
-        boolean flag = true;
-        for(int i=0;i<notifyList.size();i++)
-        {
-            if(notifyList.get(i)== sender)
-            {
-                flag = false;
-                break;
-            }
-        }
-        if(flag)
-        {
-            notifyList.add(sender);
-            data.setNotifyList(notifyList);
-            this.notificationRepository.save(data);
-        }
+
+        notifyList.add(sender);
+        data.setNotifyList(notifyList);
+        this.notificationRepository.save(data);
+
     }
 
     //刪除和回傳某個使用者的通知紀錄
-    public List<NotificationData> deleteAndGetNotificationData(String userId){
-        NotificationEntity data =this.notificationRepository.findByUserId(userId);
+    public List<NotificationData> deleteAndGetNotificationData(String userId) {
+        NotificationEntity data = this.notificationRepository.findByUserId(userId);
 
         this.notificationRepository.deleteById(userId);
         List<UserInfo> users = this.userRepository.findAll();
         List<NotificationData> res = new ArrayList<>();
         List<String> target = data.getNotifyList();
 
-        for(int i=0;i< target.size();i++){
-            for(int j=0;j<users.size();j++){
-                if(users.get(j).getUserId().equals(target.get(i))){
-                    res.add(new NotificationData(users.get(i).getUserId(),users.get(i).getNickname(),users.get(i).getPhoto()));
+        for (int i = 0; i < target.size(); i++) {
+            for (int j = 0; j < users.size(); j++) {
+                if (users.get(j).getUserId().equals(target.get(i))) {
+                    res.add(new NotificationData(users.get(i).getUserId(), users.get(i).getNickname(), users.get(i).getPhoto()));
                     break;
                 }
             }
