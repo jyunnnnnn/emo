@@ -268,6 +268,9 @@ public class FriendService {
     public List<NotificationData> deleteAndGetNotificationData(String userId) {
         NotificationEntity data = this.notificationRepository.findByUserId(userId);
 
+        if(data ==null)
+            return null;
+
         this.notificationRepository.deleteById(userId);
         List<UserInfo> users = this.userRepository.findAll();
         List<NotificationData> res = new ArrayList<>();
