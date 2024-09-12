@@ -95,7 +95,15 @@ function showFriendList(friendList){
             friendAchievement.append(moreButton);
             // 戳一下
             let friendAlert = $('<div>', { class: 'column is-2-wide' });
-            let alertButton = $('<button>', { class: 'ts-button is-ghost is-icon' });
+            let alertButton = $('<button>', {
+                class: 'ts-button is-ghost is-icon' ,
+                id: 'alert' + friend.userId
+            });
+            alertButton.on('click', function() {
+                let target = this.id.replace('alert', '');
+                $(this).addClass('is-loading');
+                alertFriendButton(target);
+            });
             let alertSpan = $('<span>', { class: 'ts-icon is-large is-hand-point-left-icon' });
             alertButton.append(alertSpan);
             friendAlert.append(alertButton);
@@ -116,6 +124,20 @@ function deleteFriendButton(target){
         success: function(response) {
             loadFriendObj(User.userId, 'change');
             sendFriendInfo(target,4);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+// 戳一下好友
+function alertFriendButton(target){
+    $.ajax({
+        url: '/FR/addNotification?sender=' + User.userId +'&receiver=' + target,
+        method: 'POST',
+        success: function(response) {
+            $('#alert' + target).removeClass('is-loading');
+            console.log(response);
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
