@@ -144,6 +144,97 @@ function alertFriendButton(target){
         }
     });
 }
+// 上線顯示誰戳我
+// 照片不重疊
+function isColliding(newDiv, otherDivs) {
+    for (let i = 0; i < otherDivs.length; i++) {
+        let otherDiv = otherDivs[i];
+        let a = newDiv.getBoundingClientRect();
+        let b = otherDiv.getBoundingClientRect();
+
+        if (
+            a.left < b.right + minDistance &&
+            a.right + minDistance > b.left &&
+            a.top < b.bottom + minDistance &&
+            a.bottom + minDistance > b.top
+        ) {
+            return true; // 有碰到
+        }
+    }
+    return false; // 無碰到
+}
+// 照片隨機位置
+function createRandomDiv() {
+    let div = document.createElement('div');
+    div.classList.add('random-div');
+
+    let top, left;
+    do {
+        top = Math.random() * (windowHeight - divSize);
+        left = Math.random() * (windowWidth - divSize);
+        div.style.top = `${top}px`;
+        div.style.left = `${left}px`;
+    } while (isColliding(div, divs)); // 確保不碰撞
+
+    document.body.appendChild(div);
+    divs.push(div); // 將新 div 添加到陣列中
+}
+function whoAlertMe(list){
+    let friendsPhoto = [];
+    $('#friendsPhoto').empty();
+    $('#closeAlert').empty();
+    list.forEach(friend=>{
+        let px = 46 + friend.count*10 + 'px';
+        let friendPhoto = $('<div>', { class: 'column is-3-wide' })
+            .css('width', 'fit-content')
+            .css('height', 'fit-content');;
+        let photoSpan = $('<span>', {class: 'ts-avatar is-circular is-large is-bordered', })
+            .css('width', px)
+            .css('height', px);
+        let photoImg = $('<img>', { src: friend.photo });
+        photoSpan.append(photoImg);
+        friendPhoto.append(photoSpan);
+        friendsPhoto.push(friendPhoto);
+        $('#friendsPhoto').append(friendPhoto);
+    });
+
+    let closeBtn = $("<button>")
+        .attr({
+            'class': 'setBtn'
+        })
+        .css({
+            'background-color': 'rgba(183,188,189,0.3)',
+            'width': '70px',
+            'height': '30px',
+            'margin':'10px'
+        });
+
+    let closeBtnText = $("<div>")
+        .text("關閉")
+        .attr({
+            'class': 'setText'
+        })
+        .css({
+            'right': '10%',
+            'font-size': '15px'
+        });
+    closeBtn.append(closeBtnText);
+    closeBtn.on('click', function () {
+        $('#friendAlertMeFW').css("display", "none");
+    });
+
+    let buttonDiv = $("<div>")
+        .css({
+            'display': 'flex',
+            'flex-direction': 'row',
+            'justify-content': 'center'
+        });
+    buttonDiv.append(closeBtn);
+
+
+    $('#closeAlert').append(buttonDiv);
+    $('#friendAlertMeFW').css('display', 'flex');
+}
 // 點擊好友成就圖鑑
 function moreButtonClick(userId){
     let target = AllUsersFp.filter(user => user.userId == userId);

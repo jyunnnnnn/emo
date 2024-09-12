@@ -385,6 +385,7 @@ function loadAlert(){
                 sortedData = Array.from(countMap.values());
                 FriendAlertMe = sortedData;
                 console.log(FriendAlertMe);
+                whoAlertMe(FriendAlertMe);
             }
         },
         error: function(xhr, status, error) {
