@@ -302,6 +302,7 @@ function systemInit(){
     loadSVG();//載入svg
     loadAchievementObj(User.userId, 'me');
     loadFriendObj(User.userId, 'init');
+    loadAlert();
     loadRank();
     loadAllUsersFp(0);
     watchId = navigator.geolocation.watchPosition(success, error, options);
@@ -352,6 +353,22 @@ function updateCurrentCircle() {
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 5
+        }
+    });
+}
+//獲取戳我的好友資訊
+function loadAlert(){
+    $.ajax({
+        url: '/FR/deleteAndGetNotificationData?target=' + User.userId,
+        method: 'GET',
+        success: function (data) {
+            // 處理成功時的邏輯
+            console.log(data);
+        },
+        error: function(xhr, status, error) {
+            let errorData = JSON.parse(xhr.responseText);
+            let errorMessage = errorData.message;
+            alert(errorMessage);
         }
     });
 }
