@@ -266,6 +266,7 @@ public class FriendService {
 
     //刪除和回傳某個使用者的通知紀錄
     public List<NotificationData> deleteAndGetNotificationData(String userId) {
+
         NotificationEntity data = this.notificationRepository.findByUserId(userId);
 
         if(data ==null)
@@ -278,8 +279,9 @@ public class FriendService {
 
         for (int i = 0; i < target.size(); i++) {
             for (int j = 0; j < users.size(); j++) {
-                if (users.get(j).getUserId().equals(target.get(i))) {
-                    res.add(new NotificationData(users.get(i).getUserId(), users.get(i).getNickname(), users.get(i).getPhoto()));
+                UserInfo user = users.get(j);
+                if (user.getUserId().equals(target.get(i))) {
+                    res.add(new NotificationData(user.getUserId(),user.getNickname(),user.getPhoto()));
                     break;
                 }
             }
