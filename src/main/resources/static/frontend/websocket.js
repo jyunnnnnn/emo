@@ -129,7 +129,7 @@ function websocketInit() {
                     }
                     console.log(map2array);
 
-                    let msg = map2array[0].nickname + "戳了" + map2array[0].count +"下";
+                    let msg = map2array[0].nickname + "第" + map2array[0].count +"次喊你做環保～";
                     let snackbar = $('<div>', {
                         class: 'content',
                         id: 'alertMSG'

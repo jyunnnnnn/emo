@@ -272,7 +272,7 @@ public class FriendService {
         if(data ==null)
             return null;
 
-        this.notificationRepository.deleteById(userId);
+       this.notificationRepository.deleteById(userId);
         List<UserInfo> users = this.userRepository.findAll();
         List<NotificationData> res = new ArrayList<>();
         List<String> target = data.getNotifyList();
