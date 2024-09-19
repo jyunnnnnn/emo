@@ -95,7 +95,15 @@ function showFriendList(friendList){
             friendAchievement.append(moreButton);
             // 戳一下
             let friendAlert = $('<div>', { class: 'column is-2-wide' });
-            let alertButton = $('<button>', { class: 'ts-button is-ghost is-icon' });
+            let alertButton = $('<button>', {
+                class: 'ts-button is-ghost is-icon' ,
+                id: 'alert' + friend.userId
+            });
+            alertButton.on('click', function() {
+                let target = this.id.replace('alert', '');
+                $(this).addClass('is-loading');
+                alertFriendButton(target);
+            });
             let alertSpan = $('<span>', { class: 'ts-icon is-large is-hand-point-left-icon' });
             alertButton.append(alertSpan);
             friendAlert.append(alertButton);
@@ -121,6 +129,174 @@ function deleteFriendButton(target){
             console.error('Error:', error);
         }
     });
+}
+// 戳一下好友
+function alertFriendButton(target){
+    $.ajax({
+        url: '/FR/addNotification?sender=' + User.userId +'&receiver=' + target,
+        method: 'POST',
+        success: function(response) {
+            sendFriendInfo(target,6);
+            $('#alert' + target).removeClass('is-loading');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+// 上線顯示誰戳我
+// 檢查是否有重疊
+function getCircleProperties(element) {
+    let radius = element[0].offsetWidth / 2;
+    let centerX = element[0].offsetLeft + radius;
+    let centerY = element[0].offsetTop + radius;
+    return { centerX, centerY, radius };
+}
+function areCirclesOverlapping(circle1, circle2) {
+    let { centerX: x1, centerY: y1, radius: r1 } = getCircleProperties(circle1);
+    let { centerX: x2, centerY: y2, radius: r2 } = getCircleProperties(circle2);
+
+    let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    return distance < (r1 + r2);
+}
+let cx;
+let cy;
+let cr;
+let layerR = 0;
+let biggest = false;
+let layer = [];
+let nowDegree = 45;
+function arrangePhotos(photos) {
+    let now = 0;
+    photos.forEach(photo=> {
+        let px = photo[0].clientWidth;
+        if(now == 0){
+            photo.css('left', (window.innerWidth - px)/2 + 'px');
+            photo.css('top', (window.innerHeight * 0.8 - px)/2 + 'px');
+            layer.push(photo);
+
+            cr = px/2;
+            cx = photo[0].offsetLeft + cr;
+            cy = photo[0].offsetTop + cr;
+        } else {
+            let place = false;
+            let count = 0;
+            while(count < 360){
+                let angleInRadians = (nowDegree + count)%360 * Math.PI / 180;
+                let x = cx + (cr + px/2) * Math.cos(angleInRadians) - px/2;
+                let y = cy + (cr + px/2) * Math.sin(angleInRadians) - px/2;
+                photo.css('left', x + 'px');
+                photo.css('top',  y + 'px');
+
+                for(let i=0; i<layer.length; i++){
+                    if(areCirclesOverlapping(photo, layer[i])){
+                        //重疊了
+                        count++;
+                        $('#friendsPhoto').remove(photo);
+                        break;
+                    } else if (i == layer.length - 1) {
+                        if(!biggest){
+                            layerR = px;
+                            biggest = true;
+                            place = true;
+                            layer.push(photo);
+                        } else {
+                            place = true;
+                            layer.push(photo);
+                        }
+                        break;
+                    }
+                }
+                if(place) break;
+            }
+            if(count != 0) nowDegree += count + 1;
+            else nowDegree++;
+
+            if(!place){
+                cr += layerR;
+                let angleInRadians = (nowDegree + count * Math.PI)%360 / 180;
+                let x = cx + (cr + px)/2 * Math.cos(angleInRadians) - px/2;
+                let y = cy + (cr + px)/2 * Math.sin(angleInRadians) - px/2;
+                photo.css('left', x + 'px');
+                photo.css('top',  y + 'px');
+                layerR = px;
+                layer.push(photo);
+            }
+        }
+        now++;
+    })
+}
+let photos = [];
+function whoAlertMe(list){
+    list.sort((a, b) => b.count - a.count);
+    list.forEach(friend=>{
+        let px;
+        if(friend.count >= 27){
+            px = 46 + friend.count*5;
+        } else {
+            px = 46 + friend.count*5;
+        }
+        let friendPhoto = $('<div>', { class: 'column is-3-wide' })
+            .css('position', 'absolute')
+            .css('width', 'fit-content')
+            .css('height', 'fit-content');
+        let photoSpan
+        if(friend.photo == null){
+            photoSpan = $('<span>', {class: 'ts-icon is-huge is-circular is-user-icon', })
+                .css('width', px + 'px !important')
+                .css('height', px + 'px !important');
+            let photoImg = $('<img>', { src: friend.photo });
+            photoSpan.append(photoImg);
+        } else {
+            photoSpan = $('<span>', {class: 'ts-avatar is-circular is-large is-bordered', })
+                .css('width', px + 'px')
+                .css('height', px + 'px');
+            let photoImg = $('<img>', { src: friend.photo });
+            photoSpan.append(photoImg);
+        }
+        friendPhoto.append(photoSpan);
+        $('#friendsPhoto').append(friendPhoto);
+        photos.push(friendPhoto);
+    });
+    arrangePhotos(photos);
+    $('#friendAlertText').html("共有" + list.length + "位好友在催你做環保！<br>其中" + list[0].nickname + "共戳了你" + list[0].count + "次");
+
+    let closeBtn = $("<button>")
+        .attr({
+            'class': 'setBtn'
+        })
+        .css({
+            'background-color': 'rgba(183,188,189,0.3)',
+            'width': '70px',
+            'height': '30px',
+            'margin':'10px'
+        });
+
+    let closeBtnText = $("<div>")
+        .text("關閉")
+        .attr({
+            'class': 'setText'
+        })
+        .css({
+            'right': '10%',
+            'font-size': '15px'
+        });
+    closeBtn.append(closeBtnText);
+    closeBtn.on('click', function () {
+        $('#friendAlertMeFW').css("display", "none");
+    });
+
+    let buttonDiv = $("<div>")
+        .css({
+            'display': 'flex',
+            'flex-direction': 'row',
+            'justify-content': 'center'
+        });
+    buttonDiv.append(closeBtn);
+
+
+    $('#closeAlert').append(buttonDiv);
+    $('#friendAlertMeFW').css('z-index', '999');
 }
 // 點擊好友成就圖鑑
 function moreButtonClick(userId){

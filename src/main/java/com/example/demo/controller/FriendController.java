@@ -81,4 +81,18 @@ public class FriendController {
     }
 
 
+    @PostMapping("/addNotification")
+    public ResponseEntity<?>addNotification(@RequestParam("sender") String userId,@RequestParam("receiver") String target){
+
+        this.friendService.addNotification(userId,target);
+        return null;
+    }
+    @GetMapping("/deleteAndGetNotificationData")
+    public ResponseEntity<?>deleteAndGetNotificationData(@RequestParam("target") String userId){
+        return ResponseEntity.ok(Collections.singletonMap("data", this.friendService.deleteAndGetNotificationData(userId)));
+    }
+
+
+
+
 }
