@@ -16,8 +16,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
+    <!--chatbot-->
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css" rel="stylesheet">
     <!--    websocket-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"
             integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw=="
@@ -1103,7 +1103,25 @@
 
 </script>
 <!--        chatbot-->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
 <script src="https://cdn.botpress.cloud/webchat/v2.1/inject.js"></script>
 <script src="https://mediafiles.botpress.cloud/e00b7c6d-4b35-49cd-8198-dde7ed68cab9/webchat/v2.1/config.js"></script>
+<script defer>
+    let isMessageCopied = false; // 檢查是否已複製過
+    window.botpress.on('message', (event) => {
+        if (isMessageCopied) return; // 若已複製過則不執行
+
+        let textToCopy = User.userId;
+
+        navigator.clipboard.writeText(textToCopy).then(function() {
+            //window.botpress.sendMessage(textToCopy);
+            isMessageCopied = true; // 設定旗標為已複製
+            Toastify({ text: '已複製您的使用者ID，以便分析資料' }).showToast();
+        }).catch(function(error) {
+            Toastify({ text: '無法複製您的使用者ID' }).showToast();
+        });
+    });
+</script>
+
 
 </html>
