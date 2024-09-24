@@ -800,8 +800,14 @@ svg:hover .detail {
     width:100%;
 }
 
-/*chatbot*/
-#bp-web-widget{
-    bottom: 53%;
-    z-index: 0;
+.\#1n0sv8k,
+.\#ux4pmf{
+    width:4.25rem !important;
+    height:4.25rem !important;
+}
+
+.bpFab{
+    bottom: 53% !important;
+    right: 6% !important;
+    z-index: 0 !important;
 }
