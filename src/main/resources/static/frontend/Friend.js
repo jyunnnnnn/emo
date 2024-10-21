@@ -103,6 +103,24 @@ function showFriendList(friendList){
                 let target = this.id.replace('alert', '');
                 $(this).addClass('is-loading');
                 alertFriendButton(target);
+
+                let name = AllUsersFp.filter(friend => friend.userId === target)[0].nickname;
+                $('#alertMSG').remove();
+                let msg = "你戳了" + name +"一次";
+                let snackbar = $('<div>', {
+                    class: 'content',
+                    id: 'alertMSG'
+                })
+                    .text(msg);
+                $('#snackbar').append(snackbar);
+                $('#snackbar').css('display', '');
+
+                timeoutId = setTimeout(function() {
+                    $('#snackbar').fadeOut(1000, function() {
+                        $('#alertMSG').remove();
+                        $('#snackbar').css('display', 'none');
+                    });
+                }, 3000);
             });
             let alertSpan = $('<span>', { class: 'ts-icon is-large is-hand-point-left-icon' });
             alertButton.append(alertSpan);
@@ -236,13 +254,39 @@ function whoAlertMe(list){
         } else {
             px = 46 + friend.count*5;
         }
-        let friendPhoto = $('<div>', { class: 'column is-3-wide' })
+        let friendPhoto = $('<div>', {
+            class: 'column is-3-wide',
+            id: 'alertMe' + friend.userId
+        })
             .css('position', 'absolute')
             .css('width', 'fit-content')
             .css('height', 'fit-content');
-        let photoSpan
+        friendPhoto.on('click', function() {
+            let target = this.id.replace('alertMe', '');
+            alertFriendButton(target);
+
+            let name = AllUsersFp.filter(friend => friend.userId === target)[0].nickname;
+            $('#alertMSG').remove();
+            let msg = "你戳了" + name +"一次";
+            let snackbar = $('<div>', {
+                class: 'content',
+                id: 'alertMSG'
+            })
+                .text(msg);
+            $('#snackbar').append(snackbar);
+            $('#snackbar').css('display', '');
+
+            timeoutId = setTimeout(function() {
+                $('#snackbar').fadeOut(1000, function() {
+                    $('#alertMSG').remove();
+                    $('#snackbar').css('display', 'none');
+                });
+            }, 3000);
+        });
+
+        let photoSpan;
         if(friend.photo == null){
-            photoSpan = $('<span>', {class: 'ts-icon is-huge is-circular is-user-icon', })
+            photoSpan = $('<span>', {class: 'ts-icon is-huge is-circular is-user-icon'})
                 .css('width', px + 'px !important')
                 .css('height', px + 'px !important');
             let photoImg = $('<img>', { src: friend.photo });
@@ -259,7 +303,7 @@ function whoAlertMe(list){
         photos.push(friendPhoto);
     });
     arrangePhotos(photos);
-    $('#friendAlertText').html("共有" + list.length + "位好友在催你做環保！<br>其中" + list[0].nickname + "共戳了你" + list[0].count + "次");
+    $('#friendAlertText').html("共有" + list.length + "位好友在催你做環保！<br>其中" + list[0].nickname + "共戳了你" + list[0].count + "次<br>（點擊頭貼可回戳）");
 
     let closeBtn = $("<button>")
         .attr({
